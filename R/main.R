@@ -1,3 +1,19 @@
+#####################----SEROFOI----   #################
+#
+#   Seroprevalence Force-of-Infection
+#   Author:  Zulma M Cucunubá
+#   Version 1.0.1. This version runs and compares three basic models
+
+####################################################
+
+
+
+
+
+
+
+
+
 rm(list=ls())
 library(rstan)
 library(tidyverse)
