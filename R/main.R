@@ -69,7 +69,7 @@ RunSaveModels(my_dir    = my_dir,
               n_iters   = 3000,
               Model0 = Model0, NameModel0 = "M0_Constant",
               Model1 = Model1, NameModel1 = "M1_Cont_Normal",
-              Model2 = Model2, NameModel2 = "M1_Cont_NormalLog"
+              Model2 = Model2, NameModel2 = "M2_Cont_NormalLog"
 )
 
 
