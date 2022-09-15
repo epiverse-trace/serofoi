@@ -43,13 +43,16 @@ source('r/fun/fPlot.R')
 
 
 
-# ---- Models
+#----- Read Data
+dat0 <- readRDS("data/dat.RDS")
+
+
+# ----  Choose Models
 Model0   <- readRDS('R/stanmodels/ConstantUniformFOI.RDS')
 Model1   <- readRDS('R/stanmodels/ContinuousNormalFOI.RDS')
 Model2   <- readRDS('R/stanmodels/ContinuousNormalLogFOI_lowt.RDS')
 
 
-dat0 <- readRDS("data/dat.RDS")
 
 
 # Automated name of the folder where results will be stored
