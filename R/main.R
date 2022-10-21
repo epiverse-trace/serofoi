@@ -7,13 +7,6 @@
 ####################################################
 
 
-
-
-
-
-
-
-
 rm(list=ls())
 library(rstan)
 library(tidyverse)
@@ -26,7 +19,7 @@ library(grid)
 library(gridExtra)
 library(Hmisc)
 library(dplyr)
-library(vscDebugger)
+#library(vscDebugger)
 library(epitrix)
 library(gsubfn) # obtain limits from applying cut function
 
@@ -71,10 +64,4 @@ RunSaveModels(my_dir    = my_dir,
               Model1 = Model1, NameModel1 = "M1_Cont_Normal",
               Model2 = Model2, NameModel2 = "M2_Cont_NormalLog"
 )
-
-
-
-# options(error = browser) #Cuando uso este, VSC me deja ver la líne y script del error. THANK GOD!!
-
-# xx <- readRDS("res/COL-2022-09-09 19:24:08/posterior/COL-001-01.RDS")
 

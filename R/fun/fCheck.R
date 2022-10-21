@@ -6,7 +6,6 @@ compare_and_save_best_model <- function (survey,
                                          mod_0, mod_1, mod_2)
 {
 
-  # browser() # Aquí debo verificar que model_comparison viene con todo, inlcuido performance
 
   # --------------- Model comparison
   model_comp <- model_comparison %>% select(-performance)
@@ -21,14 +20,13 @@ compare_and_save_best_model <- function (survey,
   model_comp$better[model_comp$model == 'Constant'] <- "-"
   model_comp$pvalue[model_comp$model == 'Constant'] <- 0
 
-  # browser() #Ya aparece el elpd!!!!
+
   model_comp$converged[model_comp$elpd == -1.000e+10] <- 'No'
 
 
   ds_one <- filter(model_comp, converged == 'Yes')
   print(paste0('number of converged models = ', NROW(ds_one)))
 
-  # browser() #  ERROR Error in gList(...) : only 'grobs' allowed in "gList"
 
   elps_order <-  rev(sort(ds_one$elpd)) #[1:3]
   best <- filter(model_comp, elpd %in% elps_order) %>% arrange(-elpd)# This is to make sure I keep only three
@@ -36,7 +34,7 @@ compare_and_save_best_model <- function (survey,
   best_model2 <- as.character(best$model[2])
   best_model3 <- as.character(best$model[3])
 
-  # browser()
+
 
   model_comp$best <- NA
   model_comp$best[model_comp$model == best_model1] <- 1
@@ -47,7 +45,7 @@ compare_and_save_best_model <- function (survey,
   model_comp$pvalue <- round(model_comp$pvalue, 6)
 
 
-  # write.csv(model_comp, name_comp)
+
 
 
   # --------------- Best model
@@ -60,7 +58,7 @@ compare_and_save_best_model <- function (survey,
   best_model_2 <- as.character(best_model_data2$model)
   best_model_3 <- as.character(best_model_data3$model)
 
-  # browser() # No estaba mostrando la convergencia
+
 
   if(best_model_1 == mod_0$model) {
     res_file_1 <- mod_0
@@ -209,7 +207,7 @@ extract_summary_mod <- function (res, dat){
       lll <- c(-1e10, 0)
     }
 
-  # browser() # Okay! Aquí obtengo bien lll con elpd
+
 
   summary_mod <- data.frame(model = res$model,
                             dataset = dat$survey[1],
@@ -248,5 +246,3 @@ get_table_rhats <- function(res) {
   return(res_rhats)
 
 }
-
-

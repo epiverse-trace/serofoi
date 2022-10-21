@@ -13,5 +13,3 @@ saveRDS(ContinuousNormalFOI, 'R/stanmodels/ContinuousNormalFOI.RDS')
 
 ContinuousNormalLogFOI_lowt  <- stan_model('R/stanmodels/continuous_foi_normal_log.stan')
 saveRDS(ContinuousNormalLogFOI_lowt, 'R/stanmodels/ContinuousNormalLogFOI_lowt.RDS')
-
-#For details, look into MS_word file
