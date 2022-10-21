@@ -80,7 +80,6 @@ RunSaveModels <- function(my_dir,
   grid.arrange(parrange_0,
                parrange_1,
                parrange_2,
-               # mod_comp_plot, # SAD!! tuve que quitarlo porque me ocasionaba un error raro en el plot
                nrow = 1)
   dev.off()
 
@@ -109,10 +108,3 @@ RunSaveModels <- function(my_dir,
 
 
 }
-
-
-#Hello
-
-
-
-
