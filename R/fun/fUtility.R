@@ -232,48 +232,6 @@ partition_div <- function(fit) {
 
 
 
-#get_data_binned <- function (dat) {
-  #if (dat$age_max[1] - dat$age_min[1] <3) {
-    #dati <- dat
-    #dati$cut_ages <- cut(as.numeric(dat$age_mean_f), seq(1,101, by = 5), include.lowest = TRUE)
-    #xx <- dati %>% group_by(cut_ages) %>% summarise(total = sum(total), counts = sum(counts))
-    #labs <- read.table(text = gsub("[^.0-9]", " ", levels(xx$cut_ages)), col.names = c("lower", "upper")) %>%
-      #mutate(lev = levels(xx$cut_ages), age_mean_f = round((lower + upper)/2))
-
-    #xx$age_mean_f <- labs$age_mean_f[labs$lev %in% xx$cut_ages]
-    #xx$age_min <- labs$lower[labs$lev %in% xx$cut_ages]
-    #xx$age_max <- labs$upper[labs$lev %in% xx$cut_ages]
-
-    #conf <- data.frame(Hmisc::binconf(xx$counts, xx$total, method="exact"))
-    #xx <- cbind(xx, conf) %>% rename (prev_obs = PointEst,
-                                      #prev_obs_lower = Lower, prev_obs_upper = Upper) %>% select(-cut_ages)
-
-    #dat_final <- xx %>% mutate(survey = dat$survey[1], tsur = dat$tsur[1], country = dat$country[1],
-                               #test = dat$test[1], antibody = dat$antibody[1], setting = dat$setting[1],
-                               #n_ages = length(xx$age_mean_f),
-                               #pop_sample = dat$pop_sample[1], area_type = dat$area_type[1],
-                               #published = dat$published[1], sample_size = dat$sample_size[1],
-                               #loc_type = dat$loc_type[1], ADM1 = dat$ADM1[1],
-                               #ADM2 = dat$ADM2[1], ADM3 = dat$ADM3[3],
-                               #lat_dec = dat$lat_dec[1], long_dec = dat$long_dec[1],
-                               #source_type = dat$source_type[1],
-                               #year_init = dat$year_init[1], year_end = dat$year_end[1],
-                               #cod_algorithm = dat$cod_algorithm[1], diag_algorithm = dat$diag_algorithm[1])
-
-    #sort(names(dat))
-    #sort(names(dat_final))
-
-    #dat_final <- dat_final %>% select(names(dat))
-
-  #} else {
-
-    #dat_final <- dat
-
-  #}
-#}
-
-
-
 # Extract Residuals
 
 get_residuals <- function(fit, dat)
