@@ -23,11 +23,11 @@ library(dplyr)
 library(epitrix)
 library(gsubfn) # obtain limits from applying cut function
 
-source('r/fun/fUtility.R')
-source('r/fun/fFitting.R')
-source('r/fun/fRun.R')
-source('r/fun/fCheck.R')
-source('r/fun/fPlot.R')
+source('r/fUtility.R')
+source('r/fFitting.R')
+source('r/fRun.R')
+source('r/fCheck.R')
+source('r/fPlot.R')
 
 
 # ---- Models
