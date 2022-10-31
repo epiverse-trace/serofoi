@@ -10,7 +10,7 @@ RunSaveModels <- function(my_dir,
 
 
   t0 <- Sys.time()
-  my_dir0 <- paste0('test/', my_dir)
+  my_dir0 <- paste0('tests/', my_dir)
 
 
   dat <- filter(dat0, survey == suv) %>% arrange(age_mean_f) %>%
