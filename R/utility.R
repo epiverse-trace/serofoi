@@ -185,7 +185,7 @@ sub_sample <- function(stanfit, n, keep_warmup = TRUE) {
 dir_results <- function(name_dir)
 {
 
-  my_dir <- paste0('test/', name_dir)
+  my_dir <- paste0('tests/', name_dir)
   dir_plots <- paste0(my_dir, '/fitting_plots')
   dir_posterior  <- paste0(my_dir, '/fitting_results')
 

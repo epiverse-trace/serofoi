@@ -23,12 +23,11 @@ library(dplyr)
 library(epitrix)
 library(gsubfn) # obtain limits from applying cut function
 
-source('r/fUtility.R')
-source('r/fFitting.R')
-source('r/fRun.R')
-source('r/fCheck.R')
-source('r/fPlot.R')
-
+source('r/utility.R')
+source('r/fitting.R')
+source('r/run.R')
+source('r/model_comparison.R')
+source('r/plot.R')
 
 # ---- Models
 # For these to run well, I need to re-compile the RDSs files
@@ -49,8 +48,9 @@ Model2   <- readRDS('R/stanmodels/ContinuousNormalLogFOI_lowt.RDS')
 
 
 # Automated name of the folder where results will be stored
-my_dir <- epitrix::clean_labels(paste0('test_', Sys.time()))
+my_dir <- epitrix::clean_labels(paste0('tests_', Sys.time()))
 dir_results(my_dir)
+
 
 print(paste0("my results will be sortored at:_________test/", my_dir))
 
