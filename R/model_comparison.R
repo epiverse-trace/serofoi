@@ -1,6 +1,4 @@
-
-
-compare_and_save_best_model <- function (survey,
+compare_and_save_best_model <- function(survey,
                                          model_comparison,
                                          name_fitting_res,
                                          mod_0, mod_1, mod_2)
