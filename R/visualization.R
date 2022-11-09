@@ -174,7 +174,6 @@ vertical_plot_arrange_per_model <- function(PPC){
 
 }
 
-
 plot_info_table <- function(info, size_text){
 
   dato <- data.frame(

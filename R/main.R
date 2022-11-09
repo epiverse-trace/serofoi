@@ -23,11 +23,11 @@ library(dplyr)
 library(epitrix)
 library(gsubfn) # obtain limits from applying cut function
 
-source('r/fUtility.R')
-source('r/fFitting.R')
-source('r/fRun.R')
-source('r/fCheck.R')
-source('r/fPlot.R')
+source('r/infection_force.R')
+#source('r/fitting.R')
+source('r/seroprevalence_studies.R')
+source('r/model_comparison.R')
+source('r/visualization.R')
 
 
 # ---- Models
@@ -49,10 +49,10 @@ Model2   <- readRDS('R/stanmodels/ContinuousNormalLogFOI_lowt.RDS')
 
 
 # Automated name of the folder where results will be stored
-my_dir <- epitrix::clean_labels(paste0('test_', Sys.time()))
+my_dir <- epitrix::clean_labels(paste0('tests_', Sys.time()))
 dir_results(my_dir)
 
-print(paste0("my results will be sortored at:_________test/", my_dir))
+print(paste0("my results will be sortored at:_________tests/", my_dir))
 
 
 i <- dat0$survey[1]

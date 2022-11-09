@@ -108,3 +108,27 @@ RunSaveModels <- function(my_dir,
 
 
 }
+
+dir_results <- function(name_dir)
+{
+
+  my_dir <- paste0('tests/', name_dir)
+  dir_plots <- paste0(my_dir, '/fitting_plots')
+  dir_posterior  <- paste0(my_dir, '/fitting_results')
+
+  if (dir.exists(my_dir) == FALSE) {
+    dir.create(my_dir)
+  }
+
+  if(dir.exists(dir_plots) == FALSE) {
+    dir.create(dir_plots)
+  }
+
+  if(dir.exists(dir_posterior) == FALSE) {
+    dir.create(dir_posterior)
+  }
+
+  print(paste0("NOTE: My results will be sortored at:_________/", my_dir))
+
+}
+
