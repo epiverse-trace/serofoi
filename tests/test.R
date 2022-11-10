@@ -59,7 +59,7 @@ print(paste0("my results will be sortored at:_________test/", my_dir))
 
 
 i <- dat0$survey[1]
-RunSaveModels(my_dir    = my_dir,
+run_save_models(my_dir    = my_dir,
               suv       = i,
               dat0      = dat0,
               n_iters   = 3000,
@@ -67,4 +67,3 @@ RunSaveModels(my_dir    = my_dir,
               Model1 = Model1, NameModel1 = "M1_Cont_Normal",
               Model2 = Model2, NameModel2 = "M2_Cont_NormalLog"
 )
-
