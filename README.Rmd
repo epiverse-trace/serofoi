@@ -54,7 +54,7 @@ Contributions are welcome via [pull requests](https://github.com/TRACE-LAC/serof
 Contributors to the project include:
 
 - [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author)
-- Miguel Gamez (contributor)
+- [Miguel Gamez](https://github.com/megamezl) (author)
 
 ### Code of Conduct
 Please note that the linelist project is released with a 

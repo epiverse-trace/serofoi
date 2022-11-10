@@ -47,7 +47,7 @@ requests](https://github.com/TRACE-LAC/serofoi/pulls).
 Contributors to the project include:
 
 -   [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author)
--   Miguel Gamez (contributor)
+-   [Miguel Gamez](https://github.com/megamezl) (author)
 
 ### Code of Conduct
 
