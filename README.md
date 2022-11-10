@@ -1,8 +1,8 @@
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# serofoi
+## *serofoi* <img src="man/figures/logo.png" align="right" width="120" />
 
-*serofoi* estimates the _Force-of-Infection_ of a given pathogen from population based sero-prevalence studies on a bayesian framework.
+Estimates the *Force-of-Infection* of a given pathogen from population
+based sero-prevalence studies on a bayesian framework.
 
 <!-- badges: start -->
 
@@ -16,7 +16,7 @@ coverage](https://codecov.io/gh/epiverse-trace/readepi/branch/main/graph/badge.s
 
 ## Installation
 
-You can install the development version of *serofoi* from
+You can install the **development version** of `serofoi` from
 [GitHub](https://github.com/) with:
 
 ``` r
@@ -24,20 +24,13 @@ You can install the development version of *serofoi* from
 remotes::install_github("TRACE-LAC/serofoi")
 ```
 
-## Example
+## Quick start
 
 These examples illustrate some of the current functionalities:
 
 ``` r
-library(sivirep)
-
-# example of read_path_data():
-# (Function that imports data through an URL or path)
-data_url <- "some_path_here"
-read_path_data(data_url)
+##library(serofoi)
 ```
-
-## Development
 
 ### Lifecycle
 
@@ -53,8 +46,8 @@ requests](https://github.com/TRACE-LAC/serofoi/pulls).
 
 Contributors to the project include:
 
-  - Zulma M. Cucunubá (author)
-  - Miguel Gamez (contributor)
+-   [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author)
+-   Miguel Gamez (contributor)
 
 ### Code of Conduct
 
