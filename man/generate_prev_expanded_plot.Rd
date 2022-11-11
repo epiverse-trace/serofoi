@@ -25,6 +25,3 @@ The previous expanded graphic
 Función que genera la gráfica previa expandida
 Function that generates the previous expanded graphic
 }
-\examples{
-generate_prev_expanded_plot(data, res, xlabel = "Age", ylabel = "Sero-positivity")
-}
