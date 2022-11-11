@@ -7,9 +7,8 @@ run_save_models <- function(my_dir,
                           Model1, NameModel1,
                           Model2, NameModel2) {
 
-
   t0 <- Sys.time()
-  my_dir0 <- paste0('tests/', my_dir)
+  my_dir0 <- paste0(config::get("test_files_path"), my_dir)
 
 
   dat <- filter(dat0, survey == suv) %>% arrange(age_mean_f) %>%
@@ -128,4 +127,3 @@ dir_results <- function(name_dir)
   print(paste0("NOTE: My results will be sortored at:_________/", my_dir))
 
 }
-

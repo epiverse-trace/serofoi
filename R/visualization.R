@@ -6,23 +6,21 @@
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return The previous expanded graphic
-#' @examples
-#' generate_prev_expanded_plot(data, res, xlabel = "Age", ylabel = "Sero-positivity")
 #' @export
 generate_prev_expanded_plot <- function(data, res, xlabel = "Age", ylabel = "Sero-positivity") {
   foi <- rstan::extract(res$fit, "foi", inc_warmup = FALSE)[[1]]
   prev_expanded <- get_prev_expanded(foi, data)
 
   plot_prev <-
-    ggplot(prev_expanded) +
-    geom_ribbon(aes(x = age, ymin = predicted_prev_lower, ymax = predicted_prev_upper), fill = "#c994c7") +
-    geom_line(aes(x = age, y = predicted_prev), colour = '#7a0177') +
-    geom_errorbar(aes(age, ymin = p_obs_bin_l, ymax = p_obs_bin_u), width = 0.1) +
-    geom_point(aes(age, p_obs_bin, size = bin_size), fill = '#7a0177', colour = "black", shape = 21) +
-    theme_bw(size_text) +
-    coord_cartesian(xlim = c(0, 60), ylim = c(0,1)) +
-    theme(legend.position = "none") +
-    ylab(ylabel) + xlab(xlabel)
+    ggplot2::ggplot(prev_expanded) +
+    ggplot2::geom_ribbon(aes(x = age, ymin = predicted_prev_lower, ymax = predicted_prev_upper), fill = "#c994c7") +
+    ggplot2::geom_line(aes(x = age, y = predicted_prev), colour = "#7a0177") +
+    ggplot2::geom_errorbar(aes(age, ymin = p_obs_bin_l, ymax = p_obs_bin_u), width = 0.1) +
+    ggplot2::geom_point(aes(age, p_obs_bin, size = bin_size), fill = "#7a0177", colour = "black", shape = 21) +
+    ggplot2::theme_bw(size_text) +
+    ggplot2::coord_cartesian(xlim = c(0, 60), ylim = c(0,1)) +
+    ggplot2::theme(legend.position = "none") +
+    ggplot2::ylab(ylabel) + ggplot2::xlab(xlabel)
 
   return(plot_prev)
 }
@@ -36,8 +34,8 @@ generate_foi_plot <- function(foi_data) {
 
   plot_foi <-
     ggplot(foi_data) +
-    geom_ribbon(aes( x = year, ymin = lower, ymax = upper), fill = '#41b6c4', alpha = 0.5) +
-    geom_line(aes(x = year, y = medianv), colour = '#253494', size = size_text/8) +
+    geom_ribbon(aes( x = year, ymin = lower, ymax = upper), fill = "#41b6c4", alpha = 0.5) +
+    geom_line(aes(x = year, y = medianv), colour = "#253494", size = size_text/8) +
     theme_bw(size_text) +
     coord_cartesian(ylim = c(0, max_lambda)) +
     ylab("Force-of-Infection") + xlab("Year")
@@ -45,7 +43,7 @@ generate_foi_plot <- function(foi_data) {
   return(plot_foi)
 }
 
-generate_rhats_plot <- function(res) {
+generate_rhats_plot <- function(res, ylabel = "Convergence (R^)") {
   rhats <- get_table_rhats(res)
 
   plot_rhats <- ggplot(rhats, aes(year, rhat)) +
@@ -54,8 +52,7 @@ generate_rhats_plot <- function(res) {
     coord_cartesian(ylim = c(0.7, 2)) +
     geom_hline(yintercept = 1.1, colour = "blue", size = size_text/12) +
     theme_bw(size_text) +
-    ylab('Convergence (R^)')
-
+    ylab(ylabel)
 }
 
 generate_combined_plots <- function(res, dat, lambda_sim = NA, max_lambda = NA, size_text = 25) {
@@ -63,7 +60,7 @@ generate_combined_plots <- function(res, dat, lambda_sim = NA, max_lambda = NA, 
     if (class(res$fit@sim$samples) != "NULL" ) {
 
       summary_mod <- extract_summary_mod(res, dat)
-      foi <- rstan::extract(res$fit, 'foi', inc_warmup = FALSE)[[1]]
+      foi <- rstan::extract(res$fit, "foi", inc_warmup = FALSE)[[1]]
 
       plot_prev <- generate_prev_expanded_plot(data, res)
 
@@ -131,12 +128,12 @@ get_model_comparison_plot <- function(res_comp) {
 
   emptyp <- ggplot(data = data.frame()) +
     geom_point() +
-    xlim(0,1) + ylim (0,1) + theme_void() +
-    annotate('text',  x = .5, y = .6, label = best_model, size = 14) +
-    annotate('text',  x = .5, y = .55, label = '(best model)', size = 13)
+    xlim(0,1) + ylim(0,1) + theme_void() +
+    annotate("text",  x = .5, y = .6, label = best_model, size = 14) +
+    annotate("text",  x = .5, y = .55, label = "(best model)", size = 13)
 
 
-  infot <- filter(model_comp, converged == 'Yes') %>% dplyr::select(model, difference, diff_se, pvalue, best) %>%
+  infot <- filter(model_comp, converged == "Yes") %>% dplyr::select(model, difference, diff_se, pvalue, best) %>%
     mutate(diff = round(difference, 2),
            diff_se = round(diff_se, 2),
            pvalue = round(pvalue, 4))
@@ -144,8 +141,8 @@ get_model_comparison_plot <- function(res_comp) {
   blank <- data.frame(x = 1:10, y = 1:100)
   table_pars <-
     ggplot(blank, aes(x, y)) +
-    geom_blank() + ylab('') + xlab ('') +
-    annotation_custom(tableGrob(d= infot,
+    geom_blank() + ylab("") + xlab("") +
+    annotation_custom(tableGrob(d = infot,
                                 theme = ttheme_default(base_size = 20))) +
     theme_void(30)
 

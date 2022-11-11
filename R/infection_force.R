@@ -1,5 +1,4 @@
-get_exposure_matrix <- function(dat, yexpo)
-{
+get_exposure_matrix <- function(dat, yexpo) {
   age_class <- dat$age_mean_f
   ly  <- length(yexpo)
   exposure       <- matrix(0,nrow = length(age_class), ncol = ly)
@@ -8,8 +7,6 @@ get_exposure_matrix <- function(dat, yexpo)
   return(exposure_output)
 
 }
-
-
 
 get_prev_expanded <- function(foi, dat) {
 

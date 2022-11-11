@@ -7,7 +7,7 @@
 ####################################################
 
 
-rm(list=ls())
+rm(list = ls())
 library(rstan)
 library(tidyverse)
 library(reshape2)
