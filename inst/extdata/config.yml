@@ -1,0 +1,2 @@
+default:
+  test_files_path: "tests/"

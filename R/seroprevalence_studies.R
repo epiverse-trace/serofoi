@@ -1,28 +1,43 @@
-RunSaveModels <- function(my_dir,
+#' Run Save Models
+#'
+#' Función que corre los modelos guardados
+#' Function that runs saved models
+#' @param my_dir
+#' @param suv
+#' @param data dat0
+#' @param n_iters
+#' @param n_warmup
+#' @param model Model0
+#' @param model Model1
+#' @param model Model2
+#' @param name_model NameModel0
+#' @param name_model NameModel1
+#' @param name_model NameModel2
+#' @return run save models
+#' @export
+run_save_models <- function(my_dir,
                           suv,
                           dat0,
                           n_iters,
                           n_warmup,
                           Model0, NameModel0,
                           Model1, NameModel1,
-                          Model2, NameModel2)
-{
-
+                          Model2, NameModel2) {
 
   t0 <- Sys.time()
-  my_dir0 <- paste0('test/', my_dir)
+  my_dir0 <- paste0(config::get("test_files_path"), my_dir)
 
 
-  dat <- filter(dat0, survey == suv) %>% arrange(age_mean_f) %>%
-    mutate(birth_year = tsur - age_mean_f)
+  dat <- dplyr::filter(dat0, .data$survey == suv) %>% dplyr::arrange(.data$age_mean_f) %>%
+    dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
 
-  mod_0 <- fFitModel(model= Model0, dat,
+  mod_0 <- fit_model(model = Model0, dat,
                      m_name = NameModel0, n_iters = n_iters); print(paste0(suv, ' finished ------ Model_0'))
 
-  mod_1 <- fFitModel(model= Model1, dat,
+  mod_1 <- fit_model(model = Model1, dat,
                      m_name = NameModel1, n_iters = n_iters); print(paste0(suv, ' finished ------ Model_1'))
 
-  mod_2 <- fFitModel_log(model= Model2, dat,
+  mod_2 <- fit_model_log(model = Model2, dat,
                          m_name = NameModel2, n_iters = n_iters); print(paste0(suv, ' finished ------ Model_2'))
 
 
@@ -30,19 +45,17 @@ RunSaveModels <- function(my_dir,
   foi_mod <- rstan::extract(mod_2$fit, 'foi', inc_warmup = FALSE)[[1]]
   max_lambda <-  (as.numeric(quantile(foi_mod, 0.95))) * 1.3
 
-  PlotsM0    <- fCombinedPlots(res = mod_0, dat = dat, lambda_sim = NA, max_lambda) ; print(paste0(suv, ' finished ------ Plots_M0'))
-  PlotsM1    <- fCombinedPlots(res = mod_1, dat = dat, lambda_sim = NA, max_lambda) ; print(paste0(suv, ' finished ------ Plots_M1'))
-  PlotsM2    <- fCombinedPlots(res = mod_2, dat = dat, lambda_sim = NA, max_lambda) ; print(paste0(suv, ' finished ------ Plots_M2'))
+  PlotsM0    <- generate_combined_plots(res = mod_0, dat = dat, lambda_sim = NA, max_lambda) ; print(paste0(suv, ' finished ------ Plots_M0'))
+  PlotsM1    <- generate_combined_plots(res = mod_1, dat = dat, lambda_sim = NA, max_lambda) ; print(paste0(suv, ' finished ------ Plots_M1'))
+  PlotsM2    <- generate_combined_plots(res = mod_2, dat = dat, lambda_sim = NA, max_lambda) ; print(paste0(suv, ' finished ------ Plots_M2'))
 
   # ---- Statistical Checking
-  dif_m0_m1 <- loo_compare (mod_0$loo_fit, mod_1$loo_fit)
-  dif_m0_m2 <- loo_compare (mod_0$loo_fit, mod_2$loo_fit)
+  dif_m0_m1 <- loo::loo_compare(mod_0$loo_fit, mod_1$loo_fit)
+  dif_m0_m2 <- loo::loo_compare(mod_0$loo_fit, mod_2$loo_fit)
 
   PlotsM0$summary_mod$difference <- 0; PlotsM0$summary_mod$diff_se <- 1;
   PlotsM1$summary_mod$difference <- dif_m0_m1[1];   PlotsM1$summary_mod$diff_se <- dif_m0_m1[2];
   PlotsM2$summary_mod$difference <- dif_m0_m2[1];   PlotsM2$summary_mod$diff_se <- dif_m0_m2[2];
-
-
 
   model_comparison <- rbind(PlotsM0$summary_mod,
                             PlotsM1$summary_mod, PlotsM2$summary_mod)
@@ -75,12 +88,11 @@ RunSaveModels <- function(my_dir,
 
 
 
-  png(name_fitting_plots, width = 2000, height = 2000)
+  grDevices::png(name_fitting_plots, width = 2000, height = 2000)
 
   grid.arrange(parrange_0,
                parrange_1,
                parrange_2,
-               # mod_comp_plot, # SAD!! tuve que quitarlo porque me ocasionaba un error raro en el plot
                nrow = 1)
   dev.off()
 
@@ -88,7 +100,7 @@ RunSaveModels <- function(my_dir,
 
 
   t5 <- Sys.time()
-  time_taken <- t5-t0
+  time_taken <- t5 - t0
   print(time_taken)
 
 
@@ -110,9 +122,32 @@ RunSaveModels <- function(my_dir,
 
 }
 
+#' Dir Results
+#'
+#' Función guarda los resultados en una dirección
+#' Function saves the results in a place
+#' @param name_dir
+#' @return dir
+#' @export
+dir_results <- function(name_dir)
+{
 
-#Hello
+  my_dir <- paste0('tests/', name_dir)
+  dir_plots <- paste0(my_dir, '/fitting_plots')
+  dir_posterior  <- paste0(my_dir, '/fitting_results')
 
+  if (dir.exists(my_dir) == FALSE) {
+    dir.create(my_dir)
+  }
 
+  if (dir.exists(dir_plots) == FALSE) {
+    dir.create(dir_plots)
+  }
 
+  if (dir.exists(dir_posterior) == FALSE) {
+    dir.create(dir_posterior)
+  }
 
+  print(paste0("NOTE: My results will be sortored at:_________/", my_dir))
+
+}

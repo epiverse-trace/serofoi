@@ -7,14 +7,7 @@
 ####################################################
 
 
-
-
-
-
-
-
-
-rm(list=ls())
+rm(list = ls())
 library(rstan)
 library(tidyverse)
 library(reshape2)
@@ -26,15 +19,16 @@ library(grid)
 library(gridExtra)
 library(Hmisc)
 library(dplyr)
-library(vscDebugger)
+#library(vscDebugger)
 library(epitrix)
 library(gsubfn) # obtain limits from applying cut function
 
-source('r/fun/fUtility.R')
-source('r/fun/fFitting.R')
-source('r/fun/fRun.R')
-source('r/fun/fCheck.R')
-source('r/fun/fPlot.R')
+
+source('r/infection_force.R')
+#source('r/fitting.R')
+source('r/seroprevalence_studies.R')
+source('r/model_comparison.R')
+source('r/visualization.R')
 
 
 # ---- Models
@@ -56,14 +50,16 @@ Model2   <- readRDS('R/stanmodels/ContinuousNormalLogFOI_lowt.RDS')
 
 
 # Automated name of the folder where results will be stored
-my_dir <- epitrix::clean_labels(paste0('test_', Sys.time()))
+my_dir <- epitrix::clean_labels(paste0('tests_', Sys.time()))
 dir_results(my_dir)
+
 
 print(paste0("my results will be sortored at:_________test/", my_dir))
 
 
+
 i <- dat0$survey[1]
-RunSaveModels(my_dir    = my_dir,
+run_save_models(my_dir    = my_dir,
               suv       = i,
               dat0      = dat0,
               n_iters   = 3000,
@@ -71,10 +67,3 @@ RunSaveModels(my_dir    = my_dir,
               Model1 = Model1, NameModel1 = "M1_Cont_Normal",
               Model2 = Model2, NameModel2 = "M2_Cont_NormalLog"
 )
-
-
-
-# options(error = browser) #Cuando uso este, VSC me deja ver la líne y script del error. THANK GOD!!
-
-# xx <- readRDS("res/COL-2022-09-09 19:24:08/posterior/COL-001-01.RDS")
-
