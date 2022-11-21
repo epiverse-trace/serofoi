@@ -1,3 +1,20 @@
+#' Run Save Models
+#'
+#' Función que corre los modelos guardados
+#' Function that runs saved models
+#' @param my_dir
+#' @param suv
+#' @param data dat0
+#' @param n_iters
+#' @param n_warmup
+#' @param model Model0
+#' @param model Model1
+#' @param model Model2
+#' @param name_model NameModel0
+#' @param name_model NameModel1
+#' @param name_model NameModel2
+#' @return run save models
+#' @export
 run_save_models <- function(my_dir,
                           suv,
                           dat0,
@@ -11,8 +28,8 @@ run_save_models <- function(my_dir,
   my_dir0 <- paste0(config::get("test_files_path"), my_dir)
 
 
-  dat <- filter(dat0, survey == suv) %>% arrange(age_mean_f) %>%
-    mutate(birth_year = tsur - age_mean_f)
+  dat <- dplyr::filter(dat0, .data$survey == suv) %>% dplyr::arrange(.data$age_mean_f) %>%
+    dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
 
   mod_0 <- fit_model(model = Model0, dat,
                      m_name = NameModel0, n_iters = n_iters); print(paste0(suv, ' finished ------ Model_0'))
@@ -33,8 +50,8 @@ run_save_models <- function(my_dir,
   PlotsM2    <- generate_combined_plots(res = mod_2, dat = dat, lambda_sim = NA, max_lambda) ; print(paste0(suv, ' finished ------ Plots_M2'))
 
   # ---- Statistical Checking
-  dif_m0_m1 <- loo_compare (mod_0$loo_fit, mod_1$loo_fit)
-  dif_m0_m2 <- loo_compare (mod_0$loo_fit, mod_2$loo_fit)
+  dif_m0_m1 <- loo::loo_compare(mod_0$loo_fit, mod_1$loo_fit)
+  dif_m0_m2 <- loo::loo_compare(mod_0$loo_fit, mod_2$loo_fit)
 
   PlotsM0$summary_mod$difference <- 0; PlotsM0$summary_mod$diff_se <- 1;
   PlotsM1$summary_mod$difference <- dif_m0_m1[1];   PlotsM1$summary_mod$diff_se <- dif_m0_m1[2];
@@ -71,7 +88,7 @@ run_save_models <- function(my_dir,
 
 
 
-  png(name_fitting_plots, width = 2000, height = 2000)
+  grDevices::png(name_fitting_plots, width = 2000, height = 2000)
 
   grid.arrange(parrange_0,
                parrange_1,
@@ -105,6 +122,13 @@ run_save_models <- function(my_dir,
 
 }
 
+#' Dir Results
+#'
+#' Función guarda los resultados en una dirección
+#' Function saves the results in a place
+#' @param name_dir
+#' @return dir
+#' @export
 dir_results <- function(name_dir)
 {
 
