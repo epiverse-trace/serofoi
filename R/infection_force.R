@@ -1,3 +1,10 @@
+#' Dir Results
+#'
+#' Función guarda los resultados en una dirección
+#' Function saves the results in a place
+#' @param name_dir
+#' @return dir
+#' @export
 get_exposure_matrix <- function(dat, yexpo) {
   age_class <- dat$age_mean_f
   ly  <- length(yexpo)
@@ -8,6 +15,14 @@ get_exposure_matrix <- function(dat, yexpo) {
 
 }
 
+#' Get Prevalence Expanded
+#'
+#' Función que obtiene la prevalencia expandida
+#' Function that obtains the expanded prevalence
+#' @param data dat
+#' @param foi
+#' @return prev_final
+#' @export
 get_prev_expanded <- function(foi, dat) {
 
   ndat <- data.frame(age = 1:80)
@@ -49,29 +64,29 @@ get_prev_expanded <- function(foi, dat) {
 
 
   observed_prev <- dat %>%
-    select (age_mean_f, prev_obs, prev_obs_lower, prev_obs_upper, total, counts) %>%
-    rename(age = age_mean_f, sample_by_age = total, positives = counts)
+    dplyr::select(age_mean_f, prev_obs, prev_obs_lower, prev_obs_upper, total, counts) %>%
+    dplyr::rename(age = age_mean_f, sample_by_age = total, positives = counts)
 
-  prev_expanded <- merge(predicted_prev, observed_prev, by = 'age', all.x = TRUE) %>% mutate(survey = dat$survey[1])
+  prev_expanded <- merge(predicted_prev, observed_prev, by = 'age', all.x = TRUE) %>% dplyr::mutate(survey = dat$survey[1])
 
   # I added this here for those cases when binned is prefered for plotting
   if (dat$age_max[1] - dat$age_min[1] < 3) {
     dat$cut_ages <- cut(as.numeric(dat$age_mean_f), seq(1,101, by = 5), include.lowest = TRUE)
-    xx <- dat %>% group_by(cut_ages) %>% summarise(bin_size = sum(total), bin_pos = sum(counts))
+    xx <- dat %>% dplyr::group_by(.data$cut_ages) %>% dplyr::summarise(bin_size = sum(.data$total), bin_pos = sum(.data$counts))
     labs <- read.table(text = gsub("[^.0-9]", " ", levels(xx$cut_ages)), col.names = c("lower", "upper")) %>%
-      mutate(lev = levels(xx$cut_ages), midAge = round((lower + upper)/2)) %>% select(midAge, lev)
+      dplyr::mutate(lev = levels(xx$cut_ages), midAge = round((lower + upper)/2)) %>% dplyr::select(.data$midAge, .data$lev)
     xx$midAge <- labs$midAge[labs$lev %in% xx$cut_ages]
     conf <- data.frame(Hmisc::binconf(xx$bin_pos, xx$bin_size,method = "exact"))
-    xx  <- cbind(xx, conf) %>% rename(age = midAge, p_obs_bin = PointEst,
-                                      p_obs_bin_l = Lower,p_obs_bin_u = Upper)
+    xx  <- cbind(xx, conf) %>% dplyr::rename(age = .data$midAge, p_obs_bin = .data$PointEst,
+                                      p_obs_bin_l = .data$Lower,p_obs_bin_u = .data$Upper)
 
     prev_final <- merge(prev_expanded, xx, by = 'age', all.x = TRUE)
 
   } else {
 
-    prev_final <- prev_expanded %>% mutate( cut_ages = "original", bin_size = sample_by_age,
-                                            bin_pos  = positives, p_obs_bin = prev_obs,
-                                            p_obs_bin_l = prev_obs_lower, p_obs_bin_u = prev_obs_upper)
+    prev_final <- prev_expanded %>% dplyr::mutate(cut_ages = "original", bin_size = .data$sample_by_age,
+                                            bin_pos  = .data$positives, p_obs_bin = .data$prev_obs,
+                                            p_obs_bin_l = .data$prev_obs_lower, p_obs_bin_u = .data$prev_obs_upper)
 
   }
 
@@ -79,10 +94,24 @@ get_prev_expanded <- function(foi, dat) {
 
 }
 
+#' Make Yexpo
+#'
+#' Función que hace Yexpo
+#' Function thats make Yexpo
+#' @param data dat
+#' @return Yexpo
+#' @export
 make_yexpo <- function(dat) {
   yexpo <- (seq_along(min(dat$birth_year):dat$tsur[1]))
 }
 
+#' Get Posterior Summary
+#'
+#' Función que consigue un resumen posterior
+#' Function that gets a post summary
+#' @param results results_chain
+#' @return results
+#' @export
 get_posterior_summary <- function(results_chain) {
   res <- sapply(results_chain,
                 function(i) c(quantile(i, c(0.5, 0.025, 0.975))))
@@ -90,6 +119,17 @@ get_posterior_summary <- function(results_chain) {
   return(res)
 }
 
+#' Obtain Prevalence Extended
+#'
+#' Función que obtiene la prevalencia extendida
+#' Function that obtains the extended prevalence
+#' @param data dat0
+#' @param exposure
+#' @param ly
+#' @param nbreaks
+#' @param lambdaYexpo
+#' @return new_PPP
+#' @export
 obtain_prevalence_extended <- function(dato, exposure, ly, nbreaks, lambdaYexpo) {
 
   ly            <- length(yexpo)
@@ -125,7 +165,28 @@ obtain_prevalence_extended <- function(dato, exposure, ly, nbreaks, lambdaYexpo)
 
 }
 
-# Extract Residuals
+#' Make Thin Chain
+#'
+#' Función que hace el adelgazamiento del número de iteraciones
+#' Function that does the thinning of the number of iterations
+#' @param result_chain
+#' @param thin
+#' @return results_chain
+#' @export
+make_thin_chain <- function(results_chain, thin = 10)
+{
+  results_chain <- results_chain[seq(1, nrow(results_chain), thin),]
+  return(results_chain)
+}
+
+#' Get Residuals
+#'
+#' Función que obtiene los residuos
+#' Function that gets the residuals
+#' @param data dat
+#' @param fit
+#' @return merged_prev
+#' @export
 get_residuals <- function(fit, dat)
 {
   P_sim <- rstan::extract(fit, 'P_sim')[[1]]
@@ -133,18 +194,31 @@ get_residuals <- function(fit, dat)
   P_sim <- as.data.frame(P_sim)
   P_sim$iteration <- seq_along(P_sim[,1])
   P_sim <- P_sim %>%
-    melt(id.vars = "iteration") %>%
-    rename(prev_predicted = value, age = variable)
-  P_sim <- P_sim %>% mutate(age = as.numeric(as.character(age)))
-  P_obs <- dat %>% select(age = age_mean_f, prev_obs)
+    reshape2::melt(id.vars = "iteration") %>%
+    dplyr::rename(prev_predicted = .data$value, age = .data$variable)
+  P_sim <- P_sim %>% dplyr::mutate(age = as.numeric(as.character(.data$age)))
+  P_obs <- dat %>% dplyr::select(age = .data$age_mean_f, .data$prev_obs)
 
   merged_prev <-  merge(P_sim, P_obs, by = "age") %>%
-    mutate(residuals = prev_predicted - prev_obs)
+    dplyr::mutate(residuals = .data$prev_predicted - .data$prev_obs)
 
   return(merged_prev)
 }
 
-#------------------------- Fit Function
+#' Fit Model
+#'
+#' Función que ajusta el modelo a los datos
+#' Function that fits the model to the data
+#' @param data dat
+#' @param model
+#' @param m_name
+#' @param n_iters
+#' @param n_thin
+#' @param delta
+#' @param mtreed
+#' @param mDecades
+#' @return res
+#' @export
 fit_model <- function(model, dat, m_name,
                       n_iters = 3000,
                       n_thin = 2,
@@ -176,7 +250,7 @@ fit_model <- function(model, dat, m_name,
     list(foi = rep(0.01, length(yexpo)))
   }
 
-  fit <- sampling(model,
+  fit <- rstan::sampling(model,
                   data = stan_data ,
                   iter = n_iters,
                   chains = 4,
@@ -192,8 +266,7 @@ fit_model <- function(model, dat, m_name,
 
 
   if (class(fit@sim$samples)  != "NULL") {
-
-    loo_fit <- loo(fit, save_psis = TRUE, 'logLikelihood')
+    loo_fit <- loo::loo(fit, save_psis = TRUE, 'logLikelihood')
     foi <- rstan::extract(fit, 'foi', inc_warmup = FALSE)[[1]]
 
     foi_cent_est <- data.frame(year  = RealYexpo,
@@ -240,7 +313,20 @@ fit_model <- function(model, dat, m_name,
 
 }
 
-# ---- log
+#' Fit Model Log
+#'
+#' Función que ajusta el modelo logarítmico a los datos
+#' Function that fits the logarithmic model to the data
+#' @param data dat
+#' @param model
+#' @param m_name
+#' @param n_iters
+#' @param n_thin
+#' @param delta
+#' @param mtreed
+#' @param mDecades
+#' @return res
+#' @export
 fit_model_log <- function(model, dat, m_name, n_iters = 3000,
                           n_thin = 2, delta = 0.90, mtreed = 10, Decades = 0){
 
@@ -266,7 +352,7 @@ fit_model_log <- function(model, dat, m_name, n_iters = 3000,
   n_warmup = floor(n_iters/2)
 
 
-  fit <- sampling(model,
+  fit <- rstan::sampling(model,
                   data = stan_data ,
                   iter = n_iters,
                   chains = 4,
@@ -282,7 +368,7 @@ fit_model_log <- function(model, dat, m_name, n_iters = 3000,
 
   if (class(fit@sim$samples)  != "NULL") {
 
-    loo_fit <- loo(fit, save_psis = TRUE, 'logLikelihood')
+    loo_fit <- loo::loo(fit, save_psis = TRUE, 'logLikelihood')
     foi <- rstan::extract(fit, 'foi', inc_warmup = FALSE)[[1]]
 
     foi_cent_est <- data.frame(year  = RealYexpo,
@@ -330,18 +416,4 @@ fit_model_log <- function(model, dat, m_name, n_iters = 3000,
 
   return(res)
 
-}
-
-get_length_foi_data <- function(foi_data, lambda_sim = NA) {
-  lambda_sim <- 0
-  if (!is.na(lambda_sim)) {
-    lambda_mod_length <- NROW(foi_dat)
-    lambda_sim_length <- length(lambda_sim)
-
-    if (lambda_mod_length < lambda_sim_length) {
-      remove_x_values <- lambda_sim_length - lambda_mod_length
-      lambda_sim <- lambda_sim[-c(1:remove_x_values)]
-    }
-  }
-  return(lambda_sim)
 }
