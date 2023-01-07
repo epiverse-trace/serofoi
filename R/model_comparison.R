@@ -1,17 +1,16 @@
-#' Fit Model Log
+#' Compare and Save Best Model
 #'
-#' Función que ajusta el modelo logarítmico a los datos
-#' Function that fits the logarithmic model to the data
-#' @param data dat
-#' @param model
-#' @param m_name
-#' @param n_iters
-#' @param n_thin
-#' @param delta
-#' @param mtreed
-#' @param mDecades
-#' @return res
+#' Función que compara y salva el mejor modelo
+#' Function that compares and saves the best model
+#' @param survey
+#' @param model_comparison
+#' @param name_fitting_res
+#' @param mod mod_0
+#' @param mod mod_1
+#' @param mod mod_2
+#' @return comparison and saving of the best model
 #' @export
+
 compare_and_save_best_model <- function(survey,
                                          model_comparison,
                                          name_fitting_res,
@@ -26,18 +25,18 @@ compare_and_save_best_model <- function(survey,
   model_comp$pvalue <- model_comp$pvalue * stats::runif(NROW(model_comp), min = 1, max = 1.0001)# I make this just to ensure I get different values
 
   model_comp$better <- NA
-  model_comp$better[model_comp$difference > 0] <- 'Yes'
-  model_comp$better[model_comp$difference <= 0] <- 'No'
+  model_comp$better[model_comp$difference > 0] <- "Yes"
+  model_comp$better[model_comp$difference <= 0] <- "No"
 
-  model_comp$better[model_comp$model == 'Constant'] <- "-"
-  model_comp$pvalue[model_comp$model == 'Constant'] <- 0
-
-
-  model_comp$converged[model_comp$elpd == -1.000e+10] <- 'No'
+  model_comp$better[model_comp$model == "Constant"] <- "-"
+  model_comp$pvalue[model_comp$model == "Constant"] <- 0
 
 
-  ds_one <- dplyr::filter(model_comp, .data$converged == 'Yes')
-  print(paste0('number of converged models = ', NROW(ds_one)))
+  model_comp$converged[model_comp$elpd == -1.000e+10] <- "No"
+
+
+  ds_one <- dplyr::filter(model_comp, .data$converged == "Yes")
+  print(paste0("number of converged models = ", NROW(ds_one)))
 
 
   elps_order <-  rev(sort(ds_one$elpd)) #[1:3]
@@ -136,45 +135,45 @@ extract_and_save <- function(res_file_1, res_file_2, res_file_3,
                              name_file,
                              survey, RealYexpo) {
 
-  foi_0 <- rstan::extract(res_file_1$fit, 'foi', inc_warmup = FALSE)[[1]]
-  foi_1 <- rstan::extract(res_file_2$fit, 'foi', inc_warmup = FALSE)[[1]]
-  foi_2 <- rstan::extract(res_file_3$fit, 'foi', inc_warmup = FALSE)[[1]]
+  foi_0 <- rstan::extract(res_file_1$fit, "foi", inc_warmup = FALSE)[[1]]
+  foi_1 <- rstan::extract(res_file_2$fit, "foi", inc_warmup = FALSE)[[1]]
+  foi_2 <- rstan::extract(res_file_3$fit, "foi", inc_warmup = FALSE)[[1]]
 
 
   foi_cent_est1 <- data.frame(year  = RealYexpo,
                               lower = apply(foi_0, 2, function(x) quantile(x, 0.1)),
                               upper = apply(foi_0, 2, function(x) quantile(x, 0.9)),
                               median = apply(foi_0, 2, function(x) quantile(x, 0.5))) %>%
-    dplyr::mutate(best = 'best1', name_model = best_model_1)
+    dplyr::mutate(best = "best1", name_model = best_model_1)
 
   foi_cent_est2 <- data.frame(year  = RealYexpo,
                               lower = apply(foi_1, 2, function(x) quantile(x, 0.1)),
                               upper = apply(foi_1, 2, function(x) quantile(x, 0.9)),
                               median = apply(foi_1, 2, function(x) quantile(x, 0.5))) %>%
-    dplyr::mutate(best = 'best2', name_model = best_model_2)
+    dplyr::mutate(best = "best2", name_model = best_model_2)
 
   foi_cent_est3 <- data.frame(year  = RealYexpo,
                               lower = apply(foi_1, 2, function(x) quantile(x, 0.1)),
                               upper = apply(foi_1, 2, function(x) quantile(x, 0.9)),
                               median = apply(foi_1, 2, function(x) quantile(x, 0.5))) %>%
-    dplyr::mutate(best = 'best3', name_model = best_model_3)
+    dplyr::mutate(best = "best3", name_model = best_model_3)
 
 
   foi_cent_est <- rbind(foi_cent_est1, foi_cent_est2, foi_cent_est3)
 
 
-  foi_0_post_1000s <- dplyr::sample_n(as.data.frame(foi_0), size = 1000) %>% dplyr::mutate(best = 'best1', name_model = best_model_1)
-  foi_1_post_1000s <- dplyr::sample_n(as.data.frame(foi_1), size = 1000) %>% dplyr::mutate(best = 'best2', name_model = best_model_2)
-  foi_2_post_1000s <- dplyr::sample_n(as.data.frame(foi_2), size = 1000) %>% dplyr::mutate(best = 'best3', name_model = best_model_3)
+  foi_0_post_1000s <- dplyr::sample_n(as.data.frame(foi_0), size = 1000) %>% dplyr::mutate(best = "best1", name_model = best_model_1)
+  foi_1_post_1000s <- dplyr::sample_n(as.data.frame(foi_1), size = 1000) %>% dplyr::mutate(best = "best2", name_model = best_model_2)
+  foi_2_post_1000s <- dplyr::sample_n(as.data.frame(foi_2), size = 1000) %>% dplyr::mutate(best = "best3", name_model = best_model_3)
 
   foi_post_1000s <- rbind(foi_0_post_1000s, foi_1_post_1000s, foi_2_post_1000s)
 
   colnames(foi_post_1000s)[1:length(RealYexpo)] <- RealYexpo
 
 
-  prev1 <- res_file_1$prev_expanded %>% dplyr::mutate(best = 'best1', name_model = best_model_1)
-  prev2 <- res_file_2$prev_expanded %>% dplyr::mutate(best = 'best2', name_model = best_model_2)
-  prev3 <- res_file_3$prev_expanded %>% dplyr::mutate(best = 'best3', name_model = best_model_3)
+  prev1 <- res_file_1$prev_expanded %>% dplyr::mutate(best = "best1", name_model = best_model_1)
+  prev2 <- res_file_2$prev_expanded %>% dplyr::mutate(best = "best2", name_model = best_model_2)
+  prev3 <- res_file_3$prev_expanded %>% dplyr::mutate(best = "best3", name_model = best_model_3)
 
 
   prevalence_expanded <- rbind(prev1, prev2, prev3)
@@ -197,7 +196,7 @@ extract_and_save <- function(res_file_1, res_file_2, res_file_3,
 #' @param data data
 #' @return summary of the models
 #' @export
-extract_summary_mod <- function(res, dat) {
+extract_summary_mod <- function(res, data) {
 
   model_name <- res$model
   #------- Loo estimates
@@ -213,13 +212,13 @@ extract_summary_mod <- function(res, dat) {
 
 
   summary_mod <- data.frame(model = res$model,
-                            dataset = dat$survey[1],
-                            country = dat$country[1],
-                            year    = dat$tsur[1],
-                            test    = dat$test[1],
-                            antibody = dat$antibody[1],
-                            n_sample = sum(dat$total),
-                            n_agec  = length(dat$age_mean_f),
+                            dataset = data$survey[1],
+                            country = data$country[1],
+                            year    = data$tsur[1],
+                            test    = data$test[1],
+                            antibody = data$antibody[1],
+                            n_sample = sum(data$total),
+                            n_agec  = length(data$age_mean_f),
                             n_iter  = res$n_iters,
                             performance = "_____",
                             elpd = lll[1],
