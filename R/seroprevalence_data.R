@@ -3,7 +3,7 @@
 #' Función que corre los modelos guardados
 #' Function that runs saved models
 #' @param my_dir
-#' @param suv
+#' @param survey
 #' @param data dat0
 #' @param n_iters
 #' @param n_warmup
@@ -16,7 +16,7 @@
 #' @return run save models
 #' @export
 run_save_models <- function(my_dir,
-                          suv,
+                          survey,
                           dat0,
                           n_iters,
                           n_warmup,
@@ -28,26 +28,26 @@ run_save_models <- function(my_dir,
   my_dir0 <- paste0(config::get("test_files_path"), my_dir)
 
 
-  dat <- dplyr::filter(dat0, .data$survey == suv) %>% dplyr::arrange(.data$age_mean_f) %>%
+  data <- dplyr::filter(dat0, .data$survey == survey) %>% dplyr::arrange(.data$age_mean_f) %>%
     dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
 
-  mod_0 <- fit_model(model = Model0, dat,
-                     m_name = NameModel0, n_iters = n_iters); print(paste0(suv, ' finished ------ Model_0'))
+  mod_0 <- fit_model(model = Model0, data,
+                     m_name = NameModel0, n_iters = n_iters); print(paste0(survey, "finished ------ Model_0"))
 
-  mod_1 <- fit_model(model = Model1, dat,
-                     m_name = NameModel1, n_iters = n_iters); print(paste0(suv, ' finished ------ Model_1'))
+  mod_1 <- fit_model(model = Model1, data,
+                     m_name = NameModel1, n_iters = n_iters); print(paste0(survey, "finished ------ Model_1"))
 
-  mod_2 <- fit_model_log(model = Model2, dat,
-                         m_name = NameModel2, n_iters = n_iters); print(paste0(suv, ' finished ------ Model_2'))
+  mod_2 <- fit_model_log(model = Model2, data,
+                         m_name = NameModel2, n_iters = n_iters); print(paste0(survey, "finished ------ Model_2"))
 
 
   #  ---- Plotting
-  foi_mod <- rstan::extract(mod_2$fit, 'foi', inc_warmup = FALSE)[[1]]
+  foi_mod <- rstan::extract(mod_2$fit, "foi", inc_warmup = FALSE)[[1]]
   max_lambda <-  (as.numeric(quantile(foi_mod, 0.95))) * 1.3
 
-  PlotsM0    <- generate_combined_plots(res = mod_0, dat = dat, lambda_sim = NA, max_lambda) ; print(paste0(suv, ' finished ------ Plots_M0'))
-  PlotsM1    <- generate_combined_plots(res = mod_1, dat = dat, lambda_sim = NA, max_lambda) ; print(paste0(suv, ' finished ------ Plots_M1'))
-  PlotsM2    <- generate_combined_plots(res = mod_2, dat = dat, lambda_sim = NA, max_lambda) ; print(paste0(suv, ' finished ------ Plots_M2'))
+  PlotsM0    <- generate_combined_plots(res = mod_0, data = data, lambda_sim = NA, max_lambda) ; print(paste0(survey, "finished ------ Plots_M0"))
+  PlotsM1    <- generate_combined_plots(res = mod_1, data = data, lambda_sim = NA, max_lambda) ; print(paste0(survey, "finished ------ Plots_M1"))
+  PlotsM2    <- generate_combined_plots(res = mod_2, data = data, lambda_sim = NA, max_lambda) ; print(paste0(survey, "finished ------ Plots_M2"))
 
   # ---- Statistical Checking
   dif_m0_m1 <- loo::loo_compare(mod_0$loo_fit, mod_1$loo_fit)
@@ -66,11 +66,11 @@ run_save_models <- function(my_dir,
   mod_2$prev_expanded <- PlotsM2$prev_expanded
 
   # ---------------------
-  name_fitting_plots  <- paste0(my_dir0, '/fitting_plots/', suv, '.png')
-  name_fitting_res  <- paste0(my_dir0, '/fitting_results/',suv, '.RDS')
+  name_fitting_plots  <- paste0(my_dir0, "/fitting_plots/", survey, ".png")
+  name_fitting_res  <- paste0(my_dir0, "/fitting_results/",survey, ".RDS")
 
   # browser()
-  res_comp <- compare_and_save_best_model(survey = suv,
+  res_comp <- compare_and_save_best_model(survey = survey,
                                           model_comparison = model_comparison,
                                           name_fitting_res = name_fitting_res,
                                           mod_0 = mod_0,
@@ -96,7 +96,7 @@ run_save_models <- function(my_dir,
                nrow = 1)
   dev.off()
 
-  print(paste('end', suv))
+  print(paste("end", survey))
 
 
   t5 <- Sys.time()
@@ -105,7 +105,7 @@ run_save_models <- function(my_dir,
 
 
 
-  res_survey <- list(dat = dat,
+  res_survey <- list(data = data,
                      time_taken = time_taken,
                      mod_0 = mod_0,
                      mod_1 = mod_1,
@@ -132,9 +132,9 @@ run_save_models <- function(my_dir,
 dir_results <- function(name_dir)
 {
 
-  my_dir <- paste0('tests/', name_dir)
-  dir_plots <- paste0(my_dir, '/fitting_plots')
-  dir_posterior  <- paste0(my_dir, '/fitting_results')
+  my_dir <- paste0("tests/", name_dir)
+  dir_plots <- paste0(my_dir, "/fitting_plots")
+  dir_posterior  <- paste0(my_dir, "/fitting_results")
 
   if (dir.exists(my_dir) == FALSE) {
     dir.create(my_dir)
