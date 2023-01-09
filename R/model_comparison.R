@@ -5,16 +5,16 @@
 #' @param survey
 #' @param model_comparison
 #' @param name_fitting_res
-#' @param mod mod_0
-#' @param mod mod_1
-#' @param mod mod_2
+#' @param mod model_0
+#' @param mod model_1
+#' @param mod model_2
 #' @return comparison and saving of the best model
 #' @export
 
 compare_and_save_best_model <- function(survey,
                                          model_comparison,
-                                         name_fitting_res,
-                                         mod_0, mod_1, mod_2)
+                                         name_fitting_result,
+                                         model_0, model_1, model_2)
 {
 
 
@@ -28,8 +28,8 @@ compare_and_save_best_model <- function(survey,
   model_comp$better[model_comp$difference > 0] <- "Yes"
   model_comp$better[model_comp$difference <= 0] <- "No"
 
-  model_comp$better[model_comp$model == "Constant"] <- "-"
-  model_comp$pvalue[model_comp$model == "Constant"] <- 0
+  model_comp$better[model_comp$model == "constant"] <- "-"
+  model_comp$pvalue[model_comp$model == "constant"] <- 0
 
 
   model_comp$converged[model_comp$elpd == -1.000e+10] <- "No"
@@ -60,59 +60,59 @@ compare_and_save_best_model <- function(survey,
   best_model_data2 <- dplyr::filter(model_comp, best == 2) # Here I choose the maximun difference rather than the lowest p value
   best_model_data3 <- dplyr::filter(model_comp, best == 3) # Here I choose the maximun difference rather than the lowest p value
 
-  RealYexpo  <-  mod_0$RealYexpo
+  RealYexpo  <-  model_0$RealYexpo
   best_model_1 <- as.character(best_model_data1$model)
   best_model_2 <- as.character(best_model_data2$model)
   best_model_3 <- as.character(best_model_data3$model)
 
-  if (best_model_1 == mod_0$model) {
-    res_file_1 <- mod_0
+  if (best_model_1 == model_0$model) {
+    res_file_1 <- model_0
   }
 
-  if (best_model_1 ==  mod_1$model) {
-    res_file_1 <- mod_1
+  if (best_model_1 ==  model_1$model) {
+    res_file_1 <- model_1
   }
 
-  if (best_model_1 ==  mod_2$model) {
-    res_file_1 <- mod_2
+  if (best_model_1 ==  model_2$model) {
+    res_file_1 <- model_2
   }
 
   # ------- Best 2
-  if (best_model_2  == mod_0$model) {
-    res_file_2 <- mod_0
+  if (best_model_2  == model_0$model) {
+    res_file_2 <- model_0
   }
 
-  if (best_model_2 ==  mod_1$model) {
-    res_file_2 <- mod_1
+  if (best_model_2 ==  model_1$model) {
+    res_file_2 <- model_1
   }
 
-  if (best_model_2 ==  mod_2$model) {
-    res_file_2 <- mod_2
+  if (best_model_2 ==  model_2$model) {
+    res_file_2 <- model_2
   }
 
   # ------- Best 3
-  if (best_model_3  == mod_0$model) {
-    res_file_3 <- mod_0
+  if (best_model_3  == model_0$model) {
+    res_file_3 <- model_0
   }
 
-  if (best_model_3 ==  mod_1$model) {
-    res_file_3 <- mod_1
+  if (best_model_3 ==  model_1$model) {
+    res_file_3 <- model_1
   }
 
-  if (best_model_3 ==  mod_2$model) {
-    res_file_3 <- mod_2
+  if (best_model_3 ==  model_2$model) {
+    res_file_3 <- model_2
   }
 
   # --- save_best_model
   extract_and_save(res_file_1, res_file_2, res_file_3,
                    best_model_1, best_model_2, best_model_3,
-                   name_fitting_res,
+                   name_fitting_result,
                    survey, RealYexpo)
 
-  res_comp <- list(best_model_data1 = best_model_data1,
+  result_comp <- list(best_model_data1 = best_model_data1,
                     best_model_data2 = best_model_data2,
                     model_comp = model_comp)
-  return(res_comp)
+  return(result_comp)
 
 }
 
@@ -188,20 +188,20 @@ extract_and_save <- function(res_file_1, res_file_2, res_file_3,
 
 }
 
-#' Extract Summary Mod
+#' Extract Summary Model
 #'
 #' Función que hace un resumen de los modelos
 #' Function that summarizes the models
-#' @param res
+#' @param result
 #' @param data data
 #' @return summary of the models
 #' @export
-extract_summary_mod <- function(res, data) {
+extract_summary_model <- function(result, data) {
 
-  model_name <- res$model
+  model_name <- result$model
   #------- Loo estimates
 
-  loo_fit <- res$loo_fit
+  loo_fit <- result$loo_fit
   if (sum(is.na(loo_fit)) < 1)
   {
     lll <- as.numeric((round(loo_fit$estimates[1,],2)))} else
@@ -211,7 +211,7 @@ extract_summary_mod <- function(res, data) {
 
 
 
-  summary_mod <- data.frame(model = res$model,
+  summary_model <- data.frame(model = result$model,
                             dataset = data$survey[1],
                             country = data$country[1],
                             year    = data$tsur[1],
@@ -219,37 +219,37 @@ extract_summary_mod <- function(res, data) {
                             antibody = data$antibody[1],
                             n_sample = sum(data$total),
                             n_agec  = length(data$age_mean_f),
-                            n_iter  = res$n_iters,
+                            n_iter  = result$n_iters,
                             performance = "_____",
                             elpd = lll[1],
                             se = lll[2],
                             converged = NA
   )
 
-  rhats <- get_table_rhats(res)
+  rhats <- get_table_rhats(result)
   if (any(rhats$rhat > 1.1 ) == FALSE) {
-    summary_mod$converged = "Yes"  }
+    summary_model$converged = "Yes"  }
 
 
-  return(summary_mod)
+  return(summary_model)
 }
 
 #' Get Table Rhats
 #'
 #' Función que hace la tabla de los rhats
 #' Function that makes the rhats table
-#' @param res
+#' @param result
 #' @return rhats table
 #' @export
-get_table_rhats <- function(res) {
+get_table_rhats <- function(result) {
 
-  rhats <- bayesplot::rhat(res$fit, "foi")
+  rhats <- bayesplot::rhat(result$fit, "foi")
 
   if (any(is.nan(rhats))) {
     rhats[which(is.nan(rhats))] <- 0}
 
-  res_rhats <- data.frame(year = res$RealYexpo, rhat = rhats)
-  res_rhats$rhat[res_rhats$rhat == 0] <- NA # This is because I'm not estimating these foi values
+  result_rhats <- data.frame(year = result$RealYexpo, rhat = rhats)
+  result_rhats$rhat[result_rhats$rhat == 0] <- NA # This is because I'm not estimating these foi values
 
-  return(res_rhats)
+  return(result_rhats)
 }

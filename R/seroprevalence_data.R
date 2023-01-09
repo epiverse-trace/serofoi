@@ -7,12 +7,12 @@
 #' @param data dat0
 #' @param n_iters
 #' @param n_warmup
-#' @param model Model0
-#' @param model Model1
-#' @param model Model2
-#' @param name_model NameModel0
-#' @param name_model NameModel1
-#' @param name_model NameModel2
+#' @param model model_0
+#' @param model model_1
+#' @param model model_2
+#' @param name_model name_model_0
+#' @param name_model name_model_1
+#' @param name_model name_model_2
 #' @return run save models
 #' @export
 run_save_models <- function(my_dir,
@@ -20,9 +20,9 @@ run_save_models <- function(my_dir,
                           dat0,
                           n_iters,
                           n_warmup,
-                          Model0, NameModel0,
-                          Model1, NameModel1,
-                          Model2, NameModel2) {
+                          model_0, name_model_0,
+                          model_1, name_model_1,
+                          model_2, name_model_2) {
 
   t0 <- Sys.time()
   my_dir0 <- paste0(config::get("test_files_path"), my_dir)
@@ -31,59 +31,59 @@ run_save_models <- function(my_dir,
   data <- dplyr::filter(dat0, .data$survey == survey) %>% dplyr::arrange(.data$age_mean_f) %>%
     dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
 
-  mod_0 <- fit_model(model = Model0, data,
-                     m_name = NameModel0, n_iters = n_iters); print(paste0(survey, "finished ------ Model_0"))
+  model_0 <- fit_model(model = model_0, data,
+                     m_name = name_model_0, n_iters = n_iters); print(paste0(survey, "finished ------ model_0"))
 
-  mod_1 <- fit_model(model = Model1, data,
-                     m_name = NameModel1, n_iters = n_iters); print(paste0(survey, "finished ------ Model_1"))
+  model_1 <- fit_model(model = model_1, data,
+                     m_name = name_model_1, n_iters = n_iters); print(paste0(survey, "finished ------ model_1"))
 
-  mod_2 <- fit_model_log(model = Model2, data,
-                         m_name = NameModel2, n_iters = n_iters); print(paste0(survey, "finished ------ Model_2"))
+  model_2 <- fit_model_log(model = model_2, data,
+                         m_name = name_model_2, n_iters = n_iters); print(paste0(survey, "finished ------ model_2"))
 
 
   #  ---- Plotting
-  foi_mod <- rstan::extract(mod_2$fit, "foi", inc_warmup = FALSE)[[1]]
-  max_lambda <-  (as.numeric(quantile(foi_mod, 0.95))) * 1.3
+  foi_model <- rstan::extract(model_2$fit, "foi", inc_warmup = FALSE)[[1]]
+  max_lambda <-  (as.numeric(quantile(foi_model, 0.95))) * 1.3
 
-  PlotsM0    <- generate_combined_plots(res = mod_0, data = data, lambda_sim = NA, max_lambda) ; print(paste0(survey, "finished ------ Plots_M0"))
-  PlotsM1    <- generate_combined_plots(res = mod_1, data = data, lambda_sim = NA, max_lambda) ; print(paste0(survey, "finished ------ Plots_M1"))
-  PlotsM2    <- generate_combined_plots(res = mod_2, data = data, lambda_sim = NA, max_lambda) ; print(paste0(survey, "finished ------ Plots_M2"))
+  plots_model_0    <- generate_combined_plots(result = model_0, data = data, lambda_sim = NA, max_lambda) ; print(paste0(survey, "finished ------ plots_model_0"))
+  plots_model_1    <- generate_combined_plots(result = model_1, data = data, lambda_sim = NA, max_lambda) ; print(paste0(survey, "finished ------ plots_model_1"))
+  plots_model_2    <- generate_combined_plots(result = model_2, data = data, lambda_sim = NA, max_lambda) ; print(paste0(survey, "finished ------ plots_model_2"))
 
   # ---- Statistical Checking
-  dif_m0_m1 <- loo::loo_compare(mod_0$loo_fit, mod_1$loo_fit)
-  dif_m0_m2 <- loo::loo_compare(mod_0$loo_fit, mod_2$loo_fit)
+  dif_m0_m1 <- loo::loo_compare(model_0$loo_fit, model_1$loo_fit)
+  dif_m0_m2 <- loo::loo_compare(model_0$loo_fit, model_2$loo_fit)
 
-  PlotsM0$summary_mod$difference <- 0; PlotsM0$summary_mod$diff_se <- 1;
-  PlotsM1$summary_mod$difference <- dif_m0_m1[1];   PlotsM1$summary_mod$diff_se <- dif_m0_m1[2];
-  PlotsM2$summary_mod$difference <- dif_m0_m2[1];   PlotsM2$summary_mod$diff_se <- dif_m0_m2[2];
+  plots_model_0$summary_model$difference <- 0; plots_model_0$summary_model$diff_se <- 1;
+  plots_model_1$summary_model$difference <- dif_m0_m1[1];   plots_model_1$summary_model$diff_se <- dif_m0_m1[2];
+  plots_model_2$summary_model$difference <- dif_m0_m2[1];   plots_model_2$summary_model$diff_se <- dif_m0_m2[2];
 
-  model_comparison <- rbind(PlotsM0$summary_mod,
-                            PlotsM1$summary_mod, PlotsM2$summary_mod)
+  model_comparison <- rbind(plots_model_0$summary_model,
+                            plots_model_1$summary_model, plots_model_2$summary_model)
 
 
-  mod_0$prev_expanded <- PlotsM0$prev_expanded
-  mod_1$prev_expanded <- PlotsM1$prev_expanded
-  mod_2$prev_expanded <- PlotsM2$prev_expanded
+  model_0$prev_expanded <- plots_model_0$prev_expanded
+  model_1$prev_expanded <- plots_model_1$prev_expanded
+  model_2$prev_expanded <- plots_model_2$prev_expanded
 
   # ---------------------
   name_fitting_plots  <- paste0(my_dir0, "/fitting_plots/", survey, ".png")
-  name_fitting_res  <- paste0(my_dir0, "/fitting_results/",survey, ".RDS")
+  name_fitting_result  <- paste0(my_dir0, "/fitting_results/",survey, ".RDS")
 
   # browser()
-  res_comp <- compare_and_save_best_model(survey = survey,
+  result_comp <- compare_and_save_best_model(survey = survey,
                                           model_comparison = model_comparison,
-                                          name_fitting_res = name_fitting_res,
-                                          mod_0 = mod_0,
-                                          mod_1 = mod_1,
-                                          mod_2 = mod_2)
+                                          name_fitting_result = name_fitting_result,
+                                          model_0 = model_0,
+                                          model_1 = model_1,
+                                          model_2 = model_2)
 
-  model_comp    <- res_comp$model_comp
-  mod_comp_plot <- get_model_comparison_plot(res_comp)
+  model_comp    <- result_comp$model_comp
+  model_comp_plot <- get_model_comparison_plot(result_comp)
 
 
-  parrange_0 <- vertical_plot_arrange_per_model(PlotsM0)
-  parrange_1 <- vertical_plot_arrange_per_model(PlotsM1)
-  parrange_2 <- vertical_plot_arrange_per_model(PlotsM2)
+  parrange_0 <- vertical_plot_arrange_per_model(plots_model_0)
+  parrange_1 <- vertical_plot_arrange_per_model(plots_model_1)
+  parrange_2 <- vertical_plot_arrange_per_model(plots_model_2)
 
 
 
@@ -105,19 +105,19 @@ run_save_models <- function(my_dir,
 
 
 
-  res_survey <- list(data = data,
+  result_survey <- list(data = data,
                      time_taken = time_taken,
-                     mod_0 = mod_0,
-                     mod_1 = mod_1,
-                     mod_2 = mod_2,
+                     model_0 = model_0,
+                     model_1 = model_1,
+                     model_2 = model_2,
                      model_comp = model_comp,
-                     PlotsM0 = PlotsM0,
-                     PlotsM1 = PlotsM1,
-                     PlotsM2 = PlotsM2)
+                     plots_model_0 = plots_model_0,
+                     plots_model_1 = plots_model_1,
+                     plots_model_2 = plots_model_2)
 
 
 
-  saveRDS(res_survey, name_fitting_res)
+  saveRDS(result_survey, name_fitting_result)
 
 
 }

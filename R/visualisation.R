@@ -2,19 +2,19 @@
 #'
 #' Función que genera la gráfica combinada
 #' Function that generates the combined graph
-#' @param res
+#' @param result
 #' @param data data
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return The combined plots
 #' @export
-generate_combined_plots <- function(res, data, lambda_sim = NA, max_lambda = NA, size_text = 25) {
+generate_combined_plots <- function(result, data, lambda_sim = NA, max_lambda = NA, size_text = 25) {
 
-  if (is.character(res$fit) == FALSE)  {
-    if  (class(res$fit@sim$samples)  != "NULL" ) {
+  if (is.character(result$fit) == FALSE)  {
+    if  (class(result$fit@sim$samples)  != "NULL" ) {
 
-      summary_mod <- extract_summary_mod(res, data)
-      foi <- rstan::extract(res$fit, "foi", inc_warmup = FALSE)[[1]]
+      summary_model <- extract_summary_model(result, data)
+      foi <- rstan::extract(result$fit, "foi", inc_warmup = FALSE)[[1]]
 
 
       prev_expanded <- get_prev_expanded(foi, data)
@@ -32,7 +32,7 @@ generate_combined_plots <- function(res, data, lambda_sim = NA, max_lambda = NA,
 
 
       #-------- This bit is to get the actual length of the foi data
-      foi_data <- res$foi_cent_est
+      foi_data <- result$foi_cent_est
       if (!is.na(lambda_sim)) {
         lambda_mod_length <- NROW(foi_data)
         lambda_sim_length <- length(lambda_sim)
@@ -42,7 +42,7 @@ generate_combined_plots <- function(res, data, lambda_sim = NA, max_lambda = NA,
           lambda_sim <- lambda_sim[-c(1:remove_x_values)]
         }
 
-        foi_dat$simulated <- lambda_sim
+        foi_data$simulated <- lambda_sim
 
       }
 
@@ -66,7 +66,7 @@ generate_combined_plots <- function(res, data, lambda_sim = NA, max_lambda = NA,
         lambda_plot <- plot_foi + ggplot2::geom_line(ggplot2::aes(x = year, y = simulated), colour = "red", size = 1.5)
       }
 
-      rhats <- get_table_rhats(res)
+      rhats <- get_table_rhats(result)
 
       plot_rhats <- ggplot2::ggplot(rhats, ggplot2::aes(year, rhat)) +
         ggplot2::geom_line(colour = "purple") +
@@ -77,7 +77,7 @@ generate_combined_plots <- function(res, data, lambda_sim = NA, max_lambda = NA,
         ggplot2::ylab("Convergence (R^)")
 
 
-      plot_data <- plot_info_table(t(summary_mod), size_text = size_text)
+      plot_data <- plot_info_table(t(summary_model), size_text = size_text)
 
 
       plot_arrange <- grid.arrange(plot_data,
@@ -86,11 +86,11 @@ generate_combined_plots <- function(res, data, lambda_sim = NA, max_lambda = NA,
                                    plot_rhats, nrow = 4,
                                    heights = c(1.5, 1, 1, 1))
 
-      res_plots <- list(plots = list(plot_data = plot_data,
+      result_plots <- list(plots = list(plot_data = plot_data,
                                       plot_prev = plot_prev,
                                       plot_foi  = plot_foi,
                                       plot_rhats = plot_rhats),
-                         summary_mod     = summary_mod,
+                         summary_model     = summary_model,
                          rhats           = rhats,
                          prev_expanded = prev_expanded)
 
@@ -109,26 +109,26 @@ generate_combined_plots <- function(res, data, lambda_sim = NA, max_lambda = NA,
         ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank()) +
         ggplot2::ylab(" ") + ggplot2::xlab(" ")
       g1 <- g0
-      g0 <- g0 + ggplot2::labs(subtitle = res$model) +
+      g0 <- g0 + ggplot2::labs(subtitle = result$model) +
         ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
 
 
       plots <- grid.arrange(g0, g1, g1, g1, g1, nrow = 5)
-      res_p <- list(plots = plots,
+      result_p <- list(plots = plots,
                      loo_fit = c("Not available"),
-                     summary_mod     = c("Not available"),
+                     summary_model     = c("Not available"),
                      prev_expanded = c("Not available")
       )
 
-      res_plots <-  list(plots = plots,
-                          summary_mod  =   "model did not run")
+      result_plots <-  list(plots = plots,
+                          summary_model  =   "model did not run")
 
 
     }
 
 
 
-  return(res_plots)
+  return(result_plots)
 
 
 }
@@ -137,16 +137,16 @@ generate_combined_plots <- function(res, data, lambda_sim = NA, max_lambda = NA,
 #'
 #' Función que obtiene la gráfica de comparación de modelos
 #' Function that obtains the model comparison plot
-#' @param res_comp
+#' @param result_comp
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return The model comparison graph
 
 #========================= PLOT comparison
-get_model_comparison_plot <- function(res_comp) {
-  model_comp  <- res_comp$model_comp
-  best_model  <- as.character(res_comp$best_model_data1$model)
-  best_modelP <- as.numeric(res_comp$best_model_data1$pvalue)
+get_model_comparison_plot <- function(result_comp) {
+  model_comp  <- result_comp$model_comp
+  best_model  <- as.character(result_comp$best_model_data1$model)
+  best_modelP <- as.numeric(result_comp$best_model_data1$pvalue)
 
   emptyp <-  ggplot2::ggplot(data = data.frame()) +
     ggplot2::geom_point() +

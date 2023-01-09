@@ -42,9 +42,9 @@ dat0 <- readRDS("data/data.RDS")
 
 
 # ----  Choose Models
-Model0   <- readRDS("R/stanmodels/ConstantUniformFOI.RDS")
-Model1   <- readRDS("R/stanmodels/ContinuousNormalFOI.RDS")
-Model2   <- readRDS("R/stanmodels/ContinuousNormalLogFOI_lowt.RDS")
+model_0   <- readRDS("R/stanmodels/ConstantUniformFOI.RDS")
+model_1   <- readRDS("R/stanmodels/ContinuousNormalFOI.RDS")
+model_2   <- readRDS("R/stanmodels/ContinuousNormalLogFOI_lowt.RDS")
 
 
 
@@ -63,7 +63,7 @@ run_save_models(my_dir    = my_dir,
               survey       = i,
               dat0      = dat0,
               n_iters   = 3000,
-              Model0 = Model0, NameModel0 = "M0_Constant",
-              Model1 = Model1, NameModel1 = "M1_Cont_Normal",
-              Model2 = Model2, NameModel2 = "M2_Cont_NormalLog"
+              model_0 = model_0, name_model_0 = "m0_constant",
+              model_1 = model_1, name_model_1 = "m1_cont_normal",
+              model_2 = model_2, name_model_2 = "m2_cont_normal_log"
 )
