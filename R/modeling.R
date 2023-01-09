@@ -114,10 +114,10 @@ make_yexpo <- function(data) {
 #' @return results
 #' @export
 get_posterior_summary <- function(results_chain) {
-  res <- sapply(results_chain,
+  result <- sapply(results_chain,
                 function(i) c(quantile(i, c(0.5, 0.025, 0.975))))
-  row.names(res) <- c("Median", "Lower", "Upper")
-  return(res)
+  row.names(result) <- c("Median", "Lower", "Upper")
+  return(result)
 }
 
 #' Obtain Prevalence Extended
@@ -218,7 +218,7 @@ get_residuals <- function(fit, data)
 #' @param delta
 #' @param mtreed
 #' @param mDecades
-#' @return res
+#' @return result
 #' @export
 fit_model <- function(model, data, m_name,
                       n_iters = 3000,
@@ -278,7 +278,7 @@ fit_model <- function(model, data, m_name,
     foi_post_1000s <- dplyr::sample_n(as.data.frame(foi), size = 1000)
     colnames(foi_post_1000s) <- RealYexpo
 
-    res <- list(fit = fit,
+    result <- list(fit = fit,
                 stan_data = stan_data,
                 RealYexpo = RealYexpo,
                 yexpo     = yexpo,
@@ -310,7 +310,7 @@ fit_model <- function(model, data, m_name,
 
   }
 
-  return(res)
+  return(result)
 
 }
 
@@ -326,7 +326,7 @@ fit_model <- function(model, data, m_name,
 #' @param delta
 #' @param mtreed
 #' @param mDecades
-#' @return res
+#' @return result
 #' @export
 fit_model_log <- function(model, data, m_name, n_iters = 3000,
                           n_thin = 2, delta = 0.90, mtreed = 10, Decades = 0){
@@ -381,7 +381,7 @@ fit_model_log <- function(model, data, m_name, n_iters = 3000,
     colnames(foi_post_1000s) <- RealYexpo
 
 
-    res <- list(fit = fit,
+    result <- list(fit = fit,
                 stan_data = stan_data,
                 RealYexpo = RealYexpo,
                 yexpo     = yexpo,
@@ -400,7 +400,7 @@ fit_model_log <- function(model, data, m_name, n_iters = 3000,
   } else {
 
     loo_fit <- c(-1e10, 0)
-    res <- list(fit = "no model",
+    result <- list(fit = "no model",
                 stan_data = stan_data,
                 RealYexpo = RealYexpo,
                 yexpo     = yexpo,
@@ -415,6 +415,6 @@ fit_model_log <- function(model, data, m_name, n_iters = 3000,
 
   }
 
-  return(res)
+  return(result)
 
 }
