@@ -54,16 +54,13 @@ my_dir <- epitrix::clean_labels(paste0("tests_", Sys.time()))
 dir_results(my_dir)
 
 
-print(paste0("my results will be sortored at:_________test/", my_dir))
+print(paste0("my results will be stored at:_________test/", my_dir))
 
 
 
 i <- dat0$survey[1]
-run_save_models(my_dir    = my_dir,
-              survey       = i,
-              dat0      = dat0,
-              n_iters   = 3000,
-              model_0 = model_0, name_model_0 = "m0_constant",
-              model_1 = model_1, name_model_1 = "m1_cont_normal",
-              model_2 = model_2, name_model_2 = "m2_cont_normal_log"
-)
+run_model_0(my_dir    = my_dir,
+            survey       = i,
+            dat0      = dat0,
+            n_iters   = 3000,
+            model_0 = model_0, name_model_0 = "m0_constant")
