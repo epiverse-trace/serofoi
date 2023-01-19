@@ -53,7 +53,7 @@ compare_and_save_best_model <- function(survey,
   # --------------- Best model
   best_model_data1 <- dplyr::filter(model_comp, best == 1) # Here I choose the maximun difference rather than the lowest p value
 
-  RealYexpo  <-  model_0$RealYexpo
+  real_yexpo  <-  model_0$real_yexpo
   best_model_1 <- as.character(best_model_data1$model)
 
   if (best_model_1 == model_0$model) {
@@ -64,7 +64,7 @@ compare_and_save_best_model <- function(survey,
   extract_and_save(res_file_1,
                    best_model_1,
                    name_fitting_result,
-                   survey, RealYexpo)
+                   survey, real_yexpo)
 
   result_comp <- list(best_model_data1 = best_model_data1,
                       model_comp = model_comp)
@@ -80,7 +80,7 @@ compare_and_save_best_model <- function(survey,
 #' @param res res_file_1
 #' @param res res_file_2
 #' @param res res_file_3
-#' @param RealYexpo
+#' @param real_yexpo
 #' @param best_model best_model_1
 #' @param best_model best_model_2
 #' @param best_model best_model_3
@@ -89,11 +89,11 @@ compare_and_save_best_model <- function(survey,
 extract_and_save <- function(res_file_1,
                              best_model_1,
                              name_file,
-                             survey, RealYexpo) {
+                             survey, real_yexpo) {
 
   foi_0 <- rstan::extract(res_file_1$fit, "foi", inc_warmup = FALSE)[[1]]
 
-  foi_cent_est1 <- data.frame(year  = RealYexpo,
+  foi_cent_est1 <- data.frame(year  = real_yexpo,
                               lower = apply(foi_0, 2, function(x) quantile(x, 0.1)),
                               upper = apply(foi_0, 2, function(x) quantile(x, 0.9)),
                               median = apply(foi_0, 2, function(x) quantile(x, 0.5))) %>%
@@ -107,7 +107,7 @@ extract_and_save <- function(res_file_1,
 
   foi_post_1000s <- rbind(foi_0_post_1000s)
 
-  colnames(foi_post_1000s)[1:length(RealYexpo)] <- RealYexpo
+  colnames(foi_post_1000s)[1:length(real_yexpo)] <- real_yexpo
 
 
   prev1 <- res_file_1$prev_expanded %>% dplyr::mutate(best = "best1", name_model = best_model_1)
@@ -128,16 +128,17 @@ extract_and_save <- function(res_file_1,
 #'
 #' Función que hace un resumen de los modelos
 #' Function that summarizes the models
-#' @param result
+#' @param model_object
 #' @param data data
 #' @return summary of the models
 #' @export
-extract_summary_model <- function(result, data) {
+extract_summary_model <- function(model_object) {
 
-  model_name <- result$model
+  model_name <- model_object$model
+  data <- model_object$model_data
   #------- Loo estimates
 
-  loo_fit <- result$loo_fit
+  loo_fit <- model_object$loo_fit
   if (sum(is.na(loo_fit)) < 1)
   {
     lll <- as.numeric((round(loo_fit$estimates[1,],2)))} else
@@ -147,7 +148,7 @@ extract_summary_model <- function(result, data) {
 
 
 
-  summary_model <- data.frame(model = result$model,
+  summary_model <- data.frame(model = model_object$model,
                               dataset = data$survey[1],
                               country = data$country[1],
                               year    = data$tsur[1],
@@ -155,14 +156,14 @@ extract_summary_model <- function(result, data) {
                               antibody = data$antibody[1],
                               n_sample = sum(data$total),
                               n_agec  = length(data$age_mean_f),
-                              n_iter  = result$n_iters,
+                              n_iter  = model_object$n_iters,
                               performance = "_____",
                               elpd = lll[1],
                               se = lll[2],
                               converged = NA
   )
 
-  rhats <- get_table_rhats(result)
+  rhats <- get_table_rhats(model_object)
   if (any(rhats$rhat > 1.1 ) == FALSE) {
     summary_model$converged = "Yes"  }
 
@@ -174,20 +175,19 @@ extract_summary_model <- function(result, data) {
 #'
 #' Función que hace la tabla de los rhats
 #' Function that makes the rhats table
-#' @param result
+#' @param model_object
 #' @return rhats table
 #' @export
-get_table_rhats <- function(result) {
+get_table_rhats <- function(model_object) {
 
-  rhats <- bayesplot::rhat(result$fit, "foi")
+  rhats <- bayesplot::rhat(model_object$fit, "foi")
 
   if (any(is.nan(rhats))) {
     rhats[which(is.nan(rhats))] <- 0}
+  model_rhats <- data.frame(year = model_object$real_yexpo, rhat = rhats)
+  model_rhats$rhat[model_rhats$rhat == 0] <- NA # This is because I'm not estimating these foi values
 
-  result_rhats <- data.frame(year = result$RealYexpo, rhat = rhats)
-  result_rhats$rhat[result_rhats$rhat == 0] <- NA # This is because I'm not estimating these foi values
-
-  return(result_rhats)
+  return(model_rhats)
 }
 
 # For other models
@@ -254,13 +254,13 @@ get_table_rhats <- function(result) {
 #foi_1 <- rstan::extract(res_file_2$fit, "foi", inc_warmup = FALSE)[[1]]
 #foi_2 <- rstan::extract(res_file_3$fit, "foi", inc_warmup = FALSE)[[1]]
 
-#foi_cent_est2 <- data.frame(year  = RealYexpo,
+#foi_cent_est2 <- data.frame(year  = real_yexpo,
 #lower = apply(foi_1, 2, function(x) quantile(x, 0.1)),
 #upper = apply(foi_1, 2, function(x) quantile(x, 0.9)),
 #median = apply(foi_1, 2, function(x) quantile(x, 0.5))) %>%
 #dplyr::mutate(best = "best2", name_model = best_model_2)
 
-#foi_cent_est3 <- data.frame(year  = RealYexpo,
+#foi_cent_est3 <- data.frame(year  = real_yexpo,
 #lower = apply(foi_1, 2, function(x) quantile(x, 0.1)),
 #upper = apply(foi_1, 2, function(x) quantile(x, 0.9)),
 #median = apply(foi_1, 2, function(x) quantile(x, 0.5))) %>%
