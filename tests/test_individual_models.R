@@ -3,31 +3,41 @@ rm(list = ls())
 library(devtools)
 library(dplyr)
 
-# install.packages("github/serofoi")
+# install.packages("github/serofoi") #pendiente
 source("R/modeling.R")
 source("R/seroprevalence_data.R")
 source("R/model_comparison.R")
 source("R/visualisation.R")
 
+#----- Folder where results will be stored
+test_dir <- epitrix::clean_labels(paste0("tests_", Sys.time()))
+
 #----- Read Data
 data_test <- readRDS("data/data.RDS")
 
-survey_test <- data_test$survey[1]
-model_object_0 <- run_model(model_data = data_test,
-                           survey = survey_test,
-                           model_name = "constant_foi_Bi",
-                           n_iters = 1000) #the default n_iters=500 yields to an error in a sampling size.
+#----- Test each model
+model_0_object <- run_model(model_data = data_test,
+                           model_name = "constant_foi_bi",
+                           n_iters = 1000)
 
-model_object_1 <- run_model(model_data = data_test,
-                           survey = survey_test,
-                           model_name = "continuous_foi_normal_Bi",
-                           n_iters = 1000) #the default n_iters=500 yields to an error in a sampling size.
+model_1_object <- run_model(model_data = data_test,
+                            model_name = "continuous_foi_normal_bi",
+                            n_iters = 1000)
 
-model_object_2 <- run_model(model_data = data_test,
-                           survey = survey_test,
-                           model_name = "continuous_foi_normal_log",
-                           n_iters = 1000) #the default n_iters=500 yields to an error in a sampling size.
+model_2_object <- run_model(model_data = data_test,
+                            model_name = "continuous_foi_normal_log",
+                            n_iters = 1000)
 
-# plots_model_0 <- generate_combined_plots(model_object_0, data_test)
+#----- Generate all plots for each model
 
+model_0_plot <- plot_model(model_0_object, size_text = 6)
+model_1_plot <- plot_model(model_1_object, size_text = 6)
+model_2_plot <- plot_model(model_2_object, size_text = 6)
 
+#----- Generate each individual plot
+
+plot_seroprev(model_0_object, size_text = 15)
+plot_foi(model_0_object, size_text = 15)
+plot_rhats(model_0_object, size_text = 15)
+
+# bayesplot::mcmc_trace(model_0_object$fit, pars="lambda0")

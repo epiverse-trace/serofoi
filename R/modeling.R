@@ -6,7 +6,8 @@
 #' @param yexpo
 #' @return exposure_output
 #' @export
-get_exposure_matrix <- function(model_data, yexpo) {
+get_exposure_matrix <- function(model_data,
+                                yexpo) {
   age_class <- model_data$age_mean_f
   ly  <- length(yexpo)
   exposure       <- matrix(0,nrow = length(age_class), ncol = ly)
@@ -24,7 +25,8 @@ get_exposure_matrix <- function(model_data, yexpo) {
 #' @param foi
 #' @return prev_final
 #' @export
-get_prev_expanded <- function(foi, model_data) {
+get_prev_expanded <- function(foi,
+                              model_data) {
 
   ndata <- data.frame(age = 1:80)
   dim_foi <- dim(foi)[2]
@@ -38,13 +40,11 @@ get_prev_expanded <- function(foi, model_data) {
 
   foi_expanded <- foin
 
-
   age_class <- 1:NCOL(foi_expanded)
   ly  <- NCOL(foi_expanded)
   exposure       <- matrix(0, nrow = length(age_class), ncol = ly)
   for (k in 1:length(age_class)) exposure[k,(ly - age_class[k] + 1):ly] <-  1
   exposure_expanded <- exposure
-
 
   iterf <- NROW(foi_expanded)
   age_max <- NROW(exposure_expanded)
@@ -57,12 +57,10 @@ get_prev_expanded <- function(foi, model_data) {
   upper <- apply(PrevPn, 2, function(x) quantile(x, 0.9))
   medianv  <- apply(PrevPn, 2, function(x) quantile(x, 0.5))
 
-
   predicted_prev <- data.frame(age = 1:80,
                                predicted_prev = medianv,
                                predicted_prev_lower = lower,
                                predicted_prev_upper = upper)
-
 
   observed_prev <- model_data %>%
     dplyr::select(age_mean_f, prev_obs, prev_obs_lower, prev_obs_upper, total, counts) %>%
@@ -131,7 +129,11 @@ get_posterior_summary <- function(model_objects_chain) {
 #' @param lambdaYexpo
 #' @return new_PPP
 #' @export
-obtain_prevalence_extended <- function(model_data, exposure, ly, nbreaks, lambdaYexpo) {
+obtain_prevalence_extended <- function(model_data,
+                                       exposure,
+                                       ly,
+                                       nbreaks,
+                                       lambdaYexpo) {
 
   ly            <- length(yexpo)
 
@@ -206,54 +208,6 @@ get_residuals <- function(fit, model_data)
   return(merged_prev)
 }
 
-#' Extract Summary Model
-#'
-#' Función que hace un resumen de los modelos
-#' Function that summarizes the models
-#' @param model_object
-#' @param model_data model_data
-#' @return summary of the models
-#' @export
-extract_summary_model <- function(model_object, model_data) {
-
-  model_name <- model_object$model
-  #------- Loo estimates
-
-  loo_fit <- model_object$loo_fit
-  if (sum(is.na(loo_fit)) < 1)
-  {
-    lll <- as.numeric((round(loo_fit$estimates[1,],2)))} else
-    {
-      lll <- c(-1e10, 0)
-    }
-
-
-
-  summary_model <- data.frame(model = model_object$model,
-                              dataset = model_data$survey[1],
-                              country = model_data$country[1],
-                              year    = model_data$tsur[1],
-                              test    = model_data$test[1],
-                              antibody = model_data$antibody[1],
-                              n_sample = sum(model_data$total),
-                              n_agec  = length(model_data$age_mean_f),
-                              n_iter  = model_object$n_iters,
-                              performance = "_____",
-                              elpd = lll[1],
-                              se = lll[2],
-                              converged = NA
-  )
-
-  rhats <- get_table_rhats(model_object)
-  if (any(rhats$rhat > 1.1 ) == FALSE) {
-    summary_model$converged = "Yes"  }
-
-
-  return(summary_model)
-}
-
-
-
 #' Fit Model
 #'
 #' Función que ajusta el modelo a los datos
@@ -268,23 +222,23 @@ extract_summary_model <- function(model_object, model_data) {
 #' @param decades
 #' @return model_object
 #' @export
-fit_model <- function(model, model_data, model_name,
-                      n_iters = 3000,
-                      n_thin = 2,
-                      delta = 0.90,
-                      m_treed = 10,
-                      decades = 0){
+fit_model <- function(model,
+                      model_data,
+                      model_name,
+                      n_iters = n_iters,
+                      n_thin = n_thin,
+                      delta = delta,
+                      m_treed = m_treed,
+                      decades = decades){
 
   # add a warning to the warming process because there are exceptions where a minimal amount of iterations need to be run
   n_warmup = floor(n_iters/2)
-
 
   yexpo <- make_yexpo(model_data)
   yexpo <- yexpo[-length(yexpo)]
   real_yexpo <- (min(model_data$birth_year):model_data$tsur[1])[-1]
   exposure_matrix <- get_exposure_matrix(model_data, yexpo)
   Nobs <- nrow(model_data)
-
 
   stan_data <- list(
     Nobs   = Nobs,
@@ -313,18 +267,18 @@ fit_model <- function(model, model_data, model_name,
                   thin = n_thin
   )
 
-
   if (class(fit@sim$samples)  != "NULL") {
     loo_fit <- loo::loo(fit, save_psis = TRUE, "logLikelihood")
     foi <- rstan::extract(fit, "foi", inc_warmup = FALSE)[[1]]
-    # generates central estimations:
+
+    # generates central estimations
     foi_cent_est <- data.frame(year  = real_yexpo,
                                lower = apply(foi, 2, function(x) quantile(x, 0.05)),
                                upper = apply(foi, 2, function(x) quantile(x, 0.95)),
                                medianv = apply(foi, 2, function(x) quantile(x, 0.5)))
 
 
-    # generates a sample of iterations:
+    # generates a sample of iterations
     if (n_iters >= 2000){
       foi_post_s <- dplyr::sample_n(as.data.frame(foi), size = 1000)
       colnames(foi_post_s) <- real_yexpo
@@ -335,22 +289,24 @@ fit_model <- function(model, model_data, model_name,
     }
 
     model_object <- list(fit = fit,
-                   stan_data = stan_data,
-                   real_yexpo = real_yexpo,
-                   yexpo     = yexpo,
-                   n_iters   = n_iters,
-                   n_thin    = n_thin,
-                   n_warmup  = n_warmup,
-                   model     = model_name,
-                   delta     = delta,
-                   m_treed    = m_treed,
-                   loo_fit   = loo_fit,
-                   foi_cent_est   = foi_cent_est,
-                   foi_post_s  = foi_post_s)
-  model_object$model_summary <- extract_summary_model(model_object, model_data)
+                         model_data = model_data,
+                         stan_data = stan_data,
+                         real_yexpo = real_yexpo,
+                         yexpo     = yexpo,
+                         n_iters   = n_iters,
+                         n_thin    = n_thin,
+                         n_warmup  = n_warmup,
+                         model     = model_name,
+                         delta     = delta,
+                         m_treed    = m_treed,
+                         loo_fit   = loo_fit,
+                         foi_cent_est   = foi_cent_est,
+                         foi_post_s  = foi_post_s)
+  model_object$model_summary <- extract_summary_model(model_object)
   } else {
     loo_fit <- c(-1e10, 0)
     model_object <- list(fit = "no model",
+                        model_data = model_data,
                         stan_data = stan_data,
                         real_yexpo = real_yexpo,
                         yexpo     = yexpo,
@@ -382,8 +338,14 @@ fit_model <- function(model, model_data, model_name,
 #' @param decades
 #' @return model_object
 #' @export
-fit_model_log <- function(model, model_data, model_name, n_iters = 3000,
-                          n_thin = 2, delta = 0.90, m_treed = 10, decades = 0){
+fit_model_log <- function(model,
+                          model_data,
+                          model_name,
+                          n_iters = 3000,
+                          n_thin = 2,
+                          delta = 0.90,
+                          m_treed = 10,
+                          decades = 0){
 
   yexpo <- make_yexpo(model_data)
   yexpo <- yexpo[-length(yexpo)]
@@ -435,40 +397,62 @@ fit_model_log <- function(model, model_data, model_name, n_iters = 3000,
 
 
     model_object <- list(fit = fit,
-                stan_data = stan_data,
-                real_yexpo = real_yexpo,
-                yexpo     = yexpo,
-                n_iters   = n_iters,
-                n_thin    = n_thin,
-                n_warmup  = n_warmup,
-                model     = model_name,
-                delta     = delta,
-                m_treed    = m_treed,
-                loo_fit   = loo_fit,
-                foi_cent_est   = foi_cent_est,
-                foi_post_s  = foi_post_s)
+                        model_data = model_data,
+                        stan_data = stan_data,
+                        real_yexpo = real_yexpo,
+                        yexpo     = yexpo,
+                        n_iters   = n_iters,
+                        n_thin    = n_thin,
+                        n_warmup  = n_warmup,
+                        model     = model_name,
+                        delta     = delta,
+                        m_treed    = m_treed,
+                        loo_fit   = loo_fit,
+                        foi_cent_est   = foi_cent_est,
+                        foi_post_s  = foi_post_s)
 
-    model_object$model_summary <- extract_summary_model(model_object, model_data)
+    model_object$model_summary <- extract_summary_model(model_object)
   } else {
 
     loo_fit <- c(-1e10, 0)
     model_object <- list(fit = "no model",
-                stan_data = stan_data,
-                real_yexpo = real_yexpo,
-                yexpo     = yexpo,
-                n_iters   = n_iters,
-                n_thin    = n_thin,
-                n_warmup  = n_warmup,
-                model     = model_name,
-                delta     = delta,
-                m_treed    = m_treed,
-                loo_fit   = loo_fit)
-    model_object$model_summary <- extract_summary_model(model_object, model_data)
+                          stan_data = stan_data,
+                          real_yexpo = real_yexpo,
+                          yexpo     = yexpo,
+                          n_iters   = n_iters,
+                          n_thin    = n_thin,
+                          n_warmup  = n_warmup,
+                          model     = model_name,
+                          delta     = delta,
+                          m_treed    = m_treed,
+                          loo_fit   = loo_fit)
+    model_object$model_summary <- extract_summary_model(model_object)
   }
 
   return(model_object)
 
 }
+
+#' Función que guarda el archivo .RDS del modelo
+#' Function that saves the .RDS file of the model
+
+#' @param model_name name of the model
+
+save_or_read_model <- function(model_name="constant_foi_bi") {
+
+  rds_path <- config::get(model_name)$rds_path
+  stan_path <- config::get(model_name)$stan_path
+
+  if (!file.exists(rds_path)){
+    model <- rstan::stan_model(stan_path)
+    saveRDS(model, rds_path)
+  }
+  else{
+    model <- readRDS(rds_path)
+  }
+  return(model)
+}
+
 
 #' Función que corre el modelo especificado
 #' Function that runs the specified model
@@ -481,28 +465,94 @@ fit_model_log <- function(model, model_data, model_name, n_iters = 3000,
 #' @return model_objects of model 0
 #' @export
 run_model <- function(model_data,
-                      survey,
-                      model_name="constant_foi_Bi",
-                      n_iters=500) {
-  my_dir <- paste0(config::get("test_files_path"), epitrix::clean_labels(paste0("tests_", Sys.time())))
-  # move this to a function that organizes the data in seroprevalence_data:
-  # model_data <- dplyr::filter(model_data, .data$survey == survey) %>% dplyr::arrange(.data$age_mean_f) %>%
-  model_data <- model_data %>% dplyr::arrange(.data$age_mean_f) %>% dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
+                      model_name="constant_foi_bi",
+                      n_iters=1000,
+                      n_thin = 2,
+                      delta = 0.90,
+                      m_treed = 10,
+                      decades = 0) {
 
-  if (model_name == "constant_foi_Bi"){
-    model_0 <- readRDS("R/stanmodels/ConstantUniformFOI.RDS") # The model needs to be compiled if it hasn't been already
-    model_object <- fit_model(model = model_0, model_data,
-                              model_name = model_name, n_iters = n_iters); print(paste0(survey, "finished ------ model_0"))
+  my_dir <- paste0(config::get("test_files_path"), epitrix::clean_labels(paste0("tests_", Sys.time())))
+
+  model_data <- model_data %>% dplyr::arrange(.data$age_mean_f) %>% dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
+  survey <- model_data$survey[1]
+  if (model_name == "constant_foi_bi"){
+    model_0 <- save_or_read_model(model_name = model_name)
+    model_object <- fit_model(model = model_0,
+                              model_data = model_data,
+                              model_name = model_name,
+                              n_iters = n_iters,
+                              n_thin = n_thin,
+                              delta = delta,
+                              m_treed = m_treed,
+                              decades = decades); print(paste0(survey, "finished ------ model_0"))
   }
-  if (model_name == "continuous_foi_normal_Bi"){
-    model_1   <- readRDS("R/stanmodels/ContinuousNormalFOI.RDS") # The model needs to be compiled if it hasn't been already
-    model_object <- fit_model(model = model_1, model_data,
-                              model_name = model_name, n_iters = n_iters); print(paste0(survey, "finished ------ model_1"))
+  if (model_name == "continuous_foi_normal_bi"){
+    model_1 <- save_or_read_model(model_name = model_name)
+    model_object <- fit_model(model = model_1,
+                              model_data = model_data,
+                              model_name = model_name,
+                              n_iters = n_iters,
+                              n_thin = n_thin,
+                              delta = delta,
+                              m_treed = m_treed,
+                              decades = decades); print(paste0(survey, "finished ------ model_1"))
   }
   if (model_name == "continuous_foi_normal_log"){
-    model_2   <- readRDS("R/stanmodels/ContinuousNormalLogFOI_lowt.RDS")
-    model_object <- fit_model_log(model = model_2, model_data,
-                              model_name = model_name, n_iters = n_iters); print(paste0(survey, "finished ------ model_2"))
+    model_2   <- save_or_read_model(model_name = model_name)
+    model_object <- fit_model_log(model = model_2,
+                                  model_data = model_data,
+                                  model_name = model_name,
+                                  n_iters = n_iters,
+                                  n_thin = n_thin,
+                                  delta = delta,
+                                  m_treed = m_treed,
+                                  decades = decades); print(paste0(survey, "finished ------ model_2"))
   }
+  print(model_object$model_summary)
   return(model_object)
-  }
+}
+
+#' Extract Summary Model
+#'
+#' Función que hace un resumen de los modelos
+#' Function that summarizes the models
+#' @param model_object
+#' @param model_data model_data
+#' @return summary of the models
+#' @export
+extract_summary_model <- function(model_object) {
+
+  model_name <- model_object$model
+  #------- Loo estimates
+
+  loo_fit <- model_object$loo_fit
+  if (sum(is.na(loo_fit)) < 1)
+  {
+    lll <- as.numeric((round(loo_fit$estimates[1,],2)))} else
+    {
+      lll <- c(-1e10, 0)
+    }
+
+  model_data <- model_object$model_data
+  summary_model <- data.frame(model = model_object$model,
+                              dataset = model_data$survey[1],
+                              country = model_data$country[1],
+                              year    = model_data$tsur[1],
+                              test    = model_data$test[1],
+                              antibody = model_data$antibody[1],
+                              n_sample = sum(model_data$total),
+                              n_agec  = length(model_data$age_mean_f),
+                              n_iter  = model_object$n_iters,
+                              performance = "_____",
+                              elpd = lll[1],
+                              se = lll[2],
+                              converged = NA
+  )
+
+  rhats <- get_table_rhats(model_object)
+  if (any(rhats$rhat > 1.1 ) == FALSE) {
+    summary_model$converged = "Yes"  }
+
+  return(summary_model)
+}
