@@ -2,24 +2,22 @@
 % Please edit documentation in R/model_comparison.R
 \name{compare_and_save_best_model}
 \alias{compare_and_save_best_model}
-\title{Fit Model Log}
+\title{Compare and Save Best Model}
 \usage{
 compare_and_save_best_model(
   survey,
   model_comparison,
-  name_fitting_res,
-  mod_0,
-  mod_1,
-  mod_2
+  name_fitting_result,
+  model_0
 )
 }
 \arguments{
-\item{data}{dat}
+\item{mod}{model_2}
 }
 \value{
-res
+comparison and saving of the best model
 }
 \description{
-Función que ajusta el modelo logarítmico a los datos
-Function that fits the logarithmic model to the data
+Función que compara y salva el mejor modelo
+Function that compares and saves the best model
 }

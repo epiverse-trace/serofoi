@@ -4,17 +4,7 @@
 \alias{extract_and_save}
 \title{Extract and Save}
 \usage{
-extract_and_save(
-  res_file_1,
-  res_file_2,
-  res_file_3,
-  best_model_1,
-  best_model_2,
-  best_model_3,
-  name_file,
-  survey,
-  RealYexpo
-)
+extract_and_save(res_file_1, best_model_1, name_file, survey, real_yexpo)
 }
 \arguments{
 \item{res}{res_file_3}

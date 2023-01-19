@@ -4,7 +4,7 @@
 \alias{get_table_rhats}
 \title{Get Table Rhats}
 \usage{
-get_table_rhats(res)
+get_table_rhats(model_object)
 }
 \value{
 rhats table
