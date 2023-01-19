@@ -1,24 +1,23 @@
-#' Generate Combined Plots
+#' Generate sero-positivity plot
 #'
-#' Función que genera la gráfica combinada
-#' Function that generates the combined graph
-#' @param result
-#' @param data data
+#' Función que genera la gráfica de sero positividad
+#' Function that generates the sero positivity plot
+#' @param model_object
+#' @param model model data
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
-#' @return The combined plots
+#' @return The sero-positivity plot
 #' @export
-generate_combined_plots <- function(result, data, lambda_sim = NA, max_lambda = NA, size_text = 25) {
+plot_seroprev <- function(model_object,
+                          size_text = 25) {
 
-  if (is.character(result$fit) == FALSE)  {
-    if  (class(result$fit@sim$samples)  != "NULL" ) {
+  if (is.character(model_object$fit) == FALSE)  {
+    if  (class(model_object$fit@sim$samples)  != "NULL" ) {
 
-      summary_model <- extract_summary_model(result, data)
-      foi <- rstan::extract(result$fit, "foi", inc_warmup = FALSE)[[1]]
+      foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]
+      prev_expanded <- get_prev_expanded(foi, model_data = model_object$model_data)
 
-
-      prev_expanded <- get_prev_expanded(foi, data)
-      plot_prev <-
+      prev_plot <-
         ggplot2::ggplot(prev_expanded) +
         ggplot2::geom_ribbon(ggplot2::aes(x = age, ymin = predicted_prev_lower, ymax = predicted_prev_upper), fill = "#c994c7") +
         ggplot2::geom_line(ggplot2::aes(x = age, y = predicted_prev), colour = "#7a0177") +
@@ -29,10 +28,51 @@ generate_combined_plots <- function(result, data, lambda_sim = NA, max_lambda = 
         ggplot2::theme(legend.position = "none") +
         ggplot2::ylab("Sero-positivity") + ggplot2::xlab("Age")
 
+    } } else
 
+    {
+      print("model did not run")
+      print_warning <- "errors"
+      df <- data.frame()
+
+      prev_plot <-  ggplot2::ggplot(df) + ggplot2::geom_point() + ggplot2::xlim(0, 10) + ggplot2::ylim(0, 10) +
+                    ggplot2::annotate("text", x = 4, y = 5, label = print_warning) +
+                    ggplot2::theme_bw(25) +
+                    ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank()) +
+                    ggplot2::ylab(" ") + ggplot2::xlab(" ")
+                    ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
+
+    }
+
+  return(prev_plot)
+
+}
+
+#' Generate Force-of-Infection Plot
+#'
+#' Función que genera la gráfica de la fuerza de infección
+#' Function that generates the force of infection plot
+#' @param model_object
+#' @param model model data
+#' @param xlabel Label of axis x
+#' @param ylabel Label of axis y
+#' @return Force of infection plot
+#' @export
+plot_foi <- function(model_object,
+                     lambda_sim = NA,
+                     max_lambda = NA,
+                     size_text = 25) {
+
+  if (is.character(model_object$fit) == FALSE)  {
+    if  (class(model_object$fit@sim$samples)  != "NULL" ) {
+
+      foi <- rstan::extract(model_object$fit,
+                            "foi",
+                            inc_warmup = FALSE)[[1]]
 
       #-------- This bit is to get the actual length of the foi data
-      foi_data <- result$foi_cent_est
+      foi_data <- model_object$foi_cent_est
+
       if (!is.na(lambda_sim)) {
         lambda_mod_length <- NROW(foi_data)
         lambda_sim_length <- length(lambda_sim)
@@ -51,50 +91,117 @@ generate_combined_plots <- function(result, data, lambda_sim = NA, max_lambda = 
       foi_data$lower[1] <- NA
       foi_data$upper[1] <- NA
 
-
-      plot_foi <-
+      foi_plot <-
         ggplot2::ggplot(foi_data) +
         ggplot2::geom_ribbon(ggplot2::aes(x = year, ymin = lower, ymax = upper), fill = "#41b6c4", alpha = 0.5) +
         ggplot2::geom_line(ggplot2::aes(x = year, y = medianv), colour = "#253494", size = size_text/8) +
         ggplot2::theme_bw(size_text) +
         ggplot2::coord_cartesian(ylim = c(0, max_lambda)) +
         ggplot2::ylab("Force-of-Infection") + ggplot2::xlab("Year")
-
-
-
-      if (!is.na(lambda_sim)) {
-        lambda_plot <- plot_foi + ggplot2::geom_line(ggplot2::aes(x = year, y = simulated), colour = "red", size = 1.5)
       }
 
-      rhats <- get_table_rhats(result)
+    } else
 
-      plot_rhats <- ggplot2::ggplot(rhats, ggplot2::aes(year, rhat)) +
-        ggplot2::geom_line(colour = "purple") +
-        ggplot2::geom_point() +
-        ggplot2::coord_cartesian(ylim = c(0.7, 2)) +
-        ggplot2::geom_hline(yintercept = 1.1, colour = "blue", size = size_text/12) +
-        ggplot2::theme_bw(size_text) +
-        ggplot2::ylab("Convergence (R^)")
+    {
+      print("model did not run")
+      print_warning <- "errors"
+      df <- data.frame()
+
+      foi_plot <- ggplot2::ggplot(df) + ggplot2::geom_point() + ggplot2::xlim(0, 10) + ggplot2::ylim(0, 10) +
+                  ggplot2::annotate("text", x = 4, y = 5, label = print_warning) +
+                  ggplot2::theme_bw(25) +
+                  ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank()) +
+                  ggplot2::ylab(" ") + ggplot2::xlab(" ")
+                  ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
+
+    }
+
+  return(foi_plot)
+
+}
+
+#' Generate Rhats-Convergence Plot
+#'
+#' Función que genera la gráfica de convergencias de un modelo
+#' Function that generates the convergence graph of a model
+#' @param model_object
+#' @param model model data
+#' @param xlabel Label of axis x
+#' @param ylabel Label of axis y
+#' @return The rhats-convergence plot of a model
+#' @export
+plot_rhats <- function(model_object,
+                       size_text = 25) {
+
+  if (is.character(model_object$fit) == FALSE)  {
+    if  (class(model_object$fit@sim$samples)  != "NULL" ) {
+
+      rhats <- get_table_rhats(model_object)
+
+      rhats_plot <- ggplot2::ggplot(rhats, ggplot2::aes(year, rhat)) +
+                    ggplot2::geom_line(colour = "purple") +
+                    ggplot2::geom_point() +
+                    ggplot2::coord_cartesian(ylim = c(0.7, 2)) +
+                    ggplot2::geom_hline(yintercept = 1.1, colour = "blue", size = size_text/12) +
+                    ggplot2::theme_bw(size_text) +
+                    ggplot2::ylab("Convergence (R^)")
+
+    } } else
+
+    {
+      print("model did not run")
+      print_warning <- "errors"
+      df <- data.frame()
+
+      rhats_plot <- ggplot2::ggplot(df) + ggplot2::geom_point() + ggplot2::xlim(0, 10) + ggplot2::ylim(0, 10) +
+        ggplot2::annotate("text", x = 4, y = 5, label = print_warning) +
+        ggplot2::theme_bw(25) +
+        ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank()) +
+        ggplot2::ylab(" ") + ggplot2::xlab(" ")
+      ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
+
+    }
+
+  return(rhats_plot)
+
+}
 
 
-      plot_data <- plot_info_table(t(summary_model), size_text = size_text)
+#' Generate Combined Plots
+#'
+#' Función que genera la gráfica combinada
+#' Function that generates the combined graph
+#' @param model_object
+#' @param model model data
+#' @param xlabel Label of axis x
+#' @param ylabel Label of axis y
+#' @return The combined plots
+#' @export
+plot_model <- function(model_object,
+                       lambda_sim = NA,
+                       max_lambda = NA,
+                       size_text = 25) {
 
+  if (is.character(model_object$fit) == FALSE)  {
+    if  (class(model_object$fit@sim$samples)  != "NULL" ) {
+      prev_plot <- plot_seroprev(model_object = model_object,
+                                 size_text = size_text)
 
-      plot_arrange <- grid.arrange(plot_data,
-                                   plot_prev,
-                                   plot_foi,
-                                   plot_rhats, nrow = 4,
-                                   heights = c(1.5, 1, 1, 1))
+      foi_plot <- plot_foi(model_object = model_object,
+                          lambda_sim = lambda_sim,
+                          max_lambda = max_lambda,
+                          size_text = size_text)
 
-      result_plots <- list(plots = list(plot_data = plot_data,
-                                      plot_prev = plot_prev,
-                                      plot_foi  = plot_foi,
-                                      plot_rhats = plot_rhats),
-                         summary_model     = summary_model,
-                         rhats           = rhats,
-                         prev_expanded = prev_expanded)
+      rhats_plot <- plot_rhats(model_object = model_object,
+                              size_text = size_text)
 
+      summary_plot <- plot_info_table(t(model_object$model_summary), size_text = size_text)
 
+      plot_arrange <- gridExtra::grid.arrange(summary_plot,
+                                              prev_plot,
+                                              foi_plot,
+                                              rhats_plot, nrow = 4,
+                                              heights = c(1.5, 1, 1, 1))
 
     } } else
 
@@ -109,38 +216,25 @@ generate_combined_plots <- function(result, data, lambda_sim = NA, max_lambda = 
         ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank()) +
         ggplot2::ylab(" ") + ggplot2::xlab(" ")
       g1 <- g0
-      g0 <- g0 + ggplot2::labs(subtitle = result$model) +
+      g0 <- g0 + ggplot2::labs(subtitle = model_object$model) +
         ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
 
-
-      plots <- grid.arrange(g0, g1, g1, g1, g1, nrow = 5)
-      result_p <- list(plots = plots,
-                     loo_fit = c("Not available"),
-                     summary_model     = c("Not available"),
-                     prev_expanded = c("Not available")
-      )
-
-      result_plots <-  list(plots = plots,
-                          summary_model  =   "model did not run")
-
+      plot_arrange <- gridExtra::grid.arrange(g0, g1, g1, g1, g1, nrow = 5)
 
     }
 
-
-
-  return(result_plots)
-
+  return(plot_arrange)
 
 }
 
 #' Get Model Comparison Plot
 #'
 #' Función que obtiene la gráfica de comparación de modelos
-#' Function that obtains the model comparison plot
+#' Function that obtains a model comparison plot
 #' @param result_comp
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
-#' @return The model comparison graph
+#' @return a model comparison graph
 
 #========================= PLOT comparison
 get_model_comparison_plot <- function(result_comp) {
@@ -186,7 +280,7 @@ get_model_comparison_plot <- function(result_comp) {
 
 vertical_plot_arrange_per_model <- function(PPC){
 
-  pp <- gridExtra::grid.arrange(PPC$plots$plot_data,
+  pp <- gridExtra::grid.arrange(PPC$plots$plot_summary,
                      PPC$plots$plot_prev,
                      PPC$plots$plot_foi,
                      PPC$plots$plot_rhats,
@@ -200,7 +294,7 @@ vertical_plot_arrange_per_model <- function(PPC){
 #'
 #' Función que genera la tabla de información
 #' Function that generates the information table
-#' @param data data
+#' @param model_data model_data
 #' @param info
 #' @param size_text
 #' @return The previous expanded graphic
