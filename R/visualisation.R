@@ -1,9 +1,8 @@
 #' Generate sero-positivity plot
 #'
-#' Función que genera la gráfica de sero positividad
 #' Function that generates the sero positivity plot
-#' @param model_object
-#' @param model model data
+#' @param model_object what the run model function returns
+#' @param model refers to model selected
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return The sero-positivity plot
@@ -50,10 +49,9 @@ plot_seroprev <- function(model_object,
 
 #' Generate Force-of-Infection Plot
 #'
-#' Función que genera la gráfica de la fuerza de infección
 #' Function that generates the force of infection plot
-#' @param model_object
-#' @param model model data
+#' @param model_object what the run model function returns
+#' @param model refers to model selected
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return Force of infection plot
@@ -122,10 +120,9 @@ plot_foi <- function(model_object,
 
 #' Generate Rhats-Convergence Plot
 #'
-#' Función que genera la gráfica de convergencias de un modelo
 #' Function that generates the convergence graph of a model
-#' @param model_object
-#' @param model model data
+#' @param model_object what the run model function returns
+#' @param model refers to model selected
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return The rhats-convergence plot of a model
@@ -169,10 +166,9 @@ plot_rhats <- function(model_object,
 
 #' Generate Combined Plots
 #'
-#' Función que genera la gráfica combinada
 #' Function that generates the combined graph
-#' @param model_object
-#' @param model model data
+#' @param model_object what the run model function returns
+#' @param model refers to model selected
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return The combined plots
@@ -229,9 +225,8 @@ plot_model <- function(model_object,
 
 #' Get Model Comparison Plot
 #'
-#' Función que obtiene la gráfica de comparación de modelos
 #' Function that obtains a model comparison plot
-#' @param result_comp
+#' @param result_comp what the compare and save best model function returns
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return a model comparison graph
@@ -270,14 +265,12 @@ get_model_comparison_plot <- function(result_comp) {
 
 #' Get Vertical Plot Arrange per Model
 #'
-#' Función que genera el grafico en un arreglo vertical por modelo
 #' Function that generates the graph in a vertical arrange per model
 #' @param PPC
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return The vertical plot arrange per model
 #' @export
-
 vertical_plot_arrange_per_model <- function(PPC){
 
   pp <- gridExtra::grid.arrange(PPC$plots$plot_summary,
@@ -292,14 +285,12 @@ vertical_plot_arrange_per_model <- function(PPC){
 
 #' Plot Info Table
 #'
-#' Función que genera la tabla de información
 #' Function that generates the information table
-#' @param model_data model_data
-#' @param info
-#' @param size_text
+#' @param model_data refers to data of the each model
+#' @param info the information that will be contained in the table
+#' @param size_text text size
 #' @return The previous expanded graphic
 #' @export
-
 plot_info_table <- function(info, size_text){
 
   dato <- data.frame(
