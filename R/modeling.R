@@ -475,7 +475,10 @@ run_model <- function(model_data,
   my_dir <- paste0(config::get("test_files_path"), epitrix::clean_labels(paste0("tests_", Sys.time())))
 
   model_data <- model_data %>% dplyr::arrange(.data$age_mean_f) %>% dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
-  survey <- model_data$survey[1]
+  # survey <- model_data$survey[1] # Revisar la mejor opción para el warning de número de surveys
+  survey <- unique(model_data$survey)
+  if (length(survey)>0) warning("WARNING!! You have more than 1 surveys or survey codes")
+
   if (model_name == "constant_foi_bi"){
     model_0 <- save_or_read_model(model_name = model_name)
     model_object <- fit_model(model = model_0,

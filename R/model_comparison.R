@@ -153,7 +153,7 @@ extract_summary_model <- function(model_object) {
                               country = data$country[1],
                               year    = data$tsur[1],
                               test    = data$test[1],
-                              antibody = data$antibody[1],
+                              antibody = data$antibody[1], # This model only works for IgG test
                               n_sample = sum(data$total),
                               n_agec  = length(data$age_mean_f),
                               n_iter  = model_object$n_iters,

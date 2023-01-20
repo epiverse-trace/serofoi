@@ -120,6 +120,17 @@ dir_results <- function(name_dir)
 
 }
 
+
+#. --- Function for cleaning seroprevalence data
+# conf <- data.frame(Hmisc::binconf(dat$counts, dat$total,method="exact"))
+# dat  <- cbind(dat, conf) %>%
+#   rename (prev_obs = PointEst,
+#           prev_obs_lower = Lower,
+#           prev_obs_upper = Upper
+#   )
+
+
+
 # For other models
 
 #,

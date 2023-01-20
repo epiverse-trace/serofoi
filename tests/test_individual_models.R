@@ -13,7 +13,8 @@ source("R/visualisation.R")
 test_dir <- epitrix::clean_labels(paste0("tests_", Sys.time()))
 
 #----- Read Data
-data_test <- readRDS("data/data.RDS")
+data_test0 <- readRDS("data/data.RDS")
+data_test <- data_test0 %>% select()
 
 #----- Test each model
 model_0_object <- run_model(model_data = data_test,
@@ -40,4 +41,9 @@ plot_seroprev(model_0_object, size_text = 15)
 plot_foi(model_0_object, size_text = 15)
 plot_rhats(model_0_object, size_text = 15)
 
-# bayesplot::mcmc_trace(model_0_object$fit, pars="lambda0")
+# bayesplot::mcmc_trace(model_1_object$fit, pars="lambda0")
+
+
+xxx <- "Zulma MILENA cucunuba 3455"
+epitrix::clean_labels(xxx)
+

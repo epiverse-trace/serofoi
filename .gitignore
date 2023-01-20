@@ -41,3 +41,4 @@ vignettes/*.pdf
 
 # Mac File
 .DS_Store
+.Rhistory
