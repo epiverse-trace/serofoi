@@ -262,7 +262,7 @@ get_model_comparison_plot <- function(result_comp) {
                                 theme = gridExtra::ttheme_default(base_size = 20))) +
     ggplot2::theme_void(30)
 
-  pf <- cowplot::plot_grid(emptyp, table_pars, nrow = 2 )
+  pf <- cowplot::plot_grid(emptyp, table_pars, nrow = 2 ) # check cowplot vs gridExtra
 
   return(pf)
 
