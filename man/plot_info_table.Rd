@@ -7,12 +7,15 @@
 plot_info_table(info, size_text)
 }
 \arguments{
-\item{model_data}{model_data}
+\item{info}{the information that will be contained in the table}
+
+\item{size_text}{text size}
+
+\item{model_data}{refers to data of the each model}
 }
 \value{
 The previous expanded graphic
 }
 \description{
-Función que genera la tabla de información
 Function that generates the information table
 }

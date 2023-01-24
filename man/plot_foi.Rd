@@ -7,7 +7,9 @@
 plot_foi(model_object, lambda_sim = NA, max_lambda = NA, size_text = 25)
 }
 \arguments{
-\item{model}{model data}
+\item{model_object}{what the run model function returns}
+
+\item{model}{refers to model selected}
 
 \item{xlabel}{Label of axis x}
 
@@ -17,6 +19,5 @@ plot_foi(model_object, lambda_sim = NA, max_lambda = NA, size_text = 25)
 Force of infection plot
 }
 \description{
-Función que genera la gráfica de la fuerza de infección
 Function that generates the force of infection plot
 }

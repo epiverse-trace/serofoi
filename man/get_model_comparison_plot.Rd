@@ -7,6 +7,8 @@
 get_model_comparison_plot(result_comp)
 }
 \arguments{
+\item{result_comp}{what the compare and save best model function returns}
+
 \item{xlabel}{Label of axis x}
 
 \item{ylabel}{Label of axis y}
@@ -15,6 +17,5 @@ get_model_comparison_plot(result_comp)
 a model comparison graph
 }
 \description{
-Función que obtiene la gráfica de comparación de modelos
 Function that obtains a model comparison plot
 }

@@ -15,6 +15,5 @@ vertical_plot_arrange_per_model(PPC)
 The vertical plot arrange per model
 }
 \description{
-Función que genera el grafico en un arreglo vertical por modelo
 Function that generates the graph in a vertical arrange per model
 }
