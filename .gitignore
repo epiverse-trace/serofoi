@@ -37,7 +37,11 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+.Rhistory
 
 
 # Mac File
 .DS_Store
+
+# .RDS Stan compilation files
+inst/extdata/stanmodels/*.RDS
