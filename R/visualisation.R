@@ -1,8 +1,8 @@
 #' Generate sero-positivity plot
 #'
 #' Function that generates the sero positivity plot
-#' @param model_object what the run model function returns
-#' @param model refers to model selected
+#' @param model_object Object that the run_model function returns with the results of the fit
+#' @param model Refers to the model selected
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return The sero-positivity plot
@@ -50,8 +50,8 @@ plot_seroprev <- function(model_object,
 #' Generate Force-of-Infection Plot
 #'
 #' Function that generates the force of infection plot
-#' @param model_object what the run model function returns
-#' @param model refers to model selected
+#' @param model_object Object that the run_model function returns with the results of the fit
+#' @param model Refers to model selected
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return Force of infection plot
@@ -121,11 +121,11 @@ plot_foi <- function(model_object,
 #' Generate Rhats-Convergence Plot
 #'
 #' Function that generates the convergence graph of a model
-#' @param model_object what the run model function returns
-#' @param model refers to model selected
+#' @param model_object Object that the run_model function returns with the results of the fit
+#' @param model Refers to model selected
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
-#' @return The rhats-convergence plot of a model
+#' @return The rhats-convergence plot of the selected model
 #' @export
 plot_rhats <- function(model_object,
                        size_text = 25) {
@@ -167,8 +167,8 @@ plot_rhats <- function(model_object,
 #' Generate Combined Plots
 #'
 #' Function that generates the combined graph
-#' @param model_object what the run model function returns
-#' @param model refers to model selected
+#' @param model_object Object that the run_model function returns with the results of the fit
+#' @param model Refers to model selected
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return The combined plots

@@ -1,6 +1,6 @@
 #' Get Exposure Matrix
 #'
-#' Function that gets the exposure matrix
+#' Function that generates the exposure matrix
 #' @param model_data refers to the model data that has been selected
 #' @param yexpo what the make yexpo function returns
 #' @return exposure_output
@@ -94,7 +94,7 @@ get_prev_expanded <- function(foi,
 
 #' Make yexpo
 #'
-#' Function thats make Yexpo
+#' Function that generates Yexpo
 #' @param model_data refers to the model data that has been selected
 #' @return yexpo
 #' @export
@@ -465,9 +465,8 @@ run_model <- function(model_data,
   my_dir <- paste0(config::get("test_files_path"), epitrix::clean_labels(paste0("tests_", Sys.time())))
 
   model_data <- model_data %>% dplyr::arrange(.data$age_mean_f) %>% dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
-  # survey <- model_data$survey[1] # Revisar la mejor opción para el warning de número de surveys
   survey <- unique(model_data$survey)
-  if (length(survey)>0) warning("WARNING!! You have more than 1 surveys or survey codes")
+  if (length(survey)>1) warning("WARNING!! You have more than 1 surveys or survey codes")
 
   if (model_name == "constant_foi_bi"){
     model_0 <- save_or_read_model(model_name = model_name)
