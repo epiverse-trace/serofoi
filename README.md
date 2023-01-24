@@ -1,4 +1,3 @@
-
 ## *serofoi* <img src="man/figures/logo.png" align="right" width="120" />
 
 Estimates the *Force-of-Infection* of a given pathogen from population
