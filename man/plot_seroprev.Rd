@@ -7,7 +7,9 @@
 plot_seroprev(model_object, size_text = 25)
 }
 \arguments{
-\item{model}{model data}
+\item{model_object}{what the run model function returns}
+
+\item{model}{refers to model selected}
 
 \item{xlabel}{Label of axis x}
 
@@ -17,6 +19,5 @@ plot_seroprev(model_object, size_text = 25)
 The sero-positivity plot
 }
 \description{
-Función que genera la gráfica de sero positividad
 Function that generates the sero positivity plot
 }

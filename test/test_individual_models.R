@@ -4,7 +4,7 @@ library(devtools)
 library(dplyr)
 
 # install.packages("github/serofoi") #pendiente
-source("R/modeling.R")
+source("R/modelling.R")
 source("R/seroprevalence_data.R")
 source("R/model_comparison.R")
 source("R/visualisation.R")

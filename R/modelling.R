@@ -1,9 +1,8 @@
 #' Get Exposure Matrix
 #'
-#' Función que obtiene la matriz de exposición
 #' Function that gets the exposure matrix
-#' @param model_data model_data
-#' @param yexpo
+#' @param model_data refers to the model data that has been selected
+#' @param yexpo what the make yexpo function returns
 #' @return exposure_output
 #' @export
 get_exposure_matrix <- function(model_data,
@@ -19,12 +18,12 @@ get_exposure_matrix <- function(model_data,
 
 #' Get Prevalence Expanded
 #'
-#' Función que obtiene la prevalencia expandida
 #' Function that obtains the expanded prevalence
-#' @param model_data model_data
-#' @param foi
+#' @param model_data refers to the model data that has been selected
+#' @param foi force of infection
 #' @return prev_final
 #' @export
+
 get_prev_expanded <- function(foi,
                               model_data) {
 
@@ -93,23 +92,22 @@ get_prev_expanded <- function(foi,
 
 }
 
-#' Make Yexpo
+#' Make yexpo
 #'
-#' Función que hace Yexpo
 #' Function thats make Yexpo
-#' @param model_data model_data
-#' @return Yexpo
+#' @param model_data refers to the model data that has been selected
+#' @return yexpo
 #' @export
+
 make_yexpo <- function(model_data) {
   yexpo <- (seq_along(min(model_data$birth_year):model_data$tsur[1]))
 }
 
 #' Get Posterior Summary
 #'
-#' Función que consigue un resumen posterior
-#' Function that gets a post summary
+#' Function that gets a posterior summary
 #' @param model_objects model_objects_chain
-#' @return model_objects
+#' @return model_object
 #' @export
 get_posterior_summary <- function(model_objects_chain) {
   model_object <- sapply(model_objects_chain,
@@ -120,9 +118,8 @@ get_posterior_summary <- function(model_objects_chain) {
 
 #' Obtain Prevalence Extended
 #'
-#' Función que obtiene la prevalencia extendida
 #' Function that obtains the extended prevalence
-#' @param model_data model_data
+#' @param model_data refers to the model data that has been selected
 #' @param exposure
 #' @param ly
 #' @param nbreaks
@@ -170,10 +167,9 @@ obtain_prevalence_extended <- function(model_data,
 
 #' Make Thin Chain
 #'
-#' Función que hace el adelgazamiento del número de iteraciones
 #' Function that does the thinning of the number of iterations
 #' @param model_object_chain
-#' @param thin
+#' @param thin by default the value 10 is taken but it can be changed
 #' @return model_objects_chain
 #' @export
 make_thin_chain <- function(model_objects_chain, thin = 10)
@@ -184,10 +180,9 @@ make_thin_chain <- function(model_objects_chain, thin = 10)
 
 #' Get Residuals
 #'
-#' Función que obtiene los residuos
 #' Function that gets the residuals
-#' @param model_data model_data
-#' @param fit
+#' @param model_data refers to the model data that has been selected
+#' @param fit refers to fit of the model
 #' @return merged_prev
 #' @export
 get_residuals <- function(fit, model_data)
@@ -210,16 +205,15 @@ get_residuals <- function(fit, model_data)
 
 #' Fit Model
 #'
-#' Función que ajusta el modelo a los datos
 #' Function that fits the model to the data
-#' @param model_data model_data
-#' @param model
-#' @param model_name
-#' @param n_iters
-#' @param n_thin
-#' @param delta
-#' @param m_treed
-#' @param decades
+#' @param model_data refers to the model data that has been selected
+#' @param model refers to model selected
+#' @param model_name name of the model selected
+#' @param n_iters number of iterations. Each model has a default number.
+#' @param n_thin Each model has a default number.
+#' @param delta This value comes by default but it can be changed
+#' @param m_treed This value comes by default but it can be changed
+#' @param decades The decades covered by the survey data
 #' @return model_object
 #' @export
 fit_model <- function(model,
@@ -326,16 +320,15 @@ fit_model <- function(model,
 
 #' Fit Model Log
 #'
-#' Función que ajusta el modelo logarítmico a los datos
 #' Function that fits the logarithmic model to the data
 #' @param model_data model_data
-#' @param model
-#' @param model_name
-#' @param n_iters
-#' @param n_thin
-#' @param delta
-#' @param m_treed
-#' @param decades
+#' @param model refers to model selected
+#' @param model_name name of the model selected
+#' @param n_iters number of iterations. This value comes by default but it can be changed
+#' @param n_thinThis value comes by default but it can be changed
+#' @param delta This value comes by default but it can be changed
+#' @param m_treed This value comes by default but it can be changed
+#' @param decades The decades covered by the survey data
 #' @return model_object
 #' @export
 fit_model_log <- function(model,
@@ -433,11 +426,9 @@ fit_model_log <- function(model,
 
 }
 
-#' Función que guarda el archivo .RDS del modelo
+#' Save or read model
 #' Function that saves the .RDS file of the model
-
-#' @param model_name name of the model
-
+#' @param model_name name of the model selected
 save_or_read_model <- function(model_name="constant_foi_bi") {
 
   rds_path <- config::get(model_name)$rds_path
@@ -454,15 +445,14 @@ save_or_read_model <- function(model_name="constant_foi_bi") {
 }
 
 
-#' Función que corre el modelo especificado
+#' Run model
 #' Function that runs the specified model
-
 #' @param model_data model_data
 #' @param survey survey
-#' @param model model
-#' @param model_name name of the model
-#' @param n_iters number of iterations
-#' @return model_objects of model 0
+#' @param model refers to model selected
+#' @param model_name name of the model selected
+#' @param n_iters number of iterations. Each model has a value by default.
+#' @return model_object of model
 #' @export
 run_model <- function(model_data,
                       model_name="constant_foi_bi",
@@ -518,10 +508,9 @@ run_model <- function(model_data,
 
 #' Extract Summary Model
 #'
-#' Función que hace un resumen de los modelos
 #' Function that summarizes the models
-#' @param model_object
-#' @param model_data model_data
+#' @param model_object what the run model function returns
+#' @param model_data refers to data of the model
 #' @return summary of the models
 #' @export
 extract_summary_model <- function(model_object) {
