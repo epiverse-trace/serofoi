@@ -4,7 +4,7 @@ library(devtools)
 library(dplyr)
 
 # install.packages("github/serofoi") #pendiente
-source("R/modeling.R")
+source("R/modelling.R")
 source("R/seroprevalence_data.R")
 source("R/model_comparison.R")
 source("R/visualisation.R")
@@ -13,8 +13,7 @@ source("R/visualisation.R")
 test_dir <- epitrix::clean_labels(paste0("tests_", Sys.time()))
 
 #----- Read Data
-data_test0 <- readRDS("data/data.RDS")
-data_test <- data_test0 %>% select()
+data_test <- readRDS("data/data.RDS")
 
 #----- Test each model
 model_0_object <- run_model(model_data = data_test,

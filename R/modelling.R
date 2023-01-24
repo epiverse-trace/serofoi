@@ -1,7 +1,7 @@
 #' Get Exposure Matrix
 #'
-#' Función que obtiene la matriz de exposición
-#' Function that gets the exposure matrix
+#' Función que genera la matriz de exposición
+#' Function that generates the exposure matrix
 #' @param model_data model_data
 #' @param yexpo
 #' @return exposure_output
@@ -19,10 +19,10 @@ get_exposure_matrix <- function(model_data,
 
 #' Get Prevalence Expanded
 #'
-#' Función que obtiene la prevalencia expandida
-#' Function that obtains the expanded prevalence
+#' Función que genera la prevalencia expandida
+#' Function that generates the expanded prevalence
 #' @param model_data model_data
-#' @param foi
+#' @param foi fuerza de infección
 #' @return prev_final
 #' @export
 get_prev_expanded <- function(foi,
@@ -475,9 +475,8 @@ run_model <- function(model_data,
   my_dir <- paste0(config::get("test_files_path"), epitrix::clean_labels(paste0("tests_", Sys.time())))
 
   model_data <- model_data %>% dplyr::arrange(.data$age_mean_f) %>% dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
-  # survey <- model_data$survey[1] # Revisar la mejor opción para el warning de número de surveys
   survey <- unique(model_data$survey)
-  if (length(survey)>0) warning("WARNING!! You have more than 1 surveys or survey codes")
+  if (length(survey)>1) warning("WARNING!! You have more than 1 surveys or survey codes")
 
   if (model_name == "constant_foi_bi"){
     model_0 <- save_or_read_model(model_name = model_name)
