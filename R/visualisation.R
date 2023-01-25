@@ -164,7 +164,7 @@ plot_rhats <- function(model_object,
 }
 
 
-#' Generate Combined Plots
+#' Generate a vertical arrange of plots summarizing the results of the model implementation
 #'
 #' Function that generates the combined graph
 #' @param model_object Object that the run_model function returns with the results of the fit
