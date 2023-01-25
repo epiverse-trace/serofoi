@@ -12,8 +12,9 @@ source("R/visualisation.R")
 #----- Folder where results will be stored
 test_dir <- epitrix::clean_labels(paste0("tests_", Sys.time()))
 
-#----- Read Data
-data_test <- readRDS("data/data.RDS")
+#----- Read and prepare data
+data_test <- readRDS("data/data.RDS") %>% prepare_data(alpha=0.05)
+
 
 #----- Test each model
 model_0_object <- run_model(model_data = data_test,
