@@ -13,5 +13,5 @@ make_yexpo(model_data)
 yexpo
 }
 \description{
-Function thats make Yexpo
+Function that generates Yexpo
 }

@@ -15,5 +15,5 @@ get_exposure_matrix(model_data, yexpo)
 exposure_output
 }
 \description{
-Function that gets the exposure matrix
+Function that generates the exposure matrix
 }

@@ -223,65 +223,6 @@ plot_model <- function(model_object,
 
 }
 
-#' Get Model Comparison Plot
-#'
-#' Function that obtains a model comparison plot
-#' @param result_comp what the compare and save best model function returns
-#' @param xlabel Label of axis x
-#' @param ylabel Label of axis y
-#' @return a model comparison graph
-
-#========================= PLOT comparison
-get_model_comparison_plot <- function(result_comp) {
-  model_comp  <- result_comp$model_comp
-  best_model  <- as.character(result_comp$best_model_data1$model)
-  best_modelP <- as.numeric(result_comp$best_model_data1$pvalue)
-
-  emptyp <-  ggplot2::ggplot(data = data.frame()) +
-    ggplot2::geom_point() +
-    ggplot2::xlim(0,1) +  ggplot2::ylim(0,1) +  ggplot2::theme_void() +
-    ggplot2::annotate("text",  x = .5, y = .6, label = best_model, size = 14) +
-    ggplot2::annotate("text",  x = .5, y = .55, label = "(best model)", size = 13)
-
-
-  infot <- dplyr::filter(model_comp, converged == "Yes") %>% dplyr::select(model, difference, diff_se, pvalue, best) %>%
-    dplyr::mutate(diff = round(difference, 2),
-           diff_se = round(diff_se, 2),
-           pvalue = round(pvalue, 4))
-
-  blank <- data.frame(x = 1:10, y = 1:100)
-  table_pars <-
-    ggplot2::ggplot(blank, ggplot2::aes(x, y)) +
-    ggplot2::geom_blank() + ggplot2::ylab(" ") + ggplot2::xlab(" ") +
-    ggplot2::annotation_custom(gridExtra::tableGrob(d = infot,
-                                theme = gridExtra::ttheme_default(base_size = 20))) +
-    ggplot2::theme_void(30)
-
-  pf <- cowplot::plot_grid(emptyp, table_pars, nrow = 2 ) # check cowplot vs gridExtra
-
-  return(pf)
-
-}
-
-#' Get Vertical Plot Arrange per Model
-#'
-#' Function that generates the graph in a vertical arrange per model
-#' @param PPC
-#' @param xlabel Label of axis x
-#' @param ylabel Label of axis y
-#' @return The vertical plot arrange per model
-#' @export
-vertical_plot_arrange_per_model <- function(PPC){
-
-  pp <- gridExtra::grid.arrange(PPC$plots$plot_summary,
-                     PPC$plots$plot_prev,
-                     PPC$plots$plot_foi,
-                     PPC$plots$plot_rhats,
-                     nrow = 4,
-                     heights = c(1.5, 1, 1, 1))
-  return(pp)
-
-}
 
 #' Plot Info Table
 #'

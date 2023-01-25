@@ -98,7 +98,6 @@ get_prev_expanded <- function(foi,
 #' @param model_data refers to the model data that has been selected
 #' @return yexpo
 #' @export
-
 make_yexpo <- function(model_data) {
   yexpo <- (seq_along(min(model_data$birth_year):model_data$tsur[1]))
 }
@@ -114,93 +113,6 @@ get_posterior_summary <- function(model_objects_chain) {
                 function(i) c(quantile(i, c(0.5, 0.025, 0.975))))
   row.names(model_object) <- c("Median", "Lower", "Upper")
   return(model_object)
-}
-
-#' Obtain Prevalence Extended
-#'
-#' Function that obtains the extended prevalence
-#' @param model_data refers to the model data that has been selected
-#' @param exposure
-#' @param ly
-#' @param nbreaks
-#' @param lambdaYexpo
-#' @return new_PPP
-#' @export
-obtain_prevalence_extended <- function(model_data,
-                                       exposure,
-                                       ly,
-                                       nbreaks,
-                                       lambdaYexpo) {
-
-  ly            <- length(yexpo)
-
-  if (nbreaks == 0 & ly < 100)
-  {
-    ly = 100
-    lambdaYexpo <- matrix(lambdaYexpo, nrow = length(lambdaYexpo), ncol = ly )
-  }
-
-  new_data       <- data.frame(age = 1:ly)
-  exposure_new  <- matrix(0,nrow = length(new_data$age), ncol = ly)
-  for (k in 1:length(new_data$age)) exposure_new[k,(ly - new_data$age[k] + 1):ly] <-  1
-
-  olders <- data.frame(age = (ly + 1):99)
-  exposure_olders <- matrix(1,nrow = length(olders$age), ncol = ly)
-
-  exposure_total <- rbind(exposure_new, exposure_olders)
-  new_age_clases <- c(new_dat$age,   olders$age)
-
-  iterf <- nrow(lambdaYexpo)
-  PrevPn <- matrix(NA, nrow = iterf, ncol = length(new_age_clases))
-  for (i in 1:iterf) {
-    PrevPn[i,] <- 1 - exp( -exposure_total %*% lambdaYexpo[i,])}
-  new_PPP <- matrix(NA, ncol = 3, nrow = length(new_age_clases))
-  for (j in seq_along(new_age_clases)) {
-    new_PPP[j,] <- quantile(PrevPn[,j], c(.025, .5, .975))}
-  new_PPP        <- as.data.frame(new_PPP)
-  new_PPP$age    <- new_age_clases
-  names(new_PPP) <- c("L", "M", "U", "age")
-
-  return(new_PPP)
-
-}
-
-#' Make Thin Chain
-#'
-#' Function that does the thinning of the number of iterations
-#' @param model_object_chain
-#' @param thin by default the value 10 is taken but it can be changed
-#' @return model_objects_chain
-#' @export
-make_thin_chain <- function(model_objects_chain, thin = 10)
-{
-  model_objects_chain <- model_objects_chain[seq(1, nrow(model_objects_chain), thin),]
-  return(model_objects_chain)
-}
-
-#' Get Residuals
-#'
-#' Function that gets the residuals
-#' @param model_data refers to the model data that has been selected
-#' @param fit refers to fit of the model
-#' @return merged_prev
-#' @export
-get_residuals <- function(fit, model_data)
-{
-  P_sim <- rstan::extract(fit, "P_sim")[[1]]
-  colnames(P_sim) <- dat$age_mean_f
-  P_sim <- as.data.frame(P_sim)
-  P_sim$iteration <- seq_along(P_sim[,1])
-  P_sim <- P_sim %>%
-    reshape2::melt(id.vars = "iteration") %>%
-    dplyr::rename(prev_predicted = .data$value, age = .data$variable)
-  P_sim <- P_sim %>% dplyr::mutate(age = as.numeric(as.character(.data$age)))
-  P_obs <- dat %>% dplyr::select(age = .data$age_mean_f, .data$prev_obs)
-
-  merged_prev <-  merge(P_sim, P_obs, by = "age") %>%
-    dplyr::mutate(residuals = .data$prev_predicted - .data$prev_obs)
-
-  return(merged_prev)
 }
 
 #' Fit Model
@@ -462,11 +374,9 @@ run_model <- function(model_data,
                       m_treed = 10,
                       decades = 0) {
 
-  my_dir <- paste0(config::get("test_files_path"), epitrix::clean_labels(paste0("tests_", Sys.time())))
-
   model_data <- model_data %>% dplyr::arrange(.data$age_mean_f) %>% dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
   survey <- unique(model_data$survey)
-  if (length(survey)>1) warning("WARNING!! You have more than 1 surveys or survey codes")
+  if (length(survey)>1) warning("You have more than 1 surveys or survey codes")
 
   if (model_name == "constant_foi_bi"){
     model_0 <- save_or_read_model(model_name = model_name)

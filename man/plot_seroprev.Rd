@@ -7,9 +7,9 @@
 plot_seroprev(model_object, size_text = 25)
 }
 \arguments{
-\item{model_object}{what the run model function returns}
+\item{model_object}{Object that the run_model function returns with the results of the fit}
 
-\item{model}{refers to model selected}
+\item{model}{Refers to the model selected}
 
 \item{xlabel}{Label of axis x}
 
