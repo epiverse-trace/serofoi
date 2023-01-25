@@ -2,12 +2,14 @@
 % Please edit documentation in R/visualisation.R
 \name{plot_model}
 \alias{plot_model}
-\title{Generate Combined Plots}
+\title{Generate a vertical arrange of plots summarizing the results of the model implementation}
 \usage{
 plot_model(model_object, lambda_sim = NA, max_lambda = NA, size_text = 25)
 }
 \arguments{
-\item{model}{model data}
+\item{model_object}{Object that the run_model function returns with the results of the fit}
+
+\item{model}{Refers to model selected}
 
 \item{xlabel}{Label of axis x}
 
@@ -17,6 +19,5 @@ plot_model(model_object, lambda_sim = NA, max_lambda = NA, size_text = 25)
 The combined plots
 }
 \description{
-Función que genera la gráfica combinada
 Function that generates the combined graph
 }

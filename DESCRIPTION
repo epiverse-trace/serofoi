@@ -16,11 +16,9 @@ Imports:
     reshape2,
     bayesplot,
     loo,
-    cowplot,
     gridExtra,
     Hmisc,
     dplyr,
-    epitrix,
     gsubfn
 Suggests: 
     knitr,

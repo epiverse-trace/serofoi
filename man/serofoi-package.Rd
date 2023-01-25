@@ -6,8 +6,6 @@
 \alias{serofoi-package}
 \title{serofoi: Estimates the Force-of-Infection of a given pathogen from population based sero-prevalence studies.}
 \description{
-\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
-
 Provides functions for estimate the Force-of-Infection of a given pathogen from population based sero-prevalence studies on a bayesian framework.
 }
 \keyword{internal}
