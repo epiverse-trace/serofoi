@@ -18,7 +18,7 @@ get_exposure_matrix <- function(model_data,
 
 #' Get Prevalence Expanded
 #'
-#' Function that obtains the expanded prevalence
+#' Function that generates the expanded prevalence
 #' @param model_data refers to the model data that has been selected
 #' @param foi force of infection
 #' @return prev_final

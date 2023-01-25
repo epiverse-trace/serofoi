@@ -15,7 +15,6 @@ source("R/visualisation.R")
 #----- Read and prepare data
 data_test <- readRDS("data/data.RDS") %>% prepare_data(alpha=0.05)
 
-
 #----- Test each model
 model_0_object <- run_model(model_data = data_test,
                            model_name = "constant_foi_bi",
