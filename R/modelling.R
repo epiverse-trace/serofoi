@@ -1,9 +1,8 @@
 #' Get Exposure Matrix
 #'
-#' Función que genera la matriz de exposición
 #' Function that generates the exposure matrix
-#' @param model_data model_data
-#' @param yexpo
+#' @param model_data refers to the model data that has been selected
+#' @param yexpo what the make yexpo function returns
 #' @return exposure_output
 #' @export
 get_exposure_matrix <- function(model_data,
@@ -19,12 +18,12 @@ get_exposure_matrix <- function(model_data,
 
 #' Get Prevalence Expanded
 #'
-#' Función que genera la prevalencia expandida
 #' Function that generates the expanded prevalence
-#' @param model_data model_data
-#' @param foi fuerza de infección
+#' @param model_data refers to the model data that has been selected
+#' @param foi force of infection
 #' @return prev_final
 #' @export
+
 get_prev_expanded <- function(foi,
                               model_data) {
 
@@ -93,12 +92,11 @@ get_prev_expanded <- function(foi,
 
 }
 
-#' Make Yexpo
+#' Make yexpo
 #'
-#' Función que hace Yexpo
-#' Function thats make Yexpo
-#' @param model_data model_data
-#' @return Yexpo
+#' Function that generates Yexpo
+#' @param model_data refers to the model data that has been selected
+#' @return yexpo
 #' @export
 make_yexpo <- function(model_data) {
   yexpo <- (seq_along(min(model_data$birth_year):model_data$tsur[1]))
@@ -106,10 +104,9 @@ make_yexpo <- function(model_data) {
 
 #' Get Posterior Summary
 #'
-#' Función que consigue un resumen posterior
-#' Function that gets a post summary
+#' Function that gets a posterior summary
 #' @param model_objects model_objects_chain
-#' @return model_objects
+#' @return model_object
 #' @export
 get_posterior_summary <- function(model_objects_chain) {
   model_object <- sapply(model_objects_chain,
@@ -118,108 +115,17 @@ get_posterior_summary <- function(model_objects_chain) {
   return(model_object)
 }
 
-#' Obtain Prevalence Extended
-#'
-#' Función que obtiene la prevalencia extendida
-#' Function that obtains the extended prevalence
-#' @param model_data model_data
-#' @param exposure
-#' @param ly
-#' @param nbreaks
-#' @param lambdaYexpo
-#' @return new_PPP
-#' @export
-obtain_prevalence_extended <- function(model_data,
-                                       exposure,
-                                       ly,
-                                       nbreaks,
-                                       lambdaYexpo) {
-
-  ly            <- length(yexpo)
-
-  if (nbreaks == 0 & ly < 100)
-  {
-    ly = 100
-    lambdaYexpo <- matrix(lambdaYexpo, nrow = length(lambdaYexpo), ncol = ly )
-  }
-
-  new_data       <- data.frame(age = 1:ly)
-  exposure_new  <- matrix(0,nrow = length(new_data$age), ncol = ly)
-  for (k in 1:length(new_data$age)) exposure_new[k,(ly - new_data$age[k] + 1):ly] <-  1
-
-  olders <- data.frame(age = (ly + 1):99)
-  exposure_olders <- matrix(1,nrow = length(olders$age), ncol = ly)
-
-  exposure_total <- rbind(exposure_new, exposure_olders)
-  new_age_clases <- c(new_dat$age,   olders$age)
-
-  iterf <- nrow(lambdaYexpo)
-  PrevPn <- matrix(NA, nrow = iterf, ncol = length(new_age_clases))
-  for (i in 1:iterf) {
-    PrevPn[i,] <- 1 - exp( -exposure_total %*% lambdaYexpo[i,])}
-  new_PPP <- matrix(NA, ncol = 3, nrow = length(new_age_clases))
-  for (j in seq_along(new_age_clases)) {
-    new_PPP[j,] <- quantile(PrevPn[,j], c(.025, .5, .975))}
-  new_PPP        <- as.data.frame(new_PPP)
-  new_PPP$age    <- new_age_clases
-  names(new_PPP) <- c("L", "M", "U", "age")
-
-  return(new_PPP)
-
-}
-
-#' Make Thin Chain
-#'
-#' Función que hace el adelgazamiento del número de iteraciones
-#' Function that does the thinning of the number of iterations
-#' @param model_object_chain
-#' @param thin
-#' @return model_objects_chain
-#' @export
-make_thin_chain <- function(model_objects_chain, thin = 10)
-{
-  model_objects_chain <- model_objects_chain[seq(1, nrow(model_objects_chain), thin),]
-  return(model_objects_chain)
-}
-
-#' Get Residuals
-#'
-#' Función que obtiene los residuos
-#' Function that gets the residuals
-#' @param model_data model_data
-#' @param fit
-#' @return merged_prev
-#' @export
-get_residuals <- function(fit, model_data)
-{
-  P_sim <- rstan::extract(fit, "P_sim")[[1]]
-  colnames(P_sim) <- dat$age_mean_f
-  P_sim <- as.data.frame(P_sim)
-  P_sim$iteration <- seq_along(P_sim[,1])
-  P_sim <- P_sim %>%
-    reshape2::melt(id.vars = "iteration") %>%
-    dplyr::rename(prev_predicted = .data$value, age = .data$variable)
-  P_sim <- P_sim %>% dplyr::mutate(age = as.numeric(as.character(.data$age)))
-  P_obs <- dat %>% dplyr::select(age = .data$age_mean_f, .data$prev_obs)
-
-  merged_prev <-  merge(P_sim, P_obs, by = "age") %>%
-    dplyr::mutate(residuals = .data$prev_predicted - .data$prev_obs)
-
-  return(merged_prev)
-}
-
 #' Fit Model
 #'
-#' Función que ajusta el modelo a los datos
 #' Function that fits the model to the data
-#' @param model_data model_data
-#' @param model
-#' @param model_name
-#' @param n_iters
-#' @param n_thin
-#' @param delta
-#' @param m_treed
-#' @param decades
+#' @param model_data refers to the model data that has been selected
+#' @param model refers to model selected
+#' @param model_name name of the model selected
+#' @param n_iters number of iterations. Each model has a default number.
+#' @param n_thin Each model has a default number.
+#' @param delta This value comes by default but it can be changed
+#' @param m_treed This value comes by default but it can be changed
+#' @param decades The decades covered by the survey data
 #' @return model_object
 #' @export
 fit_model <- function(model,
@@ -326,16 +232,15 @@ fit_model <- function(model,
 
 #' Fit Model Log
 #'
-#' Función que ajusta el modelo logarítmico a los datos
 #' Function that fits the logarithmic model to the data
 #' @param model_data model_data
-#' @param model
-#' @param model_name
-#' @param n_iters
-#' @param n_thin
-#' @param delta
-#' @param m_treed
-#' @param decades
+#' @param model refers to model selected
+#' @param model_name name of the model selected
+#' @param n_iters number of iterations. This value comes by default but it can be changed
+#' @param n_thinThis value comes by default but it can be changed
+#' @param delta This value comes by default but it can be changed
+#' @param m_treed This value comes by default but it can be changed
+#' @param decades The decades covered by the survey data
 #' @return model_object
 #' @export
 fit_model_log <- function(model,
@@ -433,11 +338,9 @@ fit_model_log <- function(model,
 
 }
 
-#' Función que guarda el archivo .RDS del modelo
+#' Save or read model
 #' Function that saves the .RDS file of the model
-
-#' @param model_name name of the model
-
+#' @param model_name name of the model selected
 save_or_read_model <- function(model_name="constant_foi_bi") {
 
   rds_path <- config::get(model_name)$rds_path
@@ -454,15 +357,14 @@ save_or_read_model <- function(model_name="constant_foi_bi") {
 }
 
 
-#' Función que corre el modelo especificado
+#' Run model
 #' Function that runs the specified model
-
 #' @param model_data model_data
 #' @param survey survey
-#' @param model model
-#' @param model_name name of the model
-#' @param n_iters number of iterations
-#' @return model_objects of model 0
+#' @param model refers to model selected
+#' @param model_name name of the model selected
+#' @param n_iters number of iterations. Each model has a value by default.
+#' @return model_object of model
 #' @export
 run_model <- function(model_data,
                       model_name="constant_foi_bi",
@@ -472,11 +374,9 @@ run_model <- function(model_data,
                       m_treed = 10,
                       decades = 0) {
 
-  my_dir <- paste0(config::get("test_files_path"), epitrix::clean_labels(paste0("tests_", Sys.time())))
-
   model_data <- model_data %>% dplyr::arrange(.data$age_mean_f) %>% dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
   survey <- unique(model_data$survey)
-  if (length(survey)>1) warning("WARNING!! You have more than 1 surveys or survey codes")
+  if (length(survey)>1) warning("You have more than 1 surveys or survey codes")
 
   if (model_name == "constant_foi_bi"){
     model_0 <- save_or_read_model(model_name = model_name)
@@ -517,10 +417,9 @@ run_model <- function(model_data,
 
 #' Extract Summary Model
 #'
-#' Función que hace un resumen de los modelos
 #' Function that summarizes the models
-#' @param model_object
-#' @param model_data model_data
+#' @param model_object what the run model function returns
+#' @param model_data refers to data of the model
 #' @return summary of the models
 #' @export
 extract_summary_model <- function(model_object) {

@@ -6,6 +6,9 @@
 \usage{
 get_table_rhats(model_object)
 }
+\arguments{
+\item{model_object}{model_object}
+}
 \value{
 rhats table
 }

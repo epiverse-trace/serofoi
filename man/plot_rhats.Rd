@@ -7,16 +7,17 @@
 plot_rhats(model_object, size_text = 25)
 }
 \arguments{
-\item{model}{model data}
+\item{model_object}{Object that the run_model function returns with the results of the fit}
+
+\item{model}{Refers to model selected}
 
 \item{xlabel}{Label of axis x}
 
 \item{ylabel}{Label of axis y}
 }
 \value{
-The rhats-convergence plot of a model
+The rhats-convergence plot of the selected model
 }
 \description{
-Función que genera la gráfica de convergencias de un modelo
 Function that generates the convergence graph of a model
 }
