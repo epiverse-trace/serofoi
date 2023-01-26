@@ -387,10 +387,11 @@ run_model <- function(model_data,
                               n_thin = n_thin,
                               delta = delta,
                               m_treed = m_treed,
-                              decades = decades); print(paste0("surveyID ",
-                                                               survey,
-                                                               " finished ------ ",
-                                                               model_name))
+                              decades = decades); print(paste0("serofoi model ",
+                                                               model_name,
+                                                               "finished running ------",
+                                                               "surveyID ",
+                                                               survey))
   }
   if (model_name == "continuous_foi_normal_bi"){
     model_1 <- save_or_read_model(model_name = model_name)
@@ -401,10 +402,11 @@ run_model <- function(model_data,
                               n_thin = n_thin,
                               delta = delta,
                               m_treed = m_treed,
-                              decades = decades); print(paste0("surveyID ",
-                                                               survey,
-                                                               "finished ------ ",
-                                                               model_name))
+                              decades = decades); print(paste0("serofoi model ",
+                                                               model_name,
+                                                               "finished running ------",
+                                                               "surveyID ",
+                                                               survey))
   }
   if (model_name == "continuous_foi_normal_log"){
     model_2   <- save_or_read_model(model_name = model_name)
@@ -415,10 +417,11 @@ run_model <- function(model_data,
                                   n_thin = n_thin,
                                   delta = delta,
                                   m_treed = m_treed,
-                                  decades = decades); print(paste0("surveyID ",
-                                                                   survey,
-                                                                   "finished ------ ",
-                                                                   model_name))
+                                  decades = decades); print(paste0("serofoi model ",
+                                                                   model_name,
+                                                                   "finished running ------",
+                                                                   "surveyID ",
+                                                                   survey))
   }
   print(t(model_object$model_summary))
   return(model_object)
@@ -454,7 +457,7 @@ extract_summary_model <- function(model_object) {
                               n_sample = sum(model_data$total),
                               n_agec  = length(model_data$age_mean_f),
                               n_iter  = model_object$n_iters,
-                              performance = "_____",
+                              performance = "",
                               elpd = lll[1],
                               se = lll[2],
                               converged = NA
