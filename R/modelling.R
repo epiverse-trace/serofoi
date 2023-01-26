@@ -419,9 +419,7 @@ run_model <- function(model_data,
                                   m_treed = m_treed,
                                   decades = decades); print(paste0("serofoi model ",
                                                                    model_name,
-                                                                   "finished running ------",
-                                                                   "surveyID ",
-                                                                   survey))
+                                                                   " finished running ------"))
   }
   print(t(model_object$model_summary))
   return(model_object)
@@ -457,7 +455,6 @@ extract_summary_model <- function(model_object) {
                               n_sample = sum(model_data$total),
                               n_agec  = length(model_data$age_mean_f),
                               n_iter  = model_object$n_iters,
-                              performance = "",
                               elpd = lll[1],
                               se = lll[2],
                               converged = NA
