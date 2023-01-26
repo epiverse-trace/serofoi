@@ -387,7 +387,10 @@ run_model <- function(model_data,
                               n_thin = n_thin,
                               delta = delta,
                               m_treed = m_treed,
-                              decades = decades); print(paste0(survey, "finished ------ model_0"))
+                              decades = decades); print(paste0("surveyID ",
+                                                               survey,
+                                                               " finished ------ ",
+                                                               model_name))
   }
   if (model_name == "continuous_foi_normal_bi"){
     model_1 <- save_or_read_model(model_name = model_name)
@@ -398,7 +401,10 @@ run_model <- function(model_data,
                               n_thin = n_thin,
                               delta = delta,
                               m_treed = m_treed,
-                              decades = decades); print(paste0(survey, "finished ------ model_1"))
+                              decades = decades); print(paste0("surveyID ",
+                                                               survey,
+                                                               "finished ------ ",
+                                                               model_name))
   }
   if (model_name == "continuous_foi_normal_log"){
     model_2   <- save_or_read_model(model_name = model_name)
@@ -409,9 +415,12 @@ run_model <- function(model_data,
                                   n_thin = n_thin,
                                   delta = delta,
                                   m_treed = m_treed,
-                                  decades = decades); print(paste0(survey, "finished ------ model_2"))
+                                  decades = decades); print(paste0("surveyID ",
+                                                                   survey,
+                                                                   "finished ------ ",
+                                                                   model_name))
   }
-  print(model_object$model_summary)
+  print(t(model_object$model_summary))
   return(model_object)
 }
 
