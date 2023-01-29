@@ -20,7 +20,7 @@ get_table_rhats <- function(model_object) {
 #' Get Model Table Comparison
 #' Provides a table with statistics for comparison between models and selection
 #' @param model_objects_list model_objects to compare
-#' @return compasiron table
+#' @return comparison table
 #' @export
 get_comparison_table <- function(model_objects_list) {
 
@@ -30,7 +30,6 @@ get_comparison_table <- function(model_objects_list) {
 
   dif_m0_m2 <- loo::loo_compare (model_objects_list$m0.loo_fit,
                                  model_objects_list$m2.loo_fit)
-
 
   # Aquí pendiente revisar <diference> desde la función summary_model
   # No estoy segura que este parámetro venga bien desde allá ni tampoco que esté bien acá
@@ -51,8 +50,8 @@ get_comparison_table <- function(model_objects_list) {
   model_objects_list$m2.model_summary$diff_se <- dif_m0_m2[2]
 
   model_comp <- rbind(model_objects_list$m0.model_summary,
-                            model_objects_list$m1.model_summary,
-                            model_objects_list$m2.model_summary)
+                      model_objects_list$m1.model_summary,
+                      model_objects_list$m2.model_summary)
 
   model_comp$converged[model_comp$elpd == -1.000e+10] <- 'No' #
   ds_one <- filter(model_comp, converged == 'Yes')
@@ -77,7 +76,6 @@ get_comparison_table <- function(model_objects_list) {
   model_comp$pvalue <- model_comp$pvalue * runif(NROW(model_comp), min = 1, max = 1.0001)# I make this just to ensure I get different values
   model_comp$pvalue[model_comp$model == 'constant_foi_bi'] <- 0
   model_comp$pvalue <- round(model_comp$pvalue, 6)
-
 
   return(model_comp)
 }
