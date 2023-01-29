@@ -62,15 +62,24 @@ plot_seroprev_fitted(model_0)
 ``` 
 ![](man/figures/plot_seroprev_fitted_example.png)
 
+
 ```
 plot_foi(model_0)
+``` 
+![](man/figures/plot_foi_example.png)
+
+
+```
 plot_rhats(model_0)
 ``` 
+![](man/figures/plot_rhats_example.png)
+
 
 The three plots can be obtained at once with the function `plot_model()`
 ``` r
-plot_model(model_0, size_text = 6)
+plot_model(model_0)
 ```
+![](man/figures/plot_model_example.png)
 
 
 Finally, the package provides a funcion `get_comparison_table()`  allows to compare these three models based on convergence, elpd and p-values
