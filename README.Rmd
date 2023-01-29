@@ -13,7 +13,9 @@ knitr::opts_chunk$set(
 
 ## *serofoi* <img src="man/figures/logo.png" align="right" width="120" />
 
-Estimates the _Force-of-Infection_ of a given pathogen from population based sero-prevalence studies on a bayesian framework. 
+An R package to estimates the *Force-of-Infection* of a given pathogen from population
+based sero-prevalence studies on a Bayesian framework.
+
 
 <!-- badges: start -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

@@ -1,7 +1,7 @@
 ## *serofoi* <img src="man/figures/logo.png" align="right" width="120" />
 
-Estimates the *Force-of-Infection* of a given pathogen from population
-based sero-prevalence studies on a bayesian framework.
+An R package to estimates the *Force-of-Infection* of a given pathogen from population
+based sero-prevalence studies on a Bayesian framework.
 
 <!-- badges: start -->
 
