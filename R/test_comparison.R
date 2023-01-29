@@ -3,6 +3,7 @@ remotes::install_github("TRACE-LAC/serofoi", ref = "dev-zulma")
 library(serofoi)
 
 data_test <- prepare_data(mydata)
+?run_model
 
 # Testing model comparison
 
