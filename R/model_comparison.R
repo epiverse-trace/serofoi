@@ -24,8 +24,24 @@ get_table_rhats <- function(model_object) {
 #' @return compasiron table
 #' @export
 get_comparison_table <- function(model_objects_list) {
-  mod1 <-model_objects_list[1]
-  dif_m0_m1 <- loo_compare (mod_0$loo_fit, mod_1$loo_fit)
+  browser()
+  # mod1 <-model_objects_list[1]
+  dif_m0_m1 <- loo::loo_compare (model_objects_list$m0.loo_fit,
+                            model_objects_list$m1.loo_fit)
+
+  dif_m0_m2 <- loo::loo_compare (model_objects_list$m0.loo_fit,
+                                 model_objects_list$m2.loo_fit)
+
+  model_objects_list$m0.model_summary$difference <- 0
+  model_objects_list$m0.model_summary$diff_se <- 1
+
+  model_objects_list$m1.model_summary$diff_se <- dif_m0_m1[1]
+  model_objects_list$m1.model_summary$diff_se <- dif_m0_m1[2]
+
+  model_objects_list$m2.model_summary$diff_se <- dif_m0_m2[1]
+  model_objects_list$m2.model_summary$diff_se <- dif_m0_m2[2]
+
+
 
 
   return(comparison_table)
