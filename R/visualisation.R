@@ -1,4 +1,35 @@
-#' Generate sero-positivity plot
+#' Generate sero-positivity plot from raw data
+#'
+#' Function that generates the sero positivity plot
+#' @param data_test Object that the prepared data_test
+#' @param xlabel Label of axis x
+#' @param ylabel Label of axis y
+#' @return The sero-positivity plot
+#' @export
+plot_seroprev <- function(data_test, size_text = 6) {
+
+  # OJO!! Aquí está pendiente agregar la función que genera el binned prevalence (revisar plot_seroprev_fitted)
+
+      seroprev_plot <-
+        ggplot2::ggplot (data = data_test)+
+        ggplot2::geom_errorbar(ggplot2::aes(age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper), width = 0.1) +
+        ggplot2::geom_point(ggplot2::aes(age_mean_f, prev_obs), fill = "#7a0177", colour = "black", shape = 21) +
+        ggplot2::theme_bw(size_text) +
+        ggplot2::coord_cartesian(xlim = c(0, 60), ylim = c(0,1)) +
+        ggplot2::theme(legend.position = "none") +
+        ggplot2::ylab("Sero-positivity") + ggplot2::xlab("Age")
+
+
+
+  return(seroprev_plot)
+
+}
+
+
+
+
+
+#' Generate sero-positivity plot with fitted model
 #'
 #' Function that generates the sero positivity plot
 #' @param model_object Object that the run_model function returns with the results of the fit
