@@ -50,7 +50,7 @@ library(serofoi)
 data_test <- prepare_data(mydata)
 
 
-# Current verson of the package runs three different models of the FoI
+# Current version of the package runs three different models of the FoI
 
 # Constant Force-of-Infection with a binomial distribution
 model_0 <- run_model(model_data = data_test,
