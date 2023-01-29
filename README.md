@@ -22,69 +22,61 @@ You can install the **development version** of `serofoi` from
 ``` r
 # install.packages("remotes")
 remotes::install_github("TRACE-LAC/serofoi")
+library(serofoi)
 ```
 
 ## Quick start
 
 These examples illustrate some of the current functionalities:
 
-```{r example}
-
-##library(serofoi)
-
-remotes::install_github("TRACE-LAC/serofoi", ref = "dev-zulma", force = TRUE)
-
-library(serofoi)
-```
-
 The function `prepare_data()` helps the user to prepare the data set for the use of `serofoi` package
 
-```
+``` r
 data_test <- prepare_data(mydata)
 head(data_test)
-
 ```
 
+Current version of the package runs three different models of the FoI. The function `run_model()` allows to choose betwwen three different models.
 
 
-````
-
-
-
-
-# Current version of the package runs three different models of the FoI
-
-# Constant Force-of-Infection with a binomial distribution
+- Constant Force-of-Infection with a binomial distribution
+``` r
 model_0 <- run_model(model_data = data_test,
                      model_name = "constant_foi_bi")
+``` 
 
-# Time-varying Force-of-Infection with a prior normal-binomial distribution
+- Time-varying Force-of-Infection with a prior normal-binomial distribution
+``` r
 model_1 <- run_model(model_data = data_test,
                      model_name = "continuous_foi_normal_bi")
+```
 
-# Time-varying Force-of-Infection with a prior normal-log distribution
+- Time-varying Force-of-Infection with a prior normal-log distribution
+``` r
 model_2 <- run_model(model_data = data_test,
                      model_name = "continuous_foi_normal_log")
+``` 
 
+For each model, there are three plotting functions:
 
-# For each model, you can use ploting functions such as
+``` r
 plot_model(model_0, size_text = 6)
 plot_seroprev(model_0, size_text = 6)
 plot_foi(model_0, size_text = 6)
 plot_rhats(model_0, size_text = 6)
-extract_summary_model(model_0)
 
-# You can compare these three models based on convergence, elpd and p-values
+``` 
+
+Finally, the package provides a funcion `get_comparison_table()`  allows to compare these three models based on convergence, elpd and p-values
+
+``` r
 comp_table <- get_comparison_table(
   model_objects_list = c(m0 = model_0,
                          m1 = model_1,
                          m2 = model_2))
+                         
+``` 
 
-
-
-
-
-```
 
 
 
@@ -97,13 +89,18 @@ package is not ready for use outside of the development team.
 
 ### Contributions
 
-Contributions are welcome via [pull
-requests](https://github.com/TRACE-LAC/serofoi/pulls).
-
 Contributors to the project include:
 
 - [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author)
-- [Miguel Gamez](https://github.com/megamezl) (author)
+- [Nicolás Tórres](https://github.com/ntorresd) (author)
+- Benjamin Lambert (author)
+- Pierre Nouvellet (author)
+- [Miguel Gamez](https://github.com/megamezl) (contributor)
+- [Geraldine Gómez](https://github.com/GeraldineGomez) (contributor)
+
+Contributions are welcome via [pull
+requests](https://github.com/TRACE-LAC/serofoi/pulls).
+
 
 ### Code of Conduct
 
