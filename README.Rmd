@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## *serofoi* <img src="man/figures/logo.png" align="right" width="120" />
+## *serofoi* <img src="man/figures/serofoi-logo.png" align="right" width="120" />
 
 An R package to estimates the *Force-of-Infection* of a given pathogen from population
 based sero-prevalence studies on a Bayesian framework.
@@ -56,7 +56,14 @@ Contributions are welcome via [pull requests](https://github.com/TRACE-LAC/serof
 Contributors to the project include:
 
 - [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author)
-- [Miguel Gamez](https://github.com/megamezl) (author)
+- [Nicolás Tórres] (author)
+- [Benjamin Lambert] (author)
+- [Pierre Nouvellet] (author)
+
+
+- [Miguel Gamez](https://github.com/megamezl) (contributor)
+- [Geraldine Gómez](https://github.com/megamezl) (contributor)
+
 
 ### Code of Conduct
 Please note that the linelist project is released with a 

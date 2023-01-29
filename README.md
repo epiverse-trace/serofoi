@@ -1,7 +1,8 @@
-## *serofoi* <img src="man/figures/logo.png" align="right" width="120" />
 
-An R package to estimates the *Force-of-Infection* of a given pathogen from population
-based sero-prevalence studies on a Bayesian framework.
+## *serofoi* <img src="man/figures/serofoi-logo.png" align="right" width="120" />
+
+An R package to estimates the *Force-of-Infection* of a given pathogen
+from population based sero-prevalence studies on a Bayesian framework.
 
 <!-- badges: start -->
 
@@ -45,8 +46,8 @@ requests](https://github.com/TRACE-LAC/serofoi/pulls).
 
 Contributors to the project include:
 
--   [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author)
--   [Miguel Gamez](https://github.com/megamezl) (author)
+- [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author)
+- [Miguel Gamez](https://github.com/megamezl) (author)
 
 ### Code of Conduct
 
