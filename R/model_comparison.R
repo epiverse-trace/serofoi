@@ -6,13 +6,13 @@
 #' @return rhats table
 #' @export
 get_table_rhats <- function(model_object) {
-
   rhats <- bayesplot::rhat(model_object$fit, "foi")
 
   if (any(is.nan(rhats))) {
-    rhats[which(is.nan(rhats))] <- 0}
+    rhats[which(is.nan(rhats))] <- 0
+  }
   model_rhats <- data.frame(year = model_object$real_yexpo, rhat = rhats)
-  model_rhats$rhat[model_rhats$rhat == 0] <- NA # This is because I'm not estimating these foi values
+  model_rhats$rhat[model_rhats$rhat == 0] <- NA
 
   return(model_rhats)
 }

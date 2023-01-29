@@ -37,8 +37,7 @@ remotes::install_github("TRACE-LAC/serofoi")
 These examples illustrate some of the current functionalities:
 
 ```{r example}
-##library(serofoi)
-
+## library(serofoi)
 ```
 
 ### Lifecycle

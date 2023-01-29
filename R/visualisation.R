@@ -9,10 +9,8 @@
 #' @export
 plot_seroprev <- function(model_object,
                           size_text = 25) {
-
-  if (is.character(model_object$fit) == FALSE)  {
-    if  (class(model_object$fit@sim$samples)  != "NULL" ) {
-
+  if (is.character(model_object$fit) == FALSE) {
+    if (class(model_object$fit@sim$samples) != "NULL") {
       foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]
       prev_expanded <- get_prev_expanded(foi, model_data = model_object$model_data)
 
@@ -23,28 +21,29 @@ plot_seroprev <- function(model_object,
         ggplot2::geom_errorbar(ggplot2::aes(age, ymin = p_obs_bin_l, ymax = p_obs_bin_u), width = 0.1) +
         ggplot2::geom_point(ggplot2::aes(age, p_obs_bin, size = bin_size), fill = "#7a0177", colour = "black", shape = 21) +
         ggplot2::theme_bw(size_text) +
-        ggplot2::coord_cartesian(xlim = c(0, 60), ylim = c(0,1)) +
+        ggplot2::coord_cartesian(xlim = c(0, 60), ylim = c(0, 1)) +
         ggplot2::theme(legend.position = "none") +
-        ggplot2::ylab("Sero-positivity") + ggplot2::xlab("Age")
-
-    } } else
-
-    {
-      print("model did not run")
-      print_warning <- "errors"
-      df <- data.frame()
-
-      prev_plot <-  ggplot2::ggplot(df) + ggplot2::geom_point() + ggplot2::xlim(0, 10) + ggplot2::ylim(0, 10) +
-                    ggplot2::annotate("text", x = 4, y = 5, label = print_warning) +
-                    ggplot2::theme_bw(25) +
-                    ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank()) +
-                    ggplot2::ylab(" ") + ggplot2::xlab(" ")
-                    ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
-
+        ggplot2::ylab("Sero-positivity") +
+        ggplot2::xlab("Age")
     }
+  } else {
+    print("model did not run")
+    print_warning <- "errors"
+    df <- data.frame()
+
+    prev_plot <- ggplot2::ggplot(df) +
+      ggplot2::geom_point() +
+      ggplot2::xlim(0, 10) +
+      ggplot2::ylim(0, 10) +
+      ggplot2::annotate("text", x = 4, y = 5, label = print_warning) +
+      ggplot2::theme_bw(25) +
+      ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank()) +
+      ggplot2::ylab(" ") +
+      ggplot2::xlab(" ")
+    ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
+  }
 
   return(prev_plot)
-
 }
 
 #' Generate Force-of-Infection Plot
@@ -60,13 +59,12 @@ plot_foi <- function(model_object,
                      lambda_sim = NA,
                      max_lambda = NA,
                      size_text = 25) {
-
-  if (is.character(model_object$fit) == FALSE)  {
-    if  (class(model_object$fit@sim$samples)  != "NULL" ) {
-
+  if (is.character(model_object$fit) == FALSE) {
+    if (class(model_object$fit@sim$samples) != "NULL") {
       foi <- rstan::extract(model_object$fit,
-                            "foi",
-                            inc_warmup = FALSE)[[1]]
+        "foi",
+        inc_warmup = FALSE
+      )[[1]]
 
       #-------- This bit is to get the actual length of the foi data
       foi_data <- model_object$foi_cent_est
@@ -81,7 +79,6 @@ plot_foi <- function(model_object,
         }
 
         foi_data$simulated <- lambda_sim
-
       }
 
       #--------
@@ -92,30 +89,30 @@ plot_foi <- function(model_object,
       foi_plot <-
         ggplot2::ggplot(foi_data) +
         ggplot2::geom_ribbon(ggplot2::aes(x = year, ymin = lower, ymax = upper), fill = "#41b6c4", alpha = 0.5) +
-        ggplot2::geom_line(ggplot2::aes(x = year, y = medianv), colour = "#253494", size = size_text/8) +
+        ggplot2::geom_line(ggplot2::aes(x = year, y = medianv), colour = "#253494", size = size_text / 8) +
         ggplot2::theme_bw(size_text) +
         ggplot2::coord_cartesian(ylim = c(0, max_lambda)) +
-        ggplot2::ylab("Force-of-Infection") + ggplot2::xlab("Year")
-      }
-
-    } else
-
-    {
-      print("model did not run")
-      print_warning <- "errors"
-      df <- data.frame()
-
-      foi_plot <- ggplot2::ggplot(df) + ggplot2::geom_point() + ggplot2::xlim(0, 10) + ggplot2::ylim(0, 10) +
-                  ggplot2::annotate("text", x = 4, y = 5, label = print_warning) +
-                  ggplot2::theme_bw(25) +
-                  ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank()) +
-                  ggplot2::ylab(" ") + ggplot2::xlab(" ")
-                  ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
-
+        ggplot2::ylab("Force-of-Infection") +
+        ggplot2::xlab("Year")
     }
+  } else {
+    print("model did not run")
+    print_warning <- "errors"
+    df <- data.frame()
+
+    foi_plot <- ggplot2::ggplot(df) +
+      ggplot2::geom_point() +
+      ggplot2::xlim(0, 10) +
+      ggplot2::ylim(0, 10) +
+      ggplot2::annotate("text", x = 4, y = 5, label = print_warning) +
+      ggplot2::theme_bw(25) +
+      ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank()) +
+      ggplot2::ylab(" ") +
+      ggplot2::xlab(" ")
+    ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
+  }
 
   return(foi_plot)
-
 }
 
 #' Generate Rhats-Convergence Plot
@@ -129,38 +126,36 @@ plot_foi <- function(model_object,
 #' @export
 plot_rhats <- function(model_object,
                        size_text = 25) {
-
-  if (is.character(model_object$fit) == FALSE)  {
-    if  (class(model_object$fit@sim$samples)  != "NULL" ) {
-
+  if (is.character(model_object$fit) == FALSE) {
+    if (class(model_object$fit@sim$samples) != "NULL") {
       rhats <- get_table_rhats(model_object)
 
       rhats_plot <- ggplot2::ggplot(rhats, ggplot2::aes(year, rhat)) +
-                    ggplot2::geom_line(colour = "purple") +
-                    ggplot2::geom_point() +
-                    ggplot2::coord_cartesian(ylim = c(0.7, 2)) +
-                    ggplot2::geom_hline(yintercept = 1.1, colour = "blue", size = size_text/12) +
-                    ggplot2::theme_bw(size_text) +
-                    ggplot2::ylab("Convergence (R^)")
-
-    } } else
-
-    {
-      print("model did not run")
-      print_warning <- "errors"
-      df <- data.frame()
-
-      rhats_plot <- ggplot2::ggplot(df) + ggplot2::geom_point() + ggplot2::xlim(0, 10) + ggplot2::ylim(0, 10) +
-        ggplot2::annotate("text", x = 4, y = 5, label = print_warning) +
-        ggplot2::theme_bw(25) +
-        ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank()) +
-        ggplot2::ylab(" ") + ggplot2::xlab(" ")
-      ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
-
+        ggplot2::geom_line(colour = "purple") +
+        ggplot2::geom_point() +
+        ggplot2::coord_cartesian(ylim = c(0.7, 2)) +
+        ggplot2::geom_hline(yintercept = 1.1, colour = "blue", size = size_text / 12) +
+        ggplot2::theme_bw(size_text) +
+        ggplot2::ylab("Convergence (R^)")
     }
+  } else {
+    print("model did not run")
+    print_warning <- "errors"
+    df <- data.frame()
+
+    rhats_plot <- ggplot2::ggplot(df) +
+      ggplot2::geom_point() +
+      ggplot2::xlim(0, 10) +
+      ggplot2::ylim(0, 10) +
+      ggplot2::annotate("text", x = 4, y = 5, label = print_warning) +
+      ggplot2::theme_bw(25) +
+      ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank()) +
+      ggplot2::ylab(" ") +
+      ggplot2::xlab(" ")
+    ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
+  }
 
   return(rhats_plot)
-
 }
 
 
@@ -177,50 +172,57 @@ plot_model <- function(model_object,
                        lambda_sim = NA,
                        max_lambda = NA,
                        size_text = 25) {
+  if (is.character(model_object$fit) == FALSE) {
+    if (class(model_object$fit@sim$samples) != "NULL") {
+      prev_plot <- plot_seroprev(
+        model_object = model_object,
+        size_text = size_text
+      )
 
-  if (is.character(model_object$fit) == FALSE)  {
-    if  (class(model_object$fit@sim$samples)  != "NULL" ) {
-      prev_plot <- plot_seroprev(model_object = model_object,
-                                 size_text = size_text)
+      foi_plot <- plot_foi(
+        model_object = model_object,
+        lambda_sim = lambda_sim,
+        max_lambda = max_lambda,
+        size_text = size_text
+      )
 
-      foi_plot <- plot_foi(model_object = model_object,
-                          lambda_sim = lambda_sim,
-                          max_lambda = max_lambda,
-                          size_text = size_text)
-
-      rhats_plot <- plot_rhats(model_object = model_object,
-                              size_text = size_text)
+      rhats_plot <- plot_rhats(
+        model_object = model_object,
+        size_text = size_text
+      )
 
       summary_plot <- plot_info_table(t(model_object$model_summary), size_text = size_text)
 
       plot_arrange <- gridExtra::grid.arrange(summary_plot,
-                                              prev_plot,
-                                              foi_plot,
-                                              rhats_plot, nrow = 4,
-                                              heights = c(1.5, 1, 1, 1))
-
-    } } else
-
-    {
-      print("model did not run")
-      print_warning <- "errors"
-      df <- data.frame()
-
-      g0 <- ggplot2::ggplot(df) + ggplot2::geom_point() + ggplot2::xlim(0, 10) + ggplot2::ylim(0, 10) +
-        ggplot2::annotate("text", x = 4, y = 5, label = print_warning) +
-        ggplot2::theme_bw(25) +
-        ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank()) +
-        ggplot2::ylab(" ") + ggplot2::xlab(" ")
-      g1 <- g0
-      g0 <- g0 + ggplot2::labs(subtitle = model_object$model) +
-        ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
-
-      plot_arrange <- gridExtra::grid.arrange(g0, g1, g1, g1, g1, nrow = 5)
-
+        prev_plot,
+        foi_plot,
+        rhats_plot,
+        nrow = 4,
+        heights = c(1.5, 1, 1, 1)
+      )
     }
+  } else {
+    print("model did not run")
+    print_warning <- "errors"
+    df <- data.frame()
+
+    g0 <- ggplot2::ggplot(df) +
+      ggplot2::geom_point() +
+      ggplot2::xlim(0, 10) +
+      ggplot2::ylim(0, 10) +
+      ggplot2::annotate("text", x = 4, y = 5, label = print_warning) +
+      ggplot2::theme_bw(25) +
+      ggplot2::theme(axis.text.x = ggplot2::element_blank(), axis.text.y = ggplot2::element_blank()) +
+      ggplot2::ylab(" ") +
+      ggplot2::xlab(" ")
+    g1 <- g0
+    g0 <- g0 + ggplot2::labs(subtitle = model_object$model) +
+      ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
+
+    plot_arrange <- gridExtra::grid.arrange(g0, g1, g1, g1, g1, nrow = 5)
+  }
 
   return(plot_arrange)
-
 }
 
 
@@ -232,17 +234,16 @@ plot_model <- function(model_object,
 #' @param size_text text size
 #' @return The previous expanded graphic
 #' @export
-plot_info_table <- function(info, size_text){
-
+plot_info_table <- function(info, size_text) {
   dato <- data.frame(
-    y = NROW(info):1,
-    text = paste0(rownames(info), ": ",info[,1])
+    y = NROW(info):seq_len(1),
+    text = paste0(rownames(info), ": ", info[, 1])
   )
   p <- ggplot2::ggplot(dato, ggplot2::aes(x = 1, y = y)) +
     ggplot2::scale_y_continuous(limits = c(0, NROW(info) + 1), breaks = NULL) +
     # scale_x_continuous(breaks=NULL) +
     ggplot2::theme_void() +
-    ggplot2::geom_text(ggplot2::aes(label = text), size = size_text/2.5, fontface = "bold")
+    ggplot2::geom_text(ggplot2::aes(label = text), size = size_text / 2.5, fontface = "bold")
 
   return(p)
 }
