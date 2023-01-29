@@ -7,8 +7,8 @@
 #' @param ylabel Label of axis y
 #' @return The sero-positivity plot
 #' @export
-plot_seroprev <- function(model_object,
-                          size_text = 25) {
+plot_seroprev_fitted <- function(model_object,
+                          size_text = 6) {
 
   if (is.character(model_object$fit) == FALSE)  {
     if  (class(model_object$fit@sim$samples)  != "NULL" ) {

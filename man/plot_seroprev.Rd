@@ -2,14 +2,12 @@
 % Please edit documentation in R/visualisation.R
 \name{plot_seroprev}
 \alias{plot_seroprev}
-\title{Generate sero-positivity plot}
+\title{Generate sero-positivity plot of raw data}
 \usage{
-plot_seroprev(model_object, size_text = 25)
+plot_seroprev(data_test)
 }
 \arguments{
-\item{model_object}{Object that the run_model function returns with the results of the fit}
-
-\item{model}{Refers to the model selected}
+\item{data_test}{Object with raw data}
 
 \item{xlabel}{Label of axis x}
 
@@ -19,5 +17,5 @@ plot_seroprev(model_object, size_text = 25)
 The sero-positivity plot
 }
 \description{
-Function that generates the sero positivity plot
+Function that generates the sero positivity plot of raw data
 }

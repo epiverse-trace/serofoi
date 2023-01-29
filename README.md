@@ -1,8 +1,7 @@
 
-## *serofoi* <img src="man/figures/serofoi-logo.png" align="right" width="120" />
+## *serofoi*<img src="man/figures/serofoi-logo.png" align="right" width="120" />
 
-An R package to estimates the *Force-of-Infection* of a given pathogen
-from population based sero-prevalence studies on a Bayesian framework.
+__serofoi version 0.1.0__ is an R package to estimate the *Force-of-Infection* of a given pathogen from population based sero-prevalence studies on a Bayesian framework.
 
 <!-- badges: start -->
 
@@ -29,7 +28,7 @@ library(serofoi)
 
 These examples illustrate some of the current functionalities:
 
-The function `prepare_data()` helps the user to prepare the data set for the use of `serofoi` package
+The function `prepare_data()` helps the user to prepare the dataset for the use of `serofoi` package
 
 ``` r
 data_test <- prepare_data(mydata)
@@ -58,14 +57,21 @@ model_2 <- run_model(model_data = data_test,
 ``` 
 
 For each model, there are three plotting functions:
+```
+plot_seroprev_fitted(model_0)
+``` 
+![](man/figures/plot_seroprev_fitted_example.png)
 
+```
+plot_foi(model_0)
+plot_rhats(model_0)
+``` 
+
+The three plots can be obtained at once with the function `plot_model()`
 ``` r
 plot_model(model_0, size_text = 6)
-plot_seroprev(model_0, size_text = 6)
-plot_foi(model_0, size_text = 6)
-plot_rhats(model_0, size_text = 6)
+```
 
-``` 
 
 Finally, the package provides a funcion `get_comparison_table()`  allows to compare these three models based on convergence, elpd and p-values
 
