@@ -35,10 +35,21 @@ These examples illustrate some of the current functionalities:
 remotes::install_github("TRACE-LAC/serofoi", ref = "dev-zulma", force = TRUE)
 
 library(serofoi)
+```
 
-# Prepare the data for using serofoi
+The function `prepare_data()` helps the user to prepare the data set for the use of `serofoi` package
 
+```
 data_test <- prepare_data(mydata)
+head(data_test)
+
+```
+
+
+
+````
+
+
 
 
 # Current version of the package runs three different models of the FoI
