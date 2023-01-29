@@ -41,6 +41,47 @@ These examples illustrate some of the current functionalities:
 ```{r example}
 ##library(serofoi)
 
+remotes::install_github("TRACE-LAC/serofoi", ref = "dev-zulma", force = TRUE)
+
+library(serofoi)
+
+# Prepare the data for using serofoi
+
+data_test <- prepare_data(mydata)
+
+
+# Current verson of the package runs three different models of the FoI
+
+# Constant Force-of-Infection with a binomial distribution
+model_0 <- run_model(model_data = data_test,
+                     model_name = "constant_foi_bi")
+
+# Time-varying Force-of-Infection with a prior normal-binomial distribution
+model_1 <- run_model(model_data = data_test,
+                     model_name = "continuous_foi_normal_bi")
+
+# Time-varying Force-of-Infection with a prior normal-log distribution
+model_2 <- run_model(model_data = data_test,
+                     model_name = "continuous_foi_normal_log")
+
+
+# For each model, you can use ploting functions such as
+plot_model(model_0, size_text = 6)
+plot_seroprev(model_0, size_text = 6)
+plot_foi(model_0, size_text = 6)
+plot_rhats(model_0, size_text = 6)
+extract_summary_model(model_0)
+
+# You can compare these three models based on convergence, elpd and p-values
+comp_table <- get_comparison_table(
+  model_objects_list = c(m0 = model_0,
+                         m1 = model_1,
+                         m2 = model_2))
+
+
+
+
+
 ```
 
 ### Lifecycle
