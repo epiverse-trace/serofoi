@@ -17,15 +17,13 @@ get_table_rhats <- function(model_object) {
 }
 
 
-#' Get Model Comparison
-#'
-#' Function that provides a statisctica comparison between models
-#' @param model_objects_list model_objects to compare
-#' @return compasiron table
+#' Get Model Table Comparison
+#' Provides a table with statistics for comparison between models
+#' @param model_objects_list model_objects to compare within a list
+#' @return comparison table
 #' @export
 get_comparison_table <- function(model_objects_list) {
-  browser()
-  # mod1 <-model_objects_list[1]
+
   dif_m0_m1 <- loo::loo_compare (model_objects_list$m0.loo_fit,
                             model_objects_list$m1.loo_fit)
 
@@ -35,14 +33,49 @@ get_comparison_table <- function(model_objects_list) {
   model_objects_list$m0.model_summary$difference <- 0
   model_objects_list$m0.model_summary$diff_se <- 1
 
-  model_objects_list$m1.model_summary$diff_se <- dif_m0_m1[1]
+  model_objects_list$m1.model_summary$difference <- dif_m0_m1[1]
   model_objects_list$m1.model_summary$diff_se <- dif_m0_m1[2]
 
-  model_objects_list$m2.model_summary$diff_se <- dif_m0_m2[1]
+  model_objects_list$m2.model_summary$difference <- dif_m0_m2[1]
   model_objects_list$m2.model_summary$diff_se <- dif_m0_m2[2]
 
-
+  comparison_table <- rbind(model_objects_list$m0.model_summary,
+                            model_objects_list$m1.model_summary,
+                            model_objects_list$m2.model_summary)
 
 
   return(comparison_table)
 }
+
+
+#' Select best model
+#' Frovides an authomated selection of best model based on statistic parameters
+#' @param model_objects_list model_objects to compare
+#' @return compasiron table
+#' @export
+get_comparison_table <- function(model_objects_list) {
+
+  dif_m0_m1 <- loo::loo_compare (model_objects_list$m0.loo_fit,
+                                 model_objects_list$m1.loo_fit)
+
+  dif_m0_m2 <- loo::loo_compare (model_objects_list$m0.loo_fit,
+                                 model_objects_list$m2.loo_fit)
+
+  model_objects_list$m0.model_summary$difference <- 0
+  model_objects_list$m0.model_summary$diff_se <- 1
+
+  model_objects_list$m1.model_summary$difference <- dif_m0_m1[1]
+  model_objects_list$m1.model_summary$diff_se <- dif_m0_m1[2]
+
+  model_objects_list$m2.model_summary$difference <- dif_m0_m2[1]
+  model_objects_list$m2.model_summary$diff_se <- dif_m0_m2[2]
+
+  comparison_table <- rbind(model_objects_list$m0.model_summary,
+                            model_objects_list$m1.model_summary,
+                            model_objects_list$m2.model_summary)
+
+
+  return(comparison_table)
+}
+
+
