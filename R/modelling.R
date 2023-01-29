@@ -359,14 +359,14 @@ save_or_read_model <- function(model_name="constant_foi_bi") {
 
 #' Run model
 #' Runs a pre-specified stan model for the force-of-infection
-#' @param model_data a dataframe after using prepare_data function
+#' @param model_data a dataframe after using <prepare_data> function
 #' @param model_name name of the model selected. Current version provides three options:
 #' <constant_foi_bi>, <continuous_foi_normal_bi> and <continuous_foi_normal_log>
 #' @param n_iters number of iterations. There is a default value by model type.
 #' @return model_object which is a list of various objects including stan objects and others
 #' @export
 run_model <- function(model_data,
-                      model_name="constant_foi_bi",
+                      model_name = "constant_foi_bi",
                       n_iters = 1000,
                       n_thin = 2,
                       delta = 0.90,
