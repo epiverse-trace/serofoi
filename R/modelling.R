@@ -53,12 +53,11 @@ get_prev_expanded <- function(foi,
     prev_pn[i, ] <- 1 - exp(-exposure_expanded %*% foi_expanded[i, ])
   }
 
-  lower <- apply(prev_pn, 2, function(x)
-    quantile(x, 0.1))
-  upper <- apply(prev_pn, 2, function(x)
-    quantile(x, 0.9))
-  medianv <- apply(prev_pn, 2, function(x)
-    quantile(x, 0.5))
+  lower <- apply(prev_pn, 2, function(x) quantile(x, 0.1))
+
+  upper <- apply(prev_pn, 2, function(x) quantile(x, 0.9))
+
+  medianv <- apply(prev_pn, 2, function(x) quantile(x, 0.5))
 
   predicted_prev <- data.frame(
     age = 1:80,
@@ -145,8 +144,7 @@ make_yexpo <- function(model_data) {
 #' @export
 get_posterior_summary <- function(model_objects_chain) {
   model_object <- sapply(model_objects_chain,
-                         function(i)
-                           c(quantile(i, c(0.5, 0.025, 0.975))))
+                         function(i) c(quantile(i, c(0.5, 0.025, 0.975))))
   row.names(model_object) <- c("Median", "Lower", "Upper")
   return(model_object)
 }
@@ -217,12 +215,11 @@ fit_model <- function(model,
     # generates central estimations
     foi_cent_est <- data.frame(
       year = real_yexpo,
-      lower = apply(foi, 2, function(x)
-        quantile(x, 0.05)),
-      upper = apply(foi, 2, function(x)
-        quantile(x, 0.95)),
-      medianv = apply(foi, 2, function(x)
-        quantile(x, 0.5))
+      lower = apply(foi, 2, function(x) quantile(x, 0.05)),
+
+      upper = apply(foi, 2, function(x) quantile(x, 0.95)),
+
+      medianv = apply(foi, 2, function(x) quantile(x, 0.5))
     )
 
 
@@ -339,12 +336,11 @@ fit_model_log <- function(model,
 
     foi_cent_est <- data.frame(
       year = real_yexpo,
-      lower = apply(foi, 2, function(x)
-        quantile(x, 0.1)),
-      upper = apply(foi, 2, function(x)
-        quantile(x, 0.9)),
-      medianv = apply(foi, 2, function(x)
-        quantile(x, 0.5))
+      lower = apply(foi, 2, function(x) quantile(x, 0.1)),
+
+      upper = apply(foi, 2, function(x) quantile(x, 0.9)),
+
+      medianv = apply(foi, 2, function(x) quantile(x, 0.5))
     )
 
     foi_post_s <- dplyr::sample_n(as.data.frame(foi), size = 1000)
