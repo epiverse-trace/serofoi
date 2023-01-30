@@ -1,0 +1,12 @@
+services:
+  rtest:
+    # container_name: rtest
+    # build: ./test_image
+    image: rocker/tidyverse:4.2.2
+    environment:
+      - PASSWORD=b096e0aace4912c8
+    ports:
+      - 8787:8787
+    # volumes:
+    #   - ./volumes/.rstudio_config:/home/rstudio/.config/rstudio
+    #   - ./volumes/workspace:/home/rstudio/workspace
