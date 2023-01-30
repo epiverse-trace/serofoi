@@ -211,7 +211,7 @@ plot_model <- function(model_object,
 
   if (is.character(model_object$fit) == FALSE)  {
     if  (class(model_object$fit@sim$samples)  != "NULL" ) {
-      prev_plot <- plot_seroprev(model_object = model_object,
+      prev_plot <- plot_seroprev(data_test = model_object,
                                  size_text = size_text)
 
       foi_plot <- plot_foi(model_object = model_object,

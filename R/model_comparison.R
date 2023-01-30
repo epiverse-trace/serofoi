@@ -25,10 +25,10 @@ get_table_rhats <- function(model_object) {
 get_comparison_table <- function(model_objects_list) {
 
 
-  dif_m0_m1 <- loo::loo_compare (model_objects_list$m0.loo_fit,
+  dif_m0_m1 <- loo::loo_compare(model_objects_list$m0.loo_fit,
                                  model_objects_list$m1.loo_fit)
 
-  dif_m0_m2 <- loo::loo_compare (model_objects_list$m0.loo_fit,
+  dif_m0_m2 <- loo::loo_compare(model_objects_list$m0.loo_fit,
                                  model_objects_list$m2.loo_fit)
 
   # Aquí pendiente revisar <diference> desde la función summary_model
@@ -59,7 +59,7 @@ get_comparison_table <- function(model_objects_list) {
 
   # Ordering the best model based on elpd values
   elps_order <-  rev(sort(ds_one$elpd))
-  best <- dplyr::filter(model_comp, elpd %in% elps_order) %>% dplyr::arrange(-elpd)# This is to make sure I keep only three
+  best <- dplyr::filter(model_comp, elpd %in% elps_order) %>% dplyr::arrange(-.data$elpd)# This is to make sure I keep only three
   best_model1 <- as.character(best$model[1])
   best_model2 <- as.character(best$model[2])
   best_model3 <- as.character(best$model[3])
@@ -68,7 +68,7 @@ get_comparison_table <- function(model_objects_list) {
   model_comp$best_elpd[model_comp$model == best_model1] <- 1
   model_comp$best_elpd[model_comp$model == best_model2] <- 2
   model_comp$best_elpd[model_comp$model == best_model3] <- 3
-  model_comp <- model_comp %>% dplyr::arrange(best_elpd)
+  model_comp <- model_comp %>% dplyr::arrange(.data$best_elpd)
 
   # Estimating p-values to check the difference between the models m0 and other models is actually important
   model_comp <- model_comp %>% dplyr::mutate(pvalue = 1 - stats::pnorm(difference/diff_se,0,1))
