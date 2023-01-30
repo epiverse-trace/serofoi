@@ -54,12 +54,12 @@ get_comparison_table <- function(model_objects_list) {
                       model_objects_list$m2.model_summary)
 
   model_comp$converged[model_comp$elpd == -1.000e+10] <- 'No' #
-  ds_one <- filter(model_comp, converged == 'Yes')
+  ds_one <- dplyr::filter(model_comp, converged == 'Yes')
   print(paste0('number of converged models = ', NROW(ds_one)))
 
   # Ordering the best model based on elpd values
   elps_order <-  rev(sort(ds_one$elpd))
-  best <- filter(model_comp, elpd %in% elps_order) %>% arrange(-elpd)# This is to make sure I keep only three
+  best <- dplyr::filter(model_comp, elpd %in% elps_order) %>% dplyr::arrange(-elpd)# This is to make sure I keep only three
   best_model1 <- as.character(best$model[1])
   best_model2 <- as.character(best$model[2])
   best_model3 <- as.character(best$model[3])
@@ -68,16 +68,14 @@ get_comparison_table <- function(model_objects_list) {
   model_comp$best_elpd[model_comp$model == best_model1] <- 1
   model_comp$best_elpd[model_comp$model == best_model2] <- 2
   model_comp$best_elpd[model_comp$model == best_model3] <- 3
-  model_comp <- model_comp %>% arrange(best_elpd)
+  model_comp <- model_comp %>% dplyr::arrange(best_elpd)
 
   # Estimating p-values to check the difference between the models m0 and other models is actually important
-  model_comp <- model_comp %>% mutate (pvalue = 1- pnorm(difference/diff_se,0,1))
+  model_comp <- model_comp %>% dplyr::mutate(pvalue = 1 - stats::pnorm(difference/diff_se,0,1))
   model_comp$pvalue[is.nan(model_comp$pvalue)] <- 1
-  model_comp$pvalue <- model_comp$pvalue * runif(NROW(model_comp), min = 1, max = 1.0001)# I make this just to ensure I get different values
+  model_comp$pvalue <- model_comp$pvalue * stats::runif(NROW(model_comp), min = 1, max = 1.0001)# I make this just to ensure I get different values
   model_comp$pvalue[model_comp$model == 'constant_foi_bi'] <- 0
   model_comp$pvalue <- round(model_comp$pvalue, 6)
 
   return(model_comp)
 }
-
-

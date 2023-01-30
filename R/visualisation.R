@@ -11,7 +11,7 @@ plot_seroprev <- function(data_test, size_text = 6) {
   # OJO!! Aquí está pendiente agregar la función que genera el binned prevalence (revisar plot_seroprev_fitted)
 
       seroprev_plot <-
-        ggplot2::ggplot (data = data_test)+
+        ggplot2::ggplot(data = data_test) +
         ggplot2::geom_errorbar(ggplot2::aes(age_mean_f, ymin = prev_obs_lower, ymax = prev_obs_upper), width = 0.1) +
         ggplot2::geom_point(ggplot2::aes(age_mean_f, prev_obs), fill = "#7a0177", colour = "black", shape = 21) +
         ggplot2::theme_bw(size_text) +
