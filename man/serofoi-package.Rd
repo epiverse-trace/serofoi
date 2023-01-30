@@ -6,6 +6,6 @@
 \alias{serofoi-package}
 \title{serofoi: Estimates the Force-of-Infection of a given pathogen from population based sero-prevalence studies.}
 \description{
-Provides functions for estimate the Force-of-Infection of a given pathogen from population based sero-prevalence studies on a bayesian framework.
+R package to estimate time-varying Force-of-Infection of a given pathogen from population based sero-prevalence studies on a bayesian framework.
 }
 \keyword{internal}

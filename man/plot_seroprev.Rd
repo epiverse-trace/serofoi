@@ -2,12 +2,12 @@
 % Please edit documentation in R/visualisation.R
 \name{plot_seroprev}
 \alias{plot_seroprev}
-\title{Generate sero-positivity plot of raw data}
+\title{Generate sero-positivity plot from raw data}
 \usage{
-plot_seroprev(data_test)
+plot_seroprev(data_test, size_text = 6)
 }
 \arguments{
-\item{data_test}{Object with raw data}
+\item{data_test}{Object that the prepared data_test}
 
 \item{xlabel}{Label of axis x}
 
@@ -17,5 +17,5 @@ plot_seroprev(data_test)
 The sero-positivity plot
 }
 \description{
-Function that generates the sero positivity plot of raw data
+Function that generates the sero positivity plot
 }

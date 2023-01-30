@@ -4,7 +4,7 @@
 \alias{plot_seroprev_fitted}
 \title{Generate sero-positivity plot with fitted model}
 \usage{
-plot_seroprev(model_object)
+plot_seroprev_fitted(model_object, size_text = 6)
 }
 \arguments{
 \item{model_object}{Object that the run_model function returns with the results of the fit}
@@ -16,8 +16,8 @@ plot_seroprev(model_object)
 \item{ylabel}{Label of axis y}
 }
 \value{
-The sero-positivity fitted model plot
+The sero-positivity plot
 }
 \description{
-Function that generates the sero positivity plot of the fitted model
+Function that generates the sero positivity plot
 }
