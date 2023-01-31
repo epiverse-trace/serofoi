@@ -15,5 +15,5 @@ get_prev_expanded(foi, model_data)
 prev_final
 }
 \description{
-Function that obtains the expanded prevalence
+Function that generates the expanded prevalence
 }

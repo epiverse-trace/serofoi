@@ -1,7 +1,7 @@
-## *serofoi* <img src="man/figures/logo.png" align="right" width="120" />
 
-Estimates the *Force-of-Infection* of a given pathogen from population
-based sero-prevalence studies on a bayesian framework.
+## *serofoi*<img src="man/figures/serofoi-logo.png" align="right" width="120" />
+
+__serofoi version 0.1.0__ is an R package to estimate the *Force-of-Infection* of a given pathogen from population based sero-prevalence studies on a Bayesian framework.
 
 <!-- badges: start -->
 
@@ -21,15 +21,79 @@ You can install the **development version** of `serofoi` from
 ``` r
 # install.packages("remotes")
 remotes::install_github("TRACE-LAC/serofoi")
+library(serofoi)
 ```
 
 ## Quick start
 
 These examples illustrate some of the current functionalities:
 
+The function `prepare_data()` helps the user to prepare the dataset for the use of `serofoi` package
+
 ``` r
-##library(serofoi)
+data_test <- prepare_data(mydata)
+head(data_test)
 ```
+
+Current version of the package runs three different models of the FoI. The function `run_model()` allows to choose betwwen three different models.
+
+
+- Constant Force-of-Infection with a binomial distribution
+``` r
+model_0 <- run_model(model_data = data_test,
+                     model_name = "constant_foi_bi")
+``` 
+
+- Time-varying Force-of-Infection with a prior normal-binomial distribution
+``` r
+model_1 <- run_model(model_data = data_test,
+                     model_name = "continuous_foi_normal_bi")
+```
+
+- Time-varying Force-of-Infection with a prior normal-log distribution
+``` r
+model_2 <- run_model(model_data = data_test,
+                     model_name = "continuous_foi_normal_log")
+``` 
+
+For each model, there are three plotting functions:
+```
+plot_seroprev_fitted(model_0)
+``` 
+![](man/figures/plot_seroprev_fitted_example.png)
+
+
+```
+plot_foi(model_0)
+``` 
+![](man/figures/plot_foi_example.png)
+
+
+```
+plot_rhats(model_0)
+``` 
+![](man/figures/plot_rhats_example.png)
+
+
+The three plots can be obtained at once with the function `plot_model()`
+``` r
+plot_model(model_0)
+```
+![](man/figures/plot_model_example.png)
+
+
+Finally, the package provides a funcion `get_comparison_table()`  allows to compare these three models based on convergence, elpd and p-values
+
+``` r
+comp_table <- get_comparison_table(
+  model_objects_list = c(m0 = model_0,
+                         m1 = model_1,
+                         m2 = model_2))
+                         
+``` 
+
+
+
 
 ### Lifecycle
 
@@ -40,13 +104,18 @@ package is not ready for use outside of the development team.
 
 ### Contributions
 
+Contributors to the project include:
+
+- [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author)
+- [Nicolás Tórres](https://github.com/ntorresd) (author)
+- Benjamin Lambert (author)
+- Pierre Nouvellet (author)
+- [Miguel Gamez](https://github.com/megamezl) (contributor)
+- [Geraldine Gómez](https://github.com/GeraldineGomez) (contributor)
+
 Contributions are welcome via [pull
 requests](https://github.com/TRACE-LAC/serofoi/pulls).
 
-Contributors to the project include:
-
--   [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author)
--   [Miguel Gamez](https://github.com/megamezl) (author)
 
 ### Code of Conduct
 
