@@ -347,6 +347,7 @@ save_or_read_model <- function(model_name="constant_foi_bi") {
   stan_path <- config::get(model_name)$stan_path
 
   if (!file.exists(rds_path)){
+    warning(paste0("Model ", model_name, " is being compiled for the first time. This might take some minutes"))
     model <- rstan::stan_model(stan_path)
     saveRDS(model, rds_path)
   }
@@ -358,17 +359,16 @@ save_or_read_model <- function(model_name="constant_foi_bi") {
 
 
 #' Run model
-#' Function that runs the specified model
-#' @param model_data model_data
-#' @param survey survey
-#' @param model refers to model selected
-#' @param model_name name of the model selected
-#' @param n_iters number of iterations. Each model has a value by default.
-#' @return model_object of model
+#' Runs a pre-specified stan model for the force-of-infection
+#' @param model_data a dataframe after using <prepare_data> function
+#' @param model_name name of the model selected. Current version provides three options:
+#' <constant_foi_bi>, <continuous_foi_normal_bi> and <continuous_foi_normal_log>
+#' @param n_iters number of iterations. There is a default value by model type.
+#' @return model_object which is a list of various objects including stan objects and others
 #' @export
 run_model <- function(model_data,
-                      model_name="constant_foi_bi",
-                      n_iters=1000,
+                      model_name = "constant_foi_bi",
+                      n_iters = 1000,
                       n_thin = 2,
                       delta = 0.90,
                       m_treed = 10,
@@ -376,7 +376,7 @@ run_model <- function(model_data,
 
   model_data <- model_data %>% dplyr::arrange(.data$age_mean_f) %>% dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
   survey <- unique(model_data$survey)
-  if (length(survey)>1) warning("You have more than 1 surveys or survey codes")
+  if (length(survey) > 1) warning("You have more than 1 surveys or survey codes")
 
   if (model_name == "constant_foi_bi"){
     model_0 <- save_or_read_model(model_name = model_name)
@@ -389,9 +389,7 @@ run_model <- function(model_data,
                               m_treed = m_treed,
                               decades = decades); print(paste0("serofoi model ",
                                                                model_name,
-                                                               "finished running ------",
-                                                               "surveyID ",
-                                                               survey))
+                                                               " finished running ------"))
   }
   if (model_name == "continuous_foi_normal_bi"){
     model_1 <- save_or_read_model(model_name = model_name)
@@ -404,12 +402,10 @@ run_model <- function(model_data,
                               m_treed = m_treed,
                               decades = decades); print(paste0("serofoi model ",
                                                                model_name,
-                                                               "finished running ------",
-                                                               "surveyID ",
-                                                               survey))
+                                                               " finished running ------"))
   }
   if (model_name == "continuous_foi_normal_log"){
-    model_2   <- save_or_read_model(model_name = model_name)
+    model_2 <- save_or_read_model(model_name = model_name)
     model_object <- fit_model_log(model = model_2,
                                   model_data = model_data,
                                   model_name = model_name,

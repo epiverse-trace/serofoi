@@ -13,6 +13,5 @@ get_table_rhats(model_object)
 rhats table
 }
 \description{
-Función que hace la tabla de los rhats
 Function that makes the rhats table
 }

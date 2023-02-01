@@ -3,7 +3,7 @@
 \name{run_model}
 \alias{run_model}
 \title{Run model
-Function that runs the specified model}
+Runs a pre-specified stan model for the force-of-infection}
 \usage{
 run_model(
   model_data,
@@ -16,20 +16,17 @@ run_model(
 )
 }
 \arguments{
-\item{model_data}{model_data}
+\item{model_data}{a dataframe after using <prepare_data> function}
 
-\item{model_name}{name of the model selected}
+\item{model_name}{name of the model selected. Current version provides three options:
+<constant_foi_bi>, <continuous_foi_normal_bi> and <continuous_foi_normal_log>}
 
-\item{n_iters}{number of iterations. Each model has a value by default.}
-
-\item{survey}{survey}
-
-\item{model}{refers to model selected}
+\item{n_iters}{number of iterations. There is a default value by model type.}
 }
 \value{
-model_object of model
+model_object which is a list of various objects including stan objects and others
 }
 \description{
 Run model
-Function that runs the specified model
+Runs a pre-specified stan model for the force-of-infection
 }
