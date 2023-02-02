@@ -7,7 +7,7 @@ library(dplyr)
 source("R/modelling.R")
 source("R/seroprevalence_data.R")
 source("R/model_comparison.R")
-source("R/visualisation.R")
+source("R/visualization.R")
 
 #----- Folder where results will be stored
 # test_dir <- epitrix::clean_labels(paste0("tests_", Sys.time()))
@@ -42,7 +42,7 @@ model_2_plot <- plot_model(model_2_object, size_text = 6)
 
 #----- Generate each individual plot
 
-plot_seroprev(model_0_object, size_text = 15)
+plot_seroprev_fitted(model_0_object, size_text = 15)
 plot_foi(model_0_object, size_text = 15)
 plot_rhats(model_0_object, size_text = 15)
 
