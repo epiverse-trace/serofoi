@@ -7,32 +7,7 @@
 #' @return The sero-positivity plot
 #' @export
 plot_seroprev <- function(model_object, size_text = 6) {
-
-  data <- model_object$model_data
-  data$cut_ages <-
-    cut(as.numeric(data$age_mean_f),
-        seq(1, 101, by = 5),
-        include.lowest = TRUE)
-  xx <- data %>%
-    dplyr::group_by(.data$cut_ages) %>%
-    dplyr::summarise(bin_size = sum(.data$total),
-                     bin_pos = sum(.data$counts))
-  labs <-
-    read.table(
-      text = gsub("[^.0-9]", " ", levels(xx$cut_ages)),
-      col.names = c("lower", "upper")
-    ) %>%
-    dplyr::mutate(lev = levels(xx$cut_ages), midAge = round((lower + upper) / 2)) %>%
-    dplyr::select(.data$midAge, .data$lev)
-  xx$midAge <- labs$midAge[labs$lev %in% xx$cut_ages]
-  conf <-
-    data.frame(Hmisc::binconf(xx$bin_pos, xx$bin_size, method = "exact"))
-  xx <- cbind(xx, conf) %>% dplyr::rename(
-    age = .data$midAge,
-    p_obs_bin = .data$PointEst,
-    p_obs_bin_l = .data$Lower,
-    p_obs_bin_u = .data$Upper)
-
+  xx <- prepare_bin_data(model_object$model_data)
   seroprev_plot <-
     ggplot2::ggplot(data = xx) +
     ggplot2::geom_errorbar(ggplot2::aes(age, ymin = p_obs_bin_l, ymax = p_obs_bin_u), width = 0.1) +
