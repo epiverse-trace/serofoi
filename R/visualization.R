@@ -8,9 +8,7 @@
 #' @export
 plot_seroprev <- function(model_object, size_text = 6) {
 
-  # OJO!! Aquí está pendiente agregar la función que genera el binned prevalence (revisar plot_seroprev_fitted)
   data <- model_object$model_data
-  # browser()
   data$cut_ages <-
     cut(as.numeric(data$age_mean_f),
         seq(1, 101, by = 5),

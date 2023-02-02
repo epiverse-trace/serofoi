@@ -3,7 +3,8 @@ rm(list = ls())
 library(devtools)
 library(dplyr)
 
-remotes::install_github("TRACE-LAC/serofoi", ref = "dev-plot-nicolas")
+remotes::install_github("TRACE-LAC/serofoi", ref = "dev")
+library(serofoi)
 data_test <- prepare_data(mydata)
 
 # source("R/modelling.R")
