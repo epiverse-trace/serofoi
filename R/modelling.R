@@ -85,31 +85,7 @@ get_prev_expanded <- function(foi,
 
   # I added this here for those cases when binned is prefered for plotting
   if (model_data$age_max[1] - model_data$age_min[1] < 3) {
-    model_data$cut_ages <-
-      cut(as.numeric(model_data$age_mean_f),
-          seq(1, 101, by = 5),
-          include.lowest = TRUE)
-    xx <- model_data %>%
-      dplyr::group_by(.data$cut_ages) %>%
-      dplyr::summarise(bin_size = sum(.data$total),
-                       bin_pos = sum(.data$counts))
-    labs <-
-      read.table(
-        text = gsub("[^.0-9]", " ", levels(xx$cut_ages)),
-        col.names = c("lower", "upper")
-      ) %>%
-      dplyr::mutate(lev = levels(xx$cut_ages), midAge = round((lower + upper) / 2)) %>%
-      dplyr::select(.data$midAge, .data$lev)
-    xx$midAge <- labs$midAge[labs$lev %in% xx$cut_ages]
-    conf <-
-      data.frame(Hmisc::binconf(xx$bin_pos, xx$bin_size, method = "exact"))
-    xx <- cbind(xx, conf) %>% dplyr::rename(
-      age = .data$midAge,
-      p_obs_bin = .data$PointEst,
-      p_obs_bin_l = .data$Lower,
-      p_obs_bin_u = .data$Upper
-    )
-
+  xx <- prepare_bin_data(model_data)
     prev_final <-
       base::merge(prev_expanded, xx, by = "age", all.x = TRUE)
   } else {

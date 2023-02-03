@@ -3,7 +3,7 @@ rm(list = ls())
 library(devtools)
 library(dplyr)
 
-# install.packages("github/serofoi") #pendiente
+# remotes::install_github("TRACE-LAC/serofoi", ref = "dev")
 source("R/modelling.R")
 source("R/seroprevalence_data.R")
 source("R/model_comparison.R")
