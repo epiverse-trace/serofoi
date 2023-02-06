@@ -23,4 +23,4 @@ model_0_object <- run_model(
 model_0_plot <- plot_model(model_0_object, size_text = 6)
 
 plot_seroprev_fitted(model_0_object, size_text = 15)
-plot_seroprev(model_0_object, size_text = 15)
+plot_seroprev(data_test, size_text = 15)
