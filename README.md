@@ -56,6 +56,12 @@ model_2 <- run_model(model_data = data_test,
                      model_name = "continuous_foi_normal_log")
 ``` 
 
+Function `plot_seroprev()` can be used to visualize the sero-prevalence data with its corresponding binomial confidence interval before fitting to a model:
+```
+plot_seroprev(data_test, size_text = 15)
+```
+![](man/figures/plot_seroprev_example.png)
+
 For each model, there are three plotting functions:
 ```
 plot_seroprev_fitted(model_0)
