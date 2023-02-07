@@ -4,6 +4,8 @@
 #' @param model_data refers to the model data that has been selected
 #' @param yexpo what the make yexpo function returns
 #' @return exposure_output
+#' @examples
+#' get_exposure_matrix <- function(model_data, yexpo)
 #' @export
 get_exposure_matrix <- function(model_data,
                                 yexpo) {
@@ -22,11 +24,12 @@ get_exposure_matrix <- function(model_data,
 #' @param model_data refers to the model data that has been selected
 #' @param foi force of infection
 #' @return prev_final
+#' @examples
+#' get_prev_expanded <- function(foi, model_data)
 #' @export
 
 get_prev_expanded <- function(foi,
                               model_data) {
-  # ndata <- data.frame(age = 1:80)
   dim_foi <- dim(foi)[2]
   if (dim_foi < 80) {
     oldest_year <- 80 - dim_foi + 1
@@ -107,6 +110,8 @@ get_prev_expanded <- function(foi,
 #' Function that generates Yexpo
 #' @param model_data refers to the model data that has been selected
 #' @return yexpo
+#' @examples
+#' make_yexpo (model_data)
 #' @export
 make_yexpo <- function(model_data) {
   yexpo <- (seq_along(min(model_data$birth_year):model_data$tsur[1]))
@@ -117,6 +122,8 @@ make_yexpo <- function(model_data) {
 #' Function that gets a posterior summary
 #' @param model_objects model_objects_chain
 #' @return model_object
+#' @examples
+#' get_posterior_summary (model_objects_chain)
 #' @export
 get_posterior_summary <- function(model_objects_chain) {
   model_object <- sapply(model_objects_chain,
@@ -137,6 +144,15 @@ get_posterior_summary <- function(model_objects_chain) {
 #' @param m_treed This value comes by default but it can be changed
 #' @param decades The decades covered by the survey data
 #' @return model_object
+#' @examples
+#' fit_model (model,
+#'            model_data,
+#'            model_name,
+#'            n_iters = n_iters,
+#'            n_thin = n_thin,
+#'            delta = delta,
+#'            m_treed = m_treed,
+#'            decades = decades)
 #' @export
 fit_model <- function(model,
                       model_data,
@@ -260,6 +276,10 @@ fit_model <- function(model,
 #' @param m_treed This value comes by default but it can be changed
 #' @param decades The decades covered by the survey data
 #' @return model_object
+#' @examples
+#' fit_model_log (model,
+#'                model_data,
+#'                model_name)
 #' @export
 fit_model_log <- function(model,
                           model_data,
@@ -367,11 +387,15 @@ fit_model_log <- function(model,
 #' Save or read model
 #' Function that saves the .RDS file of the model
 #' @param model_name name of the model selected
+#' @return model
+#' @examples
+#' save_or_read_model (model_name = "constant_foi_bi")
+#' @export
 save_or_read_model <- function(model_name = "constant_foi_bi") {
   rds_path <- config::get(model_name)$rds_path
   stan_path <- config::get(model_name)$stan_path
 
-  if (!file.exists(rds_path)){
+  if (!file.exists(rds_path)) {
     warning(paste0("Model ", model_name, " is being compiled for the first time. This might take some minutes"))
     model <- rstan::stan_model(stan_path)
     saveRDS(model, rds_path)
@@ -389,6 +413,9 @@ save_or_read_model <- function(model_name = "constant_foi_bi") {
 #' <constant_foi_bi>, <continuous_foi_normal_bi> and <continuous_foi_normal_log>
 #' @param n_iters number of iterations. There is a default value by model type.
 #' @return model_object which is a list of various objects including stan objects and others
+#' @examples
+#' run_model (model_data,
+#'            model_name = "constant_foi_bi",
 #' @export
 run_model <- function(model_data,
                       model_name = "constant_foi_bi",
@@ -429,7 +456,7 @@ run_model <- function(model_data,
                                                                model_name,
                                                                " finished running ------"))
   }
-  if (model_name == "continuous_foi_normal_log"){
+  if (model_name == "continuous_foi_normal_log") {
     model_2 <- save_or_read_model(model_name = model_name)
     model_object <- fit_model_log(model = model_2,
                                   model_data = model_data,
@@ -452,6 +479,8 @@ run_model <- function(model_data,
 #' @param model_object what the run model function returns
 #' @param model_data refers to data of the model
 #' @return summary of the models
+#' @examples
+#' extract_summary_model (model_object)
 #' @export
 extract_summary_model <- function(model_object) {
   model_name <- model_object$model
