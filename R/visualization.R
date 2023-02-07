@@ -6,7 +6,7 @@
 #' @param ylabel Label of axis y
 #' @return The sero-positivity plot
 #' @examples
-#' plot_seroprev(model_0_object, size_text = 15)
+#' plot_seroprev(model_0_object, size_text)
 #' @export
 plot_seroprev <- function(model_object, size_text = 6) {
   xx <- prepare_bin_data(model_object$model_data)
@@ -32,7 +32,7 @@ plot_seroprev <- function(model_object, size_text = 6) {
 #' @param ylabel Label of axis y
 #' @return The sero-positivity plot
 #' @examples
-#' plot_seroprev_fitted(model_0_object, size_text = 15)
+#' plot_seroprev_fitted(model_0_object, size_text)
 #' @export
 plot_seroprev_fitted <- function(model_object,
                           size_text = 6) {
@@ -103,7 +103,7 @@ plot_seroprev_fitted <- function(model_object,
 #' @param ylabel Label of axis y
 #' @return Force of infection plot
 #' @examples
-#' plot_foi(model_0_object, size_text = 15)
+#' plot_foi(model_0_object, size_text)
 #' @export
 plot_foi <- function(model_object,
                      lambda_sim = NA,
@@ -189,7 +189,7 @@ plot_foi <- function(model_object,
 #' @param ylabel Label of axis y
 #' @return The rhats-convergence plot of the selected model
 #' @examples
-#' plot_rhats(model_0_object, size_text = 15)
+#' plot_rhats(model_0_object, size_text)
 #' @export
 plot_rhats <- function(model_object,
                        size_text = 25) {
@@ -244,7 +244,7 @@ plot_rhats <- function(model_object,
 #' @param ylabel Label of axis y
 #' @return The combined plots
 #' @examples
-#' model_0_plot <- plot_model(model_0_object, size_text = 6)
+#' plot_model(model_0_object, size_text)
 #' @export
 plot_model <- function(model_object,
                        lambda_sim = NA,
@@ -316,6 +316,8 @@ plot_model <- function(model_object,
 #' @param info the information that will be contained in the table
 #' @param size_text text size
 #' @return The previous expanded graphic
+#' @examples
+#' plot_info_table (info, size_text)
 #' @export
 plot_info_table <- function(info, size_text) {
   dato <- data.frame(y = NROW(info):seq_len(1),

@@ -3,6 +3,8 @@
 #' Function that makes the rhats table
 #' @param model_object model_object
 #' @return rhats table
+#' @examples
+#' get_table_rhats (model_object)
 #' @export
 get_table_rhats <- function(model_object) {
   rhats <- bayesplot::rhat(model_object$fit, "foi")
@@ -21,10 +23,10 @@ get_table_rhats <- function(model_object) {
 #' Provides a table with statistics for comparison between models and selection
 #' @param model_objects_list model_objects to compare
 #' @return comparison table
-#' @examples comp_table <- get_comparison_table(
-#'model_objects_list = c(m0 = model_0,
-#'                       m1 = model_1,
-#'                       m2 = model_2))
+#' @examples
+#' comp_table <- get_comparison_table(model_objects_list = c(m0 = model_0,
+#'                                                           m1 = model_1,
+#'                                                           m2 = model_2))
 #' @export
 get_comparison_table <- function(model_objects_list) {
 

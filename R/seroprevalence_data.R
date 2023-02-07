@@ -6,7 +6,7 @@
 #' @return model_data with additional columns necessary for the analysis
 #' @examples
 #' data_test <- readRDS("data/data.RDS")
-#' data_test <- prepare_data(data_test, alpha = 0.05)
+#' data_test <- prepare_data(data_test, alpha)
 #' @export
 prepare_data <- function(model_data,
                          alpha = 0.05) {
@@ -36,7 +36,7 @@ prepare_data <- function(model_data,
 #' @param model_data dataset to be processed
 #' @return data set with the binomial confidence intervals
 #' @examples
-#' prepare_bin_data <- function(model_data)
+#' prepare_bin_data (model_data)
 #' @export
 prepare_bin_data <- function(model_data) {
   model_data$cut_ages <-
