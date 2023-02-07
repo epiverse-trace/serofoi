@@ -371,7 +371,7 @@ save_or_read_model <- function(model_name = "constant_foi_bi") {
   rds_path <- config::get(model_name)$rds_path
   stan_path <- config::get(model_name)$stan_path
 
-  if (!file.exists(rds_path)){
+  if (!file.exists(rds_path)) {
     warning(paste0("Model ", model_name, " is being compiled for the first time. This might take some minutes"))
     model <- rstan::stan_model(stan_path)
     saveRDS(model, rds_path)
@@ -429,7 +429,7 @@ run_model <- function(model_data,
                                                                model_name,
                                                                " finished running ------"))
   }
-  if (model_name == "continuous_foi_normal_log"){
+  if (model_name == "continuous_foi_normal_log") {
     model_2 <- save_or_read_model(model_name = model_name)
     model_object <- fit_model_log(model = model_2,
                                   model_data = model_data,
