@@ -1,4 +1,4 @@
-remotes::install_github("TRACE-LAC/serofoi", ref = "dev")
+remotes::install_github("TRACE-LAC/serofoi", ref = "dev-docker-tests")
 
 library(serofoi)
 
@@ -15,3 +15,4 @@ plot_seroprev_fitted(model_0_object, size_text = 15)
 plot_foi(model_0_object, size_text = 15)
 plot_rhats(model_0_object, size_text = 15)
 summary_model <- extract_summary_model(model_0_object)
+

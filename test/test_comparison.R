@@ -1,3 +1,5 @@
+
+# TODO Move to examples
 remotes::install_github("TRACE-LAC/serofoi", ref = "dev-docker-tests", force = TRUE)
 set.seed(1234) # For reproducibility
 library(serofoi)

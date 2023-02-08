@@ -46,3 +46,7 @@ vignettes/*.pdf
 # .RDS Stan compilation files
 inst/extdata/stanmodels/*.RDS
 inst/doc
+
+_snaps/
+tests/testthat/Rplots.pdf
+t,

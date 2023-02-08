@@ -12,7 +12,7 @@ equal_exact <- function() {
 }
 
 
-equal_dataframes <- function(df1, df2, column_comparation_functions) {
+compare_dataframes <- function(df1, df2, column_comparation_functions) {
     all_columns_ok <- TRUE
     for (col in base::names(column_comparation_functions)) {
         compare_function <- column_comparation_functions[[col]]

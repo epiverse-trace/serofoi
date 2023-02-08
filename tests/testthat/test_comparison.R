@@ -1,8 +1,8 @@
 test_that("comparison", {
   library(dplyr)
   source("testing_utils.R")
+  
   set.seed(1234) # For reproducibility
-  print("test path")
 
   package <- "serofoi"
 
@@ -60,14 +60,14 @@ test_that("comparison", {
     pvalue = equal_with_tolerance()
   )
 
-  testthat::expect_true(
-    equal_dataframes(
+  expect_true(
+    compare_dataframes(
       expected_comp_table, comp_table, column_comparation_functions
     )
   )
 
-  testthat::expect_false(
-    equal_dataframes(
+  expect_false(
+    compare_dataframes(
       wrong_comp_table, comp_table, column_comparation_functions
     )
   )
