@@ -1,5 +1,6 @@
 test_that("comparison", {
   library(dplyr)
+  set.seed(1234) # For reproducibility
   print("test path")
 
   compare_with_tolerance <- function(tolerance = 1e-4) {
@@ -72,7 +73,7 @@ test_that("comparison", {
     pvalue = compare_with_tolerance()
   )
 
-
+  print(comp_table)
   for (col in names(col_tests)) {
     test_fun <- col_tests[[col]]
     testthat::expect_true(

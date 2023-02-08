@@ -1,9 +1,9 @@
-remotes::install_github("TRACE-LAC/serofoi", ref = "dev", force = TRUE)
-
+remotes::install_github("TRACE-LAC/serofoi", ref = "dev-docker-tests", force = TRUE)
+set.seed(1234) # For reproducibility
 library(serofoi)
 
 data_test <- prepare_data(mydata)
-?run_model
+# ?run_model
 
 model_0 <- run_model(model_data = data_test,
                      model_name = "constant_foi_bi",

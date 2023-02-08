@@ -5,13 +5,16 @@
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return The sero-positivity plot
+#' @examples
+#' plot_seroprev(model_0_object, size_text)
 #' @export
-plot_seroprev <- function(model_object, size_text = 6) {
-  xx <- prepare_bin_data(model_object$model_data)
+plot_seroprev <- function(model_data,
+                          size_text = 6) {
+  xx <- prepare_bin_data(model_data)
   seroprev_plot <-
     ggplot2::ggplot(data = xx) +
     ggplot2::geom_errorbar(ggplot2::aes(age, ymin = p_obs_bin_l, ymax = p_obs_bin_u), width = 0.1) +
-    ggplot2::geom_point(ggplot2::aes(age, p_obs_bin), fill = "#7a0177", colour = "black", shape = 21) +
+    ggplot2::geom_point(ggplot2::aes(age, p_obs_bin, size = xx$bin_size), fill = "#7a0177", colour = "black", shape = 21) +
     ggplot2::theme_bw(size_text) +
     ggplot2::coord_cartesian(xlim = c(0, 60), ylim = c(0,1)) +
     ggplot2::theme(legend.position = "none") +
@@ -29,16 +32,17 @@ plot_seroprev <- function(model_object, size_text = 6) {
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return The sero-positivity plot
+#' @examples
+#' plot_seroprev_fitted(model_0_object, size_text)
 #' @export
 plot_seroprev_fitted <- function(model_object,
-                          size_text = 6) {
+                                 size_text = 6) {
 
   if (is.character(model_object$fit) == FALSE)  {
     if  (class(model_object$fit@sim$samples)  != "NULL" ) {
 
       foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]
       prev_expanded <- get_prev_expanded(foi, model_data = model_object$model_data)
-
       prev_plot <-
         ggplot2::ggplot(prev_expanded) +
         ggplot2::geom_ribbon(
@@ -98,6 +102,8 @@ plot_seroprev_fitted <- function(model_object,
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return Force of infection plot
+#' @examples
+#' plot_foi(model_0_object, size_text)
 #' @export
 plot_foi <- function(model_object,
                      lambda_sim = NA,
@@ -182,6 +188,8 @@ plot_foi <- function(model_object,
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return The rhats-convergence plot of the selected model
+#' @examples
+#' plot_rhats(model_0_object, size_text)
 #' @export
 plot_rhats <- function(model_object,
                        size_text = 25) {
@@ -235,6 +243,8 @@ plot_rhats <- function(model_object,
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
 #' @return The combined plots
+#' @examples
+#' plot_model(model_0_object, size_text)
 #' @export
 plot_model <- function(model_object,
                        lambda_sim = NA,
@@ -306,13 +316,14 @@ plot_model <- function(model_object,
 #' @param info the information that will be contained in the table
 #' @param size_text text size
 #' @return The previous expanded graphic
+#' @examples
+#' plot_info_table (info, size_text)
 #' @export
 plot_info_table <- function(info, size_text) {
   dato <- data.frame(y = NROW(info):seq_len(1),
                      text = paste0(rownames(info), ": ", info[, 1]))
   p <- ggplot2::ggplot(dato, ggplot2::aes(x = 1, y = y)) +
     ggplot2::scale_y_continuous(limits = c(0, NROW(info) + 1), breaks = NULL) +
-    # scale_x_continuous(breaks=NULL) +
     ggplot2::theme_void() +
     ggplot2::geom_text(ggplot2::aes(label = text),
                        size = size_text / 2.5,
