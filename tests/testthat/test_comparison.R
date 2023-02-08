@@ -1,20 +1,9 @@
 test_that("comparison", {
   library(dplyr)
+  source("testing_utils.R")
   set.seed(1234) # For reproducibility
   print("test path")
 
-  compare_with_tolerance <- function(tolerance = 1e-4) {
-    function(a, b, tolerance = 1e-4) {
-      x <- mapply(function(x, y) abs(x - y), a, b)
-      base::all(x < tolerance)
-    }
-  }
-  compare_exact <- function() {
-    function(a, b) {
-      x <- mapply(function(x, y) x == y, a, b)
-      base::all(x == TRUE)
-    }
-  }
   package <- "serofoi"
 
   expected_comp_table <- read.csv(
@@ -31,20 +20,18 @@ test_that("comparison", {
     model_name = "constant_foi_bi",
     n_iters = 1000
   )
-  print("model 0 ----------")
+
   model_1 <- run_model(
     model_data = data_test,
     model_name = "continuous_foi_normal_bi",
     n_iters = 1000
   )
 
-  print("model 1 ----------")
   model_2 <- run_model(
     model_data = data_test,
     model_name = "continuous_foi_normal_log",
     n_iters = 1000
   )
-  print("model 2 ----------")
 
   comp_table <- get_comparison_table(
     model_objects_list = c(
@@ -54,31 +41,34 @@ test_that("comparison", {
     )
   )
 
-  col_tests <- list(
-    model = compare_exact(),
-    dataset = compare_exact(),
-    country = compare_exact(),
-    year = compare_exact(),
-    test = compare_exact(),
-    antibody = compare_exact(),
-    n_sample = compare_exact(),
-    n_agec = compare_exact(),
-    n_iter = compare_exact(),
-    elpd = compare_with_tolerance(),
-    se = compare_with_tolerance(),
-    converged = compare_exact(),
-    difference = compare_exact(),
-    diff_se = compare_with_tolerance(),
-    best_elpd = compare_exact(),
-    pvalue = compare_with_tolerance()
+  column_comparation_functions <- list(
+    model = equal_exact(),
+    dataset = equal_exact(),
+    country = equal_exact(),
+    year = equal_exact(),
+    test = equal_exact(),
+    antibody = equal_exact(),
+    n_sample = equal_exact(),
+    n_agec = equal_exact(),
+    n_iter = equal_exact(),
+    elpd = equal_with_tolerance(),
+    se = equal_with_tolerance(),
+    converged = equal_exact(),
+    difference = equal_exact(),
+    diff_se = equal_with_tolerance(),
+    best_elpd = equal_exact(),
+    pvalue = equal_with_tolerance()
   )
 
-  print(comp_table)
-  for (col in names(col_tests)) {
-    test_fun <- col_tests[[col]]
-    testthat::expect_true(
-      test_fun(expected_comp_table[col], comp_table[col])
+  testthat::expect_true(
+    equal_dataframes(
+      expected_comp_table, comp_table, column_comparation_functions
     )
+  )
 
-  }
+  testthat::expect_false(
+    equal_dataframes(
+      wrong_comp_table, comp_table, column_comparation_functions
+    )
+  )
 })
