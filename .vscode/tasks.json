@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "R",
+			"code": [
+				"devtools::test_active_file(\"${file}\")"
+			],
+			"problemMatcher": [
+				"$testthat"
+			],
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"label": "R: Test"
+		}
+	]
+}
