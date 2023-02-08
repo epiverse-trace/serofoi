@@ -1,5 +1,7 @@
 FROM rocker/tidyverse:4.2.2
-WORKDIR /serofoi
-ADD . .
-RUN Rscript -e 'devtools::install(upgrade=TRUE)'
-CMD [ "/serofoi/run_tests.sh" ]
+VOLUME [ "/root/.R/site-library", "/package" ]
+WORKDIR /root
+ADD . /package
+ADD docker/.bashrc .
+# -i ensures that any command will source .bashrc https://stackoverflow.com/a/37286648
+ENTRYPOINT ["/bin/bash", "-c", "-i"]
