@@ -391,9 +391,11 @@ fit_model_log <- function(model,
 #' @examples
 #' save_or_read_model (model_name = "constant_foi_bi")
 #' @export
-save_or_read_model <- function(model_name = "constant_foi_bi", base_path = "extdata/stanmodels") {
-  stan_path <- system.file(base_path, paste(model_name, ".stan", sep=''), package = getPackageName())
-  rds_path <- file.path(dirname(stan_path), paste(model_name, ".RDS", sep=''))
+save_or_read_model <- function(model_name = "constant_foi_bi") {
+  base_path <- config::get("stan_models_base_path")
+  stan_path <- system.file(
+    base_path, paste(model_name, ".stan", sep = ""), package = getPackageName())
+  rds_path <- file.path(dirname(stan_path), paste(model_name, ".RDS", sep = ""))
 
   if (!file.exists(rds_path)) {
     warning(paste0("Model ", model_name, " is being compiled for the first time. This might take some minutes"))

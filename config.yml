@@ -1,10 +1,2 @@
 default:
-  constant_foi_bi:
-    stan_path: "inst/extdata/stanmodels/constant_foi_bi.stan"
-    rds_path: "inst/extdata/stanmodels/ConstantUniformFOI.RDS"
-  continuous_foi_normal_bi:
-    stan_path: "inst/extdata/stanmodels/continuous_foi_normal_bi.stan"
-    rds_path: "inst/extdata/stanmodels/ContinuousNormalFOI.RDS"
-  continuous_foi_normal_log:
-    stan_path: "inst/extdata/stanmodels/continuous_foi_normal_log.stan"
-    rds_path: "inst/extdata/stanmodels/ContinuousNormalLogFOI_lowt.RDS"
+  stan_models_base_path: "extdata/stanmodels"
