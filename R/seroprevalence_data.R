@@ -12,6 +12,7 @@ prepare_data <- function(model_data,
                          alpha = 0.05) {
   model_data <- model_data %>%
     dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total)) %>%
+    dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f) %>%
     cbind(
       Hmisc::binconf(
         model_data$counts,
@@ -25,7 +26,8 @@ prepare_data <- function(model_data,
       prev_obs = PointEst,
       prev_obs_lower = Lower,
       prev_obs_upper = Upper
-    )
+    ) %>%
+    dplyr::arrange(.data$age_mean_f)
 
   return(model_data)
 }

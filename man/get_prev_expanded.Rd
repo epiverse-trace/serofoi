@@ -17,3 +17,6 @@ prev_final
 \description{
 Function that generates the expanded prevalence
 }
+\examples{
+get_prev_expanded <- function(foi, model_data)
+}

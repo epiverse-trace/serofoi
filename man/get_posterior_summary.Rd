@@ -15,3 +15,6 @@ model_object
 \description{
 Function that gets a posterior summary
 }
+\examples{
+get_posterior_summary (model_objects_chain)
+}

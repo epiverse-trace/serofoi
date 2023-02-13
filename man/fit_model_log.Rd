@@ -5,7 +5,6 @@
 \title{Fit Model Log}
 \usage{
 fit_model_log(
-  model,
   model_data,
   model_name,
   n_iters = 3000,
@@ -16,8 +15,6 @@ fit_model_log(
 )
 }
 \arguments{
-\item{model}{refers to model selected}
-
 \item{model_data}{model_data}
 
 \item{model_name}{name of the model selected}
@@ -30,6 +27,8 @@ fit_model_log(
 
 \item{decades}{The decades covered by the survey data}
 
+\item{model}{refers to model selected}
+
 \item{n_thinThis}{value comes by default but it can be changed}
 }
 \value{
@@ -37,4 +36,9 @@ model_object
 }
 \description{
 Function that fits the logarithmic model to the data
+}
+\examples{
+fit_model_log (model,
+               model_data,
+               model_name)
 }

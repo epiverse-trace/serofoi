@@ -3,15 +3,15 @@ rm(list = ls())
 library(devtools)
 library(dplyr)
 
-remotes::install_github("TRACE-LAC/serofoi", ref = "dev")
-library(serofoi)
-data_test <- prepare_data(mydata)
+# remotes::install_github("TRACE-LAC/serofoi", ref = "dev")
+# library(serofoi)
+# data_test <- prepare_data(mydata)
 
-# source("R/modelling.R")
-# source("R/seroprevalence_data.R")
-# source("R/model_comparison.R")
-# source("R/visualization.R")
-# data_test <- readRDS("data/data.RDS") %>% prepare_data(alpha = 0.05)
+source("R/modelling.R")
+source("R/seroprevalence_data.R")
+source("R/model_comparison.R")
+source("R/visualization.R")
+data_test <- readRDS("data/data.RDS") %>% prepare_data(alpha = 0.05)
 
 
 model_0_object <- run_model(
