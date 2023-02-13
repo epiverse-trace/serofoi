@@ -22,7 +22,8 @@ Imports:
     dplyr,
     gsubfn,
     testthat (>= 3.0.0),
-    devtools
+    devtools,
+    BH
 Suggests: 
     knitr,
     rmarkdown
