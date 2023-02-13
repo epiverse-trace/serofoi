@@ -392,7 +392,7 @@ fit_model_log <- function(model,
 #' save_or_read_model (model_name = "constant_foi_bi")
 #' @export
 save_or_read_model <- function(model_name = "constant_foi_bi") {
-  base_path <- config::get("stan_models_base_path")
+  base_path <- config::get("stan_models_base_path", file = system.file('config.yml', package = 'serofoi', mustWork = TRUE))
   stan_path <- system.file(
     base_path, paste(model_name, ".stan", sep = ""), package = getPackageName())
   rds_path <- file.path(dirname(stan_path), paste(model_name, ".RDS", sep = ""))
