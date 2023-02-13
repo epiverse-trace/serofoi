@@ -113,7 +113,7 @@ save_or_load_model <- function(model_name = "constant_foi_bi") {
 #' \tabular{ll}{
 #' \code{fit} \tab \code{stanfit} object returned by the function \link[rstan]{sampling} \cr \tab \cr
 #' \code{model_data} \tab A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_model}.\cr \tab \cr
-#' \code{stan_data} \tab List containing \code{Nobs}, \code{Npos}, \code{Ntotal}, \code{Age}, \code{Ymax}, \code{AgeExpoMatrix} and \code{NDecades}. 
+#' \code{stan_data} \tab List containing \code{Nobs}, \code{Npos}, \code{Ntotal}, \code{Age}, \code{Ymax}, \code{AgeExpoMatrix} and \code{NDecades}.
 #' This object is used as an input for the \link[rstan]{sampling} function \cr \tab \cr
 #' \code{real_exposure_years} \tab Integer atomic vector containing the actual exposure years (1946, ..., 2007 e.g.) \cr \tab \cr
 #' \code{exposure_years} \tab Integer atomic vector containing the numeration of the exposure years. \cr \tab \cr
@@ -132,12 +132,8 @@ save_or_load_model <- function(model_name = "constant_foi_bi") {
 #' @examples
 #' model_data <- prepare_data(mydata)
 #' fit_model (model_data,
-#'            model_name = "constant_foi_bi",
-#'            n_iters = n_iters,
-#'            n_thin = n_thin,
-#'            delta = delta,
-#'            m_treed = m_treed,
-#'            decades = decades)
+#'            model_name = "constant_foi_bi")
+#'
 #' @export
 fit_model <- function(model_data,
                       model_name,
@@ -268,8 +264,8 @@ fit_model <- function(model_data,
 #' Get exposure years
 #'
 #' Function that generates an atomic vector with the exposition years in model_data. The exposition years to the disease for each individual corresponds to the time from birth to the moment of the survey.
-#' @param model_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the <prepare_data> function.
-#' @return exposure_years. An atomic vector with the numeration of the exposition years in model_data
+#' @param model_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_data} function.
+#' @return \code{exposure_years}. An atomic vector with the numeration of the exposition years in model_data
 #' @examples
 #' model_data <- prepare_data(mydata)
 #' exposure_years <- get_exposure_years (model_data)
@@ -282,8 +278,8 @@ get_exposure_years <- function(model_data) {
 #' Get Exposure Matrix
 #'
 #' Function that generates the exposure matrix for a seroprevalence survey.
-#' @param model_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the <prepare_data> function.
-#' @return exposure_output
+#' @param model_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_data} function.
+#' @return \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{model_data} by year.
 #' @examples
 #' model_data <- prepare_data(mydata)
 #' exposure_matrix <- get_exposure_matrix(model_data)
@@ -302,15 +298,32 @@ get_exposure_matrix <- function(model_data,
 
 #' Extract Model Summary
 #'
-#' Function that summarizes the models
-#' @param model_object what the run model function returns
-#' @param model_data refers to data of the model
-#' @return summary of the models
+#' Function to generate a summary of a model.
+#' @param model_object \code{model_object}. An object containing relevant information about the implementation of the model. Refer to \link{fit_model} for further details.
+#' @return \code{model_summary}. Object with a summary of \code{model_object} containing the following:
+#' \tabular{ll}{
+#' \code{model_name} \tab Name of the selected model. For further details refer to \link{save_or_load_model}. \cr \tab \cr
+#' \code{data_set} \tab Seroprevalence survey label.\cr \tab \cr
+#' \code{country} \tab Name of the country were the survey was conducted in. \cr \tab \cr
+#' \code{year} \tab Year in which the survey was conducted. \cr \tab \cr
+#' \code{test} \tab Type of test of the survey. \cr \tab \cr
+#' \code{antibody} \tab Antibody \cr \tab \cr
+#' \code{n_sample} \tab Total number of samples in the survey. \cr \tab \cr
+#' \code{n_agec} \tab Number of age groups considered. \cr \tab \cr
+#' \code{n_iter} \tab Number of interations for eah chain including the warmup. \cr \tab \cr
+#' \code{elpd} \tab elpd \cr \tab \cr
+#' \code{se} \tab se \cr \tab \cr
+#' \code{converged} \tab convergence \cr \tab \cr
+#' }
 #' @examples
+#' model_data <- prepare_data(mydata)
+#' model_object <- run_model(model_data = model_data,
+#'                           model_name = "constant_foi_bi")
 #' extract_model_summary (model_object)
 #' @export
 extract_model_summary <- function(model_object) {
   model_name <- model_object$model
+  model_data <- model_object$model_data
   #------- Loo estimates
 
   loo_fit <- model_object$loo_fit
@@ -319,9 +332,7 @@ extract_model_summary <- function(model_object) {
   } else {
     lll <- c(-1e10, 0)
   }
-
-  model_data <- model_object$model_data
-  summary_model <- data.frame(
+  model_summary <- data.frame(
     model_name = model_object$model_name,
     dataset = model_data$survey[1],
     country = model_data$country[1],
@@ -338,24 +349,26 @@ extract_model_summary <- function(model_object) {
 
   rhats <- get_table_rhats(model_object)
   if (any(rhats$rhat > 1.1) == FALSE) {
-    summary_model$converged <- "Yes"
+    model_summary$converged <- "Yes"
   }
 
-  return(summary_model)
+  return(model_summary)
 }
 
 
 #' Get Prevalence Expanded
 #'
 #' Function that generates the expanded prevalence
-#' @param model_data refers to the model data that has been selected
-#' @param foi force of infection
-#' @return prev_final
+#' @param model_data A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_model}.
+#' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]}. 
+#' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
 #' @examples
+#' model_data <- prepare_data(mydata)
+#' model_object <- run_model(model_data = model_data,
+#'                           model_name = "constant_foi_bi")
+#' foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]
 #' get_prev_expanded <- function(foi, model_data)
 #' @export
-
-
 get_prev_expanded <- function(foi,
                               model_data) {
   dim_foi <- dim(foi)[2]
@@ -431,20 +444,4 @@ get_prev_expanded <- function(foi,
   }
 
   return(prev_final)
-}
-
-
-#' Get Posterior Summary
-#'
-#' Function that gets a posterior summary
-#' @param model_objects model_objects_chain
-#' @return model_object
-#' @examples
-#' get_posterior_summary (model_objects_chain)
-#' @export
-get_posterior_summary <- function(model_objects_chain) {
-  model_object <- sapply(model_objects_chain,
-                         function(i) c(quantile(i, c(0.5, 0.025, 0.975))))
-  row.names(model_object) <- c("Median", "Lower", "Upper")
-  return(model_object)
 }

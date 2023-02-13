@@ -7,10 +7,10 @@
 get_exposure_matrix(model_data, exposure_years)
 }
 \arguments{
-\item{model_data}{A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the <prepare_data> function.}
+\item{model_data}{A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_data} function.}
 }
 \value{
-exposure_output
+\code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{model_data} by year.
 }
 \description{
 Function that generates the exposure matrix for a seroprevalence survey.

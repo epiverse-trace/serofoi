@@ -7,16 +7,20 @@
 get_prev_expanded(foi, model_data)
 }
 \arguments{
-\item{foi}{force of infection}
+\item{foi}{Object containing the information of the force of infection. It is obtained from \code{rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]}.}
 
-\item{model_data}{refers to the model data that has been selected}
+\item{model_data}{A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_model}.}
 }
 \value{
-prev_final
+\code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
 }
 \description{
 Function that generates the expanded prevalence
 }
 \examples{
+model_data <- prepare_data(mydata)
+model_object <- run_model(model_data = model_data,
+                          model_name = "constant_foi_bi")
+foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]
 get_prev_expanded <- function(foi, model_data)
 }

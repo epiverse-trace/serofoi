@@ -7,10 +7,10 @@
 get_exposure_years(model_data)
 }
 \arguments{
-\item{model_data}{A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the <prepare_data> function.}
+\item{model_data}{A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_data} function.}
 }
 \value{
-exposure_years. An atomic vector with the numeration of the exposition years in model_data
+\code{exposure_years}. An atomic vector with the numeration of the exposition years in model_data
 }
 \description{
 Function that generates an atomic vector with the exposition years in model_data. The exposition years to the disease for each individual corresponds to the time from birth to the moment of the survey.

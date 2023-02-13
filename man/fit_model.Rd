@@ -41,7 +41,7 @@ For further details refer to the \code{control} parameter in \link[rstan]{sampli
 \tabular{ll}{
 \code{fit} \tab \code{stanfit} object returned by the function \link[rstan]{sampling} \cr \tab \cr
 \code{model_data} \tab A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_model}.\cr \tab \cr
-\code{stan_data} \tab List containing \code{Nobs}, \code{Npos}, \code{Ntotal}, \code{Age}, \code{Ymax}, \code{AgeExpoMatrix} and \code{NDecades}. 
+\code{stan_data} \tab List containing \code{Nobs}, \code{Npos}, \code{Ntotal}, \code{Age}, \code{Ymax}, \code{AgeExpoMatrix} and \code{NDecades}.
 This object is used as an input for the \link[rstan]{sampling} function \cr \tab \cr
 \code{real_exposure_years} \tab Integer atomic vector containing the actual exposure years (1946, ..., 2007 e.g.) \cr \tab \cr
 \code{exposure_years} \tab Integer atomic vector containing the numeration of the exposure years. \cr \tab \cr
@@ -63,10 +63,6 @@ Function that fits the selected model to the data
 \examples{
 model_data <- prepare_data(mydata)
 fit_model (model_data,
-           model_name = "constant_foi_bi",
-           n_iters = n_iters,
-           n_thin = n_thin,
-           delta = delta,
-           m_treed = m_treed,
-           decades = decades)
+           model_name = "constant_foi_bi")
+
 }
