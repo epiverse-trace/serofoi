@@ -50,42 +50,16 @@ run_model <- function(model_data,
                       decades = 0) {
   survey <- unique(model_data$survey)
   if (length(survey) > 1) warning("You have more than 1 surveys or survey codes")
-
-  if (model_name == "constant_foi_bi") {
-    model_0 <- save_or_load_model(model_name = model_name)
-    model_object <- fit_model(model_data = model_data,
-                              model_name = model_name,
-                              n_iters = n_iters,
-                              n_thin = n_thin,
-                              delta = delta,
-                              m_treed = m_treed,
-                              decades = decades); print(paste0("serofoi model ",
-                                                               model_name,
-                                                               " finished running ------"))
-  }
-  if (model_name == "continuous_foi_normal_bi") {
-    model_1 <- save_or_load_model(model_name = model_name)
-    model_object <- fit_model(model_data = model_data,
-                              model_name = model_name,
-                              n_iters = n_iters,
-                              n_thin = n_thin,
-                              delta = delta,
-                              m_treed = m_treed,
-                              decades = decades); print(paste0("serofoi model ",
-                                                               model_name,
-                                                               " finished running ------"))
-  }
-  if (model_name == "continuous_foi_normal_log") {
-    model_object <- fit_model_log(model_data = model_data,
-                                  model_name = model_name,
-                                  n_iters = n_iters,
-                                  n_thin = n_thin,
-                                  delta = delta,
-                                  m_treed = m_treed,
-                                  decades = decades); print(paste0("serofoi model ",
-                                                                   model_name,
-                                                                   " finished running ------"))
-  }
+  model <- save_or_load_model(model_name = model_name)
+  model_object <- fit_model(model_data = model_data,
+                            model_name = model_name,
+                            n_iters = n_iters,
+                            n_thin = n_thin,
+                            delta = delta,
+                            m_treed = m_treed,
+                            decades = decades); print(paste0("serofoi model ",
+                                                              model_name,
+                                                              " finished running ------"))
   print(t(model_object$model_summary))
   return(model_object)
 }
@@ -93,7 +67,7 @@ run_model <- function(model_data,
 #' Save or load model
 #' This function determines whether the corresponding .RDS file of the selected model exists or not.
 #' In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the \link[rstan]{stan_model} function, saved as an .RDS file and returned as the output of the function.
-#' @param Name of the selected model. Current version provides three options:
+#' @param model_name Name of the selected model. Current version provides three options:
 #' \describe{
 #' \item{\code{constant_foi_bi}}{Runs a constant model}
 #' \item{\code{continuous_foi_normal_bi}}{Runs a normal model}
@@ -135,7 +109,26 @@ save_or_load_model <- function(model_name = "constant_foi_bi") {
 #' For further details refer to the \code{control} parameter in \link[rstan]{sampling} or \href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.
 #' @param m_treed Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the \code{control} parameter in \link[rstan]{sampling}.
 #' @param decades Number of decades covered by the survey data.
-#' @return model_object
+#' @return \code{model_object}. An object containing relevant information about the implementation of the model. It contains the following:
+#' \tabular{ll}{
+#' \code{fit} \tab \code{stanfit} object returned by the function \link[rstan]{sampling} \cr \tab \cr
+#' \code{model_data} \tab A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_model}.\cr \tab \cr
+#' \code{stan_data} \tab List containing \code{Nobs}, \code{Npos}, \code{Ntotal}, \code{Age}, \code{Ymax}, \code{AgeExpoMatrix} and \code{NDecades}. 
+#' This object is used as an input for the \link[rstan]{sampling} function \cr \tab \cr
+#' \code{real_exposure_years} \tab Integer atomic vector containing the actual exposure years (1946, ..., 2007 e.g.) \cr \tab \cr
+#' \code{exposure_years} \tab Integer atomic vector containing the numeration of the exposure years. \cr \tab \cr
+#' \code{n_iters} \tab Number of interations for eah chain including the warmup. \cr \tab \cr
+#' \code{n_thin} \tab Positive integer specifying the period for saving samples. \cr \tab \cr
+#' \code{n_warmup} \tab Number of warm up iterations. Set by default as n_iters/2. \cr \tab \cr
+#' \code{model_name} \tab The name of the model\cr \tab \cr
+#' \code{delta} \tab Real number between 0 and 1 that represents the target average acceptance probability. \cr \tab \cr
+#' \code{m_treed} \tab Maximum tree depth for the binary tree used in the NUTS stan sampler. \cr \tab \cr
+#' \code{loo_fit} \tab Efficient approximate leave-one-out cross-validation. Refer to \link[loo]{loo} for further details. \cr \tab \cr
+#' \code{foi_cent_est} \tab A data fram e containing \code{year} (corresponding to \code{real_exposure_years}), \code{lower}, \code{upper}, and \code{medianv} \cr \tab \cr
+#' \code{foi_post_s} \tab Sample n rows from a table. Refer to \link[dplyr]{sample_n} for further details. \cr \tab \cr
+#' \code{model_summary} \tab A data fram containing the summary of the model. Refer to \link{extract_model_summary} for further details. \cr \tab \cr
+#' }
+
 #' @examples
 #' model_data <- prepare_data(mydata)
 #' fit_model (model_data,
@@ -155,7 +148,6 @@ fit_model <- function(model_data,
                       decades = 0) {
   # add a warning because there are exceptions where a minimal amount of iterations need to be run
   model <- save_or_load_model(model_name)
-
   exposure_years <- get_exposure_years(model_data)
   exposure_years <- exposure_years[-length(exposure_years)]
   real_exposure_years <- (min(model_data$birth_year):model_data$tsur[1])[-1]
@@ -174,8 +166,23 @@ fit_model <- function(model_data,
 
   n_warmup <- floor(n_iters / 2)
 
+  if (model_name == "continuous_foi_normal_log") {
+    f_init <- function() {
+      list(log_foi = rep(-3, length(exposure_years)))
+    }
+    lower_quantile = 0.1
+    upper_quantile = 0.9
+    medianv_quantile = 0.5
+  }
+
+  else {
   f_init <- function() {
     list(foi = rep(0.01, length(exposure_years)))
+  }
+    lower_quantile = 0.05
+    upper_quantile = 0.95
+    medianv_quantile = 0.5
+
   }
 
   fit <- rstan::sampling(
@@ -200,11 +207,11 @@ fit_model <- function(model_data,
     # generates central estimations
     foi_cent_est <- data.frame(
       year = real_exposure_years,
-      lower = apply(foi, 2, function(x) quantile(x, 0.05)),
+      lower = apply(foi, 2, function(x) quantile(x, lower_quantile)),
 
-      upper = apply(foi, 2, function(x) quantile(x, 0.95)),
+      upper = apply(foi, 2, function(x) quantile(x, upper_quantile)),
 
-      medianv = apply(foi, 2, function(x) quantile(x, 0.5))
+      medianv = apply(foi, 2, function(x) quantile(x, medianv_quantile))
     )
 
 
@@ -226,7 +233,7 @@ fit_model <- function(model_data,
       n_iters = n_iters,
       n_thin = n_thin,
       n_warmup = n_warmup,
-      model = model_name,
+      model_name = model_name,
       delta = delta,
       m_treed = m_treed,
       loo_fit = loo_fit,
@@ -252,126 +259,6 @@ fit_model <- function(model_data,
       loo_fit = loo_fit,
       model_summary = NA
     )
-  }
-
-  return(model_object)
-}
-
-#' Fit Model Log
-#'
-#' Function that fits the logarithmic model to the data
-#' @param model_data model_data
-#' @param model refers to model selected
-#' @param model_name name of the model selected
-#' @param n_iters number of iterations. This value comes by default but it can be changed
-#' @param n_thinThis value comes by default but it can be changed
-#' @param delta This value comes by default but it can be changed
-#' @param m_treed This value comes by default but it can be changed
-#' @param decades The decades covered by the survey data
-#' @return model_object
-#' @examples
-#' fit_model_log (model,
-#'                model_data,
-#'                model_name)
-#' @export
-fit_model_log <- function(model_data,
-                          model_name,
-                          n_iters = 3000,
-                          n_thin = 2,
-                          delta = 0.90,
-                          m_treed = 10,
-                          decades = 0) {
-  model <- save_or_load_model(model_name)
-  exposure_years <- get_exposure_years(model_data)
-  exposure_years <- exposure_years[-length(exposure_years)]
-  real_exposure_years <- (min(model_data$birth_year):model_data$tsur[1])[-1]
-  exposure_matrix <- get_exposure_matrix(model_data, exposure_years)
-  Nobs <- nrow(model_data)
-
-  stan_data <- list(
-    Nobs = nrow(model_data),
-    Npos = model_data$counts,
-    Ntotal = model_data$total,
-    Age = model_data$age_mean_f,
-    Ymax = max(exposure_years),
-    AgeExpoMatrix = exposure_matrix,
-    NDecades = decades
-  )
-
-  n_warmup <- floor(n_iters / 2)
-
-  f_init <- function() {
-    list(log_foi = rep(-3, length(exposure_years)))
-  }
-
-  fit <- rstan::sampling(
-    model,
-    data = stan_data,
-    iter = n_iters,
-    chains = 4,
-    init = f_init,
-    warmup = n_warmup,
-    verbose = FALSE,
-    refresh = 0,
-    control = list(adapt_delta = delta,
-                   max_treedepth = m_treed),
-    seed = "12345",
-    thin = n_thin
-  )
-
-  if (class(fit@sim$samples) != "NULL") {
-    loo_fit <- loo::loo(fit, save_psis = TRUE, "logLikelihood")
-    foi <- rstan::extract(fit, "foi", inc_warmup = FALSE)[[1]]
-
-    foi_cent_est <- data.frame(
-      year = real_exposure_years,
-      lower = apply(foi, 2, function(x) quantile(x, 0.1)),
-
-      upper = apply(foi, 2, function(x) quantile(x, 0.9)),
-
-      medianv = apply(foi, 2, function(x) quantile(x, 0.5))
-    )
-
-    foi_post_s <- dplyr::sample_n(as.data.frame(foi), size = 1000)
-    colnames(foi_post_s) <- real_exposure_years
-
-
-    model_object <- list(
-      fit = fit,
-      model_data = model_data,
-      stan_data = stan_data,
-      real_exposure_years = real_exposure_years,
-      exposure_years = exposure_years,
-      n_iters = n_iters,
-      n_thin = n_thin,
-      n_warmup = n_warmup,
-      model = model_name,
-      delta = delta,
-      m_treed = m_treed,
-      loo_fit = loo_fit,
-      foi_cent_est = foi_cent_est,
-      foi_post_s = foi_post_s
-    )
-
-    model_object$model_summary <-
-      extract_model_summary(model_object)
-  } else {
-    loo_fit <- c(-1e10, 0)
-    model_object <- list(
-      fit = "no model",
-      stan_data = stan_data,
-      real_exposure_years = real_exposure_years,
-      exposure_years = exposure_years,
-      n_iters = n_iters,
-      n_thin = n_thin,
-      n_warmup = n_warmup,
-      model = model_name,
-      delta = delta,
-      m_treed = m_treed,
-      loo_fit = loo_fit
-    )
-    model_object$model_summary <-
-      extract_model_summary(model_object)
   }
 
   return(model_object)
@@ -435,7 +322,7 @@ extract_model_summary <- function(model_object) {
 
   model_data <- model_object$model_data
   summary_model <- data.frame(
-    model = model_object$model,
+    model_name = model_object$model_name,
     dataset = model_data$survey[1],
     country = model_data$country[1],
     year = model_data$tsur[1],

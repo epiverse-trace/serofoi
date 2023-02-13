@@ -9,7 +9,7 @@ In case the .RDS file exists, it is read and returned; otherwise, the object mod
 save_or_load_model(model_name = "constant_foi_bi")
 }
 \arguments{
-\item{Name}{of the selected model. Current version provides three options:
+\item{model_name}{Name of the selected model. Current version provides three options:
 \describe{
 \item{\code{constant_foi_bi}}{Runs a constant model}
 \item{\code{continuous_foi_normal_bi}}{Runs a normal model}

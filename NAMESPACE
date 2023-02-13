@@ -2,7 +2,6 @@
 
 export(extract_model_summary)
 export(fit_model)
-export(fit_model_log)
 export(get_comparison_table)
 export(get_exposure_matrix)
 export(get_exposure_years)

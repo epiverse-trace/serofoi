@@ -14,7 +14,7 @@ mydata <- readRDS("data/data.RDS")
 data_test <- prepare_data(model_data = mydata, alpha = 0.05)
 
 ?get_exposure_years
-# exposure_years <- get_exposure_years(data_test)
+exposure_years <- get_exposure_years(data_test)
 
 ?get_exposure_matrix
 # exposure_matrix <- get_exposure_matrix(model_data = data_test)

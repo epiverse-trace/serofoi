@@ -37,7 +37,25 @@ For further details refer to the \code{control} parameter in \link[rstan]{sampli
 \item{decades}{Number of decades covered by the survey data.}
 }
 \value{
-model_object
+\code{model_object}. An object containing relevant information about the implementation of the model. It contains the following:
+\tabular{ll}{
+\code{fit} \tab \code{stanfit} object returned by the function \link[rstan]{sampling} \cr \tab \cr
+\code{model_data} \tab A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_model}.\cr \tab \cr
+\code{stan_data} \tab List containing \code{Nobs}, \code{Npos}, \code{Ntotal}, \code{Age}, \code{Ymax}, \code{AgeExpoMatrix} and \code{NDecades}. 
+This object is used as an input for the \link[rstan]{sampling} function \cr \tab \cr
+\code{real_exposure_years} \tab Integer atomic vector containing the actual exposure years (1946, ..., 2007 e.g.) \cr \tab \cr
+\code{exposure_years} \tab Integer atomic vector containing the numeration of the exposure years. \cr \tab \cr
+\code{n_iters} \tab Number of interations for eah chain including the warmup. \cr \tab \cr
+\code{n_thin} \tab Positive integer specifying the period for saving samples. \cr \tab \cr
+\code{n_warmup} \tab Number of warm up iterations. Set by default as n_iters/2. \cr \tab \cr
+\code{model_name} \tab The name of the model\cr \tab \cr
+\code{delta} \tab Real number between 0 and 1 that represents the target average acceptance probability. \cr \tab \cr
+\code{m_treed} \tab Maximum tree depth for the binary tree used in the NUTS stan sampler. \cr \tab \cr
+\code{loo_fit} \tab Efficient approximate leave-one-out cross-validation. Refer to \link[loo]{loo} for further details. \cr \tab \cr
+\code{foi_cent_est} \tab A data fram e containing \code{year} (corresponding to \code{real_exposure_years}), \code{lower}, \code{upper}, and \code{medianv} \cr \tab \cr
+\code{foi_post_s} \tab Sample n rows from a table. Refer to \link[dplyr]{sample_n} for further details. \cr \tab \cr
+\code{model_summary} \tab A data fram containing the summary of the model. Refer to \link{extract_model_summary} for further details. \cr \tab \cr
+}
 }
 \description{
 Function that fits the selected model to the data
