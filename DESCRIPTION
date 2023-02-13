@@ -20,7 +20,8 @@ Imports:
     gridExtra,
     Hmisc,
     dplyr,
-    gsubfn
+    gsubfn,
+    testthat (>= 3.0.0)
 Suggests: 
     knitr,
     rmarkdown
