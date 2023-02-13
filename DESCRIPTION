@@ -27,7 +27,16 @@ Imports:
     Rcpp, 
     RcppEigen, 
     StanHeaders, 
-    RcppParallel    
+    RcppParallel,
+    parallel,
+    RUnit,
+    KernSmooth,
+    shinystan,
+    bayesplot,
+    rstantools,
+    rstudioapi,
+    Matrix,
+    V8    
 Suggests: 
     knitr,
     rmarkdown
