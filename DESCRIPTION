@@ -23,7 +23,11 @@ Imports:
     gsubfn,
     testthat (>= 3.0.0),
     devtools,
-    BH
+    BH,
+    Rcpp, 
+    RcppEigen, 
+    StanHeaders, 
+    RcppParallel    
 Suggests: 
     knitr,
     rmarkdown
