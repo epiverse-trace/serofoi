@@ -3,8 +3,8 @@ VOLUME [ "/root/.R/site-library"]
 ARG docker_folder="tests/docker"
 WORKDIR /package
 ADD . .
-ADD ${docker_folder}/run_tests.sh .
-ADD ${docker_folder}/install_deps.sh .
+ADD ${docker_folder}/*.sh ./
+# ADD ${docker_folder}/install_deps.sh .
 
 WORKDIR /root
 ADD ${docker_folder}/.bashrc .

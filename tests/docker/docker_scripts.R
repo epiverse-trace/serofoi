@@ -1,8 +1,8 @@
-# Clears everything
+# Clear everything
 system(
     "docker container rm rtest-container; docker volume rm rtest-site-library; docker image rm -f rtest-image"
 )
-# Rebuilds Docker image
+# Rebuild Docker image
 system(
     "docker build -t rtest-image . -f tests/docker/Dockerfile"
 )
@@ -15,4 +15,9 @@ system(
 # Run tests
 system(
     "docker container kill rtest-container ; docker container rm rtest-container ; docker container run  --rm --name rtest-container  --env R_LIBS=/root/.R/site-library  -v rtest-site-library:/root/.R/site-library rtest-image 'cd /package && ./run_tests.sh'"
+)
+
+# R CMD Check
+system(
+    "docker container kill rtest-container ; docker container rm rtest-container ; docker container run  --rm --name rtest-container  --env R_LIBS=/root/.R/site-library  -v rtest-site-library:/root/.R/site-library rtest-image 'cd /package && ./check.sh'"
 )
