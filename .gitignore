@@ -46,3 +46,4 @@ vignettes/*.pdf
 # .RDS Stan compilation files
 inst/extdata/stanmodels/*.RDS
 inst/doc
+docs
