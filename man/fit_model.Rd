@@ -5,36 +5,64 @@
 \title{Fit Model}
 \usage{
 fit_model(
-  model,
   model_data,
   model_name,
-  n_iters = n_iters,
-  n_thin = n_thin,
-  delta = delta,
-  m_treed = m_treed,
-  decades = decades
+  n_iters = 1000,
+  n_thin = 2,
+  delta = 0.9,
+  m_treed = 10,
+  decades = 0
 )
 }
 \arguments{
-\item{model}{refers to model selected}
+\item{model_data}{A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_model}.}
 
-\item{model_data}{refers to the model data that has been selected}
+\item{model_name}{Name of the selected model. Current version provides three options:
+\describe{
+\item{\code{constant_foi_bi}}{Runs a constant model}
+\item{\code{continuous_foi_normal_bi}}{Runs a normal model}
+\item{\code{continuous_foi_normal_log}}{Runs a normal logarithmic model}
+}}
 
-\item{model_name}{name of the model selected}
+\item{n_iters}{Number of interations for eah chain including the warmup. \code{iter} in \link[rstan]{sampling}.}
 
-\item{n_iters}{number of iterations. Each model has a default number.}
+\item{n_thin}{Positive integer specifying the period for saving samples. \code{thin} in \link[rstan]{sampling}.}
 
-\item{n_thin}{Each model has a default number.}
+\item{delta}{Real number between 0 and 1 that represents the target average acceptance probability.
+Increasing the value of \code{delta} will result in a smaller step size and fewer divergences.
+For further details refer to the \code{control} parameter in \link[rstan]{sampling} or \href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.}
 
-\item{delta}{This value comes by default but it can be changed}
+\item{m_treed}{Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the \code{control} parameter in \link[rstan]{sampling}.}
 
-\item{m_treed}{This value comes by default but it can be changed}
-
-\item{decades}{The decades covered by the survey data}
+\item{decades}{Number of decades covered by the survey data.}
 }
 \value{
-model_object
+\code{model_object}. An object containing relevant information about the implementation of the model. It contains the following:
+\tabular{ll}{
+\code{fit} \tab \code{stanfit} object returned by the function \link[rstan]{sampling} \cr \tab \cr
+\code{model_data} \tab A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_model}.\cr \tab \cr
+\code{stan_data} \tab List containing \code{Nobs}, \code{Npos}, \code{Ntotal}, \code{Age}, \code{Ymax}, \code{AgeExpoMatrix} and \code{NDecades}.
+This object is used as an input for the \link[rstan]{sampling} function \cr \tab \cr
+\code{real_exposure_years} \tab Integer atomic vector containing the actual exposure years (1946, ..., 2007 e.g.) \cr \tab \cr
+\code{exposure_years} \tab Integer atomic vector containing the numeration of the exposure years. \cr \tab \cr
+\code{n_iters} \tab Number of interations for eah chain including the warmup. \cr \tab \cr
+\code{n_thin} \tab Positive integer specifying the period for saving samples. \cr \tab \cr
+\code{n_warmup} \tab Number of warm up iterations. Set by default as n_iters/2. \cr \tab \cr
+\code{model_name} \tab The name of the model\cr \tab \cr
+\code{delta} \tab Real number between 0 and 1 that represents the target average acceptance probability. \cr \tab \cr
+\code{m_treed} \tab Maximum tree depth for the binary tree used in the NUTS stan sampler. \cr \tab \cr
+\code{loo_fit} \tab Efficient approximate leave-one-out cross-validation. Refer to \link[loo]{loo} for further details. \cr \tab \cr
+\code{foi_cent_est} \tab A data fram e containing \code{year} (corresponding to \code{real_exposure_years}), \code{lower}, \code{upper}, and \code{medianv} \cr \tab \cr
+\code{foi_post_s} \tab Sample n rows from a table. Refer to \link[dplyr]{sample_n} for further details. \cr \tab \cr
+\code{model_summary} \tab A data fram containing the summary of the model. Refer to \link{extract_model_summary} for further details. \cr \tab \cr
+}
 }
 \description{
-Function that fits the model to the data
+Function that fits the selected model to the data
+}
+\examples{
+model_data <- prepare_data(mydata)
+fit_model (model_data,
+           model_name = "constant_foi_bi")
+
 }

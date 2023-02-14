@@ -17,3 +17,8 @@ comparison table
 Get Model Table Comparison
 Provides a table with statistics for comparison between models and selection
 }
+\examples{
+comp_table <- get_comparison_table(model_objects_list = c(m0 = model_0,
+                                                          m1 = model_1,
+                                                          m2 = model_2))
+}

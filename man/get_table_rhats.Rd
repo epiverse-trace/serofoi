@@ -15,3 +15,6 @@ rhats table
 \description{
 Function that makes the rhats table
 }
+\examples{
+get_table_rhats (model_object)
+}
