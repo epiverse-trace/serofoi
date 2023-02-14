@@ -1,5 +1,7 @@
 # library(remotes)
-# remotes::install_github("TRACE-LAC/serofoi", ref = "dev")
+remotes::install_github("TRACE-LAC/serofoi",
+                        ref = "dev-zulma-vignette",
+                        force = TRUE)
 library(serofoi)
 
 
