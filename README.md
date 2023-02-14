@@ -1,7 +1,7 @@
 
 ## *serofoi*<img src="man/figures/serofoi-logo.png" align="right" width="120" />
 
-__serofoi version 0.1.0__ is an R package to estimate the *Force-of-Infection* of a given pathogen from population based sero-prevalence studies on a Bayesian framework.
+__serofoi version 0.1.1__ is an R package to estimate the *Force-of-Infection* of a given pathogen from population based sero-prevalence studies on a Bayesian framework.
 
 <!-- badges: start -->
 
@@ -117,6 +117,7 @@ Contributors to the project include:
 - Benjamin Lambert (author)
 - Pierre Nouvellet (author)
 - [Miguel Gamez](https://github.com/megamezl) (contributor)
+- [Jaime Pavlich-Mariscal](https://github.com/jpavlich) (contributor)
 - [Geraldine Gómez](https://github.com/GeraldineGomez) (contributor)
 
 Contributions are welcome via [pull
