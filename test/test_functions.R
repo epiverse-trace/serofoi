@@ -1,5 +1,8 @@
 rm(list = ls())
 
+# remotes::install_github("TRACE-LAC/serofoi", ref = "dev", force = TRUE)
+# library(serofoi)
+
 library(devtools)
 library(dplyr)
 
