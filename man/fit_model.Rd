@@ -19,9 +19,9 @@ fit_model(
 
 \item{model_name}{Name of the selected model. Current version provides three options:
 \describe{
-\item{\code{constant_foi_bi}}{Runs a constant model}
-\item{\code{continuous_foi_normal_bi}}{Runs a normal model}
-\item{\code{continuous_foi_normal_log}}{Runs a normal logarithmic model}
+\item{\code{"constant_foi_bi"}}{Runs a constant model}
+\item{\code{"continuous_foi_normal_bi"}}{Runs a normal model}
+\item{\code{"continuous_foi_normal_log"}}{Runs a normal logarithmic model}
 }}
 
 \item{n_iters}{Number of interations for eah chain including the warmup. \code{iter} in \link[rstan]{sampling}.}
