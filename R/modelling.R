@@ -37,7 +37,7 @@
 #' @param decades Number of decades covered by the survey data.
 #' @return model_object (complementar cuando escriba la documentación de fit_model y fit_model_log)
 #' @examples
-#' model_data <- preprare_data(mydata)
+#' model_data <- prepare_data(mydata)
 #' run_model (model_data,
 #'            model_name = "constant_foi_bi")
 #' @export
@@ -360,7 +360,7 @@ extract_model_summary <- function(model_object) {
 #'
 #' Function that generates the expanded prevalence
 #' @param model_data A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_model}.
-#' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]}. 
+#' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]}.
 #' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
 #' @examples
 #' model_data <- prepare_data(mydata)
