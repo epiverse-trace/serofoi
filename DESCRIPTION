@@ -9,7 +9,7 @@ Description: R package to estimate time-varying Force-of-Infection of a given pa
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Imports:
     config,
     rstan,
@@ -22,7 +22,8 @@ Imports:
     dplyr,
     gsubfn,
     testthat (>= 3.0.0),
-    devtools,    
+    devtools,
+    Rcpp
 Suggests: 
     knitr,
     rmarkdown
