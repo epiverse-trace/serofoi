@@ -23,6 +23,7 @@ Imports:
     gsubfn,
     testthat (>= 3.0.0),
     devtools,
+    methods,
     Rcpp
 Suggests: 
     knitr,

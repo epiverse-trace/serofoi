@@ -5,7 +5,7 @@
 #' @import dplyr
 #' @importFrom dplyr %>%
 #' @import Rcpp
-#' @immport methods
+#' @import methods
 #' @importFrom rstan sampling
 ## usethis namespace: end
 NULL
