@@ -22,5 +22,11 @@ The sero-positivity plot
 Function that generates the sero positivity plot
 }
 \examples{
-plot_seroprev_fitted(model_0_object, size_text)
+data_test <- prepare_data(mydata)
+model_object <- run_model(
+ model_data = data_test,
+ model_name = "constant_foi_bi",
+ n_iters = 1000
+)
+plot_seroprev_fitted(model_object, size_text = 15)
 }

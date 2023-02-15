@@ -1,3 +1,4 @@
+# TODO Fix example
 #' Generate sero-positivity plot from raw data
 #'
 #' Function that generates the sero positivity plot
@@ -6,7 +7,15 @@
 #' @param ylabel Label of axis y
 #' @return The sero-positivity plot
 #' @examples
-#' plot_seroprev(model_0_object, size_text)
+#'\dontrun{
+#' data_test <- prepare_data(mydata)
+#' model_object <- run_model(
+#'  model_data = data_test,
+#'  model_name = "constant_foi_bi",
+#'  n_iters = 1000
+#')
+#' plot_seroprev(model_object, size_text = 15)
+#' }
 #' @export
 plot_seroprev <- function(model_data,
                           size_text = 6) {
@@ -33,7 +42,13 @@ plot_seroprev <- function(model_data,
 #' @param ylabel Label of axis y
 #' @return The sero-positivity plot
 #' @examples
-#' plot_seroprev_fitted(model_0_object, size_text)
+#' data_test <- prepare_data(mydata)
+#' model_object <- run_model(
+#'  model_data = data_test,
+#'  model_name = "constant_foi_bi",
+#'  n_iters = 1000
+#')
+#' plot_seroprev_fitted(model_object, size_text = 15)
 #' @export
 plot_seroprev_fitted <- function(model_object,
                                  size_text = 6) {
@@ -103,7 +118,13 @@ plot_seroprev_fitted <- function(model_object,
 #' @param ylabel Label of axis y
 #' @return Force of infection plot
 #' @examples
-#' plot_foi(model_0_object, size_text)
+#'  data_test <- prepare_data(mydata)
+#' model_object <- run_model(
+#'   model_data = data_test,
+#'   model_name = "constant_foi_bi",
+#'   n_iters = 1000
+#' )
+#' plot_foi(model_object, size_text = 15)
 #' @export
 plot_foi <- function(model_object,
                      lambda_sim = NA,
@@ -189,7 +210,13 @@ plot_foi <- function(model_object,
 #' @param ylabel Label of axis y
 #' @return The rhats-convergence plot of the selected model
 #' @examples
-#' plot_rhats(model_0_object, size_text)
+#' data_test <- prepare_data(mydata)
+#' model_object <- run_model(
+#'  model_data = data_test,
+#'  model_name = "constant_foi_bi",
+#'  n_iters = 1000
+#')
+#' plot_rhats(model_object, size_text = 15)
 #' @export
 plot_rhats <- function(model_object,
                        size_text = 25) {
@@ -244,7 +271,13 @@ plot_rhats <- function(model_object,
 #' @param ylabel Label of axis y
 #' @return The combined plots
 #' @examples
-#' plot_model(model_0_object, size_text)
+#' data_test <- prepare_data(mydata)
+#' model_object <- run_model(
+#'  model_data = data_test,
+#'  model_name = "constant_foi_bi",
+#'  n_iters = 1000
+#')
+#' plot_model(model_object, size_text = 15)
 #' @export
 plot_model <- function(model_object,
                        lambda_sim = NA,
@@ -317,7 +350,14 @@ plot_model <- function(model_object,
 #' @param size_text text size
 #' @return The previous expanded graphic
 #' @examples
-#' plot_info_table (info, size_text)
+#' data_test <- prepare_data(mydata)
+#' model_object <- run_model(
+#'  model_data = data_test,
+#'  model_name = "constant_foi_bi",
+#'  n_iters = 1000
+#')
+#' info = t(model_object$model_summary)
+#' plot_info_table (info, size_text = 15)
 #' @export
 plot_info_table <- function(info, size_text) {
   dato <- data.frame(y = NROW(info):seq_len(1),

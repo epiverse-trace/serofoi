@@ -22,5 +22,11 @@ The rhats-convergence plot of the selected model
 Function that generates the convergence graph of a model
 }
 \examples{
-plot_rhats(model_0_object, size_text)
+data_test <- prepare_data(mydata)
+model_object <- run_model(
+ model_data = data_test,
+ model_name = "constant_foi_bi",
+ n_iters = 1000
+)
+plot_rhats(model_object, size_text = 15)
 }

@@ -64,7 +64,7 @@ model_object (complementar cuando escriba la documentación de fit_model y fit_m
 Runs the specified stan model for the force-of-infection
 }
 \examples{
-model_data <- preprare_data(mydata)
+model_data <- prepare_data(mydata)
 run_model (model_data,
            model_name = "constant_foi_bi")
 }

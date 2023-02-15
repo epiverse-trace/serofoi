@@ -20,5 +20,12 @@ The previous expanded graphic
 Function that generates the information table
 }
 \examples{
-plot_info_table (info, size_text)
+data_test <- prepare_data(mydata)
+model_object <- run_model(
+ model_data = data_test,
+ model_name = "constant_foi_bi",
+ n_iters = 1000
+)
+info = t(model_object$model_summary)
+plot_info_table (info, size_text = 15)
 }

@@ -38,7 +38,7 @@
 #' @param decades Number of decades covered by the survey data.
 #' @return model_object (complementar cuando escriba la documentación de fit_model y fit_model_log)
 #' @examples
-#' model_data <- preprare_data(mydata)
+#' model_data <- prepare_data(mydata)
 #' run_model (model_data,
 #'            model_name = "constant_foi_bi")
 #' @export
@@ -271,11 +271,12 @@ fit_model <- function(model_data,
 #' @param model_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_data} function.
 #' @return \code{exposure_years}. An atomic vector with the numeration of the exposition years in model_data
 #' @examples
-#' model_data <- prepare_data(mydata)
-#' exposure_years <- get_exposure_years (model_data)
+#' model_data <- prepare_data(model_data = mydata, alpha = 0.05)
+#' exposure_years <- get_exposure_years(model_data)
 #' @export
 get_exposure_years <- function(model_data) {
-  exposure_years <- (seq_along(min(model_data$birth_year):model_data$tsur[1]))
+  # TODO Verify if this change is correct
+  return(seq_along(min(model_data$birth_year):model_data$tsur[1]))
 }
 
 
@@ -285,9 +286,9 @@ get_exposure_years <- function(model_data) {
 #' @param model_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_data} function.
 #' @return \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{model_data} by year.
 #' @examples
-#' model_data <- prepare_data(mydata)
+#' model_data <- prepare_data(model_data = mydata, alpha = 0.05)
 #' exposure_years <- get_exposure_years(model_data)
-#' exposure_matrix <- get_exposure_matrix(model_data, exposure_years)
+#' exposure_matrix <- get_exposure_matrix(model_data = model_data, exposure_years = exposure_years)
 #' @export
 get_exposure_matrix <- function(model_data,
                                 exposure_years) {

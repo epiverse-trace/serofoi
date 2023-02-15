@@ -1,3 +1,4 @@
+# TODO Fix example
 #' Prepare data
 #'
 #' Function that prepares the data for modelling
@@ -5,8 +6,10 @@
 #' @param alpha probability of a type I error (Hmisc::binconf)
 #' @return model_data with additional columns necessary for the analysis
 #' @examples
+#'\dontrun{
 #' data_test <- readRDS("data/data.RDS")
 #' data_test <- prepare_data(data_test, alpha)
+#' }
 #' @export
 prepare_data <- function(model_data,
                          alpha = 0.05) {
@@ -32,13 +35,16 @@ prepare_data <- function(model_data,
   return(model_data)
 }
 
+# TODO Fix example
 #' Prepare data to plot binomial confidence intervals
 #'
 #' Function that prepares the data for modelling
 #' @param model_data dataset to be processed
 #' @return data set with the binomial confidence intervals
 #' @examples
+#'\dontrun{
 #' prepare_bin_data (model_data)
+#' }
 #' @export
 prepare_bin_data <- function(model_data) {
   model_data$cut_ages <-
