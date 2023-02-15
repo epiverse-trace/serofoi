@@ -5,26 +5,26 @@ test_that("individual models", {
   library(dplyr)
 
   #----- Read and prepare data
-  test_data_path <- test_path(
+  data_test_path <- test_path(
     "extdata", "data.RDS"
   )
-  test_data <- readRDS(test_data_path) %>% prepare_data(alpha = 0.05)
+  data_test <- readRDS(data_test_path) %>% prepare_data(alpha = 0.05)
 
   #----- Test each model
   model_0_object <- run_model(
-    model_data = test_data,
+    model_data = data_test,
     model_name = "constant_foi_bi",
     n_iters = 1000
   )
 
   model_1_object <- run_model(
-    model_data = test_data,
+    model_data = data_test,
     model_name = "continuous_foi_normal_bi",
     n_iters = 1000
   )
 
   model_2_object <- run_model(
-    model_data = test_data,
+    model_data = data_test,
     model_name = "continuous_foi_normal_log",
     n_iters = 1000
   )
@@ -37,9 +37,11 @@ test_that("individual models", {
 
   #----- Generate each individual plot
 
-  plot_seroprev_fitted(model_0_object, size_text = 15)
-  plot_foi(model_0_object, size_text = 15)
-  plot_rhats(model_0_object, size_text = 15)
+plot_seroprev_fitted(model_2_object, size_text = 15)
+plot_foi(model_2_object, size_text = 15)
+plot_rhats(model_2_object, size_text = 15)
 
   # bayesplot::mcmc_trace(model_1_object$fit, pars="lambda0")
+
+# TODO Complete test ###
 })

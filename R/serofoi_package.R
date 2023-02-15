@@ -7,6 +7,5 @@
 #' @import Rcpp
 #' @immport methods
 #' @importFrom rstan sampling
-#' @useDynLib serofoi, .registration=TRUE
 ## usethis namespace: end
 NULL

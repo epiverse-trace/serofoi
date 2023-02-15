@@ -16,4 +16,6 @@ test_that("minimal data", {
 
   plot_seroprev_fitted(model_0_object, size_text = 15)
   plot_seroprev(data_test, size_text = 15)
+
+  # TODO Complete test ###
 })

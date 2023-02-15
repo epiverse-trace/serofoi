@@ -1,7 +1,7 @@
 test_that("comparison", {
   library(dplyr)
   source("testing_utils.R")
-  
+
   set.seed(1234) # For reproducibility
 
   package <- "serofoi"

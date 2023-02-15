@@ -276,7 +276,6 @@ get_exposure_years <- function(model_data) {
   exposure_years <- (seq_along(min(model_data$birth_year):model_data$tsur[1]))
 }
 
-
 #' Get Exposure Matrix
 #'
 #' Function that generates the exposure matrix for a seroprevalence survey.
@@ -284,7 +283,8 @@ get_exposure_years <- function(model_data) {
 #' @return \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{model_data} by year.
 #' @examples
 #' model_data <- prepare_data(mydata)
-#' exposure_matrix <- get_exposure_matrix(model_data)
+#' exposure_years <- get_exposure_years(model_data)
+#' exposure_matrix <- get_exposure_matrix(model_data, exposure_years)
 #' @export
 get_exposure_matrix <- function(model_data,
                                 exposure_years) {

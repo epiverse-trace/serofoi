@@ -16,9 +16,9 @@ test_that("compilation", {
   # plot_seroprev_fitted(model_0_object, size_text = 15)
   # plot_foi(model_0_object, size_text = 15)
   # plot_rhats(model_0_object, size_text = 15)
-  summary_model <- extract_summary_model(model_0_object)
-  expected_summary_model <- read.csv(
-    test_path("extdata", "expected_summary_model.csv")
+  model_summary <- extract_model_summary(model_0_object)
+  expected_model_summary <- read.csv(
+    test_path("extdata", "expected_model_summary.csv")
   )
 
 
@@ -39,7 +39,7 @@ test_that("compilation", {
 
   expect_true(
     compare_dataframes(
-      expected_summary_model, summary_model, column_comparation_functions
+      expected_model_summary, model_summary, column_comparation_functions
     )
   )
 })
