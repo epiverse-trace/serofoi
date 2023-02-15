@@ -22,21 +22,7 @@ Imports:
     dplyr,
     gsubfn,
     testthat (>= 3.0.0),
-    devtools,
-    BH,
-    Rcpp, 
-    RcppEigen, 
-    StanHeaders, 
-    RcppParallel,
-    parallel,
-    RUnit,
-    KernSmooth,
-    shinystan,
-    bayesplot,
-    rstantools,
-    rstudioapi,
-    Matrix,
-    V8    
+    devtools,    
 Suggests: 
     knitr,
     rmarkdown
