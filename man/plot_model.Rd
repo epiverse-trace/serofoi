@@ -22,5 +22,11 @@ The combined plots
 Function that generates the combined graph
 }
 \examples{
-plot_model(model_0_object, size_text)
+data_test <- prepare_data(mydata)
+model_object <- run_model(
+ model_data = data_test,
+ model_name = "constant_foi_bi",
+ n_iters = 1000
+)
+plot_model(model_object, size_text = 15)
 }

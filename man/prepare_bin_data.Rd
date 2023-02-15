@@ -16,5 +16,7 @@ data set with the binomial confidence intervals
 Function that prepares the data for modelling
 }
 \examples{
+\dontrun{
 prepare_bin_data (model_data)
+}
 }

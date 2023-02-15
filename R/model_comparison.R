@@ -4,6 +4,9 @@
 #' @param model_object model_object
 #' @return rhats table
 #' @examples
+#' model_data <- prepare_data(model_data = mydata, alpha = 0.05)
+#' model_object <- run_model(
+#' model_data = model_data, model_name = "constant_foi_bi")
 #' get_table_rhats (model_object)
 #' @export
 get_table_rhats <- function(model_object) {

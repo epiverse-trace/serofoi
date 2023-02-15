@@ -18,6 +18,8 @@ model_data with additional columns necessary for the analysis
 Function that prepares the data for modelling
 }
 \examples{
+\dontrun{
 data_test <- readRDS("data/data.RDS")
 data_test <- prepare_data(data_test, alpha)
+}
 }

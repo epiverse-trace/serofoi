@@ -16,6 +16,6 @@ get_exposure_years(model_data)
 Function that generates an atomic vector with the exposition years in model_data. The exposition years to the disease for each individual corresponds to the time from birth to the moment of the survey.
 }
 \examples{
-model_data <- prepare_data(mydata)
-exposure_years <- get_exposure_years (model_data)
+model_data <- prepare_data(model_data = mydata, alpha = 0.05)
+exposure_years <- get_exposure_years(model_data)
 }
