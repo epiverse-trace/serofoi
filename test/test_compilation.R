@@ -14,5 +14,4 @@ model_0_plot <- plot_model(model_0_object, size_text = 6)
 plot_seroprev_fitted(model_0_object, size_text = 15)
 plot_foi(model_0_object, size_text = 15)
 plot_rhats(model_0_object, size_text = 15)
-summary_model <- extract_summary_model(model_0_object)
-
+model_summary <- extract_model_summary(model_0_object)

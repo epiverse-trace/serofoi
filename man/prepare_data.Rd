@@ -17,3 +17,7 @@ model_data with additional columns necessary for the analysis
 \description{
 Function that prepares the data for modelling
 }
+\examples{
+data_test <- readRDS("data/data.RDS")
+data_test <- prepare_data(data_test, alpha)
+}

@@ -42,8 +42,8 @@ model_2_plot <- plot_model(model_2_object, size_text = 6)
 
 #----- Generate each individual plot
 
-plot_seroprev_fitted(model_0_object, size_text = 15)
-plot_foi(model_0_object, size_text = 15)
-plot_rhats(model_0_object, size_text = 15)
+plot_seroprev_fitted(model_2_object, size_text = 15)
+plot_foi(model_2_object, size_text = 15)
+plot_rhats(model_2_object, size_text = 15)
 
 # bayesplot::mcmc_trace(model_1_object$fit, pars="lambda0")

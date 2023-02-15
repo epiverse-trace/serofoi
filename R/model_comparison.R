@@ -12,7 +12,7 @@ get_table_rhats <- function(model_object) {
   if (any(is.nan(rhats))) {
     rhats[which(is.nan(rhats))] <- 0
   }
-  model_rhats <- data.frame(year = model_object$real_yexpo, rhat = rhats)
+  model_rhats <- data.frame(year = model_object$real_exposure_years, rhat = rhats)
   model_rhats$rhat[model_rhats$rhat == 0] <- NA
 
   return(model_rhats)

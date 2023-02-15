@@ -3,7 +3,7 @@
 \name{run_model}
 \alias{run_model}
 \title{Run model
-Runs a pre-specified stan model for the force-of-infection}
+Runs the specified stan model for the force-of-infection}
 \usage{
 run_model(
   model_data,
@@ -16,17 +16,57 @@ run_model(
 )
 }
 \arguments{
-\item{model_data}{a dataframe after using <prepare_data> function}
+\item{model_data}{A data frame containing the data from a seroprevalence survey.
+This data frame must contain the following columns:
+\tabular{ll}{
+\code{survey} \tab survey Label of the current survey \cr \tab \cr
+\code{total} \tab Number of samples for each age group\cr \tab \cr
+\code{counts} \tab Number of positive samples for each age group\cr \tab \cr
+\code{age_min} \tab age_min \cr \tab \cr
+\code{age_max} \tab age_max \cr \tab \cr
+\code{year_init} \tab year_init \cr \tab \cr
+\code{year_end} \tab year_end \cr \tab \cr
+\code{tsur} \tab Year in which the survey took place \cr \tab \cr
+\code{country} \tab The country where the survey took place \cr \tab \cr
+\code{test} \tab The type of test taken \cr \tab \cr
+\code{antibody} \tab antibody \cr \tab \cr
+\code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
+\code{sample_size} \tab The size of the sample \cr \tab \cr
+\code{birth_year} \tab The year in which the individuals of each age group were bornt \cr \tab \cr
+\code{prev_obs} \tab Observed prevalence \cr \tab \cr
+\code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
+\code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
+}
+The last six colums can be added to \code{model_data} by means of the function \code{\link{prepare_data}}.}
 
-\item{model_name}{name of the model selected. Current version provides three options:
-<constant_foi_bi>, <continuous_foi_normal_bi> and <continuous_foi_normal_log>}
+\item{model_name}{Name of the selected model. Current version provides three options:
+\describe{
+\item{\code{constant_foi_bi}}{Runs a constant model}
+\item{\code{continuous_foi_normal_bi}}{Runs a normal model}
+\item{\code{continuous_foi_normal_log}}{Runs a normal logarithmic model}
+}}
 
-\item{n_iters}{number of iterations. There is a default value by model type.}
+\item{n_iters}{Number of interations for eah chain including the warmup. \code{iter} in \link[rstan]{sampling}.}
+
+\item{n_thin}{Positive integer specifying the period for saving samples. \code{thin} in \link[rstan]{sampling}.}
+
+\item{delta}{Real number between 0 and 1 that represents the target average acceptance probability.
+Increasing the value of \code{delta} will result in a smaller step size and fewer divergences.
+For further details refer to the \code{control} parameter in \link[rstan]{sampling} or \href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.}
+
+\item{m_treed}{Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the \code{control} parameter in \link[rstan]{sampling}.}
+
+\item{decades}{Number of decades covered by the survey data.}
 }
 \value{
-model_object which is a list of various objects including stan objects and others
+model_object (complementar cuando escriba la documentación de fit_model y fit_model_log)
 }
 \description{
 Run model
-Runs a pre-specified stan model for the force-of-infection
+Runs the specified stan model for the force-of-infection
+}
+\examples{
+model_data <- preprare_data(mydata)
+run_model (model_data,
+           model_name = "constant_foi_bi")
 }
