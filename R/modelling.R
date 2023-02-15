@@ -80,8 +80,10 @@ run_model <- function(model_data,
 #' save_or_load_model(model_name = "constant_foi_bi")
 #' @export
 save_or_load_model <- function(model_name = "constant_foi_bi") {
-  rds_path <- config::get(model_name)$rds_path
-  stan_path <- config::get(model_name)$stan_path
+  base_path <- config::get("stan_models_base_path", file = system.file('config.yml', package = 'serofoi', mustWork = TRUE))
+  stan_path <- system.file(
+    base_path, paste(model_name, ".stan", sep = ""), package = getPackageName())
+  rds_path <- file.path(dirname(stan_path), paste(model_name, ".RDS", sep = ""))
 
   if (!file.exists(rds_path)) {
     warning(paste0("Model ", model_name, " is being compiled for the first time. This might take some minutes"))
@@ -284,7 +286,8 @@ get_exposure_years <- function(model_data) {
 #' @return \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{model_data} by year.
 #' @examples
 #' model_data <- prepare_data(mydata)
-#' exposure_matrix <- get_exposure_matrix(model_data)
+#' exposure_years <- get_exposure_years(model_data)
+#' exposure_matrix <- get_exposure_matrix(model_data, exposure_years)
 #' @export
 get_exposure_matrix <- function(model_data,
                                 exposure_years) {
