@@ -2,14 +2,21 @@
 #' Prepare data
 #'
 #' Function that prepares the data for modelling
-#' @param model_data dataset to be processed
+#' @param model_data A data frame containing the data from a seroprevalence survey. For more information see the function run_model.
 #' @param alpha probability of a type I error (Hmisc::binconf)
-#' @return model_data with additional columns necessary for the analysis
+#' @return model_data with additional columns necessary for the analysis. These columns are:
+#' \tabular{ll}{
+#' \code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
+#' \code{sample_size} \tab The size of the sample \cr \tab \cr
+#' \code{birth_year} \tab The year in which the individuals of each age group were bornt \cr \tab \cr
+#' \code{prev_obs} \tab Observed prevalence \cr \tab \cr
+#' \code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
+#' \code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
+#' }
 #' @examples
 #'\dontrun{
 #' data_test <- readRDS("data/data.RDS")
-#' data_test <- prepare_data(data_test, alpha)
-#' }
+#' data_test <- prepare_data(model_data, alpha)
 #' @export
 prepare_data <- function(model_data,
                          alpha = 0.05) {
@@ -39,7 +46,7 @@ prepare_data <- function(model_data,
 #' Prepare data to plot binomial confidence intervals
 #'
 #' Function that prepares the data for modelling
-#' @param model_data dataset to be processed
+#' @param model_data A data frame containing the data from a seroprevalence survey. For more information see the function \link{run_model}.
 #' @return data set with the binomial confidence intervals
 #' @examples
 #'\dontrun{

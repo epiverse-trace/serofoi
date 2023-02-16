@@ -1,13 +1,11 @@
-# TODO Fix example
 #' Generate sero-positivity plot from raw data
 #'
 #' Function that generates the sero positivity plot
-#' @param model_object Object that the run_model function returns with the results of the fit
-#' @param xlabel Label of axis x
-#' @param ylabel Label of axis y
-#' @return The sero-positivity plot
+#' @param xlabel On the x axis is the age found in the serological survey
+#' @param ylabel Seropositivity is located on the y axis.
+#' @param size_text Text size of the graph returned by the function
+#' @return The graph of seropositivity according to age
 #' @examples
-#'\dontrun{
 #' data_test <- prepare_data(mydata)
 #' model_object <- run_model(
 #'  model_data = data_test,
@@ -15,7 +13,6 @@
 #'  n_iters = 1000
 #')
 #' plot_seroprev(model_object, size_text = 15)
-#' }
 #' @export
 plot_seroprev <- function(model_data,
                           size_text = 6) {
@@ -35,12 +32,13 @@ plot_seroprev <- function(model_data,
 
 #' Generate sero-positivity plot with fitted model
 #'
-#' Function that generates the sero positivity plot
+#' Function that generates the sero positivity plot with fitted model
 #' @param model_object Object that the run_model function returns with the results of the fit
-#' @param model Refers to the model selected
-#' @param xlabel Label of axis x
-#' @param ylabel Label of axis y
-#' @return The sero-positivity plot
+#' @param model It is the selected model that for the current version of serofoi are 3. For more information see the function \link{run_model}.
+#' @param xlabel On the x axis is the age found in the serological survey
+#' @param ylabel Seropositivity is located on the y axis.
+#' @param size_text Text size of the graph returned by the function
+#' @return Seropositivity graph according to age with seropositivity at a 95% confidence interval.
 #' @examples
 #' data_test <- prepare_data(mydata)
 #' model_object <- run_model(
@@ -113,10 +111,11 @@ plot_seroprev_fitted <- function(model_object,
 #'
 #' Function that generates the force of infection plot
 #' @param model_object Object that the run_model function returns with the results of the fit
-#' @param model Refers to model selected
-#' @param xlabel Label of axis x
-#' @param ylabel Label of axis y
-#' @return Force of infection plot
+#' @param model It is the selected model that for the current version of serofoi are 3. For more information see the function \link{run_model}.
+#' @param xlabel The years are located on the x-axis.
+#' @param ylabel The force of infection is located on the y axis.
+#' @param size_text Text size of the graph returned by the function
+#' @return The Force of infection plot with a 95% confidence interval.
 #' @examples
 #'  data_test <- prepare_data(mydata)
 #' model_object <- run_model(
@@ -205,9 +204,10 @@ plot_foi <- function(model_object,
 #'
 #' Function that generates the convergence graph of a model
 #' @param model_object Object that the run_model function returns with the results of the fit
-#' @param model Refers to model selected
-#' @param xlabel Label of axis x
-#' @param ylabel Label of axis y
+#' @param model It is the selected model that for the current version of serofoi are 3. For more information see the function \link{run_model}.
+#' @param xlabel The years are located on the x-axis.
+#' @param ylabel Convergence is located on the y axis.
+#' @param size_text Text size of the graph returned by the function
 #' @return The rhats-convergence plot of the selected model
 #' @examples
 #' data_test <- prepare_data(mydata)
@@ -266,10 +266,11 @@ plot_rhats <- function(model_object,
 #'
 #' Function that generates the combined graph
 #' @param model_object Object that the run_model function returns with the results of the fit
-#' @param model Refers to model selected
+#' @param model It is the selected model that for the current version of serofoi are 3. For more information see the function \link{run_model}.
 #' @param xlabel Label of axis x
 #' @param ylabel Label of axis y
-#' @return The combined plots
+#' @param size_text Text size of the graph returned by the function
+#' @return The model-combined plot of seropositivity, force of infection, and convergence.
 #' @examples
 #' data_test <- prepare_data(mydata)
 #' model_object <- run_model(
@@ -345,10 +346,9 @@ plot_model <- function(model_object,
 #' Plot Info Table
 #'
 #' Function that generates the information table
-#' @param model_data refers to data of the each model
 #' @param info the information that will be contained in the table
-#' @param size_text text size
-#' @return The previous expanded graphic
+#' @param size_text Text size of the graph returned by the function
+#' @return
 #' @examples
 #' data_test <- prepare_data(mydata)
 #' model_object <- run_model(
