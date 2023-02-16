@@ -1,4 +1,5 @@
 #' Run model
+#'
 #' Runs the specified stan model for the force-of-infection
 #' @param model_data A data frame containing the data from a seroprevalence survey.
 #' This data frame must contain the following columns:
@@ -24,9 +25,9 @@
 #' The last six colums can be added to \code{model_data} by means of the function \code{\link{prepare_data}}.
 #' @param model_name Name of the selected model. Current version provides three options:
 #' \describe{
-#' \item{\code{constant_foi_bi}}{Runs a constant model}
-#' \item{\code{continuous_foi_normal_bi}}{Runs a normal model}
-#' \item{\code{continuous_foi_normal_log}}{Runs a normal logarithmic model}
+#' \item{\code{"constant_foi_bi"}}{Runs a constant model}
+#' \item{\code{"continuous_foi_normal_bi"}}{Runs a normal model}
+#' \item{\code{"continuous_foi_normal_log"}}{Runs a normal logarithmic model}
 #' }
 #' @param n_iters Number of interations for eah chain including the warmup. \code{iter} in \link[rstan]{sampling}.
 #' @param n_thin Positive integer specifying the period for saving samples. \code{thin} in \link[rstan]{sampling}.
@@ -65,21 +66,24 @@ run_model <- function(model_data,
 }
 
 #' Save or load model
+#'
 #' This function determines whether the corresponding .RDS file of the selected model exists or not.
 #' In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the \link[rstan]{stan_model} function, saved as an .RDS file and returned as the output of the function.
 #' @param model_name Name of the selected model. Current version provides three options:
 #' \describe{
-#' \item{\code{constant_foi_bi}}{Runs a constant model}
-#' \item{\code{continuous_foi_normal_bi}}{Runs a normal model}
-#' \item{\code{continuous_foi_normal_log}}{Runs a normal logarithmic model}
+#' \item{\code{"constant_foi_bi"}}{Runs a constant model}
+#' \item{\code{"continuous_foi_normal_bi"}}{Runs a normal model}
+#' \item{\code{"continuous_foi_normal_log"}}{Runs a normal logarithmic model}
 #' }
 #' @return \code{model}. The rstan model object corresponding to the selected model.
 #' @examples
 #' save_or_load_model(model_name = "constant_foi_bi")
 #' @export
 save_or_load_model <- function(model_name = "constant_foi_bi") {
-  rds_path <- config::get(model_name)$rds_path
-  stan_path <- config::get(model_name)$stan_path
+  base_path <- config::get("stan_models_base_path", file = system.file('config.yml', package = 'serofoi', mustWork = TRUE))
+  stan_path <- system.file(
+    base_path, paste(model_name, ".stan", sep = ""), package = getPackageName())
+  rds_path <- file.path(dirname(stan_path), paste(model_name, ".RDS", sep = ""))
 
   if (!file.exists(rds_path)) {
     warning(paste0("Model ", model_name, " is being compiled for the first time. This might take some minutes"))
@@ -98,9 +102,9 @@ save_or_load_model <- function(model_name = "constant_foi_bi") {
 #' @param model_data A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_model}.
 #' @param model_name Name of the selected model. Current version provides three options:
 #' \describe{
-#' \item{\code{constant_foi_bi}}{Runs a constant model}
-#' \item{\code{continuous_foi_normal_bi}}{Runs a normal model}
-#' \item{\code{continuous_foi_normal_log}}{Runs a normal logarithmic model}
+#' \item{\code{"constant_foi_bi"}}{Runs a constant model}
+#' \item{\code{"continuous_foi_normal_bi"}}{Runs a normal model}
+#' \item{\code{"continuous_foi_normal_log"}}{Runs a normal logarithmic model}
 #' }
 #' @param n_iters Number of interations for eah chain including the warmup. \code{iter} in \link[rstan]{sampling}.
 #' @param n_thin Positive integer specifying the period for saving samples. \code{thin} in \link[rstan]{sampling}.
@@ -267,11 +271,12 @@ fit_model <- function(model_data,
 #' @param model_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_data} function.
 #' @return \code{exposure_years}. An atomic vector with the numeration of the exposition years in model_data
 #' @examples
-#' model_data <- prepare_data(mydata)
-#' exposure_years <- get_exposure_years (model_data)
+#' model_data <- prepare_data(model_data = mydata, alpha = 0.05)
+#' exposure_years <- get_exposure_years(model_data)
 #' @export
 get_exposure_years <- function(model_data) {
-  exposure_years <- (seq_along(min(model_data$birth_year):model_data$tsur[1]))
+  # TODO Verify if this change is correct
+  return(seq_along(min(model_data$birth_year):model_data$tsur[1]))
 }
 
 
@@ -281,8 +286,9 @@ get_exposure_years <- function(model_data) {
 #' @param model_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_data} function.
 #' @return \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{model_data} by year.
 #' @examples
-#' model_data <- prepare_data(mydata)
-#' exposure_matrix <- get_exposure_matrix(model_data)
+#' model_data <- prepare_data(model_data = mydata, alpha = 0.05)
+#' exposure_years <- get_exposure_years(model_data)
+#' exposure_matrix <- get_exposure_matrix(model_data = model_data, exposure_years = exposure_years)
 #' @export
 get_exposure_matrix <- function(model_data,
                                 exposure_years) {

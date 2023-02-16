@@ -1,3 +1,4 @@
+# TODO Fix example
 #' Prepare data
 #'
 #' Function that prepares the data for modelling
@@ -13,6 +14,7 @@
 #' \code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
 #' }
 #' @examples
+#'\dontrun{
 #' data_test <- readRDS("data/data.RDS")
 #' data_test <- prepare_data(model_data, alpha)
 #' @export
@@ -40,13 +42,16 @@ prepare_data <- function(model_data,
   return(model_data)
 }
 
+# TODO Fix example
 #' Prepare data to plot binomial confidence intervals
 #'
 #' Function that prepares the data for modelling
 #' @param model_data A data frame containing the data from a seroprevalence survey. For more information see the function \link{run_model}.
 #' @return data set with the binomial confidence intervals
 #' @examples
+#'\dontrun{
 #' prepare_bin_data (model_data)
+#' }
 #' @export
 prepare_bin_data <- function(model_data) {
   model_data$cut_ages <-

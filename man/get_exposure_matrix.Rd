@@ -16,6 +16,7 @@ get_exposure_matrix(model_data, exposure_years)
 Function that generates the exposure matrix for a seroprevalence survey.
 }
 \examples{
-model_data <- prepare_data(mydata)
-exposure_matrix <- get_exposure_matrix(model_data)
+model_data <- prepare_data(model_data = mydata, alpha = 0.05)
+exposure_years <- get_exposure_years(model_data)
+exposure_matrix <- get_exposure_matrix(model_data = model_data, exposure_years = exposure_years)
 }

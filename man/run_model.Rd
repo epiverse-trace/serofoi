@@ -2,8 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{run_model}
 \alias{run_model}
-\title{Run model
-Runs the specified stan model for the force-of-infection}
+\title{Run model}
 \usage{
 run_model(
   model_data,
@@ -41,9 +40,9 @@ The last six colums can be added to \code{model_data} by means of the function \
 
 \item{model_name}{Name of the selected model. Current version provides three options:
 \describe{
-\item{\code{constant_foi_bi}}{Runs a constant model}
-\item{\code{continuous_foi_normal_bi}}{Runs a normal model}
-\item{\code{continuous_foi_normal_log}}{Runs a normal logarithmic model}
+\item{\code{"constant_foi_bi"}}{Runs a constant model}
+\item{\code{"continuous_foi_normal_bi"}}{Runs a normal model}
+\item{\code{"continuous_foi_normal_log"}}{Runs a normal logarithmic model}
 }}
 
 \item{n_iters}{Number of interations for eah chain including the warmup. \code{iter} in \link[rstan]{sampling}.}
@@ -62,11 +61,10 @@ For further details refer to the \code{control} parameter in \link[rstan]{sampli
 model_object (complementar cuando escriba la documentación de fit_model y fit_model_log)
 }
 \description{
-Run model
 Runs the specified stan model for the force-of-infection
 }
 \examples{
-model_data <- preprare_data(mydata)
+model_data <- prepare_data(mydata)
 run_model (model_data,
            model_name = "constant_foi_bi")
 }

@@ -1,4 +1,4 @@
-remotes::install_github("TRACE-LAC/serofoi", ref = "dev")
+remotes::install_github("TRACE-LAC/serofoi", ref = "dev-docker-tests")
 
 library(serofoi)
 

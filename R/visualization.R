@@ -6,11 +6,13 @@
 #' @param size_text Text size of the graph returned by the function
 #' @return The graph of seropositivity according to age
 #' @examples
-#' model_0_object <- run_model(
-#'                  model_data = data_test,
-#'                  model_name = "constant_foi_bi",
-#'                  n_iters = 1000)
-#'plot_seroprev(data_test, size_text = 15)
+#' data_test <- prepare_data(mydata)
+#' model_object <- run_model(
+#'  model_data = data_test,
+#'  model_name = "constant_foi_bi",
+#'  n_iters = 1000
+#')
+#' plot_seroprev(model_object, size_text = 15)
 #' @export
 plot_seroprev <- function(model_data,
                           size_text = 6) {
@@ -38,11 +40,13 @@ plot_seroprev <- function(model_data,
 #' @param size_text Text size of the graph returned by the function
 #' @return Seropositivity graph according to age with seropositivity at a 95% confidence interval.
 #' @examples
-#' model_0_object <- run_model(
-#'                  model_data = data_test,
-#'                  model_name = "constant_foi_bi",
-#'                  n_iters = 1000)
-#'plot_seroprev_fitted(model_0_object, size_text = 15)
+#' data_test <- prepare_data(mydata)
+#' model_object <- run_model(
+#'  model_data = data_test,
+#'  model_name = "constant_foi_bi",
+#'  n_iters = 1000
+#')
+#' plot_seroprev_fitted(model_object, size_text = 15)
 #' @export
 plot_seroprev_fitted <- function(model_object,
                                  size_text = 6) {
@@ -113,11 +117,13 @@ plot_seroprev_fitted <- function(model_object,
 #' @param size_text Text size of the graph returned by the function
 #' @return The Force of infection plot with a 95% confidence interval.
 #' @examples
-#' model_0_object <- run_model(
-#'                  model_data = data_test,
-#'                  model_name = "constant_foi_bi",
-#'                  n_iters = 1000)
-#' plot_foi(model_0_object, size_text)
+#'  data_test <- prepare_data(mydata)
+#' model_object <- run_model(
+#'   model_data = data_test,
+#'   model_name = "constant_foi_bi",
+#'   n_iters = 1000
+#' )
+#' plot_foi(model_object, size_text = 15)
 #' @export
 plot_foi <- function(model_object,
                      lambda_sim = NA,
@@ -204,11 +210,13 @@ plot_foi <- function(model_object,
 #' @param size_text Text size of the graph returned by the function
 #' @return The rhats-convergence plot of the selected model
 #' @examples
-#' model_0_object <- run_model(
-#'                  model_data = data_test,
-#'                  model_name = "constant_foi_bi",
-#'                  n_iters = 1000)
-#' plot_rhats(model_0_object, size_text)
+#' data_test <- prepare_data(mydata)
+#' model_object <- run_model(
+#'  model_data = data_test,
+#'  model_name = "constant_foi_bi",
+#'  n_iters = 1000
+#')
+#' plot_rhats(model_object, size_text = 15)
 #' @export
 plot_rhats <- function(model_object,
                        size_text = 25) {
@@ -264,11 +272,13 @@ plot_rhats <- function(model_object,
 #' @param size_text Text size of the graph returned by the function
 #' @return The model-combined plot of seropositivity, force of infection, and convergence.
 #' @examples
-#' model_0_object <- run_model(
-#'                  model_data = data_test,
-#'                  model_name = "constant_foi_bi",
-#'                  n_iters = 1000)
-#' plot_model(model_0_object, size_text)
+#' data_test <- prepare_data(mydata)
+#' model_object <- run_model(
+#'  model_data = data_test,
+#'  model_name = "constant_foi_bi",
+#'  n_iters = 1000
+#')
+#' plot_model(model_object, size_text = 15)
 #' @export
 plot_model <- function(model_object,
                        lambda_sim = NA,
@@ -340,7 +350,14 @@ plot_model <- function(model_object,
 #' @param size_text Text size of the graph returned by the function
 #' @return
 #' @examples
-#' plot_info_table (info, size_text)
+#' data_test <- prepare_data(mydata)
+#' model_object <- run_model(
+#'  model_data = data_test,
+#'  model_name = "constant_foi_bi",
+#'  n_iters = 1000
+#')
+#' info = t(model_object$model_summary)
+#' plot_info_table (info, size_text = 15)
 #' @export
 plot_info_table <- function(info, size_text) {
   dato <- data.frame(y = NROW(info):seq_len(1),
