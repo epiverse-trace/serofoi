@@ -2,7 +2,13 @@ Package: serofoi
 Type: Package
 Title: Estimates the Force-of-Infection of a given pathogen from population based sero-prevalence studies.
 Version: 0.1.0
-Author: Zulma M. Cucunubá, Nicolás Torres, Ben Lambert, Pierre Nouvellet.
+Authors@R: 
+  c(
+    person("Zulma M. Cucunubá", role = "aut"),
+    person("Ben Lambert", role = "aut"),
+    person("Pierre Nouvellet", role = "aut"),
+    person("N. T. Domínguez", role = c("aut", "cre"), email = "ex-ntorres@javeriana.edu.co")
+  )
 Contributor: Miguel Gámez, Geraldine Gómez.
 Maintainer: The package maintainer <zulma.cucunuba@javeriana.edu.co>
 Description: R package to estimate time-varying Force-of-Infection of a given pathogen from population based sero-prevalence studies on a bayesian framework.
