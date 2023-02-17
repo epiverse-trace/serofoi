@@ -3,6 +3,8 @@ test_that("compilation", {
 
   set.seed(1234) # For reproducibility
 
+  # TODO For some reason it is not recognizing the global `mydata` variable, so we need to explicitly load it
+  mydata <- readRDS(test_path("extdata", "data.RDS"))
 
   data_test <- prepare_data(mydata)
 
@@ -39,7 +41,7 @@ test_that("compilation", {
 
   expect_true(
     compare_dataframes(
-      expected_model_summary, model_summary, column_comparation_functions
+      "model_summary", model_summary, column_comparation_functions
     )
   )
 })

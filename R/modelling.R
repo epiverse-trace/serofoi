@@ -1,3 +1,4 @@
+# TODO For some reason, the examples cannot access the mydata variable
 #' Run model
 #'
 #' Runs the specified stan model for the force-of-infection
