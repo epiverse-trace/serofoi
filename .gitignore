@@ -47,5 +47,5 @@ vignettes/*.pdf
 inst/extdata/stanmodels/*.RDS
 inst/doc
 docs
-/doc/
+# /doc/
 /Meta/
