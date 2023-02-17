@@ -1,23 +1,23 @@
-
-
 test_that("plot_seroprev_fitted", {
   library(devtools)
   library(dplyr)
+  .pardefault <- par()
   source("testing_utils.R")
   set.seed(1234) # For reproducibility
+  plot_model_data <- readRDS(test_path("extdata", "data.RDS"))
 
 
-  data_test <- prepare_data(mydata)
+  plot_data_test <- prepare_data(plot_model_data)
 
-  model_0_object <- run_model(
-    model_data = data_test,
+  plot_model_object <- run_model(
+    model_data = plot_data_test,
     model_name = "constant_foi_bi",
     n_iters = 1000
   )
 
-  # model_0_plot <- plot_model(model_0_object, size_text = 6)
+  # model_0_plot <- plot_model(plot_model_object, size_text = 6)
 
-  actual_plot <- plot_seroprev_fitted(model_0_object, size_text = 15)
+  actual_plot <- plot_seroprev_fitted(plot_model_object, size_text = 15)
 
   expect_true(compare_plots("plot_seroprev_fitted", actual_plot))
 })
@@ -27,17 +27,19 @@ test_that("plot_seroprev", {
   library(devtools)
   library(dplyr)
 
-  data_test <- prepare_data(mydata)
+  plot_model_data <- readRDS(test_path("extdata", "data.RDS"))
 
-  model_0_object <- run_model(
-    model_data = data_test,
+  plot_data_test <- prepare_data(plot_model_data)
+
+  plot_model_object <- run_model(
+    model_data = plot_data_test,
     model_name = "constant_foi_bi",
     n_iters = 1000
   )
 
-  # model_0_plot <- plot_model(model_0_object, size_text = 6)
+  # model_0_plot <- plot_model(plot_model_object, size_text = 6)
 
-  actual_plot <- plot_seroprev(data_test, size_text = 15)
+  actual_plot <- plot_seroprev(plot_data_test, size_text = 15)
 
   expect_true(compare_plots("plot_seroprev", actual_plot))
 })
