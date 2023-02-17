@@ -7,7 +7,7 @@
 prepare_bin_data(model_data)
 }
 \arguments{
-\item{model_data}{dataset to be processed}
+\item{model_data}{A data frame containing the data from a seroprevalence survey. For more information see the function \link{run_model}.}
 }
 \value{
 data set with the binomial confidence intervals

@@ -9,11 +9,13 @@ plot_rhats(model_object, size_text = 25)
 \arguments{
 \item{model_object}{Object that the run_model function returns with the results of the fit}
 
-\item{model}{Refers to model selected}
+\item{size_text}{Text size of the graph returned by the function}
 
-\item{xlabel}{Label of axis x}
+\item{model}{It is the selected model that for the current version of serofoi are 3. For more information see the function \link{run_model}.}
 
-\item{ylabel}{Label of axis y}
+\item{xlabel}{The years are located on the x-axis.}
+
+\item{ylabel}{Convergence is located on the y axis.}
 }
 \value{
 The rhats-convergence plot of the selected model
@@ -22,6 +24,7 @@ The rhats-convergence plot of the selected model
 Function that generates the convergence graph of a model
 }
 \examples{
+\dontrun{
 data_test <- prepare_data(mydata)
 model_object <- run_model(
  model_data = data_test,
@@ -29,4 +32,5 @@ model_object <- run_model(
  n_iters = 1000
 )
 plot_rhats(model_object, size_text = 15)
+}
 }

@@ -61,8 +61,10 @@ This object is used as an input for the \link[rstan]{sampling} function \cr \tab
 Function that fits the selected model to the data
 }
 \examples{
+\dontrun{
 model_data <- prepare_data(mydata)
 fit_model (model_data,
            model_name = "constant_foi_bi")
+}
 
 }

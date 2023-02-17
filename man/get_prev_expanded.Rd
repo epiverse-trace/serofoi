@@ -18,9 +18,11 @@ get_prev_expanded(foi, model_data)
 Function that generates the expanded prevalence
 }
 \examples{
+\dontrun{
 model_data <- prepare_data(mydata)
 model_object <- run_model(model_data = model_data,
                           model_name = "constant_foi_bi")
 foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]
 get_prev_expanded <- function(foi, model_data)
+}
 }
