@@ -106,6 +106,7 @@ Contributors to the project include:
 
 - [Miguel Gamez](https://github.com/megamezl) (contributor)
 - [Geraldine Gómez](https://github.com/megamezl) (contributor)
+- [Jaime A. Pavlich-Mariscal](https://github.com/jpavlich) (contributor)
 
 
 ### Code of Conduct
