@@ -6,6 +6,7 @@
 #' @param size_text Text size of the graph returned by the function
 #' @return The graph of seropositivity according to age
 #' @examples
+#' \dontrun{
 #' data_test <- prepare_data(mydata)
 #' model_object <- run_model(
 #'  model_data = data_test,
@@ -13,6 +14,7 @@
 #'  n_iters = 1000
 #')
 #' plot_seroprev(model_object, size_text = 15)
+#' }
 #' @export
 plot_seroprev <- function(model_data,
                           size_text = 6) {
@@ -40,6 +42,7 @@ plot_seroprev <- function(model_data,
 #' @param size_text Text size of the graph returned by the function
 #' @return Seropositivity graph according to age with seropositivity at a 95% confidence interval.
 #' @examples
+#' \dontrun{
 #' data_test <- prepare_data(mydata)
 #' model_object <- run_model(
 #'  model_data = data_test,
@@ -47,6 +50,7 @@ plot_seroprev <- function(model_data,
 #'  n_iters = 1000
 #')
 #' plot_seroprev_fitted(model_object, size_text = 15)
+#' }
 #' @export
 plot_seroprev_fitted <- function(model_object,
                                  size_text = 6) {
@@ -117,6 +121,7 @@ plot_seroprev_fitted <- function(model_object,
 #' @param size_text Text size of the graph returned by the function
 #' @return The Force of infection plot with a 95% confidence interval.
 #' @examples
+#' \dontrun{
 #'  data_test <- prepare_data(mydata)
 #' model_object <- run_model(
 #'   model_data = data_test,
@@ -124,6 +129,7 @@ plot_seroprev_fitted <- function(model_object,
 #'   n_iters = 1000
 #' )
 #' plot_foi(model_object, size_text = 15)
+#' }
 #' @export
 plot_foi <- function(model_object,
                      lambda_sim = NA,
@@ -210,6 +216,7 @@ plot_foi <- function(model_object,
 #' @param size_text Text size of the graph returned by the function
 #' @return The rhats-convergence plot of the selected model
 #' @examples
+#' \dontrun{
 #' data_test <- prepare_data(mydata)
 #' model_object <- run_model(
 #'  model_data = data_test,
@@ -217,6 +224,7 @@ plot_foi <- function(model_object,
 #'  n_iters = 1000
 #')
 #' plot_rhats(model_object, size_text = 15)
+#' }
 #' @export
 plot_rhats <- function(model_object,
                        size_text = 25) {
@@ -272,6 +280,7 @@ plot_rhats <- function(model_object,
 #' @param size_text Text size of the graph returned by the function
 #' @return The model-combined plot of seropositivity, force of infection, and convergence.
 #' @examples
+#' \dontrun{
 #' data_test <- prepare_data(mydata)
 #' model_object <- run_model(
 #'  model_data = data_test,
@@ -279,6 +288,7 @@ plot_rhats <- function(model_object,
 #'  n_iters = 1000
 #')
 #' plot_model(model_object, size_text = 15)
+#' }
 #' @export
 plot_model <- function(model_object,
                        lambda_sim = NA,
@@ -350,6 +360,7 @@ plot_model <- function(model_object,
 #' @param size_text Text size of the graph returned by the function
 #' @return
 #' @examples
+#' \dontrun{
 #' data_test <- prepare_data(mydata)
 #' model_object <- run_model(
 #'  model_data = data_test,
@@ -358,6 +369,7 @@ plot_model <- function(model_object,
 #')
 #' info = t(model_object$model_summary)
 #' plot_info_table (info, size_text = 15)
+#' }
 #' @export
 plot_info_table <- function(info, size_text) {
   dato <- data.frame(y = NROW(info):seq_len(1),
