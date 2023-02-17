@@ -1,4 +1,4 @@
-library(remotes)
+#library(remotes)
 
-remotes::install_github("TRACE-LAC/serofoi", ref = "dev")
-library(serofoi)
+#remotes::install_github("TRACE-LAC/serofoi", ref = "dev")
+#library(serofoi)
