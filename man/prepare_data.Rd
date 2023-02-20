@@ -25,3 +25,9 @@ model_data with additional columns necessary for the analysis. These columns are
 \description{
 Function that prepares the data for modelling
 }
+\examples{
+\dontrun{
+data_test <- readRDS("data/data.RDS")
+data_test <- prepare_data(model_data, alpha)
+}
+}

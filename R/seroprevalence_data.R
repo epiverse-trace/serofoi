@@ -17,6 +17,7 @@
 #'\dontrun{
 #' data_test <- readRDS("data/data.RDS")
 #' data_test <- prepare_data(model_data, alpha)
+#' }
 #' @export
 prepare_data <- function(model_data,
                          alpha = 0.05) {

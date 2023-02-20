@@ -5,12 +5,6 @@ test_that("comparison", {
 
   package <- "serofoi"
 
-  expected_comp_table <- read.csv(
-    test_path("extdata", "expected_comp_table.csv")
-  )
-  wrong_comp_table <- read.csv(
-    test_path("extdata", "wrong_comp_table.csv")
-  )
   # TODO For some reason it is not recognizing the global `mydata` variable, so we need to explicitly load it
   mydata <- readRDS(test_path("extdata", "data.RDS"))
 

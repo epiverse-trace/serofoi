@@ -18,7 +18,8 @@ LazyData: true
 RoxygenNote: 7.2.3
 Imports:
     config,
-    rstan,
+    rstan (>= 2.26.15),
+    StanHeaders,
     tidyverse,
     reshape2,
     bayesplot,
@@ -28,9 +29,12 @@ Imports:
     dplyr,
     gsubfn,
     testthat (>= 3.0.0),
+    vdiffr (>= 1.0.0),
     devtools,
     methods,
-    Rcpp
+    Rcpp,
+    ggplot2,
+    png,
 Suggests: 
     knitr,
     rmarkdown
@@ -42,3 +46,6 @@ LinkingTo:
     rstan (>= 2.21.1),
     StanHeaders (>= 2.21.0-5)
 VignetteBuilder: knitr
+Remotes: 
+  github::stan-dev/rstan/rstan/rstan@v2.26.15, 
+  github::stan-dev/rstan/StanHeaders@v2.26.15

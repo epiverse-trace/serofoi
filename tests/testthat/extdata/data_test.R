@@ -11,5 +11,7 @@
 #' @keywords datasets
 #'
 #' @examples
+#' \dontrun{
 #' data_test
+#' }
 "serofoi"
