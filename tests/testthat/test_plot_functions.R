@@ -20,9 +20,9 @@ test_that("plot_seroprev_fitted", {
 
   vdiffr::expect_doppelganger("plot_model_constant", plot_model_constant)
 
-  actual_plot_seroprev_fitted_constant <- plot_seroprev_fitted(model_object_constant, size_text = 15)
+  plot_seroprev_fitted_constant <- plot_seroprev_fitted(model_object_constant, size_text = 15)
 
-  vdiffr::expect_doppelganger("plot_seroprev_fitted_constant", actual_plot_seroprev_fitted_constant)
+  vdiffr::expect_doppelganger("plot_seroprev_fitted_constant", plot_seroprev_fitted_constant)
 
   # Normal Bi Model
   model_object_normalbi <- run_model(
@@ -35,9 +35,9 @@ test_that("plot_seroprev_fitted", {
 
   vdiffr::expect_doppelganger("plot_model_normalbi", plot_model_normalbi)
 
-  actual_plot_seroprev_fitted_normalbi <- plot_seroprev_fitted(model_object_normalbi, size_text = 15)
+  plot_seroprev_fitted_normalbi <- plot_seroprev_fitted(model_object_normalbi, size_text = 15)
 
-  vdiffr::expect_doppelganger("plot_seroprev_fitted_normalbi", actual_plot_seroprev_fitted_normalbi)
+  vdiffr::expect_doppelganger("plot_seroprev_fitted_normalbi", plot_seroprev_fitted_normalbi)
 
   # Normal Log Model
   model_object_normallog <- run_model(
@@ -50,8 +50,12 @@ test_that("plot_seroprev_fitted", {
 
   vdiffr::expect_doppelganger("plot_model_normallog", plot_model_normallog)
 
-  actual_plot_seroprev_fitted_normallog <- plot_seroprev_fitted(model_object_normallog, size_text = 15)
+  plot_seroprev_fitted_normallog <- plot_seroprev_fitted(model_object_normallog, size_text = 15)
 
-  vdiffr::expect_doppelganger("plot_seroprev_fitted_normallog", actual_plot_seroprev_fitted_normallog)
+  vdiffr::expect_doppelganger("plot_seroprev_fitted_normallog", plot_seroprev_fitted_normallog)
 
+  # Models Comparison Plot
+  plot_arrange_models <- plot_models_list(plot_model_constant, plot_model_normalbi, plot_model_normallog, n_col = 3)
+
+  vdiffr::expect_doppelganger("plot_arrange_models", plot_arrange_models)
 })

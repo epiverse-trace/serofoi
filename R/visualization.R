@@ -389,3 +389,30 @@ plot_info_table <- function(info, size_text) {
 
   return(p)
 }
+
+
+#' Plot Several Models
+#'
+#' Function that generates a plot showing the results for several models.
+#' @param models_list A list containing an arbitrary number of model objects.
+#' This objects can be obtained by means of \link{run_model}.
+#' @param n_row Number of rows of the plot array.
+#' @param n_col Number of columns of the plot array.
+#' @return A ggplot object containing an array with the plots in \code{models_list}.
+#' @examples
+#' \dontrun{
+#'  data_test <- prepare_data(mydata)
+#'  model_object_constant <- run_model(model_data = data_test,
+#'                                     model_name = "constant_foi_bi")
+#'  model_object_normalbi <- run_model(model_data = data_test,
+#'                                     model_name = "continuous_foi_normal_bi")
+#'  model_object_normallog <- run_model(model_data = data_test,
+#'                                      model_name = "continuous_foi_normal_log")
+#'  models_list <- c(model_object_constant, model_object_normalbi, model_object_normallog)
+#'  plot_models_list(models_list, n_row = 1, n_col = 3)
+#' }
+#' @export
+plot_models_list <- function(..., n_row = NULL, n_col = NULL) {
+  plot_models <- cowplot::plot_grid(..., nrow = n_row, ncol = n_col)
+  return(plot_models)
+}
