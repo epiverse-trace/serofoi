@@ -1,8 +1,28 @@
 #' Generate sero-positivity plot from raw data
 #'
-#' Function that generates the sero positivity plot
-#' @param xlabel On the x axis is the age found in the serological survey
-#' @param ylabel Seropositivity is located on the y axis.
+#' Function that generates the sero positivity plot from raw data
+#' @param model_data A data frame containing the data from a seroprevalence survey.
+#' This data frame must contain the following columns:
+#' \tabular{ll}{
+#' \code{survey} \tab survey Label of the current survey \cr \tab \cr
+#' \code{total} \tab Number of samples for each age group\cr \tab \cr
+#' \code{counts} \tab Number of positive samples for each age group\cr \tab \cr
+#' \code{age_min} \tab age_min \cr \tab \cr
+#' \code{age_max} \tab age_max \cr \tab \cr
+#' \code{year_init} \tab year_init \cr \tab \cr
+#' \code{year_end} \tab year_end \cr \tab \cr
+#' \code{tsur} \tab Year in which the survey took place \cr \tab \cr
+#' \code{country} \tab The country where the survey took place \cr \tab \cr
+#' \code{test} \tab The type of test taken \cr \tab \cr
+#' \code{antibody} \tab antibody \cr \tab \cr
+#' \code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
+#' \code{sample_size} \tab The size of the sample \cr \tab \cr
+#' \code{birth_year} \tab The year in which the individuals of each age group were bornt \cr \tab \cr
+#' \code{prev_obs} \tab Observed prevalence \cr \tab \cr
+#' \code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
+#' \code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
+#' }
+#' The last six colums can be added to \code{model_data} by means of the function \code{\link{prepare_data}}.
 #' @param size_text Text size of the graph returned by the function
 #' @return The graph of seropositivity according to age
 #' @examples
@@ -34,11 +54,8 @@ plot_seroprev <- function(model_data,
 
 #' Generate sero-positivity plot with fitted model
 #'
-#' Function that generates the sero positivity plot with fitted model
-#' @param model_object Object that the run_model function returns with the results of the fit
-#' @param model It is the selected model that for the current version of serofoi are 3. For more information see the function \link{run_model}.
-#' @param xlabel On the x axis is the age found in the serological survey
-#' @param ylabel Seropositivity is located on the y axis.
+#' Function that generates the seropositivity graph with fitted model. Age is located on the x axis and seropositivity on the y axis with a confidence interval.
+#' @param model_object Object that the \link{run_model} function returns with the results of the fit
 #' @param size_text Text size of the graph returned by the function
 #' @return Seropositivity graph according to age with seropositivity at a 95% confidence interval.
 #' @examples
@@ -113,11 +130,8 @@ plot_seroprev_fitted <- function(model_object,
 
 #' Generate Force-of-Infection Plot
 #'
-#' Function that generates the force of infection plot
-#' @param model_object Object that the run_model function returns with the results of the fit
-#' @param model It is the selected model that for the current version of serofoi are 3. For more information see the function \link{run_model}.
-#' @param xlabel The years are located on the x-axis.
-#' @param ylabel The force of infection is located on the y axis.
+#' Function that generates the infection force plot. On the x axis are the decades covered by the survey and on the y axis the force of infection.
+#' @param model_object Object that the \link{run_model} function returns with the results of the fit
 #' @param size_text Text size of the graph returned by the function
 #' @return The Force of infection plot with a 95% confidence interval.
 #' @examples
@@ -208,11 +222,8 @@ plot_foi <- function(model_object,
 
 #' Generate Rhats-Convergence Plot
 #'
-#' Function that generates the convergence graph of a model
-#' @param model_object Object that the run_model function returns with the results of the fit
-#' @param model It is the selected model that for the current version of serofoi are 3. For more information see the function \link{run_model}.
-#' @param xlabel The years are located on the x-axis.
-#' @param ylabel Convergence is located on the y axis.
+#' Function that generates the convergence graph of a model. On the x axis are the decades covered by the survey and on the y axis the value of rhats. This value must be greater than 1 for convergence to occur.
+#' @param model_object Object that the \link{run_model} function returns with the results of the fit
 #' @param size_text Text size of the graph returned by the function
 #' @return The rhats-convergence plot of the selected model
 #' @examples
@@ -272,11 +283,8 @@ plot_rhats <- function(model_object,
 
 #' Generate a vertical arrange of plots summarizing the results of the model implementation
 #'
-#' Function that generates the combined graph
-#' @param model_object Object that the run_model function returns with the results of the fit
-#' @param model It is the selected model that for the current version of serofoi are 3. For more information see the function \link{run_model}.
-#' @param xlabel Label of axis x
-#' @param ylabel Label of axis y
+#' Function that generates the combined plots summarizing the results of the model implementation
+#' @param model_object Object that the \link{run_model} function returns with the results of the fit
 #' @param size_text Text size of the graph returned by the function
 #' @return The model-combined plot of seropositivity, force of infection, and convergence.
 #' @examples
@@ -358,7 +366,7 @@ plot_model <- function(model_object,
 #' Function that generates the information table
 #' @param info the information that will be contained in the table
 #' @param size_text Text size of the graph returned by the function
-#' @return
+#' @return p, a variable that will be used in the \link{visualisation} module
 #' @examples
 #' \dontrun{
 #' data_test <- prepare_data(mydata)
