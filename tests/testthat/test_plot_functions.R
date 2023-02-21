@@ -3,25 +3,55 @@ test_that("plot_seroprev_fitted", {
   library(dplyr)
   library(vdiffr)
   set.seed(1234) # For reproducibility
-  plot_model_data <- readRDS(test_path("extdata", "data.RDS"))
+  data_test <- readRDS(test_path("extdata", "data.RDS")) %>% prepare_data()
 
+  actual_plot_seroprev <- plot_seroprev(data_test, size_text = 15)
 
-  plot_data_test <- prepare_data(plot_model_data)
+  vdiffr::expect_doppelganger("plot_seroprev", actual_plot_seroprev)
 
-  plot_model_object <- run_model(
-    model_data = plot_data_test,
+  # Constant Model
+  model_object_constant <- run_model(
+    model_data = data_test,
     model_name = "constant_foi_bi",
     n_iters = 1000
   )
 
-  # model_0_plot <- plot_model(plot_model_object, size_text = 6)
+  plot_model_constant <- plot_model(model_object_constant, size_text = 6)
 
-  actual_plot_seroprev_fitted <- plot_seroprev_fitted(plot_model_object, size_text = 15)
+  vdiffr::expect_doppelganger("plot_model_constant", plot_model_constant)
 
-  vdiffr::expect_doppelganger("plot_seroprev_fitted", actual_plot_seroprev_fitted)
+  actual_plot_seroprev_fitted_constant <- plot_seroprev_fitted(model_object_constant, size_text = 15)
 
+  vdiffr::expect_doppelganger("plot_seroprev_fitted_constant", actual_plot_seroprev_fitted_constant)
 
-  actual_plot_seroprev <- plot_seroprev(plot_data_test, size_text = 15)
+  # Normal Bi Model
+  model_object_normalbi <- run_model(
+    model_data = data_test,
+    model_name = "continuous_foi_normal_bi",
+    n_iters = 1000
+  )
 
-  vdiffr::expect_doppelganger("plot_seroprev", actual_plot_seroprev)
+  plot_model_normalbi <- plot_model(model_object_normalbi, size_text = 6)
+
+  vdiffr::expect_doppelganger("plot_model_normalbi", plot_model_normalbi)
+
+  actual_plot_seroprev_fitted_normalbi <- plot_seroprev_fitted(model_object_normalbi, size_text = 15)
+
+  vdiffr::expect_doppelganger("plot_seroprev_fitted_normalbi", actual_plot_seroprev_fitted_normalbi)
+
+  # Normal Log Model
+  model_object_normallog <- run_model(
+    model_data = data_test,
+    model_name = "continuous_foi_normal_log",
+    n_iters = 1000
+  )
+
+  plot_model_normallog <- plot_model(model_object_normallog, size_text = 6)
+
+  vdiffr::expect_doppelganger("plot_model_normallog", plot_model_normallog)
+
+  actual_plot_seroprev_fitted_normallog <- plot_seroprev_fitted(model_object_normallog, size_text = 15)
+
+  vdiffr::expect_doppelganger("plot_seroprev_fitted_normallog", actual_plot_seroprev_fitted_normallog)
+
 })
