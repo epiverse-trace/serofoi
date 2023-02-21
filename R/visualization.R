@@ -311,16 +311,20 @@ plot_model <- function(model_object,
       rhats_plot <- plot_rhats(model_object = model_object,
                                size_text = size_text)
 
+      summary_table <- t(
+        dplyr::select(model_object$model_summary, 
+        c('model_name', 'dataset', 'elpd', 'se', 'converged')))
       summary_plot <-
-        plot_info_table(t(model_object$model_summary), size_text = size_text)
+        plot_info_table(summary_table, size_text = size_text)
 
-      plot_arrange <- gridExtra::grid.arrange(
+      plot_arrange <- cowplot::plot_grid(
         summary_plot,
         prev_plot,
         foi_plot,
         rhats_plot,
-        nrow = 4,
-        heights = c(1.5, 1, 1, 1)
+        ncol = 1,
+        nrow = 4, 
+        rel_heights = c(0.5, 1, 1, 1)
       )
     }
   } else {
@@ -348,7 +352,7 @@ plot_model <- function(model_object,
       ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
 
     plot_arrange <-
-      gridExtra::grid.arrange(g0, g1, g1, g1, g1, nrow = 5)
+      cowplot::plot_grid(g0, g1, g1, g1, g1, ncol = 1, nrow = 5)
   }
 
   return(plot_arrange)
@@ -363,8 +367,8 @@ plot_model <- function(model_object,
 #' @return p, a variable that will be used in the \link{visualisation} module
 #' @examples
 #' \dontrun{
-#' data_test <- prepare_data(mydata)
-#' model_object <- run_model(
+#'  data_test <- prepare_data(mydata)
+#'  model_object <- run_model(
 #'  model_data = data_test,
 #'  model_name = "constant_foi_bi",
 #'  n_iters = 1000
