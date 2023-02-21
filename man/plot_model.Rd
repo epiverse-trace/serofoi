@@ -9,19 +9,22 @@ plot_model(model_object, lambda_sim = NA, max_lambda = NA, size_text = 25)
 \arguments{
 \item{model_object}{Object that the run_model function returns with the results of the fit}
 
-\item{model}{Refers to model selected}
+\item{size_text}{Text size of the graph returned by the function}
+
+\item{model}{It is the selected model that for the current version of serofoi are 3. For more information see the function \link{run_model}.}
 
 \item{xlabel}{Label of axis x}
 
 \item{ylabel}{Label of axis y}
 }
 \value{
-The combined plots
+The model-combined plot of seropositivity, force of infection, and convergence.
 }
 \description{
 Function that generates the combined graph
 }
 \examples{
+\dontrun{
 data_test <- prepare_data(mydata)
 model_object <- run_model(
  model_data = data_test,
@@ -29,4 +32,5 @@ model_object <- run_model(
  n_iters = 1000
 )
 plot_model(model_object, size_text = 15)
+}
 }

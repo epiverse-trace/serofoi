@@ -39,9 +39,11 @@
 #' @param decades Number of decades covered by the survey data.
 #' @return model_object (complementar cuando escriba la documentación de fit_model y fit_model_log)
 #' @examples
+#' \dontrun{
 #' model_data <- prepare_data(mydata)
 #' run_model (model_data,
 #'            model_name = "constant_foi_bi")
+#' }
 #' @export
 run_model <- function(model_data,
                       model_name = "constant_foi_bi",
@@ -69,7 +71,8 @@ run_model <- function(model_data,
 #' Save or load model
 #'
 #' This function determines whether the corresponding .RDS file of the selected model exists or not.
-#' In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the \link[rstan]{stan_model} function, saved as an .RDS file and returned as the output of the function.
+#' In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the 
+#' \link[rstan]{stan_model} function, saved as an .RDS file and returned as the output of the function.
 #' @param model_name Name of the selected model. Current version provides three options:
 #' \describe{
 #' \item{\code{"constant_foi_bi"}}{Runs a constant model}
@@ -78,21 +81,16 @@ run_model <- function(model_data,
 #' }
 #' @return \code{model}. The rstan model object corresponding to the selected model.
 #' @examples
-#' save_or_load_model(model_name = "constant_foi_bi")
+#' save_or_load_model(model_name="constant_foi_bi")
 #' @export
-save_or_load_model <- function(model_name = "constant_foi_bi") {
-  base_path <- config::get("stan_models_base_path", file = system.file('config.yml', package = 'serofoi', mustWork = TRUE))
-  stan_path <- system.file(
-    base_path, paste(model_name, ".stan", sep = ""), package = getPackageName())
-  rds_path <- file.path(dirname(stan_path), paste(model_name, ".RDS", sep = ""))
 
-  if (!file.exists(rds_path)) {
-    warning(paste0("Model ", model_name, " is being compiled for the first time. This might take some minutes"))
-    model <- rstan::stan_model(stan_path)
-    saveRDS(model, rds_path)
-  } else {
-    model <- readRDS(rds_path)
-  }
+save_or_load_model <- function(model_name = "constant_foi_bi") {
+  base_path <- config::get("stan_models_base_path",
+    file = system.file("config.yml", package = "serofoi", mustWork = TRUE))
+  stan_path <- system.file(base_path, paste(model_name, ".stan", sep = ""), package = getPackageName())
+
+  model <- rstan::stan_model(stan_path, auto_write = TRUE)
+
   return(model)
 }
 
@@ -135,9 +133,11 @@ save_or_load_model <- function(model_name = "constant_foi_bi") {
 #' }
 
 #' @examples
+#' \dontrun{
 #' model_data <- prepare_data(mydata)
 #' fit_model (model_data,
 #'            model_name = "constant_foi_bi")
+#' }
 #'
 #' @export
 fit_model <- function(model_data,
@@ -272,8 +272,10 @@ fit_model <- function(model_data,
 #' @param model_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_data} function.
 #' @return \code{exposure_years}. An atomic vector with the numeration of the exposition years in model_data
 #' @examples
+#' \dontrun{
 #' model_data <- prepare_data(model_data = mydata, alpha = 0.05)
 #' exposure_years <- get_exposure_years(model_data)
+#' }
 #' @export
 get_exposure_years <- function(model_data) {
   # TODO Verify if this change is correct
@@ -287,9 +289,11 @@ get_exposure_years <- function(model_data) {
 #' @param model_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_data} function.
 #' @return \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{model_data} by year.
 #' @examples
+#' \dontrun{
 #' model_data <- prepare_data(model_data = mydata, alpha = 0.05)
 #' exposure_years <- get_exposure_years(model_data)
 #' exposure_matrix <- get_exposure_matrix(model_data = model_data, exposure_years = exposure_years)
+#' }
 #' @export
 get_exposure_matrix <- function(model_data,
                                 exposure_years) {
@@ -323,10 +327,12 @@ get_exposure_matrix <- function(model_data,
 #' \code{converged} \tab convergence \cr \tab \cr
 #' }
 #' @examples
+#' \dontrun{
 #' model_data <- prepare_data(mydata)
 #' model_object <- run_model(model_data = model_data,
 #'                           model_name = "constant_foi_bi")
 #' extract_model_summary (model_object)
+#' }
 #' @export
 extract_model_summary <- function(model_object) {
   model_name <- model_object$model
@@ -370,11 +376,13 @@ extract_model_summary <- function(model_object) {
 #' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]}.
 #' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
 #' @examples
+#' \dontrun{
 #' model_data <- prepare_data(mydata)
 #' model_object <- run_model(model_data = model_data,
 #'                           model_name = "constant_foi_bi")
 #' foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]
 #' get_prev_expanded <- function(foi, model_data)
+#' }
 #' @export
 get_prev_expanded <- function(foi,
                               model_data) {

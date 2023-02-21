@@ -9,17 +9,13 @@ plot_info_table(info, size_text)
 \arguments{
 \item{info}{the information that will be contained in the table}
 
-\item{size_text}{text size}
-
-\item{model_data}{refers to data of the each model}
-}
-\value{
-The previous expanded graphic
+\item{size_text}{Text size of the graph returned by the function}
 }
 \description{
 Function that generates the information table
 }
 \examples{
+\dontrun{
 data_test <- prepare_data(mydata)
 model_object <- run_model(
  model_data = data_test,
@@ -28,4 +24,5 @@ model_object <- run_model(
 )
 info = t(model_object$model_summary)
 plot_info_table (info, size_text = 15)
+}
 }

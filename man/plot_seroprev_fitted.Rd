@@ -9,19 +9,22 @@ plot_seroprev_fitted(model_object, size_text = 6)
 \arguments{
 \item{model_object}{Object that the run_model function returns with the results of the fit}
 
-\item{model}{Refers to the model selected}
+\item{size_text}{Text size of the graph returned by the function}
 
-\item{xlabel}{Label of axis x}
+\item{model}{It is the selected model that for the current version of serofoi are 3. For more information see the function \link{run_model}.}
 
-\item{ylabel}{Label of axis y}
+\item{xlabel}{On the x axis is the age found in the serological survey}
+
+\item{ylabel}{Seropositivity is located on the y axis.}
 }
 \value{
-The sero-positivity plot
+Seropositivity graph according to age with seropositivity at a 95% confidence interval.
 }
 \description{
-Function that generates the sero positivity plot
+Function that generates the sero positivity plot with fitted model
 }
 \examples{
+\dontrun{
 data_test <- prepare_data(mydata)
 model_object <- run_model(
  model_data = data_test,
@@ -29,4 +32,5 @@ model_object <- run_model(
  n_iters = 1000
 )
 plot_seroprev_fitted(model_object, size_text = 15)
+}
 }

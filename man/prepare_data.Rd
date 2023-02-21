@@ -7,12 +7,20 @@
 prepare_data(model_data, alpha = 0.05)
 }
 \arguments{
-\item{model_data}{dataset to be processed}
+\item{model_data}{A data frame containing the data from a seroprevalence survey. For more information see the function run_model.}
 
 \item{alpha}{probability of a type I error (Hmisc::binconf)}
 }
 \value{
-model_data with additional columns necessary for the analysis
+model_data with additional columns necessary for the analysis. These columns are:
+\tabular{ll}{
+\code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
+\code{sample_size} \tab The size of the sample \cr \tab \cr
+\code{birth_year} \tab The year in which the individuals of each age group were bornt \cr \tab \cr
+\code{prev_obs} \tab Observed prevalence \cr \tab \cr
+\code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
+\code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
+}
 }
 \description{
 Function that prepares the data for modelling
@@ -20,6 +28,6 @@ Function that prepares the data for modelling
 \examples{
 \dontrun{
 data_test <- readRDS("data/data.RDS")
-data_test <- prepare_data(data_test, alpha)
+data_test <- prepare_data(model_data, alpha)
 }
 }

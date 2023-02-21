@@ -19,10 +19,6 @@ test_that("compilation", {
   # plot_foi(model_0_object, size_text = 15)
   # plot_rhats(model_0_object, size_text = 15)
   model_summary <- extract_model_summary(model_0_object)
-  expected_model_summary <- read.csv(
-    test_path("extdata", "expected_model_summary.csv")
-  )
-
 
   column_comparation_functions <- list(
     model = equal_exact(),

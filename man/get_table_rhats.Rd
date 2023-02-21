@@ -16,8 +16,10 @@ rhats table
 Function that makes the rhats table
 }
 \examples{
+\dontrun{
 model_data <- prepare_data(model_data = mydata, alpha = 0.05)
 model_object <- run_model(
 model_data = model_data, model_name = "constant_foi_bi")
 get_table_rhats (model_object)
+}
 }

@@ -4,7 +4,7 @@ system(
 )
 # Rebuild Docker image
 system(
-    "docker build -t rtest-image . -f tests/docker/Dockerfile"
+    "rm -f inst/extdata/stanmodels/*.rds; docker build -t rtest-image . -f tests/docker/Dockerfile"
 )
 
 # Install R dependencies

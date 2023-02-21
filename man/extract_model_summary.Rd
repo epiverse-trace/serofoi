@@ -30,8 +30,10 @@ extract_model_summary(model_object)
 Function to generate a summary of a model.
 }
 \examples{
+\dontrun{
 model_data <- prepare_data(mydata)
 model_object <- run_model(model_data = model_data,
                           model_name = "constant_foi_bi")
 extract_model_summary (model_object)
+}
 }

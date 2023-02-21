@@ -4,8 +4,19 @@
 \name{serofoi-package}
 \alias{serofoi}
 \alias{serofoi-package}
-\title{serofoi: Estimates the Force-of-Infection of a given pathogen from population based sero-prevalence studies.}
+\title{serofoi: Estimates the Force-of-Infection of a given pathogen from population based sero-prevalence studies}
 \description{
 R package to estimate time-varying Force-of-Infection of a given pathogen from population based sero-prevalence studies on a bayesian framework.
+}
+\author{
+\strong{Maintainer}: N. T. Domínguez \email{ex-ntorres@javeriana.edu.co}
+
+Authors:
+\itemize{
+  \item Zulma M. Cucunubá
+  \item Ben Lambert
+  \item Pierre Nouvellet
+}
+
 }
 \keyword{internal}

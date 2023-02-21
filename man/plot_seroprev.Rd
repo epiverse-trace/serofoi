@@ -7,14 +7,14 @@
 plot_seroprev(model_data, size_text = 6)
 }
 \arguments{
-\item{model_object}{Object that the run_model function returns with the results of the fit}
+\item{size_text}{Text size of the graph returned by the function}
 
-\item{xlabel}{Label of axis x}
+\item{xlabel}{On the x axis is the age found in the serological survey}
 
-\item{ylabel}{Label of axis y}
+\item{ylabel}{Seropositivity is located on the y axis.}
 }
 \value{
-The sero-positivity plot
+The graph of seropositivity according to age
 }
 \description{
 Function that generates the sero positivity plot
