@@ -356,7 +356,7 @@ plot_model <- function(model_object,
 #' Function that generates the information table
 #' @param info the information that will be contained in the table
 #' @param size_text Text size of the graph returned by the function
-#' @return
+#' @return p, a variable that will be used in the \link{visualisation} module
 #' @examples
 #' data_test <- prepare_data(mydata)
 #' model_object <- run_model(
