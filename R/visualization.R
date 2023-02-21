@@ -15,20 +15,13 @@
 #' \code{country} \tab The country where the survey took place \cr \tab \cr
 #' \code{test} \tab The type of test taken \cr \tab \cr
 #' \code{antibody} \tab antibody \cr \tab \cr
-#' \code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
-#' \code{sample_size} \tab The size of the sample \cr \tab \cr
-#' \code{birth_year} \tab The year in which the individuals of each age group were bornt \cr \tab \cr
-#' \code{prev_obs} \tab Observed prevalence \cr \tab \cr
-#' \code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
-#' \code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
 #' }
-#' The last six colums can be added to \code{model_data} by means of the function \code{\link{prepare_data}}.
-#' @param size_text Text size of the graph returned by the function
-#' @return The graph of seropositivity according to age
+#' @param size_text Text size use in the theme of the graph returned by the function.
+#' @return A ggplot object containing the seropositivity-vs-age graph of the raw data of a given seroprevalence survey with its corresponging binomial confidence interval.
 #' @examples
 #' \dontrun{
-#' data_test <- prepare_data(mydata)
-#' model_object <- run_model(
+#'  data_test <- prepare_data(mydata)
+#'  model_object <- run_model(
 #'  model_data = data_test,
 #'  model_name = "constant_foi_bi",
 #'  n_iters = 1000
@@ -54,14 +47,14 @@ plot_seroprev <- function(model_data,
 
 #' Generate sero-positivity plot with fitted model
 #'
-#' Function that generates the seropositivity graph with fitted model. Age is located on the x axis and seropositivity on the y axis with a confidence interval.
-#' @param model_object Object that the \link{run_model} function returns with the results of the fit
-#' @param size_text Text size of the graph returned by the function
-#' @return Seropositivity graph according to age with seropositivity at a 95% confidence interval.
+#' Function that generates the seropositivity graph with fitted model. Age is located on the x axis and seropositivity on the y axis with its corresponding confidence interval.
+#' @param model_object Object containing the results of fitting a model by means of \link{run_model}.
+#' @param size_text Text size of the graph returned by the function.
+#' @return A ggplot object containing the seropositivity-vs-age graph including the data, the fitted model and their corresponding confindence intervals.
 #' @examples
 #' \dontrun{
-#' data_test <- prepare_data(mydata)
-#' model_object <- run_model(
+#'  data_test <- prepare_data(mydata)
+#'  model_object <- run_model(
 #'  model_data = data_test,
 #'  model_name = "constant_foi_bi",
 #'  n_iters = 1000
@@ -130,17 +123,17 @@ plot_seroprev_fitted <- function(model_object,
 
 #' Generate Force-of-Infection Plot
 #'
-#' Function that generates the infection force plot. On the x axis are the decades covered by the survey and on the y axis the force of infection.
-#' @param model_object Object that the \link{run_model} function returns with the results of the fit
-#' @param size_text Text size of the graph returned by the function
-#' @return The Force of infection plot with a 95% confidence interval.
+#' Function that generates the Force-of-Infection plot. The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
+#' @param model_object Object containing the results of fitting a model by means of \link{run_model}.
+#' @param size_text Text size use in the theme of the graph returned by the function.
+#' @return A ggplot2 object containing the Force-of-infection-vs-time including the corresponding confidence interval.
 #' @examples
 #' \dontrun{
-#'  data_test <- prepare_data(mydata)
-#' model_object <- run_model(
-#'   model_data = data_test,
-#'   model_name = "constant_foi_bi",
-#'   n_iters = 1000
+#'    data_test <- prepare_data(mydata)
+#'    model_object <- run_model(
+#'    model_data = data_test,
+#'    model_name = "constant_foi_bi",
+#'    n_iters = 1000
 #' )
 #' plot_foi(model_object, size_text = 15)
 #' }
@@ -222,10 +215,11 @@ plot_foi <- function(model_object,
 
 #' Generate Rhats-Convergence Plot
 #'
-#' Function that generates the convergence graph of a model. On the x axis are the decades covered by the survey and on the y axis the value of rhats. This value must be greater than 1 for convergence to occur.
-#' @param model_object Object that the \link{run_model} function returns with the results of the fit
-#' @param size_text Text size of the graph returned by the function
-#' @return The rhats-convergence plot of the selected model
+#' Function that generates the convergence graph of a model. The x axis corresponds to the decades covered by the survey and the y axis to the value of the rhats. 
+#' All rhats must be smaller than 1 to ensure convergence.
+#' @param model_object Object containing the results of fitting a model by means of \link{run_model}.
+#' @param size_text Text size use in the theme of the graph returned by the function.
+#' @return The rhats-convergence plot of the selected model.
 #' @examples
 #' \dontrun{
 #' data_test <- prepare_data(mydata)
@@ -284,9 +278,9 @@ plot_rhats <- function(model_object,
 #' Generate a vertical arrange of plots summarizing the results of the model implementation
 #'
 #' Function that generates the combined plots summarizing the results of the model implementation
-#' @param model_object Object that the \link{run_model} function returns with the results of the fit
-#' @param size_text Text size of the graph returned by the function
-#' @return The model-combined plot of seropositivity, force of infection, and convergence.
+#' @param model_object Object containing the results of fitting a model by means of \link{run_model}.
+#' @param size_text Text size use in the theme of the graph returned by the function.
+#' @return A ggplot object with a vertical arrange containing the seropositivity, force of infection, and convergence plots.
 #' @examples
 #' \dontrun{
 #' data_test <- prepare_data(mydata)
