@@ -1,8 +1,22 @@
 #' Prepare data
 #'
 #' Function that prepares the data for modelling
-#' @param model_data A data frame containing the data from a seroprevalence survey. For more information see the function \link{run_model}.
-#' @param alpha probability of a type I error (Hmisc::binconf)
+#' @param model_data A data frame containing the data from a seroprevalence survey.
+#' This data frame must contain the following columns:
+#' \tabular{ll}{
+#' \code{survey} \tab survey Label of the current survey \cr \tab \cr
+#' \code{total} \tab Number of samples for each age group\cr \tab \cr
+#' \code{counts} \tab Number of positive samples for each age group\cr \tab \cr
+#' \code{age_min} \tab age_min \cr \tab \cr
+#' \code{age_max} \tab age_max \cr \tab \cr
+#' \code{year_init} \tab year_init \cr \tab \cr
+#' \code{year_end} \tab year_end \cr \tab \cr
+#' \code{tsur} \tab Year in which the survey took place \cr \tab \cr
+#' \code{country} \tab The country where the survey took place \cr \tab \cr
+#' \code{test} \tab The type of test taken \cr \tab \cr
+#' \code{antibody} \tab antibody \cr \tab \cr
+#' }
+#' @param alpha probability of a type I error. For further details refer to \link{Hmisc::binconf}.
 #' @return model_data with additional columns necessary for the analysis. These columns are:
 #' \tabular{ll}{
 #' \code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
