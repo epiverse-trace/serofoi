@@ -14,6 +14,34 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r example, include = FALSE}
+# remotes::install_github("TRACE-LAC/serofoi", ref = "dev")
 library(serofoi)
+
 ```
+
+### Using the models defined in the serofoi package
+
+Feb 10th, 2023
+
+Sero-survey data
+
+Surveys had to meet all of the following inclusion criteria: 
+(i) be population-based (not hospital based), 
+(ii) specify individuals’ age or age group, 
+(iii) indicate diagnostic test(s) used (the current version of serofoi only applies to IgG antibodies) and 
+(iv) identify the location and date (year) of sample collection
+
+
+
+
+``` {r ex, include = TRUE}
+
+head(mydata)
+
+# Prepare the data for using serofoi
+
+data_test <- prepare_data(mydata)
+
+```
+

@@ -36,14 +36,22 @@ remotes::install_github("TRACE-LAC/serofoi")
 
 ## Quick start
 
+
+
+```{r example, include = FALSE}
+# remotes::install_github("TRACE-LAC/serofoi", ref = "dev")
+library(serofoi)
+
+```
+
 These examples illustrate some of the current functionalities:
 
-```{r example}
-##library(serofoi)
+# The package provides an example dataset of a serosurvey `mydata`
 
-remotes::install_github("TRACE-LAC/serofoi", ref = "dev-zulma", force = TRUE)
 
-library(serofoi)
+``` {r ex, include = TRUE}
+
+head(mydata)
 
 # Prepare the data for using serofoi
 
@@ -65,14 +73,10 @@ model_2 <- run_model(model_data = data_test,
                      model_name = "continuous_foi_normal_log")
 
 # The following function can be used to visualize the sero-prevalence data with its corresponding binomial confidence interval before fitting to a model
-plot_seroprev(data_test, size_text = 15)
+plot_seroprev(data_test, size_text = 6)
 
 # For each model, you can use ploting functions such as
-plot_model(model_0, size_text = 6)
-plot_seroprev(model_0, size_text = 6)
-plot_foi(model_0, size_text = 6)
-plot_rhats(model_0, size_text = 6)
-extract_summary_model(model_0)
+
 
 # You can compare these three models based on convergence, elpd and p-values
 comp_table <- get_comparison_table(

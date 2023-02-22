@@ -40,3 +40,4 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://trace-lac.github.io/serofoi/
