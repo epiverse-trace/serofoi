@@ -37,7 +37,7 @@
 #' For further details refer to the \code{control} parameter in \link[rstan]{sampling} or \href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.
 #' @param m_treed Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the \code{control} parameter in \link[rstan]{sampling}.
 #' @param decades Number of decades covered by the survey data.
-#' @return model_object (complementar cuando escriba la documentación de fit_model y fit_model_log)
+#' @return \code{model_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_model}.
 #' @examples
 #' \dontrun{
 #' model_data <- prepare_data(mydata)
