@@ -36,7 +36,9 @@ Imports:
     methods,
     Rcpp,
     ggplot2,
-    BH
+    BH,
+    RcppEigen,
+    RcppParallel
 Suggests: 
     knitr,
     rmarkdown
