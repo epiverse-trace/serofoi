@@ -19,7 +19,7 @@ save_or_load_model(model_name = "constant_foi_bi")
 }
 \description{
 This function determines whether the corresponding .RDS file of the selected model exists or not.
-In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the 
+In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the
 \link[rstan]{stan_model} function, saved as an .RDS file and returned as the output of the function.
 }
 \examples{

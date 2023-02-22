@@ -8,6 +8,13 @@
 \description{
 R package to estimate time-varying Force-of-Infection of a given pathogen from population based sero-prevalence studies on a bayesian framework.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://trace-lac.github.io/serofoi/}
+}
+
+}
 \author{
 \strong{Maintainer}: N. T. Domínguez \email{ex-ntorres@javeriana.edu.co}
 

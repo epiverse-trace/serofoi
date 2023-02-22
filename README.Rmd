@@ -39,7 +39,7 @@ remotes::install_github("TRACE-LAC/serofoi")
 
 
 ```{r example, include = FALSE}
-# remotes::install_github("TRACE-LAC/serofoi", ref = "dev")
+# remotes::install_github("TRACE-LAC/serofoi", ref = "dev-webrd")
 library(serofoi)
 
 ```
