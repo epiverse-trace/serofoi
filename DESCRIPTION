@@ -38,8 +38,11 @@ Imports:
     ggplot2,
     BH,
     RcppEigen,
-    RcppParallel
+    RcppParallel,
+    TBB    
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+Remotes:
+    jjallaire/TBB

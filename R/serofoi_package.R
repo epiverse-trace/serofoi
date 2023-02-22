@@ -6,6 +6,7 @@
 #' @importFrom dplyr %>%
 #' @import Rcpp
 #' @import methods
+#' @import TBB
 #' @importFrom graphics text
 #' @importFrom utils read.table
 #' @importFrom rstan sampling
