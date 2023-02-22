@@ -7,21 +7,15 @@
 plot_model(model_object, lambda_sim = NA, max_lambda = NA, size_text = 25)
 }
 \arguments{
-\item{model_object}{Object that the run_model function returns with the results of the fit}
+\item{model_object}{Object containing the results of fitting a model by means of \link{run_model}.}
 
-\item{size_text}{Text size of the graph returned by the function}
-
-\item{model}{It is the selected model that for the current version of serofoi are 3. For more information see the function \link{run_model}.}
-
-\item{xlabel}{Label of axis x}
-
-\item{ylabel}{Label of axis y}
+\item{size_text}{Text size use in the theme of the graph returned by the function.}
 }
 \value{
-The model-combined plot of seropositivity, force of infection, and convergence.
+A ggplot object with a vertical arrange containing the seropositivity, force of infection, and convergence plots.
 }
 \description{
-Function that generates the combined graph
+Function that generates the combined plots summarizing the results of the model implementation
 }
 \examples{
 \dontrun{
