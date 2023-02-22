@@ -35,7 +35,8 @@ Imports:
     devtools,
     methods,
     Rcpp,
-    ggplot2
+    ggplot2,
+    BH
 Suggests: 
     knitr,
     rmarkdown
