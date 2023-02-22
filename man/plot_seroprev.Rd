@@ -7,22 +7,34 @@
 plot_seroprev(model_data, size_text = 6)
 }
 \arguments{
-\item{size_text}{Text size of the graph returned by the function}
+\item{model_data}{A data frame containing the data from a seroprevalence survey.
+This data frame must contain the following columns:
+\tabular{ll}{
+\code{survey} \tab survey Label of the current survey \cr \tab \cr
+\code{total} \tab Number of samples for each age group\cr \tab \cr
+\code{counts} \tab Number of positive samples for each age group\cr \tab \cr
+\code{age_min} \tab age_min \cr \tab \cr
+\code{age_max} \tab age_max \cr \tab \cr
+\code{year_init} \tab year_init \cr \tab \cr
+\code{year_end} \tab year_end \cr \tab \cr
+\code{tsur} \tab Year in which the survey took place \cr \tab \cr
+\code{country} \tab The country where the survey took place \cr \tab \cr
+\code{test} \tab The type of test taken \cr \tab \cr
+\code{antibody} \tab antibody \cr \tab \cr
+}}
 
-\item{xlabel}{On the x axis is the age found in the serological survey}
-
-\item{ylabel}{Seropositivity is located on the y axis.}
+\item{size_text}{Text size use in the theme of the graph returned by the function.}
 }
 \value{
-The graph of seropositivity according to age
+A ggplot object containing the seropositivity-vs-age graph of the raw data of a given seroprevalence survey with its corresponging binomial confidence interval.
 }
 \description{
-Function that generates the sero positivity plot
+Function that generates the sero positivity plot from raw data
 }
 \examples{
 \dontrun{
-data_test <- prepare_data(mydata)
-model_object <- run_model(
+ data_test <- prepare_data(mydata)
+ model_object <- run_model(
  model_data = data_test,
  model_name = "constant_foi_bi",
  n_iters = 1000

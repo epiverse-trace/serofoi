@@ -11,13 +11,16 @@ plot_info_table(info, size_text)
 
 \item{size_text}{Text size of the graph returned by the function}
 }
+\value{
+p, a variable that will be used in the \link{visualisation} module
+}
 \description{
 Function that generates the information table
 }
 \examples{
 \dontrun{
-data_test <- prepare_data(mydata)
-model_object <- run_model(
+ data_test <- prepare_data(mydata)
+ model_object <- run_model(
  model_data = data_test,
  model_name = "constant_foi_bi",
  n_iters = 1000

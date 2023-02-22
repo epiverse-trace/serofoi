@@ -7,26 +7,20 @@
 plot_seroprev_fitted(model_object, size_text = 6)
 }
 \arguments{
-\item{model_object}{Object that the run_model function returns with the results of the fit}
+\item{model_object}{Object containing the results of fitting a model by means of \link{run_model}.}
 
-\item{size_text}{Text size of the graph returned by the function}
-
-\item{model}{It is the selected model that for the current version of serofoi are 3. For more information see the function \link{run_model}.}
-
-\item{xlabel}{On the x axis is the age found in the serological survey}
-
-\item{ylabel}{Seropositivity is located on the y axis.}
+\item{size_text}{Text size of the graph returned by the function.}
 }
 \value{
-Seropositivity graph according to age with seropositivity at a 95% confidence interval.
+A ggplot object containing the seropositivity-vs-age graph including the data, the fitted model and their corresponding confindence intervals.
 }
 \description{
-Function that generates the sero positivity plot with fitted model
+Function that generates the seropositivity graph with fitted model. Age is located on the x axis and seropositivity on the y axis with its corresponding confidence interval.
 }
 \examples{
 \dontrun{
-data_test <- prepare_data(mydata)
-model_object <- run_model(
+ data_test <- prepare_data(mydata)
+ model_object <- run_model(
  model_data = data_test,
  model_name = "constant_foi_bi",
  n_iters = 1000

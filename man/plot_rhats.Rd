@@ -7,21 +7,16 @@
 plot_rhats(model_object, size_text = 25)
 }
 \arguments{
-\item{model_object}{Object that the run_model function returns with the results of the fit}
+\item{model_object}{Object containing the results of fitting a model by means of \link{run_model}.}
 
-\item{size_text}{Text size of the graph returned by the function}
-
-\item{model}{It is the selected model that for the current version of serofoi are 3. For more information see the function \link{run_model}.}
-
-\item{xlabel}{The years are located on the x-axis.}
-
-\item{ylabel}{Convergence is located on the y axis.}
+\item{size_text}{Text size use in the theme of the graph returned by the function.}
 }
 \value{
-The rhats-convergence plot of the selected model
+The rhats-convergence plot of the selected model.
 }
 \description{
-Function that generates the convergence graph of a model
+Function that generates the convergence graph of a model. The x axis corresponds to the decades covered by the survey and the y axis to the value of the rhats. 
+All rhats must be smaller than 1 to ensure convergence.
 }
 \examples{
 \dontrun{
