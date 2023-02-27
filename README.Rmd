@@ -17,12 +17,12 @@ An R package to estimates the *Force-of-Infection* of a given pathogen from popu
 based sero-prevalence studies on a Bayesian framework.
 
 
-<!-- badges: start -->
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![R-CMD-check](https://github.com/epiverse-trace/readepi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/epiverse-trace/readepi/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/epiverse-trace/readepi/branch/main/graph/badge.svg)](https://app.codecov.io/gh/epiverse-trace/readepi?branch=main)
-[![lifecycle-concept](https://raw.githubusercontent.com/reconverse/reconverse.github.io/master/images/badge-concept.svg)](https://www.reconverse.org/lifecycle.html#concept) 
-<!-- badges: end -->
+<!-- <!-- badges: start --> -->
+<!-- [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) -->
+<!-- [![R-CMD-check](https://github.com/epiverse-trace/readepi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/epiverse-trace/readepi/actions/workflows/R-CMD-check.yaml) -->
+<!-- [![Codecov test coverage](https://codecov.io/gh/epiverse-trace/readepi/branch/main/graph/badge.svg)](https://app.codecov.io/gh/epiverse-trace/readepi?branch=main) -->
+<!-- [![lifecycle-concept](https://raw.githubusercontent.com/reconverse/reconverse.github.io/master/images/badge-concept.svg)](https://www.reconverse.org/lifecycle.html#concept)  -->
+<!-- <!-- badges: end --> -->
 
 
 ## Installation
@@ -62,15 +62,21 @@ data_test <- prepare_data(mydata)
 
 # Constant Force-of-Infection with a binomial distribution
 model_0 <- run_model(model_data = data_test,
-                     model_name = "constant_foi_bi")
+                     model_name = "constant_foi_bi",
+                     n_iters = 500, 
+                     n_thin = 2)
 
 # Time-varying Force-of-Infection with a prior normal-binomial distribution
 model_1 <- run_model(model_data = data_test,
-                     model_name = "continuous_foi_normal_bi")
+                     model_name = "continuous_foi_normal_bi",
+                     n_iters = 500, 
+                     n_thin = 2)
 
 # Time-varying Force-of-Infection with a prior normal-log distribution
 model_2 <- run_model(model_data = data_test,
-                     model_name = "continuous_foi_normal_log")
+                     model_name = "continuous_foi_normal_log",
+                     n_iters = 500, 
+                     n_thin = 2)
 
 # The following function can be used to visualize the sero-prevalence data with its corresponding binomial confidence interval before fitting to a model
 plot_seroprev(data_test, size_text = 6)
