@@ -161,11 +161,11 @@ Contributors to the project include:
 
 -   [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author)
 
--   [Nicolás Tórres] (author)
+-   [Nicolás Tórres](https://github.com/ntorresd) (author)
 
--   [Benjamin Lambert] (author)
+-   [Benjamin Lambert](https://ben-lambert.com/about/) (author)
 
--   [Pierre Nouvellet] (author)
+-   [Pierre Nouvellet](https://github.com/pnouvellet) (author)
 
 -   [Miguel Gamez](https://github.com/megamezl) (contributor)
 
