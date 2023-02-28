@@ -1,12 +1,10 @@
 library(remotes)
-remotes::install_github("TRACE-LAC/serofoi",
-                        ref = "dev-webrd",
-                        force = TRUE)
+# remotes::install_github("TRACE-LAC/serofoi",
+#                         ref = "dev-webrd",
+#                         force = TRUE)
 
 
 library(serofoi)
-
-
 library(usethis)
 library(roxygen2)
 
