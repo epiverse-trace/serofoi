@@ -412,7 +412,7 @@ plot_info_table <- function(info, size_text) {
 #'  plot_models_list(models_list, n_row = 1, n_col = 3)
 #' }
 #' @export
-plot_models_list <- function(..., n_row = NULL, n_col = NULL) {
+plot_seroprev_models_grid <- function(..., n_row = NULL, n_col = NULL) {
   plot_models <- cowplot::plot_grid(..., nrow = n_row, ncol = n_col)
   return(plot_models)
 }
