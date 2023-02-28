@@ -112,7 +112,7 @@ model_2 <- run_model(model_data = data_test,
                      n_thin = 2)
 ```
 
-#### Model 3. Time-varying Force-of-Infection with a (fast epidemic model)
+#### Model 3. Time-varying Force-of-Infection (fast epidemic model)
 
 For the *fast* *epidemic model,* a larger number of iterations is
 required for achieving convergence, compared to the previous ones.
@@ -125,8 +125,8 @@ model_3 <- run_model(model_data = data_test,
 ```
 
 For each model, the plot_model function generate a vertical arrange of
-plots summarising the results of the model implementation ploting
-functions. Crutially, it shows the (expected) log-predictive density
+plots summarising the results of the model implementation plotting
+functions. Crucially, it shows the (expected) log-predictive density
 `elpd`, standard error `se`, and allows to check convergence based on
 **`R`**`-hat` convergence diagnostics.
 
