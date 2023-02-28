@@ -16,8 +16,8 @@ coverage](https://codecov.io/gh/TRACE-LAC/serofoi/branch/bugfixes-jaime/graph/ba
 given pathogen from age-disaggregated population based sero-prevalence
 studies, using a Bayesian framework.
 
-***serofoi*** implements methods outlined in (Cucunubá et al. 2017) and
-(Carrera et al. 2020)
+***serofoi*** implements methods outlined in ([Cucunubá et al.
+2017](#ref-cucunubá2017)) and ([Carrera et al. 2020](#ref-carrera2020))
 
 ***serofoi*** relies on
 [`rstan`](https://mc-stan.org/users/interfaces/rstan)
