@@ -1,8 +1,6 @@
 ---
 title: "serofoi"
 output: rmarkdown::html_vignette
-bibliography: references.bib
-link-citations: true
 vignette: >
   %\VignetteIndexEntry{serofoi}
   %\VignetteEngine{knitr::rmarkdown}
@@ -16,7 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-
 ```{r cleaning, include = FALSE, echo = TRUE}
 library(serofoi)
 rownames(mydata) <- NULL 
@@ -24,7 +21,7 @@ data_test <- prepare_data(mydata)
 
 ```
 
-# Use cases for the models defined in the serofoi package
+# Use cases for the models defined in the *serofoi* package
 
 **serofoi** is an R package that allows estimations of the Force-of-Infection from a population based serosurvey data.
 
@@ -32,13 +29,13 @@ data_test <- prepare_data(mydata)
 
 Surveys had to meet all of the following inclusion criteria:
 
-(i) be population-based (not hospital based)
+1.  Be population-based (not hospital based)
 
-(ii) specify individuals' age or age group
+2.  Specify individuals' age or age group
 
-(iii) indicate diagnostic test(s) used. The current version of serofoi only applies to *IgG* antibodies)
+3.  Indicate diagnostic test(s) used. The current version of serofoi only applies to *IgG* antibodies)
 
-(iv) identify the location and date (year) of sample collection
+4.  Identify the location and date (year) of sample collection
 
 ## Model assumptions
 
@@ -46,28 +43,30 @@ Current version of **serofoi** includes the following assumptions on the underly
 
 -   The Force-of-infection (FOI) is estimated using a catalytic model
 
--   There is no sero-reversion (from positive to negative). It means IgG antobodies are life-long duration with no waning immunity. This may not be the case for several pathogens. This feature is planned for future versions of **serofoi.**
+-   There is no sero-reversion (from positive to negative). It means IgG antibodies are life-long duration with no waning immunity. This may not be the case for several pathogens. This feature is planned for future versions of **serofoi.**
 
 -   There is no age-dependency. This may not be the case for several pathogens. This feature is planned for future versions of **serofoi.**
 
 -   There is no impact from migration processes in the sampled population
 
-## **Three** different FoI models
+-   There are no differences in the mortality rate of infected versus susceptible individuals
+
+## **Constant vs Time-varying** FoI models
 
 ::: {.alert .alert-primary}
 NOTE: Running the the *serofoi* models for the first time on your local computer make take a few minutes while the *rstan* code is compiled locally. Afterwards, no further compilation is needed locally.
 :::
 
-#### Model 1. Constant Force-of-Infection (endemic model)
+#### Constant Force-of-Infection (endemic model)
 
 For the *endemic model* a small number of iterations is enough for achieving convergence, as it only fits one parameter (the constant FoI) from a binomial distribution.
 
 For this model, the rate of infection acquisition―rate of seroconversion―is constant over time, and infection (sero)prevalence will increase monotonically with age as cumulative exposure increases.
 
-For a constant FOI (λ), we can express the sero-prevalence as for age in the year of the sero-survey as:
+Denoting *n*(*a,t*) the number of seropositive individuals of age *a* at time *t, N* the serosurvey sample size, and *P*(*a,t*) the underlying seroprevalence at age *a* at time *t*, we assumed that the number of seropositive subjects follows a Binomial distribution *n*(*a,t*)\~*B*(*N,P*(*a,t*)). For force-of-infection (FOI) that is constant over time, denoted *λ*, we modelled seroprevalence for age *a* in year *t* (i.e. the time when the serosurvey occurred) as:
 
     $$
-    E = mc^2
+    P(a,t) = 1−exp(−λa)
     $$
 
 ```{r model_1, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
@@ -78,9 +77,13 @@ model_1 <- run_model(model_data = data_test,
 
 ```
 
-#### Model 2. Time-varying Force-of-Infection (epidemic model)
+#### Time-varying Force-of-Infection
 
-For the *epidemic model,* a larger number of iterations is required for achieving convergence, as it fits yearly FoI values from a binomial distribution. The number of iterations required may depend on the number of years, reflected by the difference between year of the serosurvey and the maximum age-class sampled.
+For the time-varying FOI model, FoI values are estimated from a binomial distribution. The sero-prevalence as age a can be expressed as:
+
+    $$
+    𝑃(𝑎,𝑡)=1−exp(−∑𝑡𝑖=𝑡−𝑎+1𝜆𝑖)
+    $$
 
 ```{r model_2, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_2 <- run_model(model_data = data_test,
@@ -89,32 +92,9 @@ model_2 <- run_model(model_data = data_test,
                      n_thin = 2)
 ```
 
-#### Model 3. Time-varying Force-of-Infection (fast epidemic model)
+## Fitting process
 
-For the *fast* *epidemic model,* a larger number of iterations is required for achieving convergence, compared to the previous models.
-
-```{r model_3, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
-model_3 <- run_model(model_data = data_test,
-                     model_name = "continuous_foi_normal_log",
-                     n_iters = 1500, 
-                     n_thin = 2)
-```
-
-For each model, the plot_model function generate a vertical arrange of plots summarising the results of the model implementation plotting functions. Crucially, it shows the (expected) log-predictive density `elpd`, standard error `se`, and allows to check convergence based on `R-hat` convergence diagnostics.
-
-```{r plot_model, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE, fig.height=12, fig.width=6}
-
-plot_model(model_2, size_text = 15)
-```
-
-Also, the `plot_models_list` allows a visual a comparison of the models based on the (expected) log-predictive density `elpd`, standard error `se`, and allows to check convergence based on `R-hat` convergence diagnostics.
-
-```{r, model_comp, echo=FALSE, include=FALSE}
-models_list <- c(model_1, model_2, model_3)
-plot_models_list(models_list, n_row = 1, n_col = 3)
-```
-
-For more detailed information and examples, please check the [online documentation](https://epiverse-trace.github.io/serofoi/articles) as package vignettes under Get Started.
+Models are implemented in **RStan** using the No-U-Turn sampler, a type of Hamiltonian Monte Carlo sampling. After convergence, the best-fitting models can be selected based on the expected log predictive density for an out-of-sample data point (elpd) [[30](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8205173/#pntd.0009418.ref030),[31](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8205173/#pntd.0009418.ref031)].
 
 ## Case 1. Chagas disease (endemic disease)
 
@@ -126,4 +106,4 @@ For more detailed information and examples, please check the [online documentati
 
 ## Case 2. Alphaviruses (epidemic disease)
 
-# 
+## References
