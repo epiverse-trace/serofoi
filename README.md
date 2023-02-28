@@ -1,10 +1,5 @@
 
-## *serofoi* <img src="man/figures/serofoi-logo.png" align="right" width="120"/>
-
-An R package to estimates the *Force-of-Infection* of a given pathogen
-from age-disaggregated population based sero-prevalence studies on a
-Bayesian framework using
-[`rstan`](https://mc-stan.org/users/interfaces/rstan).
+## *serofoi*: force-of-Infection from population based serosurveys with age-disagregated data <img src="man/figures/serofoi-logo.png" align="right" width="130"/>
 
 <!-- badges: start -->
 
@@ -17,6 +12,20 @@ coverage](https://codecov.io/gh/TRACE-LAC/serofoi/branch/bugfixes-jaime/graph/ba
 [![lifecycle-concept](https://raw.githubusercontent.com/reconverse/reconverse.github.io/master/images/badge-concept.svg)](https://www.reconverse.org/lifecycle.html#concept)
 
 <!-- badges: end -->
+
+***serofoi*** is an R package to estimates the *Force-of-Infection* of a
+given pathogen from age-disaggregated population based sero-prevalence
+studies, using a Bayesian framework.
+
+***serofoi*** provides estimates for the Force-of-Infection from of a
+population based serosurvey measuring IgG antibodies.
+
+***serofoi*** implements methods outlined in (**Cucunubá_etal_2017?**)
+(**Carrera&Cucunuba_etal_2020?**)
+
+***serofoi*** relies on
+[`rstan`](https://mc-stan.org/users/interfaces/rstan)and is part of the
+[Epiverse Initiative](https://data.org/initiatives/epiverse/).
 
 ## Installation
 
@@ -66,15 +75,19 @@ plot_seroprev(data_test, size_text = 15)
 
 <img src="man/figures/README-data_test-1.png" width="100%" />
 
-### Current version of the package runs ***three*** different FoI models
+#### Current version of the package runs ***three*** different FoI models
 
 The `run_model` function allows specifying the Bayesian model from *R*,
 while running in the back from `rstan`. The number of iterations,
 thinning, and other parameters can be customised.
 
-***NOTE**: Running the models <u>for the first time</u> on your local
-computer make take a few minutes as this is the first time the rstan
-code is compiled locally.*
+<div class="alert alert-primary">
+
+NOTE: Running the the *serofoi* models for the first time on your local
+computer make take a few minutes while the *rstan* code is compiled
+locally. Afterwards, no further compilation is needed.
+
+</div>
 
 #### Model 1. Constant Force-of-Infection (endemic model)
 
@@ -106,9 +119,9 @@ model_1 <- run_model(model_data = data_test,
 #### Model 2. Time-varying Force-of-Infection (epidemic model)
 
 For the *epidemic model,* a larger number of iterations is required for
-achieving convergence, as it fits a yearly FoI from a binomial
+achieving convergence, as it fits yearly FoI values from a binomial
 distribution. The number of iterations required may depend on the number
-of years reflected by the difference between year of the serosurvey and
+of years, reflected by the difference between year of the serosurvey and
 the maximum age-class sampled.
 
 ``` r
@@ -135,7 +148,7 @@ model_2 <- run_model(model_data = data_test,
 #### Model 3. Time-varying Force-of-Infection (fast epidemic model)
 
 For the *fast* *epidemic model,* a larger number of iterations is
-required for achieving convergence, compared to the previous ones.
+required for achieving convergence, compared to the previous models.
 
 ``` r
 model_3 <- run_model(model_data = data_test,
@@ -162,7 +175,7 @@ For each model, the plot_model function generate a vertical arrange of
 plots summarising the results of the model implementation plotting
 functions. Crucially, it shows the (expected) log-predictive density
 `elpd`, standard error `se`, and allows to check convergence based on
-**`R`**`-hat` convergence diagnostics.
+`R-hat` convergence diagnostics.
 
 ``` r
 
@@ -172,25 +185,20 @@ plot_model(model_2, size_text = 15)
 <img src="man/figures/README-plot_model-1.png" width="100%" />
 
 Also, the `plot_models_list` allows a visual a comparison of the models
-based on convergence, elpd and p-values
+based on the (expected) log-predictive density `elpd`, standard error
+`se`, and allows to check convergence based on `R-hat` convergence
+diagnostics.
 
-For more detailed information and examples, please check
-
-### Lifecycle
-
-This package is currently a *concept*, as defined by the [RECON software
-lifecycle](https://www.reconverse.org/lifecycle.html). This means that
-essential features and mechanisms are still being developed, and the
-package is not ready for use outside of the development team.
+For more detailed information and examples, please check the [online
+documentation](https://epiverse-trace.github.io/serofoi/articles) as
+package vignettes under Get Started.
 
 ### Contributions
 
-Contributions are welcome via [pull
-requests](https://github.com/TRACE-LAC/serofoi/pulls).
-
 Contributors to the project include:
 
-- [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author)
+- [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author,
+  maintainer)
 
 - [Nicolás Tórres](https://github.com/ntorresd) (author)
 
@@ -204,9 +212,27 @@ Contributors to the project include:
 
 - [Jaime A. Pavlich-Mariscal](https://github.com/jpavlich) (contributor)
 
-### Code of Conduct
+## Package vignettes
 
-Please note that the linelist project is released with a [Contributor
-Code of
-Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
+More details on how to use ***serofoi*** can be found in the [online
+documentation as package
+vignettes](https://epiverse-trace.github.io/serofoi/), under “Get
+Started”.
+
+## Help
+
+To report a bug please open an
+[issue](https://github.com/epiverse-trace/serofoi/issues/new/choose).
+
+## Contribute
+
+Contributions to ***serofoi*** are welcomed. Please follow the [package
+contributing
+guide](https://github.com/epiverse-trace/serofoi/blob/main/.github/CONTRIBUTING.md).
+
+## Code of conduct
+
+Please note that the ***serofoi*** project is released with a
+[Contributor Code of
+Conduct](https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
