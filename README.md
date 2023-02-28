@@ -61,7 +61,7 @@ the binomial confidence interval of the observed data.
 
 data_test <- prepare_data(mydata)
 
-plot_seroprev(data_test, size_text = 10)
+plot_seroprev(data_test, size_text = 15)
 ```
 
 <img src="man/figures/README-data_test-1.png" width="100%" />
@@ -76,7 +76,7 @@ thinning, and other parameters can be customised.
 computer make take a few minutes as this is the first time the rstan
 code is compiled locally.*
 
-##### Model 1. Constant Force-of-Infection (endemic model)
+#### Model 1. Constant Force-of-Infection (endemic model)
 
 For the *endemic model* a small number of iterations is enough for
 achieving convergence, as it only fits one parameter (the constant FoI)
@@ -103,7 +103,7 @@ model_1 <- run_model(model_data = data_test,
 #> converged  "Yes"
 ```
 
-##### Model 2. Time-varying Force-of-Infection (epidemic model)
+#### Model 2. Time-varying Force-of-Infection (epidemic model)
 
 For the *epidemic model,* a larger number of iterations is required for
 achieving convergence, as it fits a yearly FoI from a binomial
@@ -132,14 +132,10 @@ model_2 <- run_model(model_data = data_test,
 #> converged  "Yes"
 ```
 
-##### Model 3. Time-varying Force-of-Infection with a (fast epidemic model)
+#### Model 3. Time-varying Force-of-Infection (fast epidemic model)
 
-For the *epidemic model,* a larger number of iterations is required for
-achieving convergence, compared to the previous ones, as it fits a
-yearly FoI from a normal distribution with log superprior. As with the
-endemic model, the number of iterations required may depend on the
-number of years reflected by the difference between year of the
-serosurvey and the maximum age-class sampled.
+For the *fast* *epidemic model,* a larger number of iterations is
+required for achieving convergence, compared to the previous ones.
 
 ``` r
 model_3 <- run_model(model_data = data_test,
@@ -163,14 +159,14 @@ model_3 <- run_model(model_data = data_test,
 ```
 
 For each model, the plot_model function generate a vertical arrange of
-plots summarising the results of the model implementation ploting
-functions. Crutially, it shows the (expected) log-predictive density
+plots summarising the results of the model implementation plotting
+functions. Crucially, it shows the (expected) log-predictive density
 `elpd`, standard error `se`, and allows to check convergence based on
 **`R`**`-hat` convergence diagnostics.
 
 ``` r
 
-plot_model(model_2, size_text = 10)
+plot_model(model_2, size_text = 15)
 ```
 
 <img src="man/figures/README-plot_model-1.png" width="100%" />
@@ -178,8 +174,7 @@ plot_model(model_2, size_text = 10)
 Also, the `plot_models_list` allows a visual a comparison of the models
 based on convergence, elpd and p-values
 
-For mre information, please check detailed mathematical formulation of
-the models on
+For more detailed information and examples, please check
 
 ### Lifecycle
 
@@ -197,11 +192,11 @@ Contributors to the project include:
 
 - [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author)
 
-- \[Nicolás Tórres\] (author)
+- [Nicolás Tórres](https://github.com/ntorresd) (author)
 
-- \[Benjamin Lambert\] (author)
+- [Benjamin Lambert](https://ben-lambert.com/about/) (author)
 
-- \[Pierre Nouvellet\] (author)
+- [Pierre Nouvellet](https://github.com/pnouvellet) (author)
 
 - [Miguel Gamez](https://github.com/megamezl) (contributor)
 
