@@ -3,12 +3,31 @@ Type: Package
 Title: Estimates the Force-of-Infection of a given pathogen from population based sero-prevalence studies
 Version: 0.1.0
 Authors@R: 
-  c(
-    person("Zulma M. Cucunubá", role =  c("aut", "cre"), email = "zulma.cucunuba@javeriana.edu.co"),
-    person("Ben Lambert", role = "aut"),
-    person("Pierre Nouvellet", role = "aut"),
-    person("N. T. Domínguez", role = "aut")
-  )
+Authors@R: 
+    c(
+        person(
+            given = "Zulma M.",
+            family = "Cucunubá",
+            role = c("aut", "cre"),
+            email = "zulma.cucunuba@javeriana.edu.co",
+            comment = c(ORCID = "https://orcid.org/0000-0002-8165-3198")
+        ),
+        person(
+            given = "Nicolás",
+            family = "Torres",
+            role = c("aut"))
+        ),
+        person(
+            given = "Ben",
+            family = "Lambert",
+            role = c("aut"))
+        ),
+        person(
+            given = "Pierre",
+            family = "Nouvellet",
+            role = c("aut"))
+        )
+    )
 Contributor: Miguel Gámez, Geraldine Gómez, Jaime A. Pavlich-Mariscal
 Maintainer: The package maintainer <zulma.cucunuba@javeriana.edu.co>
 Description: R package to estimate time-varying Force-of-Infection of a given pathogen from population based sero-prevalence studies using a bayesian framework.

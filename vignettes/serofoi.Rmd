@@ -1,6 +1,8 @@
 ---
 title: "serofoi"
 output: rmarkdown::html_vignette
+bibliography: references.bib
+link-citations: true
 vignette: >
   %\VignetteIndexEntry{serofoi}
   %\VignetteEngine{knitr::rmarkdown}
@@ -20,28 +22,98 @@ library(serofoi)
 
 ```
 
-### Using the models defined in the serofoi package
+# Use cases for the models defined in the serofoi package
 
-Feb 10th, 2023
+**serofoi** is an R package that allows estimations of the Force-of-Infection from a population based serosurvey data.
 
-Sero-survey data
+## **Sero-survey data**
 
-Surveys had to meet all of the following inclusion criteria: 
-(i) be population-based (not hospital based), 
-(ii) specify individuals’ age or age group, 
-(iii) indicate diagnostic test(s) used (the current version of serofoi only applies to IgG antibodies) and 
+Surveys had to meet all of the following inclusion criteria:
+
+(i) be population-based (not hospital based)
+
+(ii) specify individuals' age or age group
+
+(iii) indicate diagnostic test(s) used. The current version of serofoi only applies to *IgG* antibodies)
+
 (iv) identify the location and date (year) of sample collection
 
+## Model assumptions
 
+Current version of **serofoi** includes the following assumptions on the underlying biological process:
 
+-   The Force-of-infection (FOI) is estimated using a catalytic model
 
-``` {r ex, include = TRUE}
+-   There is no sero-reversion (from positive to negative). It means IgG antobodies are life-long duration with no waning immunity. This may not be the case for several pathogens. This feature is planned for future versions of **serofoi.**
 
-head(mydata)
+-   There is no age-dependency. This may not be the case for several pathogens. This feature is planned for future versions of **serofoi.**
 
-# Prepare the data for using serofoi
+-   There is no impact from migration processes in the sampled population
 
-data_test <- prepare_data(mydata)
+## **Three** different FoI models
+
+::: {.alert .alert-primary}
+NOTE: Running the the *serofoi* models for the first time on your local computer make take a few minutes while the *rstan* code is compiled locally. Afterwards, no further compilation is needed.
+:::
+
+#### Model 1. Constant Force-of-Infection (endemic model)
+
+For the *endemic model* a small number of iterations is enough for achieving convergence, as it only fits one parameter (the constant FoI) from a binomial distribution.
+
+```{r model_1, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
+model_1 <- run_model(model_data = data_test,
+                     model_name = "constant_foi_bi",
+                     n_iters = 500, 
+                     n_thin = 2)
 
 ```
 
+#### Model 2. Time-varying Force-of-Infection (epidemic model)
+
+For the *epidemic model,* a larger number of iterations is required for achieving convergence, as it fits yearly FoI values from a binomial distribution. The number of iterations required may depend on the number of years, reflected by the difference between year of the serosurvey and the maximum age-class sampled.
+
+```{r model_2, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
+model_2 <- run_model(model_data = data_test,
+                     model_name = "continuous_foi_normal_bi",
+                     n_iters = 1500, 
+                     n_thin = 2)
+```
+
+#### Model 3. Time-varying Force-of-Infection (fast epidemic model)
+
+For the *fast* *epidemic model,* a larger number of iterations is required for achieving convergence, compared to the previous models.
+
+```{r model_3, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
+model_3 <- run_model(model_data = data_test,
+                     model_name = "continuous_foi_normal_log",
+                     n_iters = 1500, 
+                     n_thin = 2)
+```
+
+For each model, the plot_model function generate a vertical arrange of plots summarising the results of the model implementation plotting functions. Crucially, it shows the (expected) log-predictive density `elpd`, standard error `se`, and allows to check convergence based on `R-hat` convergence diagnostics.
+
+```{r plot_model, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE, fig.height=12, fig.width=6}
+
+plot_model(model_2, size_text = 15)
+```
+
+Also, the `plot_models_list` allows a visual a comparison of the models based on the (expected) log-predictive density `elpd`, standard error `se`, and allows to check convergence based on `R-hat` convergence diagnostics.
+
+```{r, model_comp, echo=FALSE, include=FALSE}
+models_list <- c(model_1, model_2, model_3)
+plot_models_list(models_list, n_row = 1, n_col = 3)
+```
+
+For more detailed information and examples, please check the [online documentation](https://epiverse-trace.github.io/serofoi/articles) as package vignettes under Get Started.
+
+## Case 1. Chagas disease (endemic disease)
+
+```{r ex, include = TRUE}
+
+
+
+```
+
+## Case 2. Alphaviruses (epidemic disease)
+
+# 

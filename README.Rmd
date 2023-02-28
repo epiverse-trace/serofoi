@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## *serofoi*: force-of-Infection from population based serosurveys with age-disagregated data <img src="man/figures/serofoi-logo.png" align="right" width="130"/>
+## *serofoi*: force-of-infection from population based serosurveys with age-disagregated data <img src="man/figures/serofoi-logo.png" align="right" width="130"/>
 
 <!-- badges: start -->
 
@@ -24,7 +24,6 @@ MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.or
 [![R-CMD-check](https://github.com/TRACE-LAC/serofoi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/TRACE-LAC/serofoi/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/TRACE-LAC/serofoi/branch/bugfixes-jaime/graph/badge.svg)](https://github.com/TRACE-LAC/serofoi?branch=bugfixes-jaime)
-
 [![lifecycle-concept](https://raw.githubusercontent.com/reconverse/reconverse.github.io/master/images/badge-concept.svg)](https://www.reconverse.org/lifecycle.html#concept)
 
 <!-- badges: end -->
@@ -33,15 +32,14 @@ coverage](https://codecov.io/gh/TRACE-LAC/serofoi/branch/bugfixes-jaime/graph/ba
 given pathogen from age-disaggregated population based sero-prevalence
 studies, using a Bayesian framework.
 
-***serofoi*** provides estimates for the Force-of-Infection from of a
-population based serosurvey measuring IgG antibodies.
-
-***serofoi*** implements methods outlined in [@Cucunubá_etal_2017]
-[@Carrera&Cucunuba_etal_2020]
+***serofoi*** implements methods outlined in [@cucunubá2017] and
+[@carrera2020]
 
 ***serofoi*** relies on
-[`rstan`](https://mc-stan.org/users/interfaces/rstan)and is part of the
-[Epiverse Initiative](https://data.org/initiatives/epiverse/).
+[`rstan`](https://mc-stan.org/users/interfaces/rstan)
+
+***serofoi*** is part of the [Epiverse
+Initiative](https://data.org/initiatives/epiverse/).
 
 ## Installation
 
@@ -58,7 +56,7 @@ library(serofoi)
 
 ```{r cleaning, include = FALSE, echo = TRUE}
 library(serofoi)
-rownames(mydata) <- NULL # Nico, porfa puedes agregar esto donde se importa estos datos para que no le salgan los nombres a las columnas?
+rownames(mydata) <- NULL 
 
 ```
 
@@ -75,7 +73,7 @@ modelling functions. The seroprevalence *prepared data* can be
 visualised with the `plot_seroprev` function. This function also plots
 the binomial confidence interval of the observed data.
 
-```{r data_test, include = TRUE}
+```{r data_test, include = TRUE, fig.height=6, fig.width=6}
 
 data_test <- prepare_data(mydata)
 
@@ -142,7 +140,7 @@ functions. Crucially, it shows the (expected) log-predictive density
 `elpd`, standard error `se`, and allows to check convergence based on
 `R-hat` convergence diagnostics.
 
-```{r plot_model, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE, fig.height=12, fig.width=4}
+```{r plot_model, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE, fig.height=12, fig.width=6}
 
 plot_model(model_2, size_text = 15)
 ```
@@ -205,3 +203,5 @@ Please note that the ***serofoi*** project is released with a
 [Contributor Code of
 Conduct](https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
+
+## References

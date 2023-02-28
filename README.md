@@ -1,5 +1,5 @@
 
-## *serofoi*: force-of-Infection from population based serosurveys with age-disagregated data <img src="man/figures/serofoi-logo.png" align="right" width="130"/>
+## *serofoi*: force-of-infection from population based serosurveys with age-disagregated data <img src="man/figures/serofoi-logo.png" align="right" width="130"/>
 
 <!-- badges: start -->
 
@@ -8,7 +8,6 @@ MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.or
 [![R-CMD-check](https://github.com/TRACE-LAC/serofoi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/TRACE-LAC/serofoi/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/TRACE-LAC/serofoi/branch/bugfixes-jaime/graph/badge.svg)](https://github.com/TRACE-LAC/serofoi?branch=bugfixes-jaime)
-
 [![lifecycle-concept](https://raw.githubusercontent.com/reconverse/reconverse.github.io/master/images/badge-concept.svg)](https://www.reconverse.org/lifecycle.html#concept)
 
 <!-- badges: end -->
@@ -17,15 +16,14 @@ coverage](https://codecov.io/gh/TRACE-LAC/serofoi/branch/bugfixes-jaime/graph/ba
 given pathogen from age-disaggregated population based sero-prevalence
 studies, using a Bayesian framework.
 
-***serofoi*** provides estimates for the Force-of-Infection from of a
-population based serosurvey measuring IgG antibodies.
-
-***serofoi*** implements methods outlined in (**Cucunubá_etal_2017?**)
-(**Carrera&Cucunuba_etal_2020?**)
+***serofoi*** implements methods outlined in (Cucunubá et al. 2017) and
+(Carrera et al. 2020)
 
 ***serofoi*** relies on
-[`rstan`](https://mc-stan.org/users/interfaces/rstan)and is part of the
-[Epiverse Initiative](https://data.org/initiatives/epiverse/).
+[`rstan`](https://mc-stan.org/users/interfaces/rstan)
+
+***serofoi*** is part of the [Epiverse
+Initiative](https://data.org/initiatives/epiverse/).
 
 ## Installation
 
@@ -236,3 +234,31 @@ Please note that the ***serofoi*** project is released with a
 [Contributor Code of
 Conduct](https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
+
+## References
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+
+<div id="ref-carrera2020" class="csl-entry">
+
+Carrera, Jean-Paul, Zulma M. Cucunubá, Karen Neira, Ben Lambert, Yaneth
+Pittí, Jesus Liscano, Jorge L. Garzón, et al. 2020. “Endemic and
+Epidemic Human Alphavirus Infections in Eastern Panama: An Analysis of
+Population-Based Cross-Sectional Surveys.” *The American Journal of
+Tropical Medicine and Hygiene* 103 (6): 2429–37.
+<https://doi.org/10.4269/ajtmh.20-0408>.
+
+</div>
+
+<div id="ref-cucunubá2017" class="csl-entry">
+
+Cucunubá, Zulma M, Pierre Nouvellet, Lesong Conteh, Mauricio Javier
+Vera, Victor Manuel Angulo, Juan Carlos Dib, Gabriel Jaime Parra -Henao,
+and María Gloria Basáñez. 2017. “Modelling Historical Changes in the
+Force-of-Infection of Chagas Disease to Inform Control and Elimination
+Programmes: Application in Colombia.” *BMJ Global Health* 2 (3):
+e000345. <https://doi.org/10.1136/bmjgh-2017-000345>.
+
+</div>
+
+</div>
