@@ -15,15 +15,4 @@ Useful links:
 }
 
 }
-\author{
-\strong{Maintainer}: Zulma M. Cucunubá \email{zulma.cucunuba@javeriana.edu.co}
-
-Authors:
-\itemize{
-  \item Ben Lambert
-  \item Pierre Nouvellet
-  \item N. T. Domínguez
-}
-
-}
 \keyword{internal}
