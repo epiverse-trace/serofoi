@@ -32,7 +32,7 @@ You can install the **development version** of `serofoi` from
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("TRACE-LAC/serofoi")
+# remotes::install_github("TRACE-LAC/serofoi")
 library(serofoi)
 ```
 
@@ -81,7 +81,7 @@ thinning, and other parameters can be customised.
 
 <div class="alert alert-primary">
 
-NOTE: Running the the *serofoi* models for the first time on your local
+NOTE: Running the *serofoi* models for the first time on your local
 computer make take a few minutes while the *rstan* code is compiled
 locally. Afterwards, no further compilation is needed.
 

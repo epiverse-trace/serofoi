@@ -49,7 +49,7 @@ You can install the **development version** of `serofoi` from
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("TRACE-LAC/serofoi")
+# remotes::install_github("TRACE-LAC/serofoi")
 library(serofoi)
 ```
 
@@ -74,7 +74,7 @@ modelling functions. The seroprevalence *prepared data* can be
 visualised with the `plot_seroprev` function. This function also plots
 the binomial confidence interval of the observed data.
 
-```{r data_test, include = TRUE, fig.height=6, fig.width=6}
+```{r data_test, include = TRUE, fig.height=6, fig.width=6, message=FALSE}
 
 data_test <- prepare_data(mydata)
 
@@ -89,9 +89,9 @@ while running in the back from `rstan`. The number of iterations,
 thinning, and other parameters can be customised.
 
 ::: {.alert .alert-primary}
-NOTE: Running the the *serofoi* models for the first time on your local
+NOTE: Running the *serofoi* models for the first time on your local
 computer make take a few minutes while the *rstan* code is compiled
-locally. Afterwards, no further compilation is needed.
+locally. Afterwards, no further local compilation is needed.
 :::
 
 #### Model 1. Constant Force-of-Infection (endemic model)
@@ -146,14 +146,17 @@ functions. Crucially, it shows the (expected) log-predictive density
 plot_model(model_2, size_text = 15)
 ```
 
-Also, the `plot_models_list` allows a visual a comparison of the models
-based on the (expected) log-predictive density `elpd`, standard error
-`se`, and allows to check convergence based on `R-hat` convergence
-diagnostics.
+Also, the `plot_seroprev_models_grid` allows a visual a comparison of
+the models based on the (expected) log-predictive density `elpd`,
+standard error `se`, and allows to check convergence based on `R-hat`
+convergence diagnostics.
 
-```{r, model_comp, echo=FALSE, include=FALSE}
-models_list <- c(model_1, model_2, model_3)
-plot_models_list(models_list, n_row = 1, n_col = 3)
+```{r, model_comp, echo=TRUE, include=FALSE, warning=FALSE, message=FALSE, fig.height=12, message=FALSE}
+p1 <- plot_model(model_1, size_text = 15)
+p2 <- plot_model(model_2, size_text = 15)
+p3 <- plot_model(model_3, size_text = 15)
+
+plot_seroprev_models_grid(p1, p2, p3, n_row = 1, n_col = 3)
 ```
 
 For more detailed information and examples, please check the [online
@@ -206,4 +209,3 @@ Conduct](https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md)
 By contributing to this project, you agree to abide by its terms.
 
 ## References
-

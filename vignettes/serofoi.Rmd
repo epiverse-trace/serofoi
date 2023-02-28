@@ -21,9 +21,9 @@ data_test <- prepare_data(mydata)
 
 ```
 
-# Use cases 
+# Use cases
 
-### For the models defined in the *serofoi* package
+## For the models defined in the *serofoi* package
 
 **serofoi** is an R package that allows estimations of the Force-of-Infection from a population based serosurvey data.
 
@@ -45,16 +45,16 @@ Current version of **serofoi** includes the following assumptions on the underly
 
 -   The Force-of-infection (FoI) is estimated using a catalytic model
 
--   There is no sero-reversion (from positive to negative). It means IgG antibodies are life-long duration with no waning immunity. This may not be the case for several pathogens. This feature is planned for future versions of **serofoi.**
+-   There is no sero-reversion (from positive to negative). It means IgG antibodies are life-long duration with no waning immunity. This may not be the case for several pathogens. This feature is planned for future versions of *serofoi***.**
 
--   There is no age-dependency. This may not be the case for several pathogens. This feature is planned for future versions of **serofoi.**
+-   There is no age-dependency. This may not be the case for several pathogens. This feature is planned for future versions of *serofoi***.**
 
 -   There is no impact from migration processes in the sampled population
 
 -   There are no differences in the mortality rate of infected versus susceptible individuals
 
 ::: {.alert .alert-primary}
-NOTE: Running the the *serofoi* models for the first time on your local computer make take a few minutes while the *rstan* code is compiled locally. Afterwards, no further compilation is needed locally.
+NOTE: Running the *serofoi* models for the first time on your local computer make take a few minutes while the *rstan* code is compiled locally. Afterwards, no further local compilation is needed.
 :::
 
 # **Constant vs Time-varying** FoI models
@@ -108,9 +108,6 @@ model_2 <- run_model(model_data = data_test,
 Models are implemented in **RStan** using the No-U-Turn sampler, a type of Hamiltonian Monte Carlo sampling. After convergence, the best-fitting models can be selected based on the expected log predictive density for an out-of-sample data point (elpd).
 
 ## Case use 1. Chagas disease (endemic disease)
-
-```{}
-```
 
 ## Case use 2. Alphaviruses (epidemic disease)
 
