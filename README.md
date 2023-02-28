@@ -1,17 +1,22 @@
 
-## *serofoi* <img src="man/figures/serofoi-logo.png" align="right" width="120" />
+## *serofoi* <img src="man/figures/serofoi-logo.png" align="right" width="120"/>
 
 An R package to estimates the *Force-of-Infection* of a given pathogen
-from population based sero-prevalence studies on a Bayesian framework.
+from age-disaggregated population based sero-prevalence studies on a
+Bayesian framework using
+[`rstan`](https://mc-stan.org/users/interfaces/rstan).
 
-<!-- <!-- badges: start -->
+<!-- badges: start -->
 
-–\>
-<!-- [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) -->
-<!-- [![R-CMD-check](https://github.com/epiverse-trace/readepi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/epiverse-trace/readepi/actions/workflows/R-CMD-check.yaml) -->
-<!-- [![Codecov test coverage](https://codecov.io/gh/epiverse-trace/readepi/branch/main/graph/badge.svg)](https://app.codecov.io/gh/epiverse-trace/readepi?branch=main) -->
-<!-- [![lifecycle-concept](https://raw.githubusercontent.com/reconverse/reconverse.github.io/master/images/badge-concept.svg)](https://www.reconverse.org/lifecycle.html#concept)  -->
-<!-- <!-- badges: end --> –\>
+[![License:
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![R-CMD-check](https://github.com/TRACE-LAC/serofoi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/TRACE-LAC/serofoi/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/TRACE-LAC/serofoi/branch/bugfixes-jaime/graph/badge.svg)](https://github.com/TRACE-LAC/serofoi?branch=bugfixes-jaime)
+
+[![lifecycle-concept](https://raw.githubusercontent.com/reconverse/reconverse.github.io/master/images/badge-concept.svg)](https://www.reconverse.org/lifecycle.html#concept)
+
+<!-- badges: end -->
 
 ## Installation
 
@@ -21,50 +26,67 @@ You can install the **development version** of `serofoi` from
 ``` r
 # install.packages("remotes")
 remotes::install_github("TRACE-LAC/serofoi")
+library(serofoi)
 ```
 
 ## Quick start
 
-These examples illustrate some of the current functionalities:
+The package provides an example dataset of the observed serosurvey data,
+`mydata`. This example is the basic entry for the package.
 
-# The package provides an example dataset of a serosurvey `mydata`
+``` r
+head(mydata)
+#>       survey total counts age_min age_max year_init year_end tsur country
+#> 1 COL-035-18     2      0       1       1      2007     2007 2007     COL
+#> 2 COL-035-18     1      0       2       2      2007     2007 2007     COL
+#> 3 COL-035-18    13      2       4       4      2007     2007 2007     COL
+#> 4 COL-035-18    25      5       5       5      2007     2007 2007     COL
+#> 5 COL-035-18    17      0       6       6      2007     2007 2007     COL
+#> 6 COL-035-18    20      4       7       7      2007     2007 2007     COL
+#>      test antibody
+#> 1 ELISA .      IgG
+#> 2 ELISA .      IgG
+#> 3 ELISA .      IgG
+#> 4 ELISA .      IgG
+#> 5 ELISA .      IgG
+#> 6 ELISA .      IgG
+```
+
+The function `prepare_data` will prepare the entry data for entering the
+modelling functions. The seroprevalence *prepared data* can be
+visualised with the `plot_seroprev` function. This function also plots
+the binomial confidence interval of the observed data.
 
 ``` r
 
-head(mydata)
-#>           survey total counts age_min age_max year_init year_end tsur country
-#> X.575 COL-035-18     2      0       1       1      2007     2007 2007     COL
-#> X.576 COL-035-18     1      0       2       2      2007     2007 2007     COL
-#> X.577 COL-035-18    13      2       4       4      2007     2007 2007     COL
-#> X.578 COL-035-18    25      5       5       5      2007     2007 2007     COL
-#> X.579 COL-035-18    17      0       6       6      2007     2007 2007     COL
-#> X.580 COL-035-18    20      4       7       7      2007     2007 2007     COL
-#>          test antibody
-#> X.575 ELISA .      IgG
-#> X.576 ELISA .      IgG
-#> X.577 ELISA .      IgG
-#> X.578 ELISA .      IgG
-#> X.579 ELISA .      IgG
-#> X.580 ELISA .      IgG
-
-# Prepare the data for using serofoi
-
 data_test <- prepare_data(mydata)
 
+plot_seroprev(data_test, size_text = 10)
+```
 
-# Current version of the package runs three different models of the FoI
+<img src="man/figures/README-data_test-1.png" width="100%" />
 
-# Constant Force-of-Infection with a binomial distribution
-model_0 <- run_model(model_data = data_test,
+### Current version of the package runs ***three*** different FoI models
+
+The `run_model` function allows specifying the Bayesian model from *R*,
+while running in the back from `rstan`. The number of iterations,
+thinning, and other parameters can be customised.
+
+***NOTE**: Running the models <u>for the first time</u> on your local
+computer make take a few minutes as this is the first time the rstan
+code is compiled locally.*
+
+##### Model 1. Constant Force-of-Infection (endemic model)
+
+For the *endemic model* a small number of iterations is enough for
+achieving convergence, as it only fits one parameter (the constant FoI)
+from a binomial distribution.
+
+``` r
+model_1 <- run_model(model_data = data_test,
                      model_name = "constant_foi_bi",
                      n_iters = 500, 
                      n_thin = 2)
-#> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#bulk-ess
-#> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#tail-ess
 #> [1] "serofoi model constant_foi_bi finished running ------"
 #>            [,1]             
 #> model_name "constant_foi_bi"
@@ -79,32 +101,21 @@ model_0 <- run_model(model_data = data_test,
 #> elpd       "-30.85"         
 #> se         "4.9"            
 #> converged  "Yes"
+```
 
-# Time-varying Force-of-Infection with a prior normal-binomial distribution
-model_1 <- run_model(model_data = data_test,
+##### Model 2. Time-varying Force-of-Infection (epidemic model)
+
+For the *epidemic model,* a larger number of iterations is required for
+achieving convergence, as it fits a yearly FoI from a binomial
+distribution. The number of iterations required may depend on the number
+of years reflected by the difference between year of the serosurvey and
+the maximum age-class sampled.
+
+``` r
+model_2 <- run_model(model_data = data_test,
                      model_name = "continuous_foi_normal_bi",
-                     n_iters = 500, 
+                     n_iters = 1500, 
                      n_thin = 2)
-#> Warning in readLines(file, warn = TRUE): incomplete final line found on
-#> '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/serofoi/extdata/stanmodels/continuous_foi_normal_bi.stan'
-#> Warning in readLines(file, warn = TRUE): incomplete final line found on
-#> '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/serofoi/extdata/stanmodels/continuous_foi_normal_bi.stan'
-#> Warning: There were 4 divergent transitions after warmup. See
-#> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-#> to find out why this is a problem and how to eliminate them.
-#> Warning: There were 4 chains where the estimated Bayesian Fraction of Missing Information was low. See
-#> https://mc-stan.org/misc/warnings.html#bfmi-low
-#> Warning: Examine the pairs() plot to diagnose sampling problems
-#> Warning: The largest R-hat is 1.2, indicating chains have not mixed.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#r-hat
-#> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#bulk-ess
-#> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#tail-ess
-#> Warning: Some Pareto k diagnostic values are slightly high. See help('pareto-k-diagnostic') for details.
 #> [1] "serofoi model continuous_foi_normal_bi finished running ------"
 #>            [,1]                      
 #> model_name "continuous_foi_normal_bi"
@@ -115,35 +126,26 @@ model_1 <- run_model(model_data = data_test,
 #> antibody   "IgG"                     
 #> n_sample   "212"                     
 #> n_agec     "27"                      
-#> n_iter     "500"                     
-#> elpd       "-29.74"                  
-#> se         "5.25"                    
-#> converged  NA
+#> n_iter     "1500"                    
+#> elpd       "-29.82"                  
+#> se         "5.28"                    
+#> converged  "Yes"
+```
 
-# Time-varying Force-of-Infection with a prior normal-log distribution
-model_2 <- run_model(model_data = data_test,
+##### Model 3. Time-varying Force-of-Infection with a (fast epidemic model)
+
+For the *epidemic model,* a larger number of iterations is required for
+achieving convergence, compared to the previous ones, as it fits a
+yearly FoI from a normal distribution with log superprior. As with the
+endemic model, the number of iterations required may depend on the
+number of years reflected by the difference between year of the
+serosurvey and the maximum age-class sampled.
+
+``` r
+model_3 <- run_model(model_data = data_test,
                      model_name = "continuous_foi_normal_log",
-                     n_iters = 500, 
+                     n_iters = 1500, 
                      n_thin = 2)
-#> Warning in readLines(file, warn = TRUE): incomplete final line found on
-#> '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/serofoi/extdata/stanmodels/continuous_foi_normal_log.stan'
-#> Warning in readLines(file, warn = TRUE): incomplete final line found on
-#> '/Library/Frameworks/R.framework/Versions/4.2/Resources/library/serofoi/extdata/stanmodels/continuous_foi_normal_log.stan'
-#> Warning: There were 104 divergent transitions after warmup. See
-#> https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-#> to find out why this is a problem and how to eliminate them.
-#> Warning: There were 4 chains where the estimated Bayesian Fraction of Missing Information was low. See
-#> https://mc-stan.org/misc/warnings.html#bfmi-low
-#> Warning: Examine the pairs() plot to diagnose sampling problems
-#> Warning: The largest R-hat is 1.33, indicating chains have not mixed.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#r-hat
-#> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#bulk-ess
-#> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
-#> Running the chains for more iterations may help. See
-#> https://mc-stan.org/misc/warnings.html#tail-ess
 #> [1] "serofoi model continuous_foi_normal_log finished running ------"
 #>            [,1]                       
 #> model_name "continuous_foi_normal_log"
@@ -154,29 +156,30 @@ model_2 <- run_model(model_data = data_test,
 #> antibody   "IgG"                      
 #> n_sample   "212"                      
 #> n_agec     "27"                       
-#> n_iter     "500"                      
-#> elpd       "-29.7"                    
-#> se         "5.45"                     
+#> n_iter     "1500"                     
+#> elpd       "-29.73"                   
+#> se         "5.53"                     
 #> converged  "Yes"
-
-# The following function can be used to visualize the sero-prevalence data with its corresponding binomial confidence interval before fitting to a model
-plot_seroprev(data_test, size_text = 6)
 ```
 
-<img src="man/figures/README-ex-1.png" width="100%" />
+For each model, the plot_model function generate a vertical arrange of
+plots summarising the results of the model implementation ploting
+functions. Crutially, it shows the (expected) log-predictive density
+`elpd`, standard error `se`, and allows to check convergence based on
+**`R`**`-hat` convergence diagnostics.
 
 ``` r
 
-# For each model, you can use ploting functions such as
-
-
-# You can compare these three models based on convergence, elpd and p-values
-comp_table <- get_comparison_table(
-  model_objects_list = c(m0 = model_0,
-                         m1 = model_1,
-                         m2 = model_2))
-#> [1] "number of converged models = 2"
+plot_model(model_2, size_text = 10)
 ```
+
+<img src="man/figures/README-plot_model-1.png" width="100%" />
+
+Also, the `plot_models_list` allows a visual a comparison of the models
+based on convergence, elpd and p-values
+
+For mre information, please check detailed mathematical formulation of
+the models on
 
 ### Lifecycle
 

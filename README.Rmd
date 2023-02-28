@@ -1,5 +1,8 @@
 ---
 output: github_document
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r, include = FALSE}
@@ -11,115 +14,169 @@ knitr::opts_chunk$set(
 )
 ```
 
-## *serofoi* <img src="man/figures/serofoi-logo.png" align="right" width="120" />
+## *serofoi* <img src="man/figures/serofoi-logo.png" align="right" width="120"/>
 
-An R package to estimates the *Force-of-Infection* of a given pathogen from population
-based sero-prevalence studies on a Bayesian framework.
+An R package to estimates the *Force-of-Infection* of a given pathogen
+from age-disaggregated population based sero-prevalence studies on a
+Bayesian framework using
+[`rstan`](https://mc-stan.org/users/interfaces/rstan).
 
+<!-- badges: start -->
 
-<!-- <!-- badges: start --> -->
-<!-- [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) -->
-<!-- [![R-CMD-check](https://github.com/epiverse-trace/readepi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/epiverse-trace/readepi/actions/workflows/R-CMD-check.yaml) -->
-<!-- [![Codecov test coverage](https://codecov.io/gh/epiverse-trace/readepi/branch/main/graph/badge.svg)](https://app.codecov.io/gh/epiverse-trace/readepi?branch=main) -->
-<!-- [![lifecycle-concept](https://raw.githubusercontent.com/reconverse/reconverse.github.io/master/images/badge-concept.svg)](https://www.reconverse.org/lifecycle.html#concept)  -->
-<!-- <!-- badges: end --> -->
+[![License:
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![R-CMD-check](https://github.com/TRACE-LAC/serofoi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/TRACE-LAC/serofoi/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/TRACE-LAC/serofoi/branch/bugfixes-jaime/graph/badge.svg)](https://github.com/TRACE-LAC/serofoi?branch=bugfixes-jaime)
 
+[![lifecycle-concept](https://raw.githubusercontent.com/reconverse/reconverse.github.io/master/images/badge-concept.svg)](https://www.reconverse.org/lifecycle.html#concept)
+
+<!-- badges: end -->
 
 ## Installation
+
 You can install the **development version** of `serofoi` from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("remotes")
 remotes::install_github("TRACE-LAC/serofoi")
+library(serofoi)
 ```
 
 ## Quick start
 
-
-
-```{r example, include = FALSE}
-# remotes::install_github("TRACE-LAC/serofoi", ref = "dev-webrd")
+```{r cleaning, include = FALSE, echo = TRUE}
 library(serofoi)
+rownames(mydata) <- NULL # Nico, porfa puedes agregar esto donde se importa estos datos para que no le salgan los nombres a las columnas?
 
 ```
 
-These examples illustrate some of the current functionalities:
+The package provides an example dataset of the observed serosurvey data,
+`mydata`. This example is the basic entry for the package.
 
-# The package provides an example dataset of a serosurvey `mydata`
-
-
-``` {r ex, include = TRUE}
-
+```{r ex, include = TRUE}
 head(mydata)
 
-# Prepare the data for using serofoi
+```
+
+The function `prepare_data` will prepare the entry data for entering the
+modelling functions. The seroprevalence *prepared data* can be
+visualised with the `plot_seroprev` function. This function also plots
+the binomial confidence interval of the observed data.
+
+```{r data_test, include = TRUE, fig.height=4, fig.width=4}
 
 data_test <- prepare_data(mydata)
 
+plot_seroprev(data_test, size_text = 10)
 
-# Current version of the package runs three different models of the FoI
+```
 
-# Constant Force-of-Infection with a binomial distribution
-model_0 <- run_model(model_data = data_test,
+### Current version of the package runs ***three*** different FoI models
+
+The `run_model` function allows specifying the Bayesian model from *R*,
+while running in the back from `rstan`. The number of iterations,
+thinning, and other parameters can be customised.
+
+***NOTE**: Running the models [for the first time]{.underline} on your
+local computer make take a few minutes as this is the first time the
+rstan code is compiled locally.*
+
+#### Model 1. Constant Force-of-Infection (endemic model)
+
+For the *endemic model* a small number of iterations is enough for
+achieving convergence, as it only fits one parameter (the constant FoI)
+from a binomial distribution.
+
+```{r model_1, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
+model_1 <- run_model(model_data = data_test,
                      model_name = "constant_foi_bi",
                      n_iters = 500, 
                      n_thin = 2)
 
-# Time-varying Force-of-Infection with a prior normal-binomial distribution
-model_1 <- run_model(model_data = data_test,
-                     model_name = "continuous_foi_normal_bi",
-                     n_iters = 500, 
-                     n_thin = 2)
-
-# Time-varying Force-of-Infection with a prior normal-log distribution
-model_2 <- run_model(model_data = data_test,
-                     model_name = "continuous_foi_normal_log",
-                     n_iters = 500, 
-                     n_thin = 2)
-
-# The following function can be used to visualize the sero-prevalence data with its corresponding binomial confidence interval before fitting to a model
-plot_seroprev(data_test, size_text = 6)
-
-# For each model, you can use ploting functions such as
-
-
-# You can compare these three models based on convergence, elpd and p-values
-comp_table <- get_comparison_table(
-  model_objects_list = c(m0 = model_0,
-                         m1 = model_1,
-                         m2 = model_2))
-
-
-
-
-
 ```
 
-### Lifecycle
-This package is currently a *concept*, as defined by the [RECON software
-lifecycle](https://www.reconverse.org/lifecycle.html). This means that essential
-features and mechanisms are still being developed, and the package is not ready
-for use outside of the development team.
+#### Model 2. Time-varying Force-of-Infection (epidemic model)
 
+For the *epidemic model,* a larger number of iterations is required for
+achieving convergence, as it fits a yearly FoI from a binomial
+distribution. The number of iterations required may depend on the number
+of years reflected by the difference between year of the serosurvey and
+the maximum age-class sampled.
+
+```{r model_2, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
+model_2 <- run_model(model_data = data_test,
+                     model_name = "continuous_foi_normal_bi",
+                     n_iters = 1500, 
+                     n_thin = 2)
+```
+
+#### Model 3. Time-varying Force-of-Infection with a (fast epidemic model)
+
+For the *fast* *epidemic model,* a larger number of iterations is
+required for achieving convergence, compared to the previous ones.
+
+```{r model_3, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
+model_3 <- run_model(model_data = data_test,
+                     model_name = "continuous_foi_normal_log",
+                     n_iters = 1500, 
+                     n_thin = 2)
+```
+
+For each model, the plot_model function generate a vertical arrange of
+plots summarising the results of the model implementation ploting
+functions. Crutially, it shows the (expected) log-predictive density
+`elpd`, standard error `se`, and allows to check convergence based on
+**`R`**`-hat` convergence diagnostics.
+
+```{r plot_model, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE, fig.height=8, fig.width=4}
+
+plot_model(model_2, size_text = 10)
+```
+
+Also, the `plot_models_list` allows a visual a comparison of the models
+based on convergence, elpd and p-values
+
+```{r, model_comp, echo=FALSE, include=FALSE}
+models_list <- c(model_1, model_2, model_3)
+plot_models_list(models_list, n_row = 1, n_col = 3)
+```
+
+For more detailed information and examples, please check
+
+### Lifecycle
+
+This package is currently a *concept*, as defined by the [RECON software
+lifecycle](https://www.reconverse.org/lifecycle.html). This means that
+essential features and mechanisms are still being developed, and the
+package is not ready for use outside of the development team.
 
 ### Contributions
-Contributions are welcome via [pull requests](https://github.com/TRACE-LAC/serofoi/pulls).
+
+Contributions are welcome via [pull
+requests](https://github.com/TRACE-LAC/serofoi/pulls).
 
 Contributors to the project include:
 
-- [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author)
-- [Nicolás Tórres] (author)
-- [Benjamin Lambert] (author)
-- [Pierre Nouvellet] (author)
+-   [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author)
 
+-   [Nicolás Tórres] (author)
 
-- [Miguel Gamez](https://github.com/megamezl) (contributor)
-- [Geraldine Gómez](https://github.com/megamezl) (contributor)
-- [Jaime A. Pavlich-Mariscal](https://github.com/jpavlich) (contributor)
+-   [Benjamin Lambert] (author)
 
+-   [Pierre Nouvellet] (author)
+
+-   [Miguel Gamez](https://github.com/megamezl) (contributor)
+
+-   [Geraldine Gómez](https://github.com/megamezl) (contributor)
+
+-   [Jaime A. Pavlich-Mariscal](https://github.com/jpavlich)
+    (contributor)
 
 ### Code of Conduct
-Please note that the linelist project is released with a 
-[Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
+
+Please note that the linelist project is released with a [Contributor
+Code of
+Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
 By contributing to this project, you agree to abide by its terms.
