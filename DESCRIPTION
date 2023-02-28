@@ -9,22 +9,22 @@ Authors@R:
             family = "Cucunubá",
             role = c("aut", "cre"),
             email = "zulma.cucunuba@javeriana.edu.co",
-            comment = c(ORCID = "https://orcid.org/0000-0002-8165-3198"))
+            comment = c(ORCID = "https://orcid.org/0000-0002-8165-3198")
         ),
         person(
             given = "Nicolás",
             family = "Torres",
-            role = c("aut"))
+            role = c("aut")
         ),
         person(
             given = "Ben",
             family = "Lambert",
-            role = c("aut"))
+            role = c("aut")
         ),
         person(
             given = "Pierre",
             family = "Nouvellet",
-            role = c("aut"))
+            role = c("aut")
         )
     )
 Contributor: Miguel Gámez, Geraldine Gómez, Jaime A. Pavlich-Mariscal
