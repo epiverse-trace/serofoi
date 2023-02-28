@@ -3,7 +3,6 @@ Type: Package
 Title: Estimates the Force-of-Infection of a given pathogen from population based sero-prevalence studies
 Version: 0.1.0
 Authors@R: 
-Authors@R: 
     c(
         person(
             given = "Zulma M.",

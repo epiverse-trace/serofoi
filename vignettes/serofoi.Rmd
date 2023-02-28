@@ -41,7 +41,7 @@ Surveys had to meet all of the following inclusion criteria:
 
 Current version of **serofoi** includes the following assumptions on the underlying biological process:
 
--   The Force-of-infection (FOI) is estimated using a catalytic model
+-   The Force-of-infection (FoI) is estimated using a catalytic model
 
 -   There is no sero-reversion (from positive to negative). It means IgG antibodies are life-long duration with no waning immunity. This may not be the case for several pathogens. This feature is planned for future versions of **serofoi.**
 
@@ -59,19 +59,17 @@ NOTE: Running the the *serofoi* models for the first time on your local computer
 
 #### Constant Force-of-Infection (endemic model)
 
-For the *endemic model* a small number of iterations is enough for achieving convergence, as it only fits one parameter (the constant FoI) from a binomial distribution.
+For *constant* *endemic model*, the rate of infection acquisition―rate of seroconversion―is constant over time, and infection (sero)prevalence will increase monotonically with age as cumulative exposure increases.
 
-For this model, the rate of infection acquisition―rate of seroconversion―is constant over time, and infection (sero)prevalence will increase monotonically with age as cumulative exposure increases.
+Denoting $n(a,t)$ the number of seropositive individuals of age $a$ at time $t$ , $N$ the serosurvey sample size, and $P(a,t)$ the underlying seroprevalence at age $a$ at time $t$, we assumed that the number of seropositive subjects follows a Binomial distribution $n(a,t)$ \~ $B(N,P(a,t))$.
 
-Denoting $n(a,t)$ the number of seropositive individuals of age $a$ at time $t$ , $N$ the serosurvey sample size, and $P(a,t)$ the underlying seroprevalence at age $a$ at time $t$, we assumed that the number of seropositive subjects follows a Binomial distribution $n(a,t)~B(N,P(a,t))$. 
-
-For force-of-infection (FOI) that is constant over time, denoted $lambda$, we modelled seroprevalence for age $a$ in year $t$  (i.e. the time when the serosurvey occurred) as:
-
+For the force-of-infection (FoI) that is constant over time, denoted $\lambda$, we modelled seroprevalence for age $a$ in year $t$ (i.e. the time when the serosurvey occurred) as:
 
 $$ P(a,t) = 1−exp(−\lambda{a})$$
-The corresponding code for the constant-FOI model is: 
 
-```{r model_1, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
+The corresponding code for the constant-FoI model is:
+
+```{r model_1, include = FALSE, errors = FALSE, warning = FALSE, message = FALSE }
 model_1 <- run_model(model_data = data_test,
                      model_name = "constant_foi_bi",
                      n_iters = 500, 
@@ -81,33 +79,33 @@ model_1 <- run_model(model_data = data_test,
 
 #### Time-varying Force-of-Infection
 
-For the time-varying FOI model, FoI values are estimated from a binomial distribution. The sero-prevalence as age a can be expressed as:
+For the time-varying FoI model, the FoI values are estimated from a binomial distribution. The sero-prevalence as age a can be expressed as:
 
 $$𝑃(𝑎,𝑡)=1−exp(−∑_{i=t-a+1}^{t}𝜆{i})$$
 
+Therefore, a serosurvey completed at time $t$ and including ages $a$ from {$age_{min}, age_{max}$} is informative on exposure (and FoI) between {$t, age_{max}$} and $t$.
 
-Therefore, a serosurvey completed at time $t$ and including ages $a$ from ${age_{min}, age_{max}}$ is informative on exposure (and FoI) between {$t, age_{max}$} and $t$.
+Currently, two models within *serofoi* allow time-varying FoI, with corresponding code:
 
-The corresponding code for the tympe-varing FOI model is: 
-
-
-```{r model_2, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
+```{r model_2, include = FALSE, errors = FALSE, warning = FALSE, message = FALSE }
 model_2 <- run_model(model_data = data_test,
                      model_name = "continuous_foi_normal_bi",
+                     n_iters = 1500, 
+                     n_thin = 2)
+
+model_2 <- run_model(model_data = data_test,
+                     model_name = "continuous_foi_normal_log",
                      n_iters = 1500, 
                      n_thin = 2)
 ```
 
 ## Fitting process
 
-Models are implemented in **RStan** using the No-U-Turn sampler, a type of Hamiltonian Monte Carlo sampling. After convergence, the best-fitting models can be selected based on the expected log predictive density for an out-of-sample data point (elpd) [[30](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8205173/#pntd.0009418.ref030),[31](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8205173/#pntd.0009418.ref031)].
+Models are implemented in **RStan** using the No-U-Turn sampler, a type of Hamiltonian Monte Carlo sampling. After convergence, the best-fitting models can be selected based on the expected log predictive density for an out-of-sample data point (elpd).
 
 ## Case 1. Chagas disease (endemic disease)
 
-```{r ex, include = TRUE}
-
-
-
+```{}
 ```
 
 ## Case 2. Alphaviruses (epidemic disease)
