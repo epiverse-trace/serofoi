@@ -4,6 +4,7 @@ editor_options:
   markdown: 
     wrap: 72
 bibliography: references.bib
+link-citations: true
 ---
 
 ```{r, include = FALSE}
@@ -205,3 +206,4 @@ Conduct](https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md)
 By contributing to this project, you agree to abide by its terms.
 
 ## References
+
