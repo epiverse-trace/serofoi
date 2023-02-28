@@ -140,7 +140,7 @@ functions. Crucially, it shows the (expected) log-predictive density
 `elpd`, standard error `se`, and allows to check convergence based on
 `R-hat` convergence diagnostics.
 
-```{r plot_model, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE, fig.height=12, fig.width=6}
+```{r plot_model, include = FALSE, ECHO = TRUE, errors = FALSE, warning = FALSE, message = FALSE, fig.height=12, fig.width=6}
 
 plot_model(model_2, size_text = 15)
 ```

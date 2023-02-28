@@ -175,13 +175,6 @@ functions. Crucially, it shows the (expected) log-predictive density
 `elpd`, standard error `se`, and allows to check convergence based on
 `R-hat` convergence diagnostics.
 
-``` r
-
-plot_model(model_2, size_text = 15)
-```
-
-<img src="man/figures/README-plot_model-1.png" width="100%" />
-
 Also, the `plot_models_list` allows a visual a comparison of the models
 based on the (expected) log-predictive density `elpd`, standard error
 `se`, and allows to check convergence based on `R-hat` convergence

@@ -15,4 +15,15 @@ Useful links:
 }
 
 }
+\author{
+\strong{Maintainer}: Zulma M. Cucunubá \email{zulma.cucunuba@javeriana.edu.co} (\href{https://orcid.org/0000-0002-8165-3198}{ORCID})
+
+Authors:
+\itemize{
+  \item Nicolás Torres
+  \item Ben Lambert
+  \item Pierre Nouvellet
+}
+
+}
 \keyword{internal}
