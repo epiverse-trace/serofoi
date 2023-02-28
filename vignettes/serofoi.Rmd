@@ -16,9 +16,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r example, include = FALSE}
-# remotes::install_github("TRACE-LAC/serofoi", ref = "dev")
+
+```{r cleaning, include = FALSE, echo = TRUE}
 library(serofoi)
+rownames(mydata) <- NULL 
+data_test <- prepare_data(mydata)
 
 ```
 
@@ -53,12 +55,20 @@ Current version of **serofoi** includes the following assumptions on the underly
 ## **Three** different FoI models
 
 ::: {.alert .alert-primary}
-NOTE: Running the the *serofoi* models for the first time on your local computer make take a few minutes while the *rstan* code is compiled locally. Afterwards, no further compilation is needed.
+NOTE: Running the the *serofoi* models for the first time on your local computer make take a few minutes while the *rstan* code is compiled locally. Afterwards, no further compilation is needed locally.
 :::
 
 #### Model 1. Constant Force-of-Infection (endemic model)
 
 For the *endemic model* a small number of iterations is enough for achieving convergence, as it only fits one parameter (the constant FoI) from a binomial distribution.
+
+For this model, the rate of infection acquisition―rate of seroconversion―is constant over time, and infection (sero)prevalence will increase monotonically with age as cumulative exposure increases.
+
+For a constant FOI (λ), we can express the sero-prevalence as for age in the year of the sero-survey as:
+
+    $$
+    E = mc^2
+    $$
 
 ```{r model_1, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_1 <- run_model(model_data = data_test,
