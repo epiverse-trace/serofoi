@@ -62,3 +62,5 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 URL: https://trace-lac.github.io/serofoi/
+Additional_repositories:
+    https://mc-stan.org/r-packages/
