@@ -1,6 +1,7 @@
 # TODO Move to separate package ###
 # TODO Document all functions and provide examples
 library(testthat)
+library(vdiffr)
 equal_with_tolerance <- function(tolerance = 1e-2) {
     function(a, b) {
         c <- base::mapply(function(x, y) {
@@ -22,8 +23,30 @@ equal_exact <- function() {
     }
 }
 
-compare_dataframes <- function(expected_df_name, actual_df, column_comparation_functions) {
-    base_path <- test_path("extdata", "dataframes") # TODO move to config.yml
+r_version_id <- function() {
+    v <- R.Version()
+    return(paste(v$arch, .Platform$OS.type, v$os, v$major, v$minor, v$year, v$month, v$day, sep = "_"))
+}
+
+expect_similar_dataframes <- function() {
+    withCallingHandlers(
+        testthat::expect_snapshot_value()(testcase,
+            name = file, cran = cran, compare = testthat::compare_file_text
+        ),
+        expectation_failure = function(cnd) {
+        }
+    )
+}
+
+compare_dataframes <- function(
+    expected_df_name, actual_df, column_comparation_functions,
+    per_platform_snapshots = TRUE) {
+    base_path <- ""
+    if (per_platform_snapshots) {
+        base_path <- test_path("_snaps", "dataframes", r_version_id())
+    } else {
+        base_path <- test_path("_snaps", "dataframes") # TODO move to config.yml
+    }
     actual_df_filename <- paste(file.path(base_path, "actual", expected_df_name), "csv", sep = ".")
     expected_df_filename <- paste(file.path(base_path, "expected", expected_df_name), "csv", sep = ".")
 
@@ -60,4 +83,15 @@ compare_dataframes <- function(expected_df_name, actual_df, column_comparation_f
         write.csv(actual_df, file = expected_df_filename)
         return(TRUE)
     }
+}
+
+expect_same_plot <- function(
+    plot_name, actual_plot,
+    per_platform_snapshots = TRUE) {
+    if (per_platform_snapshots) {
+        title <- file.path(r_version_id(), plot_name)
+    } else {
+        title <- plot_name
+    }
+    return(vdiffr::expect_doppelganger(title, actual_plot))
 }
