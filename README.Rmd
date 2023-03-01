@@ -65,7 +65,10 @@ The package provides an example dataset of the observed serosurvey data,
 `mydata`. This example is the basic entry for the package.
 
 ```{r ex, include = TRUE}
-head(mydata)
+
+# Load example mydata data included with the package
+data(mydata)
+head(mydata, 5)
 
 ```
 

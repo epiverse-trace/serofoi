@@ -1,6 +1,8 @@
 ---
 title: "serofoi"
 output: rmarkdown::html_vignette
+bibliography: references.bib
+link-citations: true
 vignette: >
   %\VignetteIndexEntry{serofoi}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,10 +16,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r cleaning, include = FALSE, echo = TRUE}
+```{r cleaning, include = FALSE, echo = TRUE, message=FALSE}
 library(serofoi)
 rownames(mydata) <- NULL 
 data_test <- prepare_data(mydata)
+
 
 ```
 
@@ -69,9 +72,9 @@ For the force-of-infection (FoI) that is constant over time, denoted $\lambda$, 
 
 $$ P(a,t) = 1−exp(−\lambda{a})$$
 
-The corresponding code for the constant-FoI model is:
+The corresponding code for the constant-FoI model with binomial distribution is:
 
-```{r model_1, include = FALSE, errors = FALSE, warning = FALSE, message = FALSE }
+```{r model_1, include = FALSE, echo=TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_1 <- run_model(model_data = data_test,
                      model_name = "constant_foi_bi",
                      n_iters = 500, 
@@ -91,13 +94,13 @@ Therefore, a serosurvey completed at time $t$ and including ages $a$ from {$age_
 
 Currently, two models within *serofoi* allow time-varying FoI, with corresponding code:
 
-```{r model_2, include = FALSE, errors = FALSE, warning = FALSE, message = FALSE }
+```{r model_2, include = FALSE, echo = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_2 <- run_model(model_data = data_test,
                      model_name = "continuous_foi_normal_bi",
                      n_iters = 1500, 
                      n_thin = 2)
 
-model_2 <- run_model(model_data = data_test,
+model_3 <- run_model(model_data = data_test,
                      model_name = "continuous_foi_normal_log",
                      n_iters = 1500, 
                      n_thin = 2)
@@ -107,8 +110,52 @@ model_2 <- run_model(model_data = data_test,
 
 Models are implemented in **RStan** using the No-U-Turn sampler, a type of Hamiltonian Monte Carlo sampling. After convergence, the best-fitting models can be selected based on the expected log predictive density for an out-of-sample data point (elpd).
 
-## Case use 1. Chagas disease (endemic disease)
+## Case use #1. Chagas disease (endemic disease)
+
+Based on the data and analysis shown in [@Cucunubá2017], we use one of the datasets for measuring the sero-prevalence of IgG antibodies against *Trypanosoma cruzi* infection in Colombia in 2007. The dataset is part of the serofoi package as `chagas2007`.
+
+```{r data_chagas, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
+chagas2007 <- mydata # Esto se debe eliminar cuando ya esté chagas2007
+head(chagas2007, 5)
+
+```
+
+
+
+After preparring the data we can run the three different models available on serofoi, one constant and two time-varying model.
+
+
+```{r three models, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
+
+chagas2007p <- prepare_data(chagas2007)
+
+model_1 <- run_model(model_data = chagas2007p,
+                     model_name = "continuous_foi_normal_bi",
+                     n_iters = 500, 
+                     n_thin = 2)
+
+model_2 <- run_model(model_data = chagas2007p,
+                     model_name = "continuous_foi_normal_log",
+                     n_iters = 500, 
+                     n_thin = 2)
+
+model_3 <- run_model(model_data = chagas2007p,
+                     model_name = "continuous_foi_normal_log",
+                     n_iters = 500, 
+                     n_thin = 2)
+
+
+
+p1 <- plot_model(model_1, size_text = 15)
+p2 <- plot_model(model_2, size_text = 15)
+p3 <- plot_model(model_3, size_text = 15)
+
+plot_seroprev_models_grid(p1, p2, p3, n_row = 1, n_col = 3)
+
+```
 
 ## Case use 2. Alphaviruses (epidemic disease)
+
+Based on the data and analysis shown in [@Carrera2020], we use a dataset for measuring the sero-prevalence of *Alphaviruses,* more especifically in Panamá.
 
 ## References
