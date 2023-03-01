@@ -38,7 +38,7 @@ Depends:
     R (>= 3.5.0)
 Imports:
     config,
-    rstan (>= 2.21.1),
+    rstan (>= 2.26.11),
     StanHeaders,
     tidyverse,
     reshape2,
@@ -62,3 +62,5 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 URL: https://trace-lac.github.io/serofoi/
+Additional_repositories:
+    https://mc-stan.org/r-packages/
