@@ -55,7 +55,7 @@ test_that("plot_seroprev_fitted", {
   vdiffr::expect_doppelganger("plot_seroprev_fitted_normallog", plot_seroprev_fitted_normallog)
 
   # Models Comparison Plot
-  plot_arrange_models <- plot_models_list(plot_model_constant, plot_model_normalbi, plot_model_normallog, n_col = 3)
+  plot_arrange_models <- plot_seroprev_models_grid(plot_model_constant, plot_model_normalbi, plot_model_normallog, n_col = 3)
 
   vdiffr::expect_doppelganger("plot_arrange_models", plot_arrange_models)
 })
