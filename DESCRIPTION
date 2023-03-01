@@ -38,7 +38,7 @@ Depends:
     R (>= 3.5.0)
 Imports:
     config,
-    rstan (>= 2.21.1),
+    rstan (>= 2.26.11),
     StanHeaders,
     tidyverse,
     reshape2,
@@ -53,7 +53,10 @@ Imports:
     devtools,
     methods,
     Rcpp,
-    ggplot2
+    ggplot2,
+    BH,
+    RcppEigen,
+    RcppParallel
 Suggests: 
     knitr,
     rmarkdown

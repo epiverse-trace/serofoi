@@ -4,7 +4,7 @@ system(
 )
 # Rebuild Docker image
 system(
-    "rm -f inst/extdata/stanmodels/*.rds; docker build -t rtest-image . -f tests/docker/Dockerfile"
+    "docker container kill rtest-container; rm -f inst/extdata/stanmodels/*.rds; docker build -t rtest-image . -f tests/docker/Dockerfile"
 )
 
 # Install R dependencies
@@ -20,4 +20,14 @@ system(
 # R CMD Check
 system(
     "docker container kill rtest-container ; docker container rm rtest-container ; docker container run  --rm --name rtest-container  --env R_LIBS=/root/.R/site-library  -v rtest-site-library:/root/.R/site-library rtest-image 'cd /package && ./check.sh'"
+)
+
+# Bash shell
+system(
+    "docker container run -it  --rm  --env R_LIBS=/root/.R/site-library  -v rtest-site-library:/root/.R/site-library rtest-image bash"
+)
+
+# R Shell
+system(
+    "docker container run -it  --rm  --env R_LIBS=/root/.R/site-library  -v rtest-site-library:/root/.R/site-library rtest-image R"
 )

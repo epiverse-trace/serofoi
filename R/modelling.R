@@ -89,7 +89,7 @@ save_or_load_model <- function(model_name = "constant_foi_bi") {
   stan_path <- system.file(base_path, paste(model_name, ".stan", sep = ""), package = getPackageName())
 
   model <- rstan::stan_model(stan_path, auto_write = TRUE)
-
+  
   return(model)
 }
 
@@ -197,13 +197,14 @@ fit_model <- function(model_data,
     control = list(adapt_delta = delta,
                    max_treedepth = m_treed),
     seed = "12345",
-    thin = n_thin
+    thin = n_thin,
+    chain_id = 0 # https://github.com/stan-dev/rstan/issues/761#issuecomment-647029649
   )
 
   if (class(fit@sim$samples) != "NULL") {
     loo_fit <- loo::loo(fit, save_psis = TRUE, "logLikelihood")
     foi <- rstan::extract(fit, "foi", inc_warmup = FALSE)[[1]]
-
+    # foi <- rstan::extract(fit, "foi", inc_warmup = TRUE, permuted=FALSE)[[1]]
     # generates central estimations
     foi_cent_est <- data.frame(
       year = real_exposure_years,
