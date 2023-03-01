@@ -1,6 +1,9 @@
 rm(list=ls())
-
-
+# remotes::install_github("TRACE-LAC/serofoi", ref = "dev")
+library(dplyr)
+library(serofoi)
+library(tidyverse)
+library(pracma)
 
 # Generate exposure matrix
 
@@ -10,7 +13,7 @@ generate_fake_data <- function(n, foi, name_example = 'fake', grouping = FALSE) 
     mutate(tSur=rep(2050, length(birth_year)),
            age_mean_f=2050-birth_year) %>%
     mutate(tsur=tSur)
-  yexpo <- make_yexpo(dat)
+  yexpo <- get_exposure_years(dat)
   yexpo <- yexpo[-length(yexpo)]
   RealYexpo <- (min(dat$birth_year):dat$tsur[1])[-1]
   ExposureMatrix <- get_exposure_matrix(dat, yexpo)
