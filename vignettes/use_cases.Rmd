@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 
 ```{r cleaning, include = FALSE, echo = TRUE, message=FALSE}
 library(serofoi)
+library(tidyverse)
 rownames(mydata) <- NULL 
 data_test <- prepare_data(mydata)
 
@@ -110,7 +111,7 @@ model_3 <- run_model(model_data = data_test,
 
 Models are implemented in **RStan** using the No-U-Turn sampler, a type of Hamiltonian Monte Carlo sampling. After convergence, the best-fitting models can be selected based on the expected log predictive density for an out-of-sample data point (elpd).
 
-## Case use #1. Chagas disease (endemic disease)
+## Case study 1. Chagas disease (endemic disease)
 
 Based on the data and analysis shown in [@Cucunubá2017], we use one of the datasets for measuring the sero-prevalence of IgG antibodies against *Trypanosoma cruzi* infection in Colombia in 2007. The dataset is part of the serofoi package as `chagas2007`.
 
@@ -120,12 +121,9 @@ head(chagas2007, 5)
 
 ```
 
-
-
 After preparring the data we can run the three different models available on serofoi, one constant and two time-varying model.
 
-
-```{r three models, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
+```{r three models, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
 
 chagas2007p <- prepare_data(chagas2007)
 
@@ -145,7 +143,54 @@ model_3 <- run_model(model_data = chagas2007p,
                      n_thin = 2)
 
 
+```
 
+Now, we can plot the results of the three models to compare
+
+```{r, model_comp, include=FALSE, echo=TRUE, warning=FALSE, message=FALSE, fig.height=12, message=FALSE}
+p1 <- plot_model(model_1, size_text = 15)
+p2 <- plot_model(model_2, size_text = 15)
+p3 <- plot_model(model_3, size_text = 15)
+
+plot_seroprev_models_grid(p1, p2, p3, n_row = 1, n_col = 3)
+```
+
+## Case study 2. Hidden Alphaviruses epidemics in Panama 
+
+As showin in [@Carrera2020], hidden epidemic and endemic transmission of alphaviruses in Eastern Panama have been around for decades. From this paper we use a dataset measuring IgG againts Venezuelan Equine Encephalitis Virus (VEEV) in a rural village in Panamá in 2017. This dataset, `veev2017` is included in serofoi.
+
+```{r data_veev, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
+
+veev2012 <- readRDS("../data/veev2012.RDS")
+head(veev2012, 5)
+
+```
+
+```{r models_veee, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
+
+veev2012p <- prepare_data(veev2012)
+
+model_1 <- run_model(model_data = veev2012p,
+                     model_name = "continuous_foi_normal_bi",
+                     n_iters = 500, 
+                     n_thin = 2)
+
+model_2 <- run_model(model_data = veev2012p,
+                     model_name = "continuous_foi_normal_log",
+                     n_iters = 500, 
+                     n_thin = 2)
+
+model_3 <- run_model(model_data = veev2012p,
+                     model_name = "continuous_foi_normal_log",
+                     n_iters = 500, 
+                     n_thin = 2)
+```
+
+Now, we can plot the results of the three models to compare.
+
+On Figure 3, we can observe a large increase in the estimated FOI
+
+```{r, model_comp_veev, include=FALSE, echo=TRUE, warning=FALSE, message=FALSE, fig.height=12, message=FALSE}
 p1 <- plot_model(model_1, size_text = 15)
 p2 <- plot_model(model_2, size_text = 15)
 p3 <- plot_model(model_3, size_text = 15)
@@ -154,8 +199,50 @@ plot_seroprev_models_grid(p1, p2, p3, n_row = 1, n_col = 3)
 
 ```
 
-## Case use 2. Alphaviruses (epidemic disease)
+Figure 3. Results of fitted models, Force-of-Infection estimates and convergence.
 
-Based on the data and analysis shown in [@Carrera2020], we use a dataset for measuring the sero-prevalence of *Alphaviruses,* more especifically in Panamá.
+## Case study 3. Epidemic of Chikungunya in Brazil
+
+Chikungunya outbreaks ocurred rapidly after introduction to Brazil in 2014. We use the dataset from [@cunha2017] that conducts a serosurvey for IgG against Chikungunya virus (CHIKV) in rural area in Brazil in April 2016, right after a large CHIKV epidemic that occurred in that area 2015.
+
+```{r data_veev, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
+
+chik2016 <- readRDS("../data/veev2012.RDS")
+head(veev2012, 5)
+
+```
+
+```{r models_veee, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
+
+veev2012p <- prepare_data(veev2012)
+
+model_1 <- run_model(model_data = veev2012p,
+                     model_name = "continuous_foi_normal_bi",
+                     n_iters = 500, 
+                     n_thin = 2)
+
+model_2 <- run_model(model_data = veev2012p,
+                     model_name = "continuous_foi_normal_log",
+                     n_iters = 500, 
+                     n_thin = 2)
+
+model_3 <- run_model(model_data = veev2012p,
+                     model_name = "continuous_foi_normal_log",
+                     n_iters = 500, 
+                     n_thin = 2)
+```
+
+Now, we can plot the results of the three models to compare.
+
+On Figure 3, we can observe a large increase in the estimated FOI
+
+```{r, model_comp_veev, include=FALSE, echo=TRUE, warning=FALSE, message=FALSE, fig.height=12, message=FALSE}
+p1 <- plot_model(model_1, size_text = 15)
+p2 <- plot_model(model_2, size_text = 15)
+p3 <- plot_model(model_3, size_text = 15)
+
+plot_seroprev_models_grid(p1, p2, p3, n_row = 1, n_col = 3)
+
+```
 
 ## References
