@@ -4,12 +4,12 @@
 #'
 #' @docType data
 #'
-#' @usage serodata
+#' @usage veev2012
 #'
 #' @format An object of class \code{"cross"}; see \code{\link[qtl]{read.cross}}.
 #'
 #' @keywords datasets
 #'
 #' @examples
-#' serodata
-"serodata"
+#' veev2012
+"veev2012"
