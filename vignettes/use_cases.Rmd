@@ -116,7 +116,7 @@ Models are implemented in **RStan** using the No-U-Turn sampler, a type of Hamil
 Based on the data and analysis shown in [@Cucunubá2017], we use one of the datasets for measuring the sero-prevalence of IgG antibodies against *Trypanosoma cruzi* infection in Colombia in 2007. The dataset is part of the serofoi package as `chagas2007`.
 
 ```{r data_chagas, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
-chagas2007 <- mydata # Esto se debe eliminar cuando ya esté chagas2007
+chagas2007 <- readRDS("../data/chagas2007.RDS") # This can be removed once data is incorporated
 head(chagas2007, 5)
 
 ```
@@ -147,15 +147,15 @@ m3_cha <- run_model(model_data = chagas2007p,
 
 Now, we can plot the results of the three models to compare
 
-```{r, model_comp, include=FALSE, echo=TRUE, warning=FALSE, message=FALSE, fig.height=12, message=FALSE}
-p1 <- plot_model(model_1, size_text = 15)
-p2 <- plot_model(model_2, size_text = 15)
-p3 <- plot_model(model_3, size_text = 15)
+```{r, model_comp_veev, include=FALSE, echo=TRUE, fig.width = 5, fig.height=5, warning=FALSE, message=FALSE, message=FALSE}
+p1_cha <- plot_model(m1_cha, size_text = 15)
+p2_cha <- plot_model(m2_cha, size_text = 15)
+p3_cha <- plot_model(m3_cha, size_text = 15)
 
-plot_seroprev_models_grid(p1, p2, p3, n_row = 1, n_col = 3)
+plot_seroprev_models_grid(p1_cha, p2_cha, p3_cha, n_row = 1, n_col = 3)
 ```
 
-## Case study 2. Hidden Alphaviruses epidemics in Panama 
+## Case study 2. Hidden Alphaviruses epidemics in Panama
 
 As showin in [@Carrera2020], hidden epidemic and endemic transmission of alphaviruses in Eastern Panama have been around for decades. From this paper we use a dataset measuring IgG againts Venezuelan Equine Encephalitis Virus (VEEV) in a rural village in Panamá in 2017. This dataset, `veev2017` is included in serofoi.
 
@@ -170,74 +170,72 @@ head(veev2012, 5)
 
 veev2012p <- prepare_data(veev2012)
 
-model_1 <- run_model(model_data = veev2012p,
+m1_veev <- run_model(model_data = veev2012p,
                      model_name = "constant_foi_bi",
                      n_iters = 500, 
                      n_thin = 2)
 
-model_2 <- run_model(model_data = veev2012p,
+m2_veev <- run_model(model_data = veev2012p,
                      model_name = "continuous_foi_normal_bi",
                      n_iters = 500, 
                      n_thin = 2)
 
-model_3 <- run_model(model_data = veev2012p,
+m3_veev <- run_model(model_data = veev2012p,
                      model_name = "continuous_foi_normal_log",
                      n_iters = 500, 
                      n_thin = 2)
 ```
 
-Now, we can plot the results of the three models to compare. On Figure 3, we can observe a large increase in the estimated FOI. As suggested in @Carrera2020, an important increase in the transmission of VEEV in this region is inferred. Although the three fitted models converge well, we see better support for a more sudden increase, rather than a slow increase, close to the year of conduction of the serosurvey. This suggest although not probe completely a possible hidden epidemic.
+Now, we can plot the results of the three models to compare. On Figure 3, we can observe a large increase in the estimated FOI. As suggested in @Carrera2020, an important increase in the transmission of VEEV in this region is inferred. Although the three fitted models converge well, we see much larger support for a more sudden increase in recent years, rather than a slow increase over decades.
 
-```{r, model_comp_veev, include=FALSE, echo=TRUE, warning=FALSE, message=FALSE, fig.height=12, message=FALSE}
-p1 <- plot_model(model_1, size_text = 15)
-p2 <- plot_model(model_2, size_text = 15)
-p3 <- plot_model(model_3, size_text = 15)
+```{r, model_comp_veev, include=FALSE, echo=TRUE, fig.width = 5, fig.height=5, warning=FALSE, message=FALSE, message=FALSE}
+p1_veev <- plot_model(m1_veev, size_text = 10)
+p2_veev <- plot_model(m2_veev, size_text = 10)
+p3_veev <- plot_model(m3_veev, size_text = 10)
 
-plot_seroprev_models_grid(p1, p2, p3, n_row = 1, n_col = 3)
+plot_seroprev_models_grid(p1_veev, p2_veev, p3_veev, n_row = 1, n_col = 3)
 
 ```
 
 Figure 3. Results of fitted models, Force-of-Infection estimates and convergence.
 
-## Case study 3. Large Chikungunya epidemic in Brazil
+## Case study 3. A known Large Chikungunya epidemic in Brazil
 
-Chikungunya outbreaks ocurred rapidly after the introduction of the virus to Brazil in 2013-2014. We use the dataset from [@cunha2017] that conducts a serosurvey for IgG against Chikungunya virus (CHIKV) in rural area in Brazil in April 2016, right after a large CHIKV epidemic that occurred in that area 2015.
+Chikungunya outbreaks ocurred rapidly after the introduction of the virus to Brazil in 2013-2014. We use the dataset from [@dias2018] that conducts a population-based study through household interviews and serologic surveys (measuring IgG antibodies against Chikungunya virus) in Bahia, Brazil during October-December 2015, right after a large CHIKV epidemic that occurred in that area.
 
 ```{r data_veev, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 
-chik2016 <- readRDS("../data/chik2015.RDS")
-head(chik2016, 5)
+chik2015 <- readRDS("../data/chik2015.RDS")
+head(chik2015, 5)
 
 ```
 
 ```{r models_veee, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
 
-chik2016p <- prepare_data(chik2016)
+chik2015p <- prepare_data(chik2015)
 
-mod1_chik <- run_model(model_data = chik2016p,
+mod1_chik <- run_model(model_data = chik2015p,
                      model_name = "constant_foi_bi",
                      n_iters = 500, 
                      n_thin = 2)
 
-mod2_chik <- run_model(model_data = chik2016p,
+mod2_chik <- run_model(model_data = chik2015p,
                      model_name = "continuous_foi_normal_bi",
                      n_iters = 1500, 
                      n_thin = 2)
 
-mod3_chik <- run_model(model_data = chik2016p,
+mod3_chik <- run_model(model_data = chik2015p,
                      model_name = "continuous_foi_normal_log",
                      n_iters = 1500, 
                      n_thin = 2)
 ```
 
-Now, we can plot the results of the three models to compare.
+In Figure 4, we can observe the comparison between the three serofoi models. Here serofoi shows strong statistical support for a sudden increase in the transmission of CHIKV close to the year of the serosurvey (2015). The exact year is not possible to estimate, mainly given the data used is aggregated by 20-years age groups. Despite that, the results are consistent with the empirical evidence shown by [@dias2018] with both interviews, and IgM.
 
-On Figure 3, we can observe a large increase in the estimated FOI
-
-```{r, model_comp_veev, include=FALSE, echo=TRUE, warning=FALSE, message=FALSE, fig.height=12, message=FALSE}
-p1_chik <- plot_model(mod1_chik, size_text = 15)
-p2_chik <- plot_model(mod2_chik, size_text = 15)
-p3_chik <- plot_model(mod3_chik, size_text = 15)
+```{r, model_comp_chik, include=FALSE, echo=TRUE, fig.width = 5, fig.height=5, warning=FALSE, message=FALSE, message=FALSE}
+p1_chik <- plot_model(mod1_chik, size_text = 10)
+p2_chik <- plot_model(mod2_chik, size_text = 10)
+p3_chik <- plot_model(mod3_chik, size_text = 10)
 
 plot_seroprev_models_grid(p1_chik, p2_chik, p3_chik, n_row = 1, n_col = 3)
 
