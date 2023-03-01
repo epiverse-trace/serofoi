@@ -127,17 +127,17 @@ After preparring the data we can run the three different models available on ser
 
 chagas2007p <- prepare_data(chagas2007)
 
-model_1 <- run_model(model_data = chagas2007p,
+m1_cha <- run_model(model_data = chagas2007p,
+                     model_name = "constant_foi_bi",
+                     n_iters = 500, 
+                     n_thin = 2)
+
+m2_cha <- run_model(model_data = chagas2007p,
                      model_name = "continuous_foi_normal_bi",
                      n_iters = 500, 
                      n_thin = 2)
 
-model_2 <- run_model(model_data = chagas2007p,
-                     model_name = "continuous_foi_normal_log",
-                     n_iters = 500, 
-                     n_thin = 2)
-
-model_3 <- run_model(model_data = chagas2007p,
+m3_cha <- run_model(model_data = chagas2007p,
                      model_name = "continuous_foi_normal_log",
                      n_iters = 500, 
                      n_thin = 2)
@@ -171,12 +171,12 @@ head(veev2012, 5)
 veev2012p <- prepare_data(veev2012)
 
 model_1 <- run_model(model_data = veev2012p,
-                     model_name = "continuous_foi_normal_bi",
+                     model_name = "constant_foi_bi",
                      n_iters = 500, 
                      n_thin = 2)
 
 model_2 <- run_model(model_data = veev2012p,
-                     model_name = "continuous_foi_normal_log",
+                     model_name = "continuous_foi_normal_bi",
                      n_iters = 500, 
                      n_thin = 2)
 
@@ -186,9 +186,7 @@ model_3 <- run_model(model_data = veev2012p,
                      n_thin = 2)
 ```
 
-Now, we can plot the results of the three models to compare.
-
-On Figure 3, we can observe a large increase in the estimated FOI
+Now, we can plot the results of the three models to compare. On Figure 3, we can observe a large increase in the estimated FOI. As suggested in @Carrera2020, an important increase in the transmission of VEEV in this region is inferred. Although the three fitted models converge well, we see better support for a more sudden increase, rather than a slow increase, close to the year of conduction of the serosurvey. This suggest although not probe completely a possible hidden epidemic.
 
 ```{r, model_comp_veev, include=FALSE, echo=TRUE, warning=FALSE, message=FALSE, fig.height=12, message=FALSE}
 p1 <- plot_model(model_1, size_text = 15)
@@ -201,34 +199,34 @@ plot_seroprev_models_grid(p1, p2, p3, n_row = 1, n_col = 3)
 
 Figure 3. Results of fitted models, Force-of-Infection estimates and convergence.
 
-## Case study 3. Epidemic of Chikungunya in Brazil
+## Case study 3. Large Chikungunya epidemic in Brazil
 
-Chikungunya outbreaks ocurred rapidly after introduction to Brazil in 2014. We use the dataset from [@cunha2017] that conducts a serosurvey for IgG against Chikungunya virus (CHIKV) in rural area in Brazil in April 2016, right after a large CHIKV epidemic that occurred in that area 2015.
+Chikungunya outbreaks ocurred rapidly after the introduction of the virus to Brazil in 2013-2014. We use the dataset from [@cunha2017] that conducts a serosurvey for IgG against Chikungunya virus (CHIKV) in rural area in Brazil in April 2016, right after a large CHIKV epidemic that occurred in that area 2015.
 
 ```{r data_veev, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 
-chik2016 <- readRDS("../data/veev2012.RDS")
-head(veev2012, 5)
+chik2016 <- readRDS("../data/chik2015.RDS")
+head(chik2016, 5)
 
 ```
 
 ```{r models_veee, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
 
-veev2012p <- prepare_data(veev2012)
+chik2016p <- prepare_data(chik2016)
 
-model_1 <- run_model(model_data = veev2012p,
+mod1_chik <- run_model(model_data = chik2016p,
+                     model_name = "constant_foi_bi",
+                     n_iters = 500, 
+                     n_thin = 2)
+
+mod2_chik <- run_model(model_data = chik2016p,
                      model_name = "continuous_foi_normal_bi",
-                     n_iters = 500, 
+                     n_iters = 1500, 
                      n_thin = 2)
 
-model_2 <- run_model(model_data = veev2012p,
+mod3_chik <- run_model(model_data = chik2016p,
                      model_name = "continuous_foi_normal_log",
-                     n_iters = 500, 
-                     n_thin = 2)
-
-model_3 <- run_model(model_data = veev2012p,
-                     model_name = "continuous_foi_normal_log",
-                     n_iters = 500, 
+                     n_iters = 1500, 
                      n_thin = 2)
 ```
 
@@ -237,11 +235,11 @@ Now, we can plot the results of the three models to compare.
 On Figure 3, we can observe a large increase in the estimated FOI
 
 ```{r, model_comp_veev, include=FALSE, echo=TRUE, warning=FALSE, message=FALSE, fig.height=12, message=FALSE}
-p1 <- plot_model(model_1, size_text = 15)
-p2 <- plot_model(model_2, size_text = 15)
-p3 <- plot_model(model_3, size_text = 15)
+p1_chik <- plot_model(mod1_chik, size_text = 15)
+p2_chik <- plot_model(mod2_chik, size_text = 15)
+p3_chik <- plot_model(mod3_chik, size_text = 15)
 
-plot_seroprev_models_grid(p1, p2, p3, n_row = 1, n_col = 3)
+plot_seroprev_models_grid(p1_chik, p2_chik, p3_chik, n_row = 1, n_col = 3)
 
 ```
 
