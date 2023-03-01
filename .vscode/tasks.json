@@ -14,6 +14,18 @@
 				"isDefault": true
 			},
 			"label": "R: Test Active File"
+		},
+		{
+			"type": "R",
+			"code": [
+				"devtools::check(manual=FALSE, cran = TRUE, error_on=c('error'))"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"label": "R Package: Check Strict"
 		}
 	]
 }

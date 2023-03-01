@@ -1,4 +1,5 @@
 # TODO Move to separate package ###
+# TODO Document all functions and provide examples
 library(testthat)
 equal_with_tolerance <- function(tolerance = 1e-2) {
     function(a, b) {
@@ -20,8 +21,6 @@ equal_exact <- function() {
         return(base::all(x == TRUE))
     }
 }
-
-
 
 compare_dataframes <- function(expected_df_name, actual_df, column_comparation_functions) {
     base_path <- test_path("extdata", "dataframes") # TODO move to config.yml
