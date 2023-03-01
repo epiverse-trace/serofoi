@@ -6,14 +6,21 @@
 \alias{serofoi-package}
 \title{serofoi: Estimates the Force-of-Infection of a given pathogen from population based sero-prevalence studies}
 \description{
-R package to estimate time-varying Force-of-Infection of a given pathogen from population based sero-prevalence studies on a bayesian framework.
+R package to estimate time-varying Force-of-Infection of a given pathogen from population based sero-prevalence studies using a bayesian framework.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://trace-lac.github.io/serofoi/}
+}
+
 }
 \author{
-\strong{Maintainer}: N. T. Domínguez \email{ex-ntorres@javeriana.edu.co}
+\strong{Maintainer}: Zulma M. Cucunubá \email{zulma.cucunuba@javeriana.edu.co} (\href{https://orcid.org/0000-0002-8165-3198}{ORCID})
 
 Authors:
 \itemize{
-  \item Zulma M. Cucunubá
+  \item Nicolás Torres
   \item Ben Lambert
   \item Pierre Nouvellet
 }

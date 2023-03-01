@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{run_model}
 \alias{run_model}
-\title{Run model}
+\title{Run the specified stan model for the force-of-infection}
 \usage{
 run_model(
   model_data,
@@ -61,7 +61,7 @@ For further details refer to the \code{control} parameter in \link[rstan]{sampli
 \code{model_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_model}.
 }
 \description{
-Runs the specified stan model for the force-of-infection
+Run the specified stan model for the force-of-infection
 }
 \examples{
 \dontrun{

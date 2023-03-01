@@ -1,7 +1,6 @@
 # TODO For some reason, the examples cannot access the mydata variable
-#' Run model
+#' Run the specified stan model for the force-of-infection
 #'
-#' Runs the specified stan model for the force-of-infection
 #' @param model_data A data frame containing the data from a seroprevalence survey.
 #' This data frame must contain the following columns:
 #' \tabular{ll}{
@@ -71,7 +70,7 @@ run_model <- function(model_data,
 #' Save or load model
 #'
 #' This function determines whether the corresponding .RDS file of the selected model exists or not.
-#' In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the 
+#' In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the
 #' \link[rstan]{stan_model} function, saved as an .RDS file and returned as the output of the function.
 #' @param model_name Name of the selected model. Current version provides three options:
 #' \describe{
