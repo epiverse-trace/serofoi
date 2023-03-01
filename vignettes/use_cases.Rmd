@@ -111,32 +111,32 @@ Models are implemented in **RStan** using the No-U-Turn sampler, a type of Hamil
 
 ## Case study 1. Chagas disease (endemic disease)
 
-Based on the data and analysis shown in [@Cucunubá2017], we use one of the datasets for measuring the sero-prevalence of IgG antibodies against *Trypanosoma cruzi* infection in rural area of Colombia in 2012. The dataset is part of the serofoi package as `chagas2007`.
+Based on the data and analysis shown in [@Cucunubá2017], we use one of the datasets for measuring the sero-prevalence of IgG antibodies against *Trypanosoma cruzi* infection in rural area of Colombia in 2012. The dataset is part of the serofoi package as `chagas2012`.
 
 ```{r data_chagas, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
-chagas2007 <- readRDS("../data/chagas2009.RDS") # This can be removed once data is incorporated
-chagas2007 <- chagas2007 %>% filter(age_min < 45)
-head(chagas2007, 5)
+chagas2014 <- readRDS("../data/chagas2014.RDS") # This can be removed once data is incorporated
+chagas2014 <- chagas2014 %>% filter(age_min < 30)
+head(chagas2014, 5)
 
 ```
 
-After preparring the data we can run the three different models available on serofoi, one constant and two time-varying model.
+After preparing the data we can run the three different models available on serofoi, one constant and two time-varying model.
 
 ```{r three models, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
 
-chagas2007p <- prepare_data(chagas2007)
+chagas2014p <- prepare_data(chagas2014)
 
-m1_cha <- run_model(model_data = chagas2007p,
+m1_cha <- run_model(model_data = chagas2014p,
                      model_name = "constant_foi_bi",
                      n_iters = 500, 
                      n_thin = 2)
 
-m2_cha <- run_model(model_data = chagas2007p,
+m2_cha <- run_model(model_data = chagas2014p,
                      model_name = "continuous_foi_normal_bi",
                      n_iters = 1500, 
                      n_thin = 2)
 
-m3_cha <- run_model(model_data = chagas2007p,
+m3_cha <- run_model(model_data = chagas2014p,
                      model_name = "continuous_foi_normal_log",
                      n_iters = 1500, 
                      n_thin = 2)
@@ -144,9 +144,9 @@ m3_cha <- run_model(model_data = chagas2007p,
 
 ```
 
-Now, we can plot the results of the three models to compare
+Now, we can plot the results of the three models to compare (Figure 1). As shown in @Cucunubá2017, interventions for Chagas control have been ongoing from the 1980s in Colombia, reflecting a marked reduction in sero-prevalence in children. The serofoi models are able to detect this chance suggesting . (consistent with an epidemic).
 
-```{r, model_comp_veev, include=FALSE, echo=TRUE, fig.width = 5, fig.height=5, warning=FALSE, message=FALSE, message=FALSE}
+```{r, model_comp_cha, include=TRUE, echo=TRUE, fig.width = 5, fig.height=5, warning=FALSE, message=FALSE, message=FALSE}
 p1_cha <- plot_model(m1_cha, size_text = 15, max_lambda = 0.02)
 p2_cha <- plot_model(m2_cha, size_text = 15, max_lambda = 0.02)
 p3_cha <- plot_model(m3_cha, size_text = 15, max_lambda = 0.02)
@@ -187,7 +187,7 @@ m3_veev <- run_model(model_data = veev2012p,
 
 Now, we can plot the results of the three models to compare. On Figure 3, we can observe a large increase in the estimated FOI. As suggested in @Carrera2020, an important increase in the transmission of VEEV in this region is inferred. Although the three fitted models converge well, we see much larger support for a more sudden increase in recent years with highest FoI values at 0.25 (consistent with an epidemic).
 
-```{r, model_comp_veev, include=FALSE, echo=TRUE, fig.width = 5, fig.height=5, warning=FALSE, message=FALSE, message=FALSE}
+```{r, model_comp_veev, include=TRUE, echo=TRUE, fig.width = 5, fig.height=5, warning=FALSE, message=FALSE, message=FALSE}
 p1_veev <- plot_model(m1_veev, size_text = 10, max_lambda = 0.6)
 p2_veev <- plot_model(m2_veev, size_text = 10, max_lambda = 0.6)
 p3_veev <- plot_model(m3_veev, size_text = 10, max_lambda = 0.6)
@@ -202,28 +202,28 @@ Figure 3. Results of fitted models, Force-of-Infection estimates and convergence
 
 Chikungunya outbreaks ocurred rapidly after the introduction of the virus to Brazil in 2013-2014. We use the dataset from [@dias2018] that conducts a population-based study through household interviews and serologic surveys (measuring IgG antibodies against Chikungunya virus) in Bahia, Brazil during October-December 2015, right after a large CHIKV epidemic that occurred in that area.
 
-```{r data_veev, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
+```{r data_chik, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 
-chik2016 <- readRDS("../data/chik2016.RDS")
-head(chik2016, 5)
+chik2015 <- readRDS("../data/chik2015.RDS")
+head(chik2015, 5)
 
 ```
 
-```{r models_veee, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
+```{r models_chik, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
 
-chik2016p <- prepare_data(chik2016)
+chik2015p <- prepare_data(chik2015)
 
-mod1_chik <- run_model(model_data = chik2016p,
+mod1_chik <- run_model(model_data = chik2015p,
                      model_name = "constant_foi_bi",
-                     n_iters = 500, 
+                     n_iters = 1000, 
                      n_thin = 2)
 
-mod2_chik <- run_model(model_data = chik2016p,
+mod2_chik <- run_model(model_data = chik2015p,
                      model_name = "continuous_foi_normal_bi",
                      n_iters = 1500, 
                      n_thin = 2)
 
-mod3_chik <- run_model(model_data = chik2016p,
+mod3_chik <- run_model(model_data = chik2015p,
                      model_name = "continuous_foi_normal_log",
                      n_iters = 1500, 
                      n_thin = 2)
@@ -231,7 +231,7 @@ mod3_chik <- run_model(model_data = chik2016p,
 
 In Figure 4, we can observe the comparison between the three serofoi models. Here serofoi shows strong statistical support for a sudden increase in the transmission of CHIKV close to the year of the serosurvey (2015). The exact year is not possible to estimate, mainly given the data used is largely aggregated by 20-years age groups. Despite that, the results are consistent with the empirical evidence shown by [@dias2018] with both interviews, and IgM testing.
 
-```{r, model_comp_chik, include=FALSE, echo=TRUE, fig.width = 5, fig.height=5, warning=FALSE, message=FALSE, message=FALSE}
+```{r, plot_chik, include=TRUE, echo=TRUE, fig.width = 5, fig.height=5, warning=FALSE, message=FALSE, message=FALSE}
 p1_chik <- plot_model(mod1_chik, size_text = 10, max_lambda = 0.08)
 p2_chik <- plot_model(mod2_chik, size_text = 10, max_lambda = 0.08)
 p3_chik <- plot_model(mod3_chik, size_text = 10, max_lambda = 0.08)
