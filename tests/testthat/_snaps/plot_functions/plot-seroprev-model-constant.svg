@@ -25,7 +25,7 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw4Mi4yOQ==)'>
-<text x='360.00' y='18.56' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='89.22px' lengthAdjust='spacingAndGlyphs'>model_name: constant_foi_bi</text>
+<text x='360.00' y='18.56' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='119.59px' lengthAdjust='spacingAndGlyphs'>seroprev_model_name: constant_foi_bi</text>
 <text x='360.00' y='31.03' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='63.78px' lengthAdjust='spacingAndGlyphs'>dataset: COL-035-18</text>
 <text x='360.00' y='43.49' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='36.07px' lengthAdjust='spacingAndGlyphs'>elpd: -30.87</text>
 <text x='360.00' y='55.96' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='20.50px' lengthAdjust='spacingAndGlyphs'>se: 4.9</text>

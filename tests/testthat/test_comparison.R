@@ -8,23 +8,23 @@ test_that("comparison", {
   # TODO For some reason it is not recognizing the global `mydata` variable, so we need to explicitly load it
   mydata <- readRDS(test_path("extdata", "data.RDS"))
 
-  data_test <- prepare_data(mydata)
+  data_test <- preprare_seroprev_data(mydata)
 
-  model_0 <- run_model(
-    model_data = data_test,
-    model_name = "constant_foi_bi",
+  model_0 <- run_seroprev_model(
+    seroprev_data = data_test,
+    seroprev_model_name = "constant_foi_bi",
     n_iters = 1000
   )
 
-  model_1 <- run_model(
-    model_data = data_test,
-    model_name = "continuous_foi_normal_bi",
+  model_1 <- run_seroprev_model(
+    seroprev_data = data_test,
+    seroprev_model_name = "continuous_foi_normal_bi",
     n_iters = 1000
   )
 
-  model_2 <- run_model(
-    model_data = data_test,
-    model_name = "continuous_foi_normal_log",
+  model_2 <- run_seroprev_model(
+    seroprev_data = data_test,
+    seroprev_model_name = "continuous_foi_normal_log",
     n_iters = 1000
   )
 

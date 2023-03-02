@@ -10,20 +10,20 @@ test_that("compilation", {
     mydata <- readRDS(test_path("extdata", "data.RDS"))
 
     # Modelling module functions
-    model_data <- prepare_data(model_data = mydata, alpha = 0.05)
+    seroprev_data <- preprare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
 
-    exposure_years <- get_exposure_years(model_data)
+    exposure_years <- get_exposure_years(seroprev_data)
 
     exposure_matrix <- get_exposure_matrix(
-        model_data = model_data,
+        seroprev_data = seroprev_data,
         exposure_years = exposure_years
     )
 
-    stan_model <- save_or_load_model(model_name = "constant_foi_bi")
+    stan_model <- save_or_load_model(seroprev_model_name = "constant_foi_bi")
 
-    fit_model_test <- fit_model(
-        model_data = model_data,
-        model_name = "constant_foi_bi",
+    fit_seroprev_model_test <- fit_seroprev_model(
+        seroprev_data = seroprev_data,
+        seroprev_model_name = "constant_foi_bi",
         n_iters = 1000,
         n_thin = 2,
         delta = 0.90,
@@ -32,12 +32,12 @@ test_that("compilation", {
     )
 
 
-    model_object <- run_model(model_data = model_data, model_name = "constant_foi_bi")
+    model_object <- run_seroprev_model(seroprev_data = seroprev_data, seroprev_model_name = "constant_foi_bi")
 
-    model_summary <- extract_model_summary(model_object)
+    model_summary <- extract_seroprev_model_summary(model_object)
 
     foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]
-    expanded_prevalence <- get_prev_expanded(foi, model_data)
+    expanded_prevalence <- get_prev_expanded(foi, seroprev_data)
 
     column_comparation_functions <- list(
         age = equal_exact(),
