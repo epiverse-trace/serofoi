@@ -391,10 +391,9 @@ plot_info_table <- function(info, size_text) {
 }
 
 
-#' Plot Several Models
-#'
 #' Function that generates a plot showing the results for several models.
-#' @param models_list A list containing an arbitrary number of model objects.
+#' 
+#' @param ... The first n arguments of the function are taken as plots ti be arranged in a single plot.
 #' This objects can be obtained by means of \link{run_model}.
 #' @param n_row Number of rows of the plot array.
 #' @param n_col Number of columns of the plot array.
@@ -408,8 +407,7 @@ plot_info_table <- function(info, size_text) {
 #'                                     model_name = "continuous_foi_normal_bi")
 #'  model_object_normallog <- run_model(model_data = data_test,
 #'                                      model_name = "continuous_foi_normal_log")
-#'  models_list <- c(model_object_constant, model_object_normalbi, model_object_normallog)
-#'  plot_models_list(models_list, n_row = 1, n_col = 3)
+#'  plot_models_list(model_object_constant, model_object_normalbi, model_object_normallog, n_row = 1, n_col = 3)
 #' }
 #' @export
 plot_seroprev_models_grid <- function(..., n_row = NULL, n_col = NULL) {
