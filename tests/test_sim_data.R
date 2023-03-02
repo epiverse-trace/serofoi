@@ -137,6 +137,15 @@ grid_plot <- plot_grid(plot_datA, plot_datB, plot_datC, plot_datD, plot_datE, pl
                        ncol = 1, nrow = 6, rel_heights = c(1, 1, 1, 1, 1, 1))
 
 save_plot("tests/sim_data_test.png", grid_plot, nrow = 6, ncol = 4)
+
+datA_selected <- datA %>% filter(survey == "foiA_n05_group")
+datB_selected <- datB %>% filter(survey == "foiB_n05_group")
+datD_selected <- datD %>% filter(survey == "foiD_n05_group")
+
+saveRDS(datA_selected, "tests/sim_data/sim_data_A.RDS")
+saveRDS(datB_selected, "tests/sim_data/sim_data_B.RDS")
+saveRDS(datD_selected, "tests/sim_data/sim_data_D.RDS")
+
 # dat0 <- dat0 %>% mutate(Antibody = 'IgG', Test = 'Fake')
 # Here we assume the test used is IgG
 # dat0 %>%
@@ -154,4 +163,4 @@ save_plot("tests/sim_data_test.png", grid_plot, nrow = 6, ncol = 4)
 #                   foiF = foiF)
 
 #(name_file <- paste0('data/fake_data_', round(as.numeric(Sys.time()), 0), '.RDS'))
-#saveRDS(fake_data, name_file)
+#saveRDS(fake_data, 'data/sim_data_A.RDS)
