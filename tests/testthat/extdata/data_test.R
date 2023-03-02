@@ -14,4 +14,4 @@
 #' \dontrun{
 #' data_test
 #' }
-"serofoi"
+"data_test"
