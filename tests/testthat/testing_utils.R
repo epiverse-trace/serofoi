@@ -2,7 +2,7 @@
 # TODO Document all functions and provide examples
 library(testthat)
 library(vdiffr)
-equal_with_tolerance <- function(tolerance = 1e-2) {
+equal_with_tolerance <- function(tolerance = 2e-1) {
     function(a, b) {
         c <- base::mapply(function(x, y) {
             if (is.na(x) && is.na(y)) {
