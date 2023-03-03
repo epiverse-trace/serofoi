@@ -1,5 +1,5 @@
 test_that("comparison", {
-  # So far we are skipping tests on these platforms until 
+  # So far we are skipping tests on these platforms until
   # we find an efficient way to update rstan testthat snapshots on all of them
   skip_on_os(c("windows", "mac"))
   source("testing_utils.R")
@@ -58,9 +58,7 @@ test_that("comparison", {
     pvalue = equal_with_tolerance()
   )
 
-  expect_true(
-    compare_dataframes(
-      "comp_table", comp_table, column_comparation_functions
-    )
+  expect_similar_dataframes(
+    "comp_table", comp_table, column_comparation_functions
   )
 })

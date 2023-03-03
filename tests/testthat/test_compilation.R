@@ -1,5 +1,5 @@
 test_that("compilation", {
-  # So far we are skipping tests on these platforms until 
+  # So far we are skipping tests on these platforms until
   # we find an efficient way to update rstan testthat snapshots on all of them
   skip_on_os(c("windows", "mac"))
   source("testing_utils.R")
@@ -38,9 +38,7 @@ test_that("compilation", {
     converged = equal_exact()
   )
 
-  expect_true(
-    compare_dataframes(
-      "model_summary", model_summary, column_comparation_functions
-    )
+  expect_similar_dataframes(
+    "model_summary", model_summary, column_comparation_functions
   )
 })
