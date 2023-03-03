@@ -23,9 +23,9 @@ equal_exact <- function() {
     }
 }
 
+# TODO use testthat snapshots
 compare_dataframes <- function(expected_df_name, actual_df, column_comparation_functions) {
     base_path <- test_path("_snaps", "dataframes") # TODO move to config.yml
-    actual_df_filename <- paste(file.path(base_path, "actual", expected_df_name), "csv", sep = ".")
     expected_df_filename <- paste(file.path(base_path, "expected", expected_df_name), "csv", sep = ".")
 
     if (file.exists(expected_df_filename)) {
