@@ -1,4 +1,4 @@
-"","model_name","dataset","country","year","test","antibody","n_sample","n_agec","n_iter","elpd","se","converged","difference","diff_se","best_elpd","pvalue"
-"1","continuous_foi_normal_bi","COL-035-18","COL",2007,"ELISA .","IgG",212,27,1000,-29.53,5.33,"Yes",0,-1.32257012698579,1,0.500014
-"2","continuous_foi_normal_log","COL-035-18","COL",2007,"ELISA .","IgG",212,27,1000,-29.58,5.65,"Yes",0,-1.27304624508839,2,0.500013
-"3","constant_foi_bi","COL-035-18","COL",2007,"ELISA .","IgG",212,27,1000,-30.85,4.9,"Yes",0,1,3,0
+"","seroprev_model_name","dataset","country","year","test","antibody","n_sample","n_agec","n_iter","elpd","se","converged","difference","diff_se","best_elpd","pvalue"
+"1","constant_foi_bi","COL-035-93","COL",2012,"ELISA","IgG anti-T.cruzi",747,72,1000,-92.75,6.4,"Yes",0,1,NA,0.500041
+"2","continuous_foi_normal_bi","COL-035-93","COL",2012,"ELISA","IgG anti-T.cruzi",747,72,1000,-74.46,5.88,"Yes",0,-18.2967809927967,NA,0.500009
+"3","continuous_foi_normal_log","COL-035-93","COL",2012,"ELISA","IgG anti-T.cruzi",747,72,1000,-71.93,7.11,"Yes",0,-20.8238925781359,NA,0.500029

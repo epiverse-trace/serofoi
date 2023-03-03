@@ -60,14 +60,14 @@ head(mydata)
 #> 6 ELISA .      IgG
 ```
 
-The function `prepare_data` will prepare the entry data for entering the
+The function `preprare_seroprev_data` will prepare the entry data for entering the
 modelling functions. The seroprevalence *prepared data* can be
 visualised with the `plot_seroprev` function. This function also plots
 the binomial confidence interval of the observed data.
 
 ``` r
 
-data_test <- prepare_data(mydata)
+data_test <- preprare_seroprev_data(mydata)
 
 plot_seroprev(data_test, size_text = 15)
 ```
@@ -76,7 +76,7 @@ plot_seroprev(data_test, size_text = 15)
 
 #### Current version of the package runs ***three*** different FoI models
 
-The `run_model` function allows specifying the Bayesian model from *R*,
+The `run_seroprev_model` function allows specifying the Bayesian model from *R*,
 while running in the back from `rstan`. The number of iterations,
 thinning, and other parameters can be customised.
 
@@ -95,13 +95,13 @@ achieving convergence, as it only fits one parameter (the constant FoI)
 from a binomial distribution.
 
 ``` r
-model_1 <- run_model(model_data = data_test,
-                     model_name = "constant_foi_bi",
+model_1 <- run_seroprev_model(seroprev_data = data_test,
+                     seroprev_model_name = "constant_foi_bi",
                      n_iters = 500, 
                      n_thin = 2)
 #> [1] "serofoi model constant_foi_bi finished running ------"
 #>            [,1]             
-#> model_name "constant_foi_bi"
+#> seroprev_model_name "constant_foi_bi"
 #> dataset    "COL-035-18"     
 #> country    "COL"            
 #> year       "2007"           
@@ -124,13 +124,13 @@ of years, reflected by the difference between year of the serosurvey and
 the maximum age-class sampled.
 
 ``` r
-model_2 <- run_model(model_data = data_test,
-                     model_name = "continuous_foi_normal_bi",
+model_2 <- run_seroprev_model(seroprev_data = data_test,
+                     seroprev_model_name = "continuous_foi_normal_bi",
                      n_iters = 1500, 
                      n_thin = 2)
 #> [1] "serofoi model continuous_foi_normal_bi finished running ------"
 #>            [,1]                      
-#> model_name "continuous_foi_normal_bi"
+#> seroprev_model_name "continuous_foi_normal_bi"
 #> dataset    "COL-035-18"              
 #> country    "COL"                     
 #> year       "2007"                    
@@ -150,13 +150,13 @@ For the *fast* *epidemic model,* a larger number of iterations is
 required for achieving convergence, compared to the previous models.
 
 ``` r
-model_3 <- run_model(model_data = data_test,
-                     model_name = "continuous_foi_normal_log",
+model_3 <- run_seroprev_model(seroprev_data = data_test,
+                     seroprev_model_name = "continuous_foi_normal_log",
                      n_iters = 1500, 
                      n_thin = 2)
 #> [1] "serofoi model continuous_foi_normal_log finished running ------"
 #>            [,1]                       
-#> model_name "continuous_foi_normal_log"
+#> seroprev_model_name "continuous_foi_normal_log"
 #> dataset    "COL-035-18"               
 #> country    "COL"                      
 #> year       "2007"                     
@@ -170,13 +170,13 @@ model_3 <- run_model(model_data = data_test,
 #> converged  "Yes"
 ```
 
-For each model, the plot_model function generate a vertical arrange of
+For each model, the plot_seroprev_model function generate a vertical arrange of
 plots summarising the results of the model implementation plotting
 functions. Crucially, it shows the (expected) log-predictive density
 `elpd`, standard error `se`, and allows to check convergence based on
 `R-hat` convergence diagnostics.
 
-Also, the `plot_models_list` allows a visual a comparison of the models
+Also, the `plot_seroprev_models_list` allows a visual a comparison of the models
 based on the (expected) log-predictive density `elpd`, standard error
 `se`, and allows to check convergence based on `R-hat` convergence
 diagnostics.

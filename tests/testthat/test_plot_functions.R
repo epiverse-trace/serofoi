@@ -3,59 +3,59 @@ test_that("plot_seroprev_fitted", {
   library(dplyr)
   library(vdiffr)
   set.seed(1234) # For reproducibility
-  data_test <- readRDS(test_path("extdata", "data.RDS")) %>% prepare_data()
+  data_test <- readRDS(test_path("extdata", "data.RDS")) %>% preprare_seroprev_data()
 
   actual_plot_seroprev <- plot_seroprev(data_test, size_text = 15)
 
   vdiffr::expect_doppelganger("plot_seroprev", actual_plot_seroprev)
 
   # Constant Model
-  model_object_constant <- run_model(
-    model_data = data_test,
-    model_name = "constant_foi_bi",
+  model_object_constant <- run_seroprev_model(
+    seroprev_data = data_test,
+    seroprev_model_name = "constant_foi_bi",
     n_iters = 1000
   )
 
-  plot_model_constant <- plot_model(model_object_constant, size_text = 6)
+  plot_seroprev_model_constant <- plot_seroprev_model(model_object_constant, size_text = 6)
 
-  vdiffr::expect_doppelganger("plot_model_constant", plot_model_constant)
+  vdiffr::expect_doppelganger("plot_seroprev_model_constant", plot_seroprev_model_constant)
 
   plot_seroprev_fitted_constant <- plot_seroprev_fitted(model_object_constant, size_text = 15)
 
   vdiffr::expect_doppelganger("plot_seroprev_fitted_constant", plot_seroprev_fitted_constant)
 
   # Normal Bi Model
-  model_object_normalbi <- run_model(
-    model_data = data_test,
-    model_name = "continuous_foi_normal_bi",
+  model_object_normalbi <- run_seroprev_model(
+    seroprev_data = data_test,
+    seroprev_model_name = "continuous_foi_normal_bi",
     n_iters = 1000
   )
 
-  plot_model_normalbi <- plot_model(model_object_normalbi, size_text = 6)
+  plot_seroprev_model_normalbi <- plot_seroprev_model(model_object_normalbi, size_text = 6)
 
-  vdiffr::expect_doppelganger("plot_model_normalbi", plot_model_normalbi)
+  vdiffr::expect_doppelganger("plot_seroprev_model_normalbi", plot_seroprev_model_normalbi)
 
   plot_seroprev_fitted_normalbi <- plot_seroprev_fitted(model_object_normalbi, size_text = 15)
 
   vdiffr::expect_doppelganger("plot_seroprev_fitted_normalbi", plot_seroprev_fitted_normalbi)
 
   # Normal Log Model
-  model_object_normallog <- run_model(
-    model_data = data_test,
-    model_name = "continuous_foi_normal_log",
+  model_object_normallog <- run_seroprev_model(
+    seroprev_data = data_test,
+    seroprev_model_name = "continuous_foi_normal_log",
     n_iters = 1000
   )
 
-  plot_model_normallog <- plot_model(model_object_normallog, size_text = 6)
+  plot_seroprev_model_normallog <- plot_seroprev_model(model_object_normallog, size_text = 6)
 
-  vdiffr::expect_doppelganger("plot_model_normallog", plot_model_normallog)
+  vdiffr::expect_doppelganger("plot_seroprev_model_normallog", plot_seroprev_model_normallog)
 
   plot_seroprev_fitted_normallog <- plot_seroprev_fitted(model_object_normallog, size_text = 15)
 
   vdiffr::expect_doppelganger("plot_seroprev_fitted_normallog", plot_seroprev_fitted_normallog)
 
   # Models Comparison Plot
-  plot_arrange_models <- plot_seroprev_models_grid(plot_model_constant, plot_model_normalbi, plot_model_normallog, n_col = 3)
+  plot_arrange_models <- plot_seroprev_models_grid(plot_seroprev_model_constant, plot_seroprev_model_normalbi, plot_seroprev_model_normallog, n_col = 3)
 
   vdiffr::expect_doppelganger("plot_arrange_models", plot_arrange_models)
 })

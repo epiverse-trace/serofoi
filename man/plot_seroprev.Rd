@@ -4,10 +4,10 @@
 \alias{plot_seroprev}
 \title{Generate sero-positivity plot from raw data}
 \usage{
-plot_seroprev(model_data, size_text = 6)
+plot_seroprev(seroprev_data, size_text = 6)
 }
 \arguments{
-\item{model_data}{A data frame containing the data from a seroprevalence survey.
+\item{seroprev_data}{A data frame containing the data from a seroprevalence survey.
 This data frame must contain the following columns:
 \tabular{ll}{
 \code{survey} \tab survey Label of the current survey \cr \tab \cr
@@ -33,10 +33,10 @@ Function that generates the sero positivity plot from raw data
 }
 \examples{
 \dontrun{
- data_test <- prepare_data(mydata)
- model_object <- run_model(
- model_data = data_test,
- model_name = "constant_foi_bi",
+ data_test <- preprare_seroprev_data(mydata)
+ model_object <- run_seroprev_model(
+ seroprev_data = data_test,
+ seroprev_model_name = "constant_foi_bi",
  n_iters = 1000
 )
 plot_seroprev(model_object, size_text = 15)

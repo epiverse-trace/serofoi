@@ -4,10 +4,10 @@
 \alias{save_or_load_model}
 \title{Save or load model}
 \usage{
-save_or_load_model(model_name = "constant_foi_bi")
+save_or_load_model(seroprev_model_name = "constant_foi_bi")
 }
 \arguments{
-\item{model_name}{Name of the selected model. Current version provides three options:
+\item{seroprev_model_name}{Name of the selected model. Current version provides three options:
 \describe{
 \item{\code{"constant_foi_bi"}}{Runs a constant model}
 \item{\code{"continuous_foi_normal_bi"}}{Runs a normal model}
@@ -23,5 +23,5 @@ In case the .RDS file exists, it is read and returned; otherwise, the object mod
 \link[rstan]{stan_model} function, saved as an .RDS file and returned as the output of the function.
 }
 \examples{
-save_or_load_model(model_name="constant_foi_bi")
+save_or_load_model(seroprev_model_name="constant_foi_bi")
 }
