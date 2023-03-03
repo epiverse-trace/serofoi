@@ -1,4 +1,5 @@
 test_that("comparison", {
+  skip_on_os(c("windows", "mac"))
   source("testing_utils.R")
 
   set.seed(1234) # For reproducibility

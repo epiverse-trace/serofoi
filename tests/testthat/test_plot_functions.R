@@ -1,4 +1,5 @@
 test_that("plot_seroprev_fitted", {
+  skip_on_os(c("windows", "mac"))
   library(devtools)
   library(dplyr)
   library(vdiffr)

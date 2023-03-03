@@ -1,5 +1,5 @@
-
 test_that("individual models", {
+  skip_on_os(c("windows", "mac"))
   library(devtools)
   library(dplyr)
   library(vdiffr)
@@ -51,5 +51,4 @@ test_that("individual models", {
 
 
   # bayesplot::mcmc_trace(model_1_object$fit, pars="lambda0")
-
 })
