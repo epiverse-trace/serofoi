@@ -23,30 +23,8 @@ equal_exact <- function() {
     }
 }
 
-r_version_id <- function() {
-    v <- R.Version()
-    return(paste(v$arch, .Platform$OS.type, v$os, v$major, v$minor, v$year, v$month, v$day, sep = "_"))
-}
-
-expect_similar_dataframes <- function() {
-    withCallingHandlers(
-        testthat::expect_snapshot_value()(testcase,
-            name = file, cran = cran, compare = testthat::compare_file_text
-        ),
-        expectation_failure = function(cnd) {
-        }
-    )
-}
-
-compare_dataframes <- function(
-    expected_df_name, actual_df, column_comparation_functions,
-    per_platform_snapshots = TRUE) {
-    base_path <- ""
-    if (per_platform_snapshots) {
-        base_path <- test_path("_snaps", "dataframes", r_version_id())
-    } else {
-        base_path <- test_path("_snaps", "dataframes") # TODO move to config.yml
-    }
+compare_dataframes <- function(expected_df_name, actual_df, column_comparation_functions) {
+    base_path <- test_path("_snaps", "dataframes") # TODO move to config.yml
     actual_df_filename <- paste(file.path(base_path, "actual", expected_df_name), "csv", sep = ".")
     expected_df_filename <- paste(file.path(base_path, "expected", expected_df_name), "csv", sep = ".")
 
@@ -85,9 +63,7 @@ compare_dataframes <- function(
     }
 }
 
-expect_same_plot <- function(
-    plot_name, actual_plot,
-    per_platform_snapshots = TRUE) {
+expect_same_plot <- function(plot_name, actual_plot) {
     if (per_platform_snapshots) {
         title <- file.path(r_version_id(), plot_name)
     } else {
