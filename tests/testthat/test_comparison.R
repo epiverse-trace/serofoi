@@ -3,13 +3,15 @@ test_that("comparison", {
   # we find an efficient way to update rstan testthat snapshots on all of them
   skip_on_os(c("windows", "mac"))
   source("testing_utils.R")
-
+  message("*** Test info ****")
+  message(paste(R.Version()), collapse = " | ")
+  message("Interactive: ", interactive())
   set.seed(1234) # For reproducibility
 
   package <- "serofoi"
 
   # TODO For some reason it is not recognizing the global `mydata` variable, so we need to explicitly load it
-  mydata <- readRDS(test_path("extdata", "data.RDS"))
+  mydata <- readRDS(testthat::test_path("extdata", "data.RDS"))
 
   data_test <- preprare_seroprev_data(mydata)
 

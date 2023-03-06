@@ -7,10 +7,10 @@ test_that("compilation", {
     set.seed(1234) # For reproducibility
 
 
-    library(devtools)
+    # library(devtools)
     library(dplyr)
 
-    mydata <- readRDS(test_path("extdata", "data.RDS"))
+    mydata <- readRDS(testthat::test_path("extdata", "data.RDS"))
 
     # Modelling module functions
     seroprev_data <- preprare_seroprev_data(seroprev_data = mydata, alpha = 0.05)

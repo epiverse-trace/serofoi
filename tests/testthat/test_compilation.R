@@ -7,7 +7,7 @@ test_that("compilation", {
   set.seed(1234) # For reproducibility
 
   # TODO For some reason it is not recognizing the global `mydata` variable, so we need to explicitly load it
-  mydata <- readRDS(test_path("extdata", "data.RDS"))
+  mydata <- readRDS(testthat::test_path("extdata", "data.RDS"))
 
   data_test <- preprare_seroprev_data(mydata)
 
