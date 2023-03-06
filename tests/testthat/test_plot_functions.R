@@ -2,6 +2,10 @@ test_that("plot_seroprev_fitted", {
   # So far we are skipping tests on these platforms until
   # we find an efficient way to update rstan testthat snapshots on all of them
   skip_on_os(c("windows", "mac"))
+
+  print("*** Test info ****")
+  print(R.Version())
+  cat("Interactive: ", interactive())
   library(devtools)
   library(dplyr)
   library(vdiffr)
