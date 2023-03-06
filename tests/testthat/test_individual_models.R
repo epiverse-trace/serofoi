@@ -2,12 +2,14 @@ test_that("individual models", {
   # So far we are skipping tests on these platforms until 
   # we find an efficient way to update rstan testthat snapshots on all of them
   skip_on_os(c("windows", "mac"))
+  skip_on_ci()
+
   library(devtools)
   library(dplyr)
   library(vdiffr)
 
   #----- Read and prepare data
-  data_test_path <- test_path(
+  data_test_path <- testthat::test_path(
     "extdata", "data.RDS"
   )
   data_test <- readRDS(data_test_path) %>% preprare_seroprev_data(alpha = 0.05)

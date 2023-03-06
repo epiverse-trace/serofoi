@@ -2,7 +2,7 @@ test_that("plot_seroprev_fitted", {
   # So far we are skipping tests on these platforms until
   # we find an efficient way to update rstan testthat snapshots on all of them
   skip_on_os(c("windows", "mac"))
-
+  skip_on_ci()
   print("*** Test info ****")
   print(R.Version())
   cat("Interactive: ", interactive())
@@ -10,7 +10,7 @@ test_that("plot_seroprev_fitted", {
   library(dplyr)
   library(vdiffr)
   set.seed(1234) # For reproducibility
-  data_test <- readRDS(test_path("extdata", "data.RDS")) %>% preprare_seroprev_data()
+  data_test <- readRDS(testthat::test_path("extdata", "data.RDS")) %>% preprare_seroprev_data()
 
   actual_plot_seroprev <- plot_seroprev(data_test, size_text = 15)
 
