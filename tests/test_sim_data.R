@@ -1,3 +1,5 @@
+# TODO Convert to testthat
+
 rm(list=ls())
 
 library(dplyr)

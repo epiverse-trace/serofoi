@@ -4,6 +4,18 @@
 		{
 			"type": "R",
 			"code": [
+				"devtools::install_deps(upgrade=TRUE)"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "none",
+				"isDefault": true
+			},
+			"label": "R: upgrade deps"
+		},
+		{
+			"type": "R",
+			"code": [
 				"devtools::test_active_file(\"${file}\")"
 			],
 			"problemMatcher": [

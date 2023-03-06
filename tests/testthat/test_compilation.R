@@ -1,10 +1,13 @@
 test_that("compilation", {
+  # So far we are skipping tests on these platforms until
+  # we find an efficient way to update rstan testthat snapshots on all of them
+  skip_on_os(c("windows", "mac"))
   source("testing_utils.R")
 
   set.seed(1234) # For reproducibility
 
   # TODO For some reason it is not recognizing the global `mydata` variable, so we need to explicitly load it
-  mydata <- readRDS(test_path("extdata", "data.RDS"))
+  mydata <- readRDS(testthat::test_path("extdata", "data.RDS"))
 
   data_test <- preprare_seroprev_data(mydata)
 
@@ -35,9 +38,7 @@ test_that("compilation", {
     converged = equal_exact()
   )
 
-  expect_true(
-    compare_dataframes(
-      "model_summary", model_summary, column_comparation_functions
-    )
+  expect_similar_dataframes(
+    "model_summary", model_summary, column_comparation_functions
   )
 })

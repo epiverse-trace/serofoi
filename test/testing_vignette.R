@@ -1,3 +1,4 @@
+# TODO Convert to testthat. Move to `tests/`
 library(remotes)
 remotes::install_github("TRACE-LAC/serofoi",
                         ref = "dev",

@@ -6,7 +6,7 @@
 # obsolete and need to be regenerated
 
 library(testthat)
-paths <- c(test_path("_snaps", "*"), test_path("extdata", "dataframes", "expected", "*"))
+paths <- c(testthat::test_path("_snaps", "*"), testthat::test_path("extdata", "dataframes", "expected", "*"))
 
 for (path in paths) {
     cat("Deleting", path, "\n")

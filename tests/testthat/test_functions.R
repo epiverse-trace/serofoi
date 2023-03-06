@@ -1,13 +1,16 @@
 test_that("compilation", {
+    # So far we are skipping tests on these platforms until
+    # we find an efficient way to update rstan testthat snapshots on all of them
+    skip_on_os(c("windows", "mac"))
     source("testing_utils.R")
 
     set.seed(1234) # For reproducibility
 
 
-    library(devtools)
+    # library(devtools)
     library(dplyr)
 
-    mydata <- readRDS(test_path("extdata", "data.RDS"))
+    mydata <- readRDS(testthat::test_path("extdata", "data.RDS"))
 
     # Modelling module functions
     seroprev_data <- preprare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
@@ -60,9 +63,7 @@ test_that("compilation", {
 
 
 
-    expect_true(
-        compare_dataframes(
-            "expanded_prevalence", expanded_prevalence, column_comparation_functions
-        )
+    expect_similar_dataframes(
+        "expanded_prevalence", expanded_prevalence, column_comparation_functions
     )
 })

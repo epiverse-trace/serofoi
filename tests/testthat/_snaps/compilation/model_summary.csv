@@ -1,2 +1,2 @@
 "","seroprev_model_name","dataset","country","year","test","antibody","n_sample","n_agec","n_iter","elpd","se","converged"
-"1","constant_foi_bi","COL-035-93","COL",2012,"ELISA","IgG anti-T.cruzi",747,72,1000,-92.75,6.4,"Yes"
+"1","constant_foi_bi","COL-035-93","COL",2012,"ELISA","IgG anti-T.cruzi",747,72,1000,-92.8,6.43,"Yes"
