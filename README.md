@@ -40,10 +40,10 @@ library(serofoi)
 ## Quick start
 
 The package provides an example dataset of the observed serosurvey data,
-`mydata`. This example is the basic entry for the package.
+`serodata`. This example is the basic entry for the package.
 
 ``` r
-head(mydata)
+head(serodata)
 #>       survey total counts age_min age_max year_init year_end tsur country
 #> 1 COL-035-18     2      0       1       1      2007     2007 2007     COL
 #> 2 COL-035-18     1      0       2       2      2007     2007 2007     COL
@@ -67,7 +67,7 @@ the binomial confidence interval of the observed data.
 
 ``` r
 
-data_test <- prepare_seroprev_data(mydata)
+data_test <- prepare_seroprev_data(serodata)
 
 plot_seroprev(data_test, size_text = 15)
 ```

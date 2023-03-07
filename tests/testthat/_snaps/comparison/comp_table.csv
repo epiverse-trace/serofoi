@@ -1,4 +1,4 @@
 "","seroprev_model_name","dataset","country","year","test","antibody","n_sample","n_agec","n_iter","elpd","se","converged","difference","diff_se","best_elpd","pvalue"
-"1","constant_foi_bi","COL-035-93","COL",2012,"ELISA","IgG anti-T.cruzi",747,72,1000,-92.8,6.43,"Yes",0,1,NA,0.500006
-"2","continuous_foi_normal_bi","COL-035-93","COL",2012,"ELISA","IgG anti-T.cruzi",747,72,1000,-74.43,5.88,"Yes",0,-18.3714343942143,NA,0.500031
-"3","continuous_foi_normal_log","COL-035-93","COL",2012,"ELISA","IgG anti-T.cruzi",747,72,1000,-71.88,7.11,"Yes",0,-20.9178877226308,NA,0.50003
+"1","constant_foi_bi","COL-035-93","COL",2012,"ELISA","IgG anti-T.cruzi",747,72,1000,-92.75,6.4,"Yes",0,1,NA,0.500041
+"2","continuous_foi_normal_bi","COL-035-93","COL",2012,"ELISA","IgG anti-T.cruzi",747,72,1000,-74.46,5.88,"Yes",0,-18.2967809927967,NA,0.500009
+"3","continuous_foi_normal_log","COL-035-93","COL",2012,"ELISA","IgG anti-T.cruzi",747,72,1000,-71.93,7.11,"Yes",0,-20.8238925781359,NA,0.500029

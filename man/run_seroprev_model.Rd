@@ -65,7 +65,7 @@ Run the specified stan model for the force-of-infection
 }
 \examples{
 \dontrun{
-seroprev_data <- prepare_seroprev_data(mydata)
+seroprev_data <- prepare_seroprev_data(serodata)
 run_seroprev_model (seroprev_data,
            seroprev_model_name = "constant_foi_bi")
 }

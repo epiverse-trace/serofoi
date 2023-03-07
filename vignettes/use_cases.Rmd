@@ -19,8 +19,8 @@ knitr::opts_chunk$set(
 ```{r cleaning, include = FALSE, echo = TRUE, message=FALSE}
 library(serofoi)
 library(tidyverse)
-rownames(mydata) <- NULL 
-data_test <- prepare_seroprev_data(mydata)
+rownames(serodata) <- NULL 
+data_test <- prepare_seroprev_data(serodata)
 
 
 ```

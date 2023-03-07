@@ -17,7 +17,7 @@ Function that makes the rhats table
 }
 \examples{
 \dontrun{
-seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
+seroprev_data <- prepare_seroprev_data(seroprev_data = serodata, alpha = 0.05)
 model_object <- run_seroprev_model(
 seroprev_data = seroprev_data, seroprev_model_name = "constant_foi_bi")
 get_table_rhats (model_object)

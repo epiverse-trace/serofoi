@@ -19,7 +19,7 @@ Provides a table with statistics for comparison between models and selection
 }
 \examples{
 \dontrun{
-data_test <- prepare_seroprev_data(mydata)
+data_test <- prepare_seroprev_data(serodata)
 model_0 <- run_seroprev_model(seroprev_data = data_test,
                     seroprev_model_name = "constant_foi_bi",
                     n_iters = 1000)

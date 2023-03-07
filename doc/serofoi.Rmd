@@ -20,5 +20,5 @@ library(serofoi)
 
 # Prepare the data for using serofoi
 ```{r} 
-data_test <- prepare_data(mydata)
+data_test <- prepare_data(serodata)
 ```

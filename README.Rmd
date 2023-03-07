@@ -57,18 +57,18 @@ library(serofoi)
 
 ```{r cleaning, include = FALSE, echo = TRUE}
 library(serofoi)
-rownames(mydata) <- NULL 
+rownames(serodata) <- NULL 
 
 ```
 
 The package provides an example dataset of the observed serosurvey data,
-`mydata`. This example is the basic entry for the package.
+`serodata`. This example is the basic entry for the package.
 
 ```{r ex, include = TRUE}
 
-# Load example mydata data included with the package
-data(mydata)
-head(mydata, 5)
+# Load example serodata data included with the package
+data(serodata)
+head(serodata, 5)
 
 ```
 
@@ -79,7 +79,7 @@ the binomial confidence interval of the observed data.
 
 ```{r data_test, include = TRUE, fig.height=6, fig.width=6, message=FALSE}
 
-data_test <- prepare_seroprev_data(mydata)
+data_test <- prepare_seroprev_data(serodata)
 
 plot_seroprev(data_test, size_text = 15)
 

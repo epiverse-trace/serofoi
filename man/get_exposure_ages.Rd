@@ -10,14 +10,14 @@ get_exposure_ages(seroprev_data)
 \item{seroprev_data}{A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_seroprev_data} function.}
 }
 \value{
-\code{exposure_years}. An atomic vector with the numeration of the exposition years in seroprev_data
+\code{exposure_ages}. An atomic vector with the numeration of the exposition years in seroprev_data
 }
 \description{
 Function that generates an atomic vector with the exposition years in seroprev_data. The exposition years to the disease for each individual corresponds to the time from birth to the moment of the survey.
 }
 \examples{
 \dontrun{
-seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
-exposure_years <- get_exposure_ages(seroprev_data)
+seroprev_data <- prepare_seroprev_data(seroprev_data = serodata, alpha = 0.05)
+exposure_ages <- get_exposure_ages(seroprev_data)
 }
 }

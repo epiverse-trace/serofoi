@@ -1,4 +1,4 @@
-# TODO For some reason, the examples cannot access the mydata variable
+# TODO For some reason, the examples cannot access the serodata variable
 #' Run the specified stan model for the force-of-infection
 #'
 #' @param seroprev_data A data frame containing the data from a seroprevalence survey.
@@ -39,7 +39,7 @@
 #' @return \code{model_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seroprev_model}.
 #' @examples
 #' \dontrun{
-#' seroprev_data <- prepare_seroprev_data(mydata)
+#' seroprev_data <- prepare_seroprev_data(serodata)
 #' run_seroprev_model (seroprev_data,
 #'            seroprev_model_name = "constant_foi_bi")
 #' }
@@ -117,8 +117,8 @@ save_or_load_model <- function(seroprev_model_name = "constant_foi_bi") {
 #' \code{seroprev_data} \tab A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seroprev_model}.\cr \tab \cr
 #' \code{stan_data} \tab List containing \code{Nobs}, \code{Npos}, \code{Ntotal}, \code{Age}, \code{Ymax}, \code{AgeExpoMatrix} and \code{NDecades}.
 #' This object is used as an input for the \link[rstan]{sampling} function \cr \tab \cr
-#' \code{real_exposure_years} \tab Integer atomic vector containing the actual exposure years (1946, ..., 2007 e.g.) \cr \tab \cr
-#' \code{exposure_years} \tab Integer atomic vector containing the numeration of the exposure years. \cr \tab \cr
+#' \code{exposure_years} \tab Integer atomic vector containing the actual exposure years (1946, ..., 2007 e.g.) \cr \tab \cr
+#' \code{exposure_ages} \tab Integer atomic vector containing the numeration of the exposure ages. \cr \tab \cr
 #' \code{n_iters} \tab Number of interations for eah chain including the warmup. \cr \tab \cr
 #' \code{n_thin} \tab Positive integer specifying the period for saving samples. \cr \tab \cr
 #' \code{n_warmup} \tab Number of warm up iterations. Set by default as n_iters/2. \cr \tab \cr
@@ -126,14 +126,14 @@ save_or_load_model <- function(seroprev_model_name = "constant_foi_bi") {
 #' \code{delta} \tab Real number between 0 and 1 that represents the target average acceptance probability. \cr \tab \cr
 #' \code{m_treed} \tab Maximum tree depth for the binary tree used in the NUTS stan sampler. \cr \tab \cr
 #' \code{loo_fit} \tab Efficient approximate leave-one-out cross-validation. Refer to \link[loo]{loo} for further details. \cr \tab \cr
-#' \code{foi_cent_est} \tab A data fram e containing \code{year} (corresponding to \code{real_exposure_years}), \code{lower}, \code{upper}, and \code{medianv} \cr \tab \cr
+#' \code{foi_cent_est} \tab A data fram e containing \code{year} (corresponding to \code{exposure_years}), \code{lower}, \code{upper}, and \code{medianv} \cr \tab \cr
 #' \code{foi_post_s} \tab Sample n rows from a table. Refer to \link[dplyr]{sample_n} for further details. \cr \tab \cr
 #' \code{model_summary} \tab A data fram containing the summary of the model. Refer to \link{extract_seroprev_model_summary} for further details. \cr \tab \cr
 #' }
 
 #' @examples
 #' \dontrun{
-#' seroprev_data <- prepare_seroprev_data(mydata)
+#' seroprev_data <- prepare_seroprev_data(serodata)
 #' fit_seroprev_model (seroprev_data,
 #'            seroprev_model_name = "constant_foi_bi")
 #' }
@@ -148,10 +148,10 @@ fit_seroprev_model <- function(seroprev_data,
                       decades = 0) {
   # add a warning because there are exceptions where a minimal amount of iterations need to be run
   model <- save_or_load_model(seroprev_model_name)
-  exposure_years <- get_exposure_ages(seroprev_data)
-  exposure_years <- exposure_years[-length(exposure_years)]
-  real_exposure_years <- (min(seroprev_data$birth_year):seroprev_data$tsur[1])[-1]
-  exposure_matrix <- get_exposure_matrix(seroprev_data, exposure_years)
+  exposure_ages <- get_exposure_ages(seroprev_data)
+  # exposure_ages <- exposure_ages[-length(exposure_ages)]
+  exposure_years <- (min(seroprev_data$birth_year):seroprev_data$tsur[1])[-1]
+  exposure_matrix <- get_exposure_matrix(seroprev_data, exposure_ages)
   Nobs <- nrow(seroprev_data)
 
   stan_data <- list(
@@ -159,7 +159,7 @@ fit_seroprev_model <- function(seroprev_data,
     Npos = seroprev_data$counts,
     Ntotal = seroprev_data$total,
     Age = seroprev_data$age_mean_f,
-    Ymax = max(exposure_years),
+    Ymax = max(exposure_ages),
     AgeExpoMatrix = exposure_matrix,
     NDecades = decades
   )
@@ -168,7 +168,7 @@ fit_seroprev_model <- function(seroprev_data,
 
   if (seroprev_model_name == "continuous_foi_normal_log") {
     f_init <- function() {
-      list(log_foi = rep(-3, length(exposure_years)))
+      list(log_foi = rep(-3, length(exposure_ages)))
     }
     lower_quantile = 0.1
     upper_quantile = 0.9
@@ -177,7 +177,7 @@ fit_seroprev_model <- function(seroprev_data,
 
   else {
   f_init <- function() {
-    list(foi = rep(0.01, length(exposure_years)))
+    list(foi = rep(0.01, length(exposure_ages)))
   }
     lower_quantile = 0.05
     upper_quantile = 0.95
@@ -207,7 +207,7 @@ fit_seroprev_model <- function(seroprev_data,
     # foi <- rstan::extract(fit, "foi", inc_warmup = TRUE, permuted=FALSE)[[1]]
     # generates central estimations
     foi_cent_est <- data.frame(
-      year = real_exposure_years,
+      year = exposure_years,
       lower = apply(foi, 2, function(x) quantile(x, lower_quantile)),
 
       upper = apply(foi, 2, function(x) quantile(x, upper_quantile)),
@@ -219,18 +219,18 @@ fit_seroprev_model <- function(seroprev_data,
     # generates a sample of iterations
     if (n_iters >= 2000) {
       foi_post_s <- dplyr::sample_n(as.data.frame(foi), size = 1000)
-      colnames(foi_post_s) <- real_exposure_years
+      colnames(foi_post_s) <- exposure_years
     } else {
       foi_post_s <- as.data.frame(foi)
-      colnames(foi_post_s) <- real_exposure_years
+      colnames(foi_post_s) <- exposure_years
     }
 
     model_object <- list(
       fit = fit,
       seroprev_data = seroprev_data,
       stan_data = stan_data,
-      real_exposure_years = real_exposure_years,
       exposure_years = exposure_years,
+      exposure_ages = exposure_ages,
       n_iters = n_iters,
       n_thin = n_thin,
       n_warmup = n_warmup,
@@ -249,8 +249,8 @@ fit_seroprev_model <- function(seroprev_data,
       fit = "no model",
       seroprev_data = seroprev_data,
       stan_data = stan_data,
-      real_exposure_years = real_exposure_years,
       exposure_years = exposure_years,
+      exposure_ages = exposure_ages,
       n_iters = n_iters,
       n_thin = n_thin,
       n_warmup = n_warmup,
@@ -270,11 +270,11 @@ fit_seroprev_model <- function(seroprev_data,
 #'
 #' Function that generates an atomic vector with the exposition years in seroprev_data. The exposition years to the disease for each individual corresponds to the time from birth to the moment of the survey.
 #' @param seroprev_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_seroprev_data} function.
-#' @return \code{exposure_years}. An atomic vector with the numeration of the exposition years in seroprev_data
+#' @return \code{exposure_ages}. An atomic vector with the numeration of the exposition years in seroprev_data
 #' @examples
 #' \dontrun{
-#' seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
-#' exposure_years <- get_exposure_ages(seroprev_data)
+#' seroprev_data <- prepare_seroprev_data(seroprev_data = serodata, alpha = 0.05)
+#' exposure_ages <- get_exposure_ages(seroprev_data)
 #' }
 #' @export
 get_exposure_ages <- function(seroprev_data) {
@@ -290,15 +290,15 @@ get_exposure_ages <- function(seroprev_data) {
 #' @return \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{seroprev_data} by year.
 #' @examples
 #' \dontrun{
-#' seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
-#' exposure_years <- get_exposure_ages(seroprev_data)
-#' exposure_matrix <- get_exposure_matrix(seroprev_data = seroprev_data, exposure_years = exposure_years)
+#' seroprev_data <- prepare_seroprev_data(seroprev_data = serodata, alpha = 0.05)
+#' exposure_ages <- get_exposure_ages(seroprev_data)
+#' exposure_matrix <- get_exposure_matrix(seroprev_data = seroprev_data, exposure_ages = exposure_ages)
 #' }
 #' @export
 get_exposure_matrix <- function(seroprev_data,
-                                exposure_years) {
+                                exposure_ages) {
   age_class <- seroprev_data$age_mean_f
-  ly <- length(exposure_years)
+  ly <- length(exposure_ages)
   exposure <- matrix(0, nrow = length(age_class), ncol = ly)
   for (k in 1:length(age_class))
     exposure[k, (ly - age_class[k] + 1):ly] <- 1
@@ -328,7 +328,7 @@ get_exposure_matrix <- function(seroprev_data,
 #' }
 #' @examples
 #' \dontrun{
-#' seroprev_data <- prepare_seroprev_data(mydata)
+#' seroprev_data <- prepare_seroprev_data(serodata)
 #' model_object <- run_seroprev_model(seroprev_data = seroprev_data,
 #'                           seroprev_model_name = "constant_foi_bi")
 #' extract_seroprev_model_summary (model_object)
@@ -377,7 +377,7 @@ extract_seroprev_model_summary <- function(model_object) {
 #' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
 #' @examples
 #' \dontrun{
-#' seroprev_data <- prepare_seroprev_data(mydata)
+#' seroprev_data <- prepare_seroprev_data(serodata)
 #' model_object <- run_seroprev_model(seroprev_data = seroprev_data,
 #'                           seroprev_model_name = "constant_foi_bi")
 #' foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]

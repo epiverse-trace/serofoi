@@ -8,5 +8,5 @@ knitr::opts_chunk$set(
 library(serofoi)
 
 ## -----------------------------------------------------------------------------
-data_test <- prepare_data(mydata)
+data_test <- prepare_data(serodata)
 

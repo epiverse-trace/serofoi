@@ -5,7 +5,7 @@
 #' @return rhats table
 #' @examples
 #' \dontrun{
-#' seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
+#' seroprev_data <- prepare_seroprev_data(seroprev_data = serodata, alpha = 0.05)
 #' model_object <- run_seroprev_model(
 #' seroprev_data = seroprev_data, seroprev_model_name = "constant_foi_bi")
 #' get_table_rhats (model_object)
@@ -17,7 +17,7 @@ get_table_rhats <- function(model_object) {
   if (any(is.nan(rhats))) {
     rhats[which(is.nan(rhats))] <- 0
   }
-  model_rhats <- data.frame(year = model_object$real_exposure_years, rhat = rhats)
+  model_rhats <- data.frame(year = model_object$exposure_years, rhat = rhats)
   model_rhats$rhat[model_rhats$rhat == 0] <- NA
 
   return(model_rhats)
@@ -30,7 +30,7 @@ get_table_rhats <- function(model_object) {
 #' @return comparison table
 #' @examples
 #' \dontrun{
-#' data_test <- prepare_seroprev_data(mydata)
+#' data_test <- prepare_seroprev_data(serodata)
 #' model_0 <- run_seroprev_model(seroprev_data = data_test,
 #'                     seroprev_model_name = "constant_foi_bi",
 #'                     n_iters = 1000)

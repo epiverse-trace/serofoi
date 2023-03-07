@@ -4,7 +4,7 @@
 \alias{get_exposure_matrix}
 \title{Get Exposure Matrix}
 \usage{
-get_exposure_matrix(seroprev_data, exposure_years)
+get_exposure_matrix(seroprev_data, exposure_ages)
 }
 \arguments{
 \item{seroprev_data}{A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_seroprev_data} function.}
@@ -17,8 +17,8 @@ Function that generates the exposure matrix for a seroprevalence survey.
 }
 \examples{
 \dontrun{
-seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
-exposure_years <- get_exposure_ages(seroprev_data)
-exposure_matrix <- get_exposure_matrix(seroprev_data = seroprev_data, exposure_years = exposure_years)
+seroprev_data <- prepare_seroprev_data(seroprev_data = serodata, alpha = 0.05)
+exposure_ages <- get_exposure_ages(seroprev_data)
+exposure_matrix <- get_exposure_matrix(seroprev_data = seroprev_data, exposure_ages = exposure_ages)
 }
 }
