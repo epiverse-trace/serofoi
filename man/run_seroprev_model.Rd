@@ -36,7 +36,7 @@ This data frame must contain the following columns:
 \code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
 \code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
 }
-The last six colums can be added to \code{seroprev_data} by means of the function \code{\link{preprare_seroprev_data}}.}
+The last six colums can be added to \code{seroprev_data} by means of the function \code{\link{prepare_seroprev_data}}.}
 
 \item{seroprev_model_name}{Name of the selected model. Current version provides three options:
 \describe{
@@ -65,7 +65,7 @@ Run the specified stan model for the force-of-infection
 }
 \examples{
 \dontrun{
-seroprev_data <- preprare_seroprev_data(mydata)
+seroprev_data <- prepare_seroprev_data(mydata)
 run_seroprev_model (seroprev_data,
            seroprev_model_name = "constant_foi_bi")
 }

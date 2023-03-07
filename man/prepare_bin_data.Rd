@@ -28,7 +28,7 @@ This data frame must contain the following columns:
 \code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
 \code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
 }
-The last six colums can be added to \code{seroprev_data} by means of the function \code{\link{preprare_seroprev_data}}.}
+The last six colums can be added to \code{seroprev_data} by means of the function \code{\link{prepare_seroprev_data}}.}
 }
 \value{
 data set with the binomial confidence intervals

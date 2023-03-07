@@ -22,7 +22,7 @@
 #' \code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
 #' \code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
 #' }
-#' The last six colums can be added to \code{seroprev_data} by means of the function \code{\link{preprare_seroprev_data}}.
+#' The last six colums can be added to \code{seroprev_data} by means of the function \code{\link{prepare_seroprev_data}}.
 #' @param seroprev_model_name Name of the selected model. Current version provides three options:
 #' \describe{
 #' \item{\code{"constant_foi_bi"}}{Runs a constant model}
@@ -39,7 +39,7 @@
 #' @return \code{model_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seroprev_model}.
 #' @examples
 #' \dontrun{
-#' seroprev_data <- preprare_seroprev_data(mydata)
+#' seroprev_data <- prepare_seroprev_data(mydata)
 #' run_seroprev_model (seroprev_data,
 #'            seroprev_model_name = "constant_foi_bi")
 #' }
@@ -133,7 +133,7 @@ save_or_load_model <- function(seroprev_model_name = "constant_foi_bi") {
 
 #' @examples
 #' \dontrun{
-#' seroprev_data <- preprare_seroprev_data(mydata)
+#' seroprev_data <- prepare_seroprev_data(mydata)
 #' fit_seroprev_model (seroprev_data,
 #'            seroprev_model_name = "constant_foi_bi")
 #' }
@@ -269,11 +269,11 @@ fit_seroprev_model <- function(seroprev_data,
 #' Get exposure years
 #'
 #' Function that generates an atomic vector with the exposition years in seroprev_data. The exposition years to the disease for each individual corresponds to the time from birth to the moment of the survey.
-#' @param seroprev_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{preprare_seroprev_data} function.
+#' @param seroprev_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_seroprev_data} function.
 #' @return \code{exposure_years}. An atomic vector with the numeration of the exposition years in seroprev_data
 #' @examples
 #' \dontrun{
-#' seroprev_data <- preprare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
+#' seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
 #' exposure_years <- get_exposure_years(seroprev_data)
 #' }
 #' @export
@@ -286,11 +286,11 @@ get_exposure_years <- function(seroprev_data) {
 #' Get Exposure Matrix
 #'
 #' Function that generates the exposure matrix for a seroprevalence survey.
-#' @param seroprev_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{preprare_seroprev_data} function.
+#' @param seroprev_data A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_seroprev_data} function.
 #' @return \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{seroprev_data} by year.
 #' @examples
 #' \dontrun{
-#' seroprev_data <- preprare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
+#' seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
 #' exposure_years <- get_exposure_years(seroprev_data)
 #' exposure_matrix <- get_exposure_matrix(seroprev_data = seroprev_data, exposure_years = exposure_years)
 #' }
@@ -328,7 +328,7 @@ get_exposure_matrix <- function(seroprev_data,
 #' }
 #' @examples
 #' \dontrun{
-#' seroprev_data <- preprare_seroprev_data(mydata)
+#' seroprev_data <- prepare_seroprev_data(mydata)
 #' model_object <- run_seroprev_model(seroprev_data = seroprev_data,
 #'                           seroprev_model_name = "constant_foi_bi")
 #' extract_seroprev_model_summary (model_object)
@@ -377,7 +377,7 @@ extract_seroprev_model_summary <- function(model_object) {
 #' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
 #' @examples
 #' \dontrun{
-#' seroprev_data <- preprare_seroprev_data(mydata)
+#' seroprev_data <- prepare_seroprev_data(mydata)
 #' model_object <- run_seroprev_model(seroprev_data = seroprev_data,
 #'                           seroprev_model_name = "constant_foi_bi")
 #' foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]

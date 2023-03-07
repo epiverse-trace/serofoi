@@ -72,14 +72,14 @@ head(mydata, 5)
 
 ```
 
-The function `preprare_seroprev_data` will prepare the entry data for entering the
+The function `prepare_seroprev_data` will prepare the entry data for entering the
 modelling functions. The seroprevalence *prepared data* can be
 visualised with the `plot_seroprev` function. This function also plots
 the binomial confidence interval of the observed data.
 
 ```{r data_test, include = TRUE, fig.height=6, fig.width=6, message=FALSE}
 
-data_test <- preprare_seroprev_data(mydata)
+data_test <- prepare_seroprev_data(mydata)
 
 plot_seroprev(data_test, size_text = 15)
 

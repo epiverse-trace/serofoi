@@ -12,7 +12,7 @@ test_that("individual models", {
   data_test_path <- testthat::test_path(
     "extdata", "data.RDS"
   )
-  data_test <- readRDS(data_test_path) %>% preprare_seroprev_data(alpha = 0.05)
+  data_test <- readRDS(data_test_path) %>% prepare_seroprev_data(alpha = 0.05)
 
   #----- Test each model
   model_0_object <- run_seroprev_model(

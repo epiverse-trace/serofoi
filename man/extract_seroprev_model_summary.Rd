@@ -31,7 +31,7 @@ Function to generate a summary of a model.
 }
 \examples{
 \dontrun{
-seroprev_data <- preprare_seroprev_data(mydata)
+seroprev_data <- prepare_seroprev_data(mydata)
 model_object <- run_seroprev_model(seroprev_data = seroprev_data,
                           seroprev_model_name = "constant_foi_bi")
 extract_seroprev_model_summary (model_object)

@@ -19,7 +19,7 @@ Function that generates the information table
 }
 \examples{
 \dontrun{
- data_test <- preprare_seroprev_data(mydata)
+ data_test <- prepare_seroprev_data(mydata)
  model_object <- run_seroprev_model(
  seroprev_data = data_test,
  seroprev_model_name = "constant_foi_bi",

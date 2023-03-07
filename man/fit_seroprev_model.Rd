@@ -62,7 +62,7 @@ Function that fits the selected model to the data
 }
 \examples{
 \dontrun{
-seroprev_data <- preprare_seroprev_data(mydata)
+seroprev_data <- prepare_seroprev_data(mydata)
 fit_seroprev_model (seroprev_data,
            seroprev_model_name = "constant_foi_bi")
 }

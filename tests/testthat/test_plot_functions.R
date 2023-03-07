@@ -10,7 +10,7 @@ test_that("plot_seroprev_fitted", {
   library(dplyr)
   library(vdiffr)
   set.seed(1234) # For reproducibility
-  data_test <- readRDS(testthat::test_path("extdata", "data.RDS")) %>% preprare_seroprev_data()
+  data_test <- readRDS(testthat::test_path("extdata", "data.RDS")) %>% prepare_seroprev_data()
 
   actual_plot_seroprev <- plot_seroprev(data_test, size_text = 15)
 

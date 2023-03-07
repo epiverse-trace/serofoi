@@ -20,7 +20,7 @@
 #' @return A ggplot object containing the seropositivity-vs-age graph of the raw data of a given seroprevalence survey with its corresponging binomial confidence interval.
 #' @examples
 #' \dontrun{
-#'  data_test <- preprare_seroprev_data(mydata)
+#'  data_test <- prepare_seroprev_data(mydata)
 #'  model_object <- run_seroprev_model(
 #'  seroprev_data = data_test,
 #'  seroprev_model_name = "constant_foi_bi",
@@ -53,7 +53,7 @@ plot_seroprev <- function(seroprev_data,
 #' @return A ggplot object containing the seropositivity-vs-age graph including the data, the fitted model and their corresponding confindence intervals.
 #' @examples
 #' \dontrun{
-#'  data_test <- preprare_seroprev_data(mydata)
+#'  data_test <- prepare_seroprev_data(mydata)
 #'  model_object <- run_seroprev_model(
 #'  seroprev_data = data_test,
 #'  seroprev_model_name = "constant_foi_bi",
@@ -129,7 +129,7 @@ plot_seroprev_fitted <- function(model_object,
 #' @return A ggplot2 object containing the Force-of-infection-vs-time including the corresponding confidence interval.
 #' @examples
 #' \dontrun{
-#'    data_test <- preprare_seroprev_data(mydata)
+#'    data_test <- prepare_seroprev_data(mydata)
 #'    model_object <- run_seroprev_model(
 #'    seroprev_data = data_test,
 #'    seroprev_model_name = "constant_foi_bi",
@@ -222,7 +222,7 @@ plot_foi <- function(model_object,
 #' @return The rhats-convergence plot of the selected model.
 #' @examples
 #' \dontrun{
-#' data_test <- preprare_seroprev_data(mydata)
+#' data_test <- prepare_seroprev_data(mydata)
 #' model_object <- run_seroprev_model(
 #'  seroprev_data = data_test,
 #'  seroprev_model_name = "constant_foi_bi",
@@ -283,7 +283,7 @@ plot_rhats <- function(model_object,
 #' @return A ggplot object with a vertical arrange containing the seropositivity, force of infection, and convergence plots.
 #' @examples
 #' \dontrun{
-#' data_test <- preprare_seroprev_data(mydata)
+#' data_test <- prepare_seroprev_data(mydata)
 #' model_object <- run_seroprev_model(
 #'  seroprev_data = data_test,
 #'  seroprev_model_name = "constant_foi_bi",
@@ -367,7 +367,7 @@ plot_seroprev_model <- function(model_object,
 #' @return p, a variable that will be used in the \link{visualisation} module
 #' @examples
 #' \dontrun{
-#'  data_test <- preprare_seroprev_data(mydata)
+#'  data_test <- prepare_seroprev_data(mydata)
 #'  model_object <- run_seroprev_model(
 #'  seroprev_data = data_test,
 #'  seroprev_model_name = "constant_foi_bi",
@@ -400,7 +400,7 @@ plot_info_table <- function(info, size_text) {
 #' @return A ggplot object containing an array with the plots in \code{models_list}.
 #' @examples
 #' \dontrun{
-#'  data_test <- preprare_seroprev_data(mydata)
+#'  data_test <- prepare_seroprev_data(mydata)
 #'  model_object_constant <- run_seroprev_model(seroprev_data = data_test,
 #'                                     seroprev_model_name = "constant_foi_bi")
 #'  model_object_normalbi <- run_seroprev_model(seroprev_data = data_test,

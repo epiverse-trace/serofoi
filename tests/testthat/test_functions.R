@@ -13,7 +13,7 @@ test_that("compilation", {
     mydata <- readRDS(testthat::test_path("extdata", "data.RDS"))
 
     # Modelling module functions
-    seroprev_data <- preprare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
+    seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
 
     exposure_years <- get_exposure_years(seroprev_data)
 

@@ -22,7 +22,7 @@ Function that generates a plot showing the results for several models.
 }
 \examples{
 \dontrun{
- data_test <- preprare_seroprev_data(mydata)
+ data_test <- prepare_seroprev_data(mydata)
  model_object_constant <- run_seroprev_model(seroprev_data = data_test,
                                     seroprev_model_name = "constant_foi_bi")
  model_object_normalbi <- run_seroprev_model(seroprev_data = data_test,

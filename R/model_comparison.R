@@ -5,7 +5,7 @@
 #' @return rhats table
 #' @examples
 #' \dontrun{
-#' seroprev_data <- preprare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
+#' seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
 #' model_object <- run_seroprev_model(
 #' seroprev_data = seroprev_data, seroprev_model_name = "constant_foi_bi")
 #' get_table_rhats (model_object)
@@ -30,7 +30,7 @@ get_table_rhats <- function(model_object) {
 #' @return comparison table
 #' @examples
 #' \dontrun{
-#' data_test <- preprare_seroprev_data(mydata)
+#' data_test <- prepare_seroprev_data(mydata)
 #' model_0 <- run_seroprev_model(seroprev_data = data_test,
 #'                     seroprev_model_name = "constant_foi_bi",
 #'                     n_iters = 1000)

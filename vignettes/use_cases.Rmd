@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 library(serofoi)
 library(tidyverse)
 rownames(mydata) <- NULL 
-data_test <- preprare_seroprev_data(mydata)
+data_test <- prepare_seroprev_data(mydata)
 
 
 ```
@@ -123,7 +123,7 @@ After preparing the data we can run two models (constant and time varying) avail
 
 ```{r three models, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
 
-chagas2012p <- preprare_seroprev_data(chagas2012)
+chagas2012p <- prepare_seroprev_data(chagas2012)
 
 m1_cha <- run_seroprev_model(seroprev_data = chagas2012p,
                      seroprev_model_name = "constant_foi_bi",
@@ -159,7 +159,7 @@ head(veev2012, 5)
 
 ```{r models_veee, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
 
-veev2012p <- preprare_seroprev_data(veev2012)
+veev2012p <- prepare_seroprev_data(veev2012)
 
 m1_veev <- run_seroprev_model(seroprev_data = veev2012p,
                      seroprev_model_name = "constant_foi_bi",
@@ -203,7 +203,7 @@ head(chik2015, 5)
 
 ```{r models_chik, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
 
-chik2015p <- preprare_seroprev_data(chik2015)
+chik2015p <- prepare_seroprev_data(chik2015)
 
 mod1_chik <- run_seroprev_model(seroprev_data = chik2015p,
                      seroprev_model_name = "constant_foi_bi",

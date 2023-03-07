@@ -29,10 +29,10 @@
 #' @examples
 #'\dontrun{
 #' data_test <- readRDS("data/data.RDS")
-#' data_test <- preprare_seroprev_data(seroprev_data, alpha)
+#' data_test <- prepare_seroprev_data(seroprev_data, alpha)
 #' }
 #' @export
-preprare_seroprev_data <- function(seroprev_data,
+prepare_seroprev_data <- function(seroprev_data,
                          alpha = 0.05) {
   seroprev_data <- seroprev_data %>%
     dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total)) %>%
@@ -81,7 +81,7 @@ preprare_seroprev_data <- function(seroprev_data,
 #' \code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
 #' \code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
 #' }
-#' The last six colums can be added to \code{seroprev_data} by means of the function \code{\link{preprare_seroprev_data}}.
+#' The last six colums can be added to \code{seroprev_data} by means of the function \code{\link{prepare_seroprev_data}}.
 #' @return data set with the binomial confidence intervals
 #' @examples
 #'\dontrun{

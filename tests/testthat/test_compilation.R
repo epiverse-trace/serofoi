@@ -9,7 +9,7 @@ test_that("compilation", {
   # TODO For some reason it is not recognizing the global `mydata` variable, so we need to explicitly load it
   mydata <- readRDS(testthat::test_path("extdata", "data.RDS"))
 
-  data_test <- preprare_seroprev_data(mydata)
+  data_test <- prepare_seroprev_data(mydata)
 
   model_0_object <- run_seroprev_model(
     seroprev_data = data_test,
