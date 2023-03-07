@@ -18,7 +18,7 @@ Function that generates the exposure matrix for a seroprevalence survey.
 \examples{
 \dontrun{
 seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
-exposure_years <- get_exposure_years(seroprev_data)
+exposure_years <- get_exposure_ages(seroprev_data)
 exposure_matrix <- get_exposure_matrix(seroprev_data = seroprev_data, exposure_years = exposure_years)
 }
 }

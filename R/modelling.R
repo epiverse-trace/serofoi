@@ -89,7 +89,7 @@ save_or_load_model <- function(seroprev_model_name = "constant_foi_bi") {
   stan_path <- system.file(base_path, paste(seroprev_model_name, ".stan", sep = ""), package = getPackageName())
 
   model <- rstan::stan_model(stan_path, auto_write = TRUE)
-  
+
   return(model)
 }
 
@@ -148,7 +148,7 @@ fit_seroprev_model <- function(seroprev_data,
                       decades = 0) {
   # add a warning because there are exceptions where a minimal amount of iterations need to be run
   model <- save_or_load_model(seroprev_model_name)
-  exposure_years <- get_exposure_years(seroprev_data)
+  exposure_years <- get_exposure_ages(seroprev_data)
   exposure_years <- exposure_years[-length(exposure_years)]
   real_exposure_years <- (min(seroprev_data$birth_year):seroprev_data$tsur[1])[-1]
   exposure_matrix <- get_exposure_matrix(seroprev_data, exposure_years)
@@ -274,12 +274,12 @@ fit_seroprev_model <- function(seroprev_data,
 #' @examples
 #' \dontrun{
 #' seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
-#' exposure_years <- get_exposure_years(seroprev_data)
+#' exposure_years <- get_exposure_ages(seroprev_data)
 #' }
 #' @export
-get_exposure_years <- function(seroprev_data) {
+get_exposure_ages <- function(seroprev_data) {
   # TODO Verify if this change is correct
-  return(seq_along(min(seroprev_data$birth_year):seroprev_data$tsur[1]))
+  return(seq_along(min(seroprev_data$birth_year):(seroprev_data$tsur[1] - 1)))
 }
 
 
@@ -291,7 +291,7 @@ get_exposure_years <- function(seroprev_data) {
 #' @examples
 #' \dontrun{
 #' seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
-#' exposure_years <- get_exposure_years(seroprev_data)
+#' exposure_years <- get_exposure_ages(seroprev_data)
 #' exposure_matrix <- get_exposure_matrix(seroprev_data = seroprev_data, exposure_years = exposure_years)
 #' }
 #' @export

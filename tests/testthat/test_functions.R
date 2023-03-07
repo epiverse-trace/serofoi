@@ -15,7 +15,7 @@ test_that("compilation", {
     # Modelling module functions
     seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
 
-    exposure_years <- get_exposure_years(seroprev_data)
+    exposure_years <- get_exposure_ages(seroprev_data)
 
     exposure_matrix <- get_exposure_matrix(
         seroprev_data = seroprev_data,
