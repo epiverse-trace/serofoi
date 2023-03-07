@@ -2,28 +2,26 @@
 % Please edit documentation in R/modelling.R
 \name{save_or_load_model}
 \alias{save_or_load_model}
-\title{Save or load model
-This function determines whether the corresponding .RDS file of the selected model exists or not.
-In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the \link[rstan]{stan_model} function, saved as an .RDS file and returned as the output of the function.}
+\title{Save or load model}
 \usage{
-save_or_load_model(model_name = "constant_foi_bi")
+save_or_load_model(seroprev_model_name = "constant_foi_bi")
 }
 \arguments{
-\item{model_name}{Name of the selected model. Current version provides three options:
+\item{seroprev_model_name}{Name of the selected model. Current version provides three options:
 \describe{
-\item{\code{constant_foi_bi}}{Runs a constant model}
-\item{\code{continuous_foi_normal_bi}}{Runs a normal model}
-\item{\code{continuous_foi_normal_log}}{Runs a normal logarithmic model}
+\item{\code{"constant_foi_bi"}}{Runs a constant model}
+\item{\code{"continuous_foi_normal_bi"}}{Runs a normal model}
+\item{\code{"continuous_foi_normal_log"}}{Runs a normal logarithmic model}
 }}
 }
 \value{
 \code{model}. The rstan model object corresponding to the selected model.
 }
 \description{
-Save or load model
 This function determines whether the corresponding .RDS file of the selected model exists or not.
-In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the \link[rstan]{stan_model} function, saved as an .RDS file and returned as the output of the function.
+In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the
+\link[rstan]{stan_model} function, saved as an .RDS file and returned as the output of the function.
 }
 \examples{
-save_or_load_model(model_name = "constant_foi_bi")
+save_or_load_model(seroprev_model_name="constant_foi_bi")
 }

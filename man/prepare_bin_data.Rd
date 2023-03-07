@@ -4,10 +4,31 @@
 \alias{prepare_bin_data}
 \title{Prepare data to plot binomial confidence intervals}
 \usage{
-prepare_bin_data(model_data)
+prepare_bin_data(seroprev_data)
 }
 \arguments{
-\item{model_data}{dataset to be processed}
+\item{seroprev_data}{A data frame containing the data from a seroprevalence survey. For more information see the function \link{run_seroprev_model}.
+This data frame must contain the following columns:
+\tabular{ll}{
+\code{survey} \tab survey Label of the current survey \cr \tab \cr
+\code{total} \tab Number of samples for each age group\cr \tab \cr
+\code{counts} \tab Number of positive samples for each age group\cr \tab \cr
+\code{age_min} \tab age_min \cr \tab \cr
+\code{age_max} \tab age_max \cr \tab \cr
+\code{year_init} \tab year_init \cr \tab \cr
+\code{year_end} \tab year_end \cr \tab \cr
+\code{tsur} \tab Year in which the survey took place \cr \tab \cr
+\code{country} \tab The country where the survey took place \cr \tab \cr
+\code{test} \tab The type of test taken \cr \tab \cr
+\code{antibody} \tab antibody \cr \tab \cr
+\code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
+\code{sample_size} \tab The size of the sample \cr \tab \cr
+\code{birth_year} \tab The year in which the individuals of each age group were bornt \cr \tab \cr
+\code{prev_obs} \tab Observed prevalence \cr \tab \cr
+\code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
+\code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
+}
+The last six colums can be added to \code{seroprev_data} by means of the function \code{\link{prepare_seroprev_data}}.}
 }
 \value{
 data set with the binomial confidence intervals
@@ -16,5 +37,7 @@ data set with the binomial confidence intervals
 Function that prepares the data for modelling
 }
 \examples{
-prepare_bin_data (model_data)
+\dontrun{
+prepare_bin_data (seroprev_data)
+}
 }

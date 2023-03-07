@@ -7,20 +7,25 @@
 plot_rhats(model_object, size_text = 25)
 }
 \arguments{
-\item{model_object}{Object that the run_model function returns with the results of the fit}
+\item{model_object}{Object containing the results of fitting a model by means of \link{run_seroprev_model}.}
 
-\item{model}{Refers to model selected}
-
-\item{xlabel}{Label of axis x}
-
-\item{ylabel}{Label of axis y}
+\item{size_text}{Text size use in the theme of the graph returned by the function.}
 }
 \value{
-The rhats-convergence plot of the selected model
+The rhats-convergence plot of the selected model.
 }
 \description{
-Function that generates the convergence graph of a model
+Function that generates the convergence graph of a model. The x axis corresponds to the decades covered by the survey and the y axis to the value of the rhats. 
+All rhats must be smaller than 1 to ensure convergence.
 }
 \examples{
-plot_rhats(model_0_object, size_text)
+\dontrun{
+data_test <- prepare_seroprev_data(mydata)
+model_object <- run_seroprev_model(
+ seroprev_data = data_test,
+ seroprev_model_name = "constant_foi_bi",
+ n_iters = 1000
+)
+plot_rhats(model_object, size_text = 15)
+}
 }

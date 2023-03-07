@@ -1,0 +1,2 @@
+default:
+  stan_models_base_path: "extdata/stanmodels"
