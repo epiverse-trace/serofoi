@@ -48,6 +48,7 @@ Imports:
     Hmisc,
     dplyr,
     gsubfn,
+    usethis
     testthat (>= 3.0.0),
     vdiffr (>= 1.0.0),
     devtools,
@@ -56,7 +57,9 @@ Imports:
     ggplot2,
     BH,
     RcppEigen,
-    RcppParallel
+    RcppParallel,
+    pracma,
+    purrr
 Suggests: 
     knitr,
     rmarkdown
@@ -64,3 +67,6 @@ VignetteBuilder: knitr
 URL: https://trace-lac.github.io/serofoi/
 Additional_repositories:
     https://mc-stan.org/r-packages/
+Config/testthat/edition: 3
+Remotes:
+    tidyverse/purrr

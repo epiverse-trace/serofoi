@@ -1,24 +1,27 @@
 test_that("compilation", {
+  # So far we are skipping tests on these platforms until
+  # we find an efficient way to update rstan testthat snapshots on all of them
+  skip_on_os(c("windows", "mac"))
   source("testing_utils.R")
 
   set.seed(1234) # For reproducibility
 
   # TODO For some reason it is not recognizing the global `mydata` variable, so we need to explicitly load it
-  mydata <- readRDS(test_path("extdata", "data.RDS"))
+  mydata <- readRDS(testthat::test_path("extdata", "data.RDS"))
 
-  data_test <- prepare_data(mydata)
+  data_test <- prepare_seroprev_data(mydata)
 
-  model_0_object <- run_model(
-    model_data = data_test,
-    model_name = "constant_foi_bi",
+  model_0_object <- run_seroprev_model(
+    seroprev_data = data_test,
+    seroprev_model_name = "constant_foi_bi",
     n_iters = 1000
   )
-  model_0_plot <- plot_model(model_0_object, size_text = 6)
+  model_0_plot <- plot_seroprev_model(model_0_object, size_text = 6)
 
   # plot_seroprev_fitted(model_0_object, size_text = 15)
   # plot_foi(model_0_object, size_text = 15)
   # plot_rhats(model_0_object, size_text = 15)
-  model_summary <- extract_model_summary(model_0_object)
+  model_summary <- extract_seroprev_model_summary(model_0_object)
 
   column_comparation_functions <- list(
     model = equal_exact(),
@@ -35,9 +38,7 @@ test_that("compilation", {
     converged = equal_exact()
   )
 
-  expect_true(
-    compare_dataframes(
-      "model_summary", model_summary, column_comparation_functions
-    )
+  expect_similar_dataframes(
+    "model_summary", model_summary, column_comparation_functions
   )
 })

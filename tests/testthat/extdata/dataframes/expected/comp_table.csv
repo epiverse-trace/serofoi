@@ -1,4 +1,0 @@
-"","model_name","dataset","country","year","test","antibody","n_sample","n_agec","n_iter","elpd","se","converged","difference","diff_se","best_elpd","pvalue"
-"1","continuous_foi_normal_bi","COL-035-18","COL",2007,"ELISA .","IgG",212,27,1000,-29.53,5.33,"Yes",0,-1.32257012698579,1,0.500014
-"2","continuous_foi_normal_log","COL-035-18","COL",2007,"ELISA .","IgG",212,27,1000,-29.58,5.65,"Yes",0,-1.27304624508839,2,0.500013
-"3","constant_foi_bi","COL-035-18","COL",2007,"ELISA .","IgG",212,27,1000,-30.85,4.9,"Yes",0,1,3,0

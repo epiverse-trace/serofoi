@@ -1,2 +1,0 @@
-"","model_name","dataset","country","year","test","antibody","n_sample","n_agec","n_iter","elpd","se","converged"
-"1","constant_foi_bi","COL-035-18","COL",2007,"ELISA .","IgG",212,27,1000,-30.85,4.9,"Yes"

@@ -1,30 +1,35 @@
 test_that("comparison", {
+  # So far we are skipping tests on these platforms until
+  # we find an efficient way to update rstan testthat snapshots on all of them
+  skip_on_os(c("windows", "mac"))
   source("testing_utils.R")
-
+  message("*** Test info ****")
+  message(paste(R.Version()), collapse = " | ")
+  message("Interactive: ", interactive())
   set.seed(1234) # For reproducibility
 
   package <- "serofoi"
 
   # TODO For some reason it is not recognizing the global `mydata` variable, so we need to explicitly load it
-  mydata <- readRDS(test_path("extdata", "data.RDS"))
+  mydata <- readRDS(testthat::test_path("extdata", "data.RDS"))
 
-  data_test <- prepare_data(mydata)
+  data_test <- prepare_seroprev_data(mydata)
 
-  model_0 <- run_model(
-    model_data = data_test,
-    model_name = "constant_foi_bi",
+  model_0 <- run_seroprev_model(
+    seroprev_data = data_test,
+    seroprev_model_name = "constant_foi_bi",
     n_iters = 1000
   )
 
-  model_1 <- run_model(
-    model_data = data_test,
-    model_name = "continuous_foi_normal_bi",
+  model_1 <- run_seroprev_model(
+    seroprev_data = data_test,
+    seroprev_model_name = "continuous_foi_normal_bi",
     n_iters = 1000
   )
 
-  model_2 <- run_model(
-    model_data = data_test,
-    model_name = "continuous_foi_normal_log",
+  model_2 <- run_seroprev_model(
+    seroprev_data = data_test,
+    seroprev_model_name = "continuous_foi_normal_log",
     n_iters = 1000
   )
 
@@ -55,9 +60,7 @@ test_that("comparison", {
     pvalue = equal_with_tolerance()
   )
 
-  expect_true(
-    compare_dataframes(
-      "comp_table", comp_table, column_comparation_functions
-    )
+  expect_similar_dataframes(
+    "comp_table", comp_table, column_comparation_functions
   )
 })

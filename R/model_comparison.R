@@ -5,9 +5,9 @@
 #' @return rhats table
 #' @examples
 #' \dontrun{
-#' model_data <- prepare_data(model_data = mydata, alpha = 0.05)
-#' model_object <- run_model(
-#' model_data = model_data, model_name = "constant_foi_bi")
+#' seroprev_data <- prepare_seroprev_data(seroprev_data = mydata, alpha = 0.05)
+#' model_object <- run_seroprev_model(
+#' seroprev_data = seroprev_data, seroprev_model_name = "constant_foi_bi")
 #' get_table_rhats (model_object)
 #' }
 #' @export
@@ -30,17 +30,17 @@ get_table_rhats <- function(model_object) {
 #' @return comparison table
 #' @examples
 #' \dontrun{
-#' data_test <- prepare_data(mydata)
-#' model_0 <- run_model(model_data = data_test,
-#'                     model_name = "constant_foi_bi",
+#' data_test <- prepare_seroprev_data(mydata)
+#' model_0 <- run_seroprev_model(seroprev_data = data_test,
+#'                     seroprev_model_name = "constant_foi_bi",
 #'                     n_iters = 1000)
 #'
-#' model_1 <- run_model(model_data = data_test,
-#'                     model_name = "continuous_foi_normal_bi",
+#' model_1 <- run_seroprev_model(seroprev_data = data_test,
+#'                     seroprev_model_name = "continuous_foi_normal_bi",
 #'                     n_iters = 1000)
 #'
-#' model_2 <- run_model(model_data = data_test,
-#'                     model_name = "continuous_foi_normal_log",
+#' model_2 <- run_seroprev_model(seroprev_data = data_test,
+#'                     seroprev_model_name = "continuous_foi_normal_log",
 #'                     n_iters = 1000)
 #' comp_table <- get_comparison_table(model_objects_list = c(m0 = model_0,
 #'                                                           m1 = model_1,

@@ -4,10 +4,10 @@
 \alias{prepare_bin_data}
 \title{Prepare data to plot binomial confidence intervals}
 \usage{
-prepare_bin_data(model_data)
+prepare_bin_data(seroprev_data)
 }
 \arguments{
-\item{model_data}{A data frame containing the data from a seroprevalence survey. For more information see the function \link{run_model}.
+\item{seroprev_data}{A data frame containing the data from a seroprevalence survey. For more information see the function \link{run_seroprev_model}.
 This data frame must contain the following columns:
 \tabular{ll}{
 \code{survey} \tab survey Label of the current survey \cr \tab \cr
@@ -28,7 +28,7 @@ This data frame must contain the following columns:
 \code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
 \code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
 }
-The last six colums can be added to \code{model_data} by means of the function \code{\link{prepare_data}}.}
+The last six colums can be added to \code{seroprev_data} by means of the function \code{\link{prepare_seroprev_data}}.}
 }
 \value{
 data set with the binomial confidence intervals
@@ -38,6 +38,6 @@ Function that prepares the data for modelling
 }
 \examples{
 \dontrun{
-prepare_bin_data (model_data)
+prepare_bin_data (seroprev_data)
 }
 }

@@ -19,17 +19,17 @@ Provides a table with statistics for comparison between models and selection
 }
 \examples{
 \dontrun{
-data_test <- prepare_data(mydata)
-model_0 <- run_model(model_data = data_test,
-                    model_name = "constant_foi_bi",
+data_test <- prepare_seroprev_data(mydata)
+model_0 <- run_seroprev_model(seroprev_data = data_test,
+                    seroprev_model_name = "constant_foi_bi",
                     n_iters = 1000)
 
-model_1 <- run_model(model_data = data_test,
-                    model_name = "continuous_foi_normal_bi",
+model_1 <- run_seroprev_model(seroprev_data = data_test,
+                    seroprev_model_name = "continuous_foi_normal_bi",
                     n_iters = 1000)
 
-model_2 <- run_model(model_data = data_test,
-                    model_name = "continuous_foi_normal_log",
+model_2 <- run_seroprev_model(seroprev_data = data_test,
+                    seroprev_model_name = "continuous_foi_normal_log",
                     n_iters = 1000)
 comp_table <- get_comparison_table(model_objects_list = c(m0 = model_0,
                                                           m1 = model_1,
