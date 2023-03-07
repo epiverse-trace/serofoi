@@ -12,5 +12,5 @@ library(roxygen2)
 devtools::document()
 usethis::use_pkgdown_github_pages()
 pkgdown::build_site()
-use_github_pages(branch = "dev-webrd", path = "/", cname = NA)
+use_github_pages(branch = "dev", path = "/", cname = NA)
 

@@ -25,7 +25,7 @@ data_test <- prepare_seroprev_data(mydata)
 
 ```
 
-# Epidemiological scenarios for the *serofoi* models  
+# Epidemiological scenarios for the *serofoi* models
 
 **serofoi** is an R package that allows estimations of the Force-of-Infection from a population based serosurvey data.
 
