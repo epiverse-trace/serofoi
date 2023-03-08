@@ -32,8 +32,8 @@
 #' data_test <- prepare_seroprev_data(seroprev_data, alpha)
 #' }
 #' @export
-prepare_seroprev_data <- function(seroprev_data,
-                         alpha = 0.05) {
+prepare_seroprev_data <- function(seroprev_data = serodata,
+                                  alpha = 0.05) {
   seroprev_data <- seroprev_data %>%
     dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total)) %>%
     dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f) %>%
