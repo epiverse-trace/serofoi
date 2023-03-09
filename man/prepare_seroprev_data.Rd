@@ -4,7 +4,7 @@
 \alias{prepare_seroprev_data}
 \title{Prepare data}
 \usage{
-prepare_seroprev_data(seroprev_data, alpha = 0.05)
+prepare_seroprev_data(seroprev_data = serodata, alpha = 0.05)
 }
 \arguments{
 \item{seroprev_data}{A data frame containing the data from a seroprevalence survey.

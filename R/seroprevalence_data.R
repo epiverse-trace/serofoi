@@ -32,7 +32,7 @@
 #' data_test <- prepare_seroprev_data(seroprev_data, alpha)
 #' }
 #' @export
-prepare_seroprev_data <- function(seroprev_data,
+prepare_seroprev_data <- function(seroprev_data = serodata,
                                   alpha = 0.05, 
                                   add_age_mean_f = TRUE) {
   if(add_age_mean_f){
