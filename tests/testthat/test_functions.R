@@ -15,12 +15,10 @@ test_that("compilation", {
     # Modelling module functions
     seroprev_data <- prepare_seroprev_data(seroprev_data = serodata, alpha = 0.05)
 
-    exposure_ages <- get_exposure_ages(seroprev_data)
+    # exposure_ages <- get_exposure_ages(seroprev_data)
 
     exposure_matrix <- get_exposure_matrix(
-        seroprev_data = seroprev_data,
-        exposure_ages = exposure_ages
-    )
+        seroprev_data = seroprev_data)
 
     stan_model <- save_or_load_model(seroprev_model_name = "constant_foi_bi")
 

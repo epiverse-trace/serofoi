@@ -149,9 +149,8 @@ fit_seroprev_model <- function(seroprev_data,
   # add a warning because there are exceptions where a minimal amount of iterations need to be run
   model <- save_or_load_model(seroprev_model_name)
   exposure_ages <- get_exposure_ages(seroprev_data)
-  # exposure_ages <- exposure_ages[-length(exposure_ages)]
   exposure_years <- (min(seroprev_data$birth_year):seroprev_data$tsur[1])[-1]
-  exposure_matrix <- get_exposure_matrix(seroprev_data, exposure_ages)
+  exposure_matrix <- get_exposure_matrix(seroprev_data)
   Nobs <- nrow(seroprev_data)
 
   stan_data <- list(
@@ -291,13 +290,12 @@ get_exposure_ages <- function(seroprev_data) {
 #' @examples
 #' \dontrun{
 #' seroprev_data <- prepare_seroprev_data(seroprev_data = serodata, alpha = 0.05)
-#' exposure_ages <- get_exposure_ages(seroprev_data)
-#' exposure_matrix <- get_exposure_matrix(seroprev_data = seroprev_data, exposure_ages = exposure_ages)
+#' exposure_matrix <- get_exposure_matrix(seroprev_data = seroprev_data)
 #' }
 #' @export
-get_exposure_matrix <- function(seroprev_data,
-                                exposure_ages) {
+get_exposure_matrix <- function(seroprev_data) {
   age_class <- seroprev_data$age_mean_f
+  exposure_ages <- get_exposure_ages(seroprev_data)
   ly <- length(exposure_ages)
   exposure <- matrix(0, nrow = length(age_class), ncol = ly)
   for (k in 1:length(age_class))
