@@ -333,7 +333,7 @@ get_exposure_matrix <- function(seroprev_data) {
 #' }
 #' @export
 extract_seroprev_model_summary <- function(model_object) {
-  seroprev_model_name <- model_object$model
+  seroprev_model_name <- model_object$seroprev_model_name
   seroprev_data <- model_object$seroprev_data
   #------- Loo estimates
 
@@ -344,7 +344,7 @@ extract_seroprev_model_summary <- function(model_object) {
     lll <- c(-1e10, 0)
   }
   model_summary <- data.frame(
-    seroprev_model_name = model_object$seroprev_model_name,
+    seroprev_model_name = seroprev_model_name,
     dataset = seroprev_data$survey[1],
     country = seroprev_data$country[1],
     year = seroprev_data$tsur[1],
