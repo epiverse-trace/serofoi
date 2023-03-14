@@ -3,9 +3,6 @@ test_that("comparison", {
   # we find an efficient way to update rstan testthat snapshots on all of them
   skip_on_os(c("windows", "mac"))
   source("testing_utils.R")
-  message("*** Test info ****")
-  message(paste(R.Version()), collapse = " | ")
-  message("Interactive: ", interactive())
   set.seed(1234) # For reproducibility
 
   package <- "serofoi"

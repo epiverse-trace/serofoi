@@ -53,7 +53,6 @@ run_seroprev_model <- function(seroprev_data,
                       decades = 0) {
   survey <- unique(seroprev_data$survey)
   if (length(survey) > 1) warning("You have more than 1 surveys or survey codes")
-  model <- save_or_load_model(seroprev_model_name = seroprev_model_name)
   model_object <- fit_seroprev_model(seroprev_data = seroprev_data,
                             seroprev_model_name = seroprev_model_name,
                             n_iters = n_iters,
@@ -86,6 +85,10 @@ run_seroprev_model <- function(seroprev_data,
 save_or_load_model <- function(seroprev_model_name = "constant_foi_bi") {
   base_path <- config::get("stan_models_base_path",
     file = system.file("config.yml", package = "serofoi", mustWork = TRUE))
+  rds_path <- system.file(base_path, paste(seroprev_model_name, ".rds", sep = ""), package = getPackageName())
+  if (!file.exists(rds_path)) {
+    message(sprintf("\nNo rds file found for model %s. Compiling stan model...", seroprev_model_name))
+  }
   stan_path <- system.file(base_path, paste(seroprev_model_name, ".stan", sep = ""), package = getPackageName())
 
   model <- rstan::stan_model(stan_path, auto_write = TRUE)
