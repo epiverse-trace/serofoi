@@ -1,5 +1,5 @@
 ---
-title: "serofoi"
+title: "Use cases"
 output: rmarkdown::html_vignette
 bibliography: references.bib
 link-citations: true
