@@ -35,7 +35,7 @@
 </defs>
 <g clip-path='url(#cpMC4wMHwyNDAuMDB8MC4wMHw4Mi4yOQ==)'>
 <text x='120.00' y='18.56' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='119.59px' lengthAdjust='spacingAndGlyphs'>seroprev_model_name: constant_foi_bi</text>
-<text x='120.00' y='31.03' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='41.76px' lengthAdjust='spacingAndGlyphs'>dataset: foi_A</text>
+<text x='120.00' y='31.03' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='47.83px' lengthAdjust='spacingAndGlyphs'>dataset: sim_foi</text>
 <text x='120.00' y='43.49' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='36.07px' lengthAdjust='spacingAndGlyphs'>elpd: -66.18</text>
 <text x='120.00' y='55.96' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='20.50px' lengthAdjust='spacingAndGlyphs'>se: 5.5</text>
 <text x='120.00' y='68.43' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='47.46px' lengthAdjust='spacingAndGlyphs'>converged: Yes</text>
@@ -342,7 +342,7 @@
 </defs>
 <g clip-path='url(#cpMjQwLjAwfDQ4MC4wMHwwLjAwfDgyLjI5)'>
 <text x='360.00' y='18.56' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='151.48px' lengthAdjust='spacingAndGlyphs'>seroprev_model_name: continuous_foi_normal_bi</text>
-<text x='360.00' y='31.03' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='41.76px' lengthAdjust='spacingAndGlyphs'>dataset: foi_A</text>
+<text x='360.00' y='31.03' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='47.83px' lengthAdjust='spacingAndGlyphs'>dataset: sim_foi</text>
 <text x='360.00' y='43.49' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='36.07px' lengthAdjust='spacingAndGlyphs'>elpd: -66.45</text>
 <text x='360.00' y='55.96' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='24.30px' lengthAdjust='spacingAndGlyphs'>se: 5.63</text>
 <text x='360.00' y='68.43' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='47.46px' lengthAdjust='spacingAndGlyphs'>converged: Yes</text>
@@ -649,7 +649,7 @@
 </defs>
 <g clip-path='url(#cpNDgwLjAwfDcyMC4wMHwwLjAwfDgyLjI5)'>
 <text x='600.00' y='18.56' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='155.28px' lengthAdjust='spacingAndGlyphs'>seroprev_model_name: continuous_foi_normal_log</text>
-<text x='600.00' y='31.03' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='41.76px' lengthAdjust='spacingAndGlyphs'>dataset: foi_A</text>
+<text x='600.00' y='31.03' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='47.83px' lengthAdjust='spacingAndGlyphs'>dataset: sim_foi</text>
 <text x='600.00' y='43.49' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='32.27px' lengthAdjust='spacingAndGlyphs'>elpd: -66.8</text>
 <text x='600.00' y='55.96' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='24.30px' lengthAdjust='spacingAndGlyphs'>se: 5.59</text>
 <text x='600.00' y='68.43' text-anchor='middle' style='font-size: 6.83px; font-weight: bold; font-family: sans;' textLength='47.46px' lengthAdjust='spacingAndGlyphs'>converged: Yes</text>

@@ -170,7 +170,8 @@ generate_sim_data <- function(foi,
                               birth_year_min,
                               survey_label,
                               test = "fake",
-                              antibody = "IgG"
+                              antibody = "IgG",
+                              seed = 1234
                               ){
     sim_data <- data.frame(birth_year = c(birth_year_min:(tsur - 1))) %>%
         mutate(tsur = tsur,
@@ -180,14 +181,14 @@ generate_sim_data <- function(foi,
             survey = survey_label,
             age_mean_f = tsur - birth_year)
     sim_data <- sim_data %>%
-        mutate(counts = get_sim_counts(sim_data, foi, size_age_class),
+        mutate(counts = get_sim_counts(sim_data, foi, size_age_class, seed = seed),
             total = size_age_class) %>%
         prepare_seroprev_data(add_age_mean_f = FALSE)
 
     return(sim_data)
 }
 
-# TODO: Complete the documentation of generate_sim_data_grouped
+# TODO: Complete the documentation of group_sim_data
 #' Function that generates  grouped simulated data from a given Force-of-Infection
 #'
 #' @param sim_data Dataframe with the structure of the output of \code{\linl{generate_sim_data}}.
@@ -201,22 +202,23 @@ generate_sim_data <- function(foi,
 #'                               tsur = 2050,
 #'                               birth_year_min = 2000,
 #'                               survey_label = 'sim_constant_foi')
-#' sim_data_A_grouped <- generate_sim_data_grouped(sim_data = sim_data,
-#'                                                 foi = foi,
-#'                                                 size_age_class = size_age_class,
-#'                                                 tsur = 2050,
-#'                                                 birth_year_min = 2000,
-#'                                                 survey_label = 'sim_constant_foi_grouped')
+#' sim_data_grouped <- group_sim_data(sim_data = sim_data,
+#'                                    foi = foi,
+#'                                    size_age_class = size_age_class,
+#'                                    tsur = 2050,
+#'                                    birth_year_min = 2000,
+#'                                    survey_label = 'sim_constant_foi_grouped')
 #' }
 #' @export
-generate_sim_data_grouped <- function(sim_data,
-                                      foi,
-                                      size_age_class,
-                                      tsur,
-                                      birth_year_min,
-                                      survey_label,
-                                      test = "fake",
-                                      antibody = "IgG") {
+group_sim_data <- function(sim_data,
+                          foi,
+                          size_age_class,
+                          tsur,
+                          birth_year_min,
+                          survey_label,
+                          test = "fake",
+                          antibody = "IgG",
+                          seed = 1234) {
 
     sim_data <- sim_data %>% mutate(age_group = 'NA', age = age_mean_f) %>% arrange(age)
     sim_data$age_group[sim_data$age > 0 & sim_data$age < 5] <-   '01-04'
