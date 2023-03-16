@@ -14,7 +14,7 @@ test_that("simulated data", {
     #----- Test foi case A
     # sim_foi <- rep(0.02, 50)
     # case_label <- "case_A_"
-    # max_lambda <- 0.05
+    # max_lambda <- 0.035
 
     #----- Test foi case B
     no_transm <- 0.0000000001
@@ -54,7 +54,9 @@ test_that("simulated data", {
     sim_foi_plot_constant <- plot_foi(model_constant, size_text = 10, max_lambda = max_lambda) +
       ggplot2::geom_point(data = data.frame(year = model_constant$exposure_years,
                                             foi = sim_foi),
-                          ggplot2::aes(year, foi))
+                          ggplot2::aes(year, foi)) +
+      ggplot2::ggtitle(paste0(case_label, "no_group_", seed))
+
     sim_foi_plot_normal <- plot_foi(model_normal, size_text = 10, max_lambda = max_lambda) +
       ggplot2::geom_point(data = data.frame(year = model_normal$exposure_years,
                                             foi = sim_foi),
@@ -67,6 +69,7 @@ test_that("simulated data", {
                                                       sim_foi_plot_normal,
                                                       sim_foi_plot_log,
                                                       n_col = 1, n_row = 3)
+
     vdiffr::expect_doppelganger(paste0(case_label, "no_group_foi_", seed), sim_foi_plot_arrange)
 
 
@@ -97,7 +100,8 @@ test_that("simulated data", {
     sim_foi_grouped_constant_plot <- plot_foi(model_grouped_constant, size_text = 10, max_lambda = max_lambda) +
       ggplot2::geom_point(data = data.frame(year = model_constant$exposure_years,
                                             foi = sim_foi),
-                          ggplot2::aes(year, foi))
+                          ggplot2::aes(year, foi)) +
+      ggplot2::ggtitle(paste0(case_label, "group_", seed))
     sim_foi_grouped_normal_plot <- plot_foi(model_grouped_normal, size_text = 10, max_lambda = max_lambda) +
       ggplot2::geom_point(data = data.frame(year = model_normal$exposure_years,
                                             foi = sim_foi),
