@@ -8,20 +8,29 @@ test_that("simulated data", {
     library(serofoi)
     library(pracma)
 
-
     seed = 1234
     size_age_class = 5
     #----- Test foi case A
-    # sim_foi <- rep(0.02, 50)
-    # case_label <- "case_A_"
-    # max_lambda <- 0.035
+    sim_foi <- rep(0.02, 50)
+    case_label <- "case_A_"
+    max_lambda <- 0.035
 
     #----- Test foi case B
-    no_transm <- 0.0000000001
-    sim_foi <- c(rep(0.2, 25), rep(0.1, 10), rep(no_transm, 15))
-    case_label <- "case_B_"
-    max_lambda <- 0.3
+    # no_transm <- 0.0000000001
+    # sim_foi <- c(rep(0.2, 25), rep(0.1, 10), rep(no_transm, 15))
+    # case_label <- "case_B_"
+    # max_lambda <- 0.3
 
+    #----- Results paths
+    data_path_no_grouped <- testthat::test_path(
+      "extdata", paste0(case_label, "sim_data_no_grouped.csv")
+    )
+
+    data_path_grouped <- testthat::test_path(
+      "extdata", paste0(case_label, "sim_data_grouped.csv")
+    )
+
+    #----- Data simulation
     sim_data <- generate_sim_data(foi = sim_foi,
                                   size_age_class = size_age_class,
                                   tsur = 2050,
@@ -30,6 +39,7 @@ test_that("simulated data", {
                                   seed = seed)
 
     sim_data <- sim_data %>% mutate(age_min = age_mean_f, age_max = age_mean_f)
+    write.csv(sim_data, data_path_no_grouped, row.names = FALSE)
 
     model_constant <- run_seroprev_model(seroprev_data = sim_data,
                                           seroprev_model_name = "constant_foi_bi")
@@ -79,6 +89,7 @@ test_that("simulated data", {
                                       tsur = 2050,
                                       birth_year_min = 2000,
                                       survey_label = 'sim_foi')
+    write.csv(sim_data_grouped, data_path_grouped, row.names = FALSE)
 
     model_grouped_constant <- run_seroprev_model(seroprev_data = sim_data_grouped,
                                           seroprev_model_name = "constant_foi_bi")
