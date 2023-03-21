@@ -152,9 +152,8 @@ fit_seroprev_model <- function(seroprev_data,
   # add a warning because there are exceptions where a minimal amount of iterations need to be run
   model <- save_or_load_model(seroprev_model_name)
   exposure_ages <- get_exposure_ages(seroprev_data)
-  # exposure_ages <- exposure_ages[-length(exposure_ages)]
   exposure_years <- (min(seroprev_data$birth_year):seroprev_data$tsur[1])[-1]
-  exposure_matrix <- get_exposure_matrix(seroprev_data, exposure_ages)
+  exposure_matrix <- get_exposure_matrix(seroprev_data)
   Nobs <- nrow(seroprev_data)
 
   stan_data <- list(
@@ -294,13 +293,12 @@ get_exposure_ages <- function(seroprev_data) {
 #' @examples
 #' \dontrun{
 #' seroprev_data <- prepare_seroprev_data(seroprev_data = serodata, alpha = 0.05)
-#' exposure_ages <- get_exposure_ages(seroprev_data)
-#' exposure_matrix <- get_exposure_matrix(seroprev_data = seroprev_data, exposure_ages = exposure_ages)
+#' exposure_matrix <- get_exposure_matrix(seroprev_data = seroprev_data)
 #' }
 #' @export
-get_exposure_matrix <- function(seroprev_data,
-                                exposure_ages) {
+get_exposure_matrix <- function(seroprev_data) {
   age_class <- seroprev_data$age_mean_f
+  exposure_ages <- get_exposure_ages(seroprev_data)
   ly <- length(exposure_ages)
   exposure <- matrix(0, nrow = length(age_class), ncol = ly)
   for (k in 1:length(age_class))
@@ -338,7 +336,7 @@ get_exposure_matrix <- function(seroprev_data,
 #' }
 #' @export
 extract_seroprev_model_summary <- function(model_object) {
-  seroprev_model_name <- model_object$model
+  seroprev_model_name <- model_object$seroprev_model_name
   seroprev_data <- model_object$seroprev_data
   #------- Loo estimates
 
@@ -349,7 +347,7 @@ extract_seroprev_model_summary <- function(model_object) {
     lll <- c(-1e10, 0)
   }
   model_summary <- data.frame(
-    seroprev_model_name = model_object$seroprev_model_name,
+    seroprev_model_name = seroprev_model_name,
     dataset = seroprev_data$survey[1],
     country = seroprev_data$country[1],
     year = seroprev_data$tsur[1],
