@@ -21,7 +21,7 @@ Function that generates the expanded prevalence
 \dontrun{
 seroprev_data <- prepare_seroprev_data(serodata)
 model_object <- run_seroprev_model(seroprev_data = seroprev_data,
-                                   seroprev_model_name = "constant_foi_bi")
+                          seroprev_model_name = "constant_foi_bi")
 foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]
 get_prev_expanded <- function(foi, seroprev_data)
 }
