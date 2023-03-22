@@ -245,4 +245,5 @@ group_sim_data <- function(sim_data,
       prepare_seroprev_data()
 
     return(sim_data_grouped)
+
 }

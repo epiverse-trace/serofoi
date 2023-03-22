@@ -23,7 +23,6 @@ get_table_rhats <- function(model_object) {
   return(model_rhats)
 }
 
-
 #' Get Model Table Comparison
 #' Provides a table with statistics for comparison between models and selection
 #' @param model_objects_list model_objects to compare
@@ -51,10 +50,10 @@ get_comparison_table <- function(model_objects_list) {
 
 
   dif_m0_m1 <- loo::loo_compare(model_objects_list$m0.loo_fit,
-                                 model_objects_list$m1.loo_fit)
+                                model_objects_list$m1.loo_fit)
 
   dif_m0_m2 <- loo::loo_compare(model_objects_list$m0.loo_fit,
-                                 model_objects_list$m2.loo_fit)
+                                model_objects_list$m2.loo_fit)
 
   # Aquí pendiente revisar <diference> desde la función summary_model
   # No estoy segura que este parámetro venga bien desde allá ni tampoco que esté bien acá
