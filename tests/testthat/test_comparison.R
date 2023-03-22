@@ -1,0 +1,63 @@
+test_that("comparison", {
+  # So far we are skipping tests on these platforms until
+  # we find an efficient way to update rstan testthat snapshots on all of them
+  skip_on_os(c("windows", "mac"))
+  source("testing_utils.R")
+  set.seed(1234) # For reproducibility
+
+  package <- "serofoi"
+
+  # TODO For some reason it is not recognizing the global `serodata` variable, so we need to explicitly load it
+  serodata <- readRDS(testthat::test_path("extdata", "data.RDS"))
+
+  data_test <- prepare_seroprev_data(serodata)
+
+  model_0 <- run_seroprev_model(
+    seroprev_data = data_test,
+    seroprev_model_name = "constant_foi_bi",
+    n_iters = 1000
+  )
+
+  model_1 <- run_seroprev_model(
+    seroprev_data = data_test,
+    seroprev_model_name = "continuous_foi_normal_bi",
+    n_iters = 1000
+  )
+
+  model_2 <- run_seroprev_model(
+    seroprev_data = data_test,
+    seroprev_model_name = "continuous_foi_normal_log",
+    n_iters = 1000
+  )
+
+  comp_table <- get_comparison_table(
+    model_objects_list = c(
+      m0 = model_0,
+      m1 = model_1,
+      m2 = model_2
+    )
+  )
+
+  column_comparation_functions <- list(
+    model = equal_exact(),
+    dataset = equal_exact(),
+    country = equal_exact(),
+    year = equal_exact(),
+    test = equal_exact(),
+    antibody = equal_exact(),
+    n_sample = equal_exact(),
+    n_agec = equal_exact(),
+    n_iter = equal_exact(),
+    elpd = equal_with_tolerance(),
+    se = equal_with_tolerance(),
+    converged = equal_exact(),
+    difference = equal_exact(),
+    diff_se = equal_with_tolerance(),
+    best_elpd = equal_exact(),
+    pvalue = equal_with_tolerance()
+  )
+
+  expect_similar_dataframes(
+    "comp_table", comp_table, column_comparation_functions
+  )
+})
