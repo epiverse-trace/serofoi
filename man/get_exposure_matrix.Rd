@@ -4,16 +4,20 @@
 \alias{get_exposure_matrix}
 \title{Get Exposure Matrix}
 \usage{
-get_exposure_matrix(model_data, yexpo)
+get_exposure_matrix(seroprev_data)
 }
 \arguments{
-\item{model_data}{refers to the model data that has been selected}
-
-\item{yexpo}{what the make yexpo function returns}
+\item{seroprev_data}{A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_seroprev_data} function.}
 }
 \value{
-exposure_output
+\code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{seroprev_data} by year.
 }
 \description{
-Function that generates the exposure matrix
+Function that generates the exposure matrix for a seroprevalence survey.
+}
+\examples{
+\dontrun{
+seroprev_data <- prepare_seroprev_data(seroprev_data = serodata, alpha = 0.05)
+exposure_matrix <- get_exposure_matrix(seroprev_data = seroprev_data)
+}
 }
