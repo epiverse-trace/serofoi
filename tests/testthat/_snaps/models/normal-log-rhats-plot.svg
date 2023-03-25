@@ -139,6 +139,6 @@
 <text x='586.95' y='548.86' text-anchor='middle' style='font-size: 12.00px; fill: #4D4D4D; font-family: sans;' textLength='26.70px' lengthAdjust='spacingAndGlyphs'>2000</text>
 <text x='380.29' y='565.41' text-anchor='middle' style='font-size: 15.00px; font-family: sans;' textLength='29.19px' lengthAdjust='spacingAndGlyphs'>year</text>
 <text transform='translate(17.79,282.47) rotate(-90)' text-anchor='middle' style='font-size: 15.00px; font-family: sans;' textLength='121.27px' lengthAdjust='spacingAndGlyphs'>Convergence (R^)</text>
-<text x='48.05' y='19.86' style='font-size: 18.00px; font-family: sans;' textLength='164.12px' lengthAdjust='spacingAndGlyphs'>rhats_individual_plot</text>
+<text x='48.05' y='19.86' style='font-size: 18.00px; font-family: sans;' textLength='178.12px' lengthAdjust='spacingAndGlyphs'>normal_log_rhats_plot</text>
 </g>
 </svg>
