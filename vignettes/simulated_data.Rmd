@@ -4,7 +4,7 @@ output: rmarkdown::html_vignette
 bibliography: references.bib
 link-citations: true
 vignette: >
-  %\VignetteIndexEntry{simdata}
+  %\VignetteIndexEntry{Simulated data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -153,13 +153,12 @@ plot_seroprev_models_grid(p1_cha, p2_cha, n_row = 1, n_col = 2)
 As shown in [@Carrera2020], hidden epidemic and endemic transmission of alphaviruses in Eastern Panama have been around for decades. From this paper we use a dataset measuring IgG antibodies againts Venezuelan Equine Encephalitis Virus (VEEV) in a rural village in Panamá in 2017. This dataset, `veev2017` is included in serofoi.
 
 ```{r data_veev, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
-
 data("veev2012")
 head(veev2012, 5)
 
 ```
 
-```{r models_veee, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
+```{r models_veev, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
 
 veev2012p <- prepare_seroprev_data(veev2012)
 
@@ -197,9 +196,7 @@ Figure 3. Results of fitted models, Force-of-Infection estimates and convergence
 Chikungunya outbreaks ocurred rapidly after the introduction of the virus to Brazil in 2013-2014. We use the dataset from [@dias2018] that conducts a population-based study through household interviews and serologic surveys (measuring IgG antibodies against Chikungunya virus) in Bahia, Brazil during October-December 2015, right after a large CHIKV epidemic that occurred in that area.
 
 ```{r data_chik, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
-
 data("chik2015")
-
 head(chik2015, 5)
 
 ```

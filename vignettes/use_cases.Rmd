@@ -4,7 +4,7 @@ output: rmarkdown::html_vignette
 bibliography: references.bib
 link-citations: true
 vignette: >
-  %\VignetteIndexEntry{use_cases}
+  %\VignetteIndexEntry{Use cases}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -75,9 +75,9 @@ The corresponding code for the constant-FoI model with binomial distribution is:
 
 ```{r model_1, include = FALSE, echo=TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_1 <- run_seroprev_model(seroprev_data = data_test,
-                     seroprev_model_name = "constant_foi_bi",
-                     n_iters = 500, 
-                     n_thin = 2)
+                             seroprev_model_name = "constant_foi_bi",
+                             n_iters = 500, 
+                             n_thin = 2)
 
 ```
 
@@ -95,14 +95,16 @@ Currently, two models within *serofoi* allow time-varying FoI, with correspondin
 
 ```{r model_2, include = FALSE, echo = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_2 <- run_seroprev_model(seroprev_data = data_test,
-                     seroprev_model_name = "continuous_foi_normal_bi",
-                     n_iters = 1500, 
-                     n_thin = 2)
+                             seroprev_model_name = "continuous_foi_normal_bi",
+                             n_iters = 1500, 
+                             n_thin = 2)
+```
 
+```{r model_3, include = FALSE, echo = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_3 <- run_seroprev_model(seroprev_data = data_test,
-                     seroprev_model_name = "continuous_foi_normal_log",
-                     n_iters = 1500, 
-                     n_thin = 2)
+                             seroprev_model_name = "continuous_foi_normal_log",
+                             n_iters = 1500, 
+                             n_thin = 2)
 ```
 
 ## Fitting process
@@ -114,7 +116,7 @@ Models are implemented in **RStan** using the No-U-Turn sampler, a type of Hamil
 Based on the data and analysis shown in [@Cucunubá2017], we use one of the datasets for measuring the sero-prevalence of IgG antibodies against *Trypanosoma cruzi* infection in rural area of Colombia in 2012. The dataset is part of the serofoi package as `chagas2012`.
 
 ```{r data_chagas, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
-chagas2012 <- readRDS("../data/chagas2012.RDS") # This can be removed once data is incorporated
+data("chagas2012")
 head(chagas2012, 5)
 
 ```
@@ -151,13 +153,12 @@ plot_seroprev_models_grid(p1_cha, p2_cha, n_row = 1, n_col = 2)
 As shown in [@Carrera2020], hidden epidemic and endemic transmission of alphaviruses in Eastern Panama have been around for decades. From this paper we use a dataset measuring IgG antibodies againts Venezuelan Equine Encephalitis Virus (VEEV) in a rural village in Panamá in 2017. This dataset, `veev2017` is included in serofoi.
 
 ```{r data_veev, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
-
-veev2012 <- readRDS("../data/veev2012.RDS")
+data("veev2012")
 head(veev2012, 5)
 
 ```
 
-```{r models_veee, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
+```{r models_veev, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
 
 veev2012p <- prepare_seroprev_data(veev2012)
 
@@ -195,8 +196,7 @@ Figure 3. Results of fitted models, Force-of-Infection estimates and convergence
 Chikungunya outbreaks ocurred rapidly after the introduction of the virus to Brazil in 2013-2014. We use the dataset from [@dias2018] that conducts a population-based study through household interviews and serologic surveys (measuring IgG antibodies against Chikungunya virus) in Bahia, Brazil during October-December 2015, right after a large CHIKV epidemic that occurred in that area.
 
 ```{r data_chik, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
-
-chik2015 <- readRDS("../data/chik2015.RDS")
+data("chik2015")
 head(chik2015, 5)
 
 ```
