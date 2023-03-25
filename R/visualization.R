@@ -389,29 +389,3 @@ plot_info_table <- function(info, size_text) {
 
   return(p)
 }
-
-
-#' Function that generates a plot showing the results for several models.
-#' 
-#' @param ... The first n arguments of the function are taken as plots ti be arranged in a single plot.
-#' This objects can be obtained by means of \link{run_seroprev_model}.
-#' @param n_row Number of rows of the plot array.
-#' @param n_col Number of columns of the plot array.
-#' @return A ggplot object containing an array with the plots in \code{models_list}.
-#' @examples
-#' \dontrun{
-#'  data_test <- prepare_seroprev_data(serodata)
-#'  model_object_constant <- run_seroprev_model(seroprev_data = data_test,
-#'                                     seroprev_model_name = "constant_foi_bi")
-#'  model_object_normalbi <- run_seroprev_model(seroprev_data = data_test,
-#'                                     seroprev_model_name = "continuous_foi_normal_bi")
-#'  model_object_normallog <- run_seroprev_model(seroprev_data = data_test,
-#'                                      seroprev_model_name = "continuous_foi_normal_log")
-#'  plot_seroprev_models_list(model_object_constant, model_object_normalbi, model_object_normallog, n_row = 1, n_col = 3)
-#' }
-#' @export
-plot_seroprev_models_grid <- function(..., n_row = NULL, n_col = NULL) {
-  # TODO Distribute rows and columns according to the number of rows.
-  plot_seroprev_models <- cowplot::plot_grid(..., nrow = n_row, ncol = n_col)
-  return(plot_seroprev_models)
-}
