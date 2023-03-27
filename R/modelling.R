@@ -36,7 +36,7 @@
 #' For further details refer to the \code{control} parameter in \link[rstan]{sampling} or \href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.
 #' @param m_treed Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the \code{control} parameter in \link[rstan]{sampling}.
 #' @param decades Number of decades covered by the survey data.
-#' @return \code{model_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seromodel}.
+#' @return \code{seromodel_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seromodel}.
 #' @examples
 #' \dontrun{
 #' serodata <- prepare_serodata(serodata)
@@ -53,7 +53,7 @@ run_seromodel <- function(serodata,
                       decades = 0) {
   survey <- unique(serodata$survey)
   if (length(survey) > 1) warning("You have more than 1 surveys or survey codes")
-  model_object <- fit_seromodel(serodata = serodata,
+  seromodel_object <- fit_seromodel(serodata = serodata,
                             seromodel_name = seromodel_name,
                             n_iters = n_iters,
                             n_thin = n_thin,
@@ -62,8 +62,8 @@ run_seromodel <- function(serodata,
                             decades = decades); print(paste0("serofoi model ",
                                                               seromodel_name,
                                                               " finished running ------"))
-  print(t(model_object$model_summary))
-  return(model_object)
+  print(t(seromodel_object$model_summary))
+  return(seromodel_object)
 }
 
 #' Save or load model
@@ -114,7 +114,7 @@ save_or_load_model <- function(seromodel_name = "constant_foi_bi") {
 #' For further details refer to the \code{control} parameter in \link[rstan]{sampling} or \href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.
 #' @param m_treed Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the \code{control} parameter in \link[rstan]{sampling}.
 #' @param decades Number of decades covered by the survey data.
-#' @return \code{model_object}. An object containing relevant information about the implementation of the model. It contains the following:
+#' @return \code{seromodel_object}. An object containing relevant information about the implementation of the model. It contains the following:
 #' \tabular{ll}{
 #' \code{fit} \tab \code{stanfit} object returned by the function \link[rstan]{sampling} \cr \tab \cr
 #' \code{serodata} \tab A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.\cr \tab \cr
@@ -227,7 +227,7 @@ fit_seromodel <- function(serodata,
       colnames(foi_post_s) <- exposure_years
     }
 
-    model_object <- list(
+    seromodel_object <- list(
       fit = fit,
       serodata = serodata,
       stan_data = stan_data,
@@ -243,11 +243,11 @@ fit_seromodel <- function(serodata,
       foi_cent_est = foi_cent_est,
       foi_post_s = foi_post_s
     )
-    model_object$model_summary <-
-      extract_seromodel_summary(model_object)
+    seromodel_object$model_summary <-
+      extract_seromodel_summary(seromodel_object)
   } else {
     loo_fit <- c(-1e10, 0)
-    model_object <- list(
+    seromodel_object <- list(
       fit = "no model",
       serodata = serodata,
       stan_data = stan_data,
@@ -264,7 +264,7 @@ fit_seromodel <- function(serodata,
     )
   }
 
-  return(model_object)
+  return(seromodel_object)
 }
 
 
@@ -311,8 +311,8 @@ get_exposure_matrix <- function(serodata) {
 #' Extract Model Summary
 #'
 #' Function to generate a summary of a model.
-#' @param model_object \code{model_object}. An object containing relevant information about the implementation of the model. Refer to \link{fit_seromodel} for further details.
-#' @return \code{model_summary}. Object with a summary of \code{model_object} containing the following:
+#' @param seromodel_object \code{seromodel_object}. An object containing relevant information about the implementation of the model. Refer to \link{fit_seromodel} for further details.
+#' @return \code{model_summary}. Object with a summary of \code{seromodel_object} containing the following:
 #' \tabular{ll}{
 #' \code{seromodel_name} \tab Name of the selected model. For further details refer to \link{save_or_load_model}. \cr \tab \cr
 #' \code{data_set} \tab Seroprevalence survey label.\cr \tab \cr
@@ -330,17 +330,17 @@ get_exposure_matrix <- function(serodata) {
 #' @examples
 #' \dontrun{
 #' serodata <- prepare_serodata(serodata)
-#' model_object <- run_seromodel(serodata = serodata,
+#' seromodel_object <- run_seromodel(serodata = serodata,
 #'                           seromodel_name = "constant_foi_bi")
-#' extract_seromodel_summary (model_object)
+#' extract_seromodel_summary (seromodel_object)
 #' }
 #' @export
-extract_seromodel_summary <- function(model_object) {
-  seromodel_name <- model_object$seromodel_name
-  serodata <- model_object$serodata
+extract_seromodel_summary <- function(seromodel_object) {
+  seromodel_name <- seromodel_object$seromodel_name
+  serodata <- seromodel_object$serodata
   #------- Loo estimates
 
-  loo_fit <- model_object$loo_fit
+  loo_fit <- seromodel_object$loo_fit
   if (sum(is.na(loo_fit)) < 1) {
     lll <- as.numeric((round(loo_fit$estimates[1, ], 2)))
   } else {
@@ -355,13 +355,13 @@ extract_seromodel_summary <- function(model_object) {
     antibody = serodata$antibody[1],
     n_sample = sum(serodata$total),
     n_agec = length(serodata$age_mean_f),
-    n_iter = model_object$n_iters,
+    n_iter = seromodel_object$n_iters,
     elpd = lll[1],
     se = lll[2],
     converged = NA
   )
 
-  rhats <- get_table_rhats(model_object)
+  rhats <- get_table_rhats(seromodel_object)
   if (any(rhats$rhat > 1.1) == FALSE) {
     model_summary$converged <- "Yes"
   }
@@ -374,14 +374,14 @@ extract_seromodel_summary <- function(model_object) {
 #'
 #' Function that generates the expanded prevalence
 #' @param serodata A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
-#' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]}.
+#' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]}.
 #' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
 #' @examples
 #' \dontrun{
 #' serodata <- prepare_serodata(serodata)
-#' model_object <- run_seromodel(serodata = serodata,
+#' seromodel_object <- run_seromodel(serodata = serodata,
 #'                           seromodel_name = "constant_foi_bi")
-#' foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]
+#' foi <- rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]
 #' get_prev_expanded <- function(foi, serodata)
 #' }
 #' @export

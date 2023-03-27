@@ -4,13 +4,13 @@
 \alias{extract_seromodel_summary}
 \title{Extract Model Summary}
 \usage{
-extract_seromodel_summary(model_object)
+extract_seromodel_summary(seromodel_object)
 }
 \arguments{
-\item{model_object}{\code{model_object}. An object containing relevant information about the implementation of the model. Refer to \link{fit_seromodel} for further details.}
+\item{seromodel_object}{\code{seromodel_object}. An object containing relevant information about the implementation of the model. Refer to \link{fit_seromodel} for further details.}
 }
 \value{
-\code{model_summary}. Object with a summary of \code{model_object} containing the following:
+\code{model_summary}. Object with a summary of \code{seromodel_object} containing the following:
 \tabular{ll}{
 \code{seromodel_name} \tab Name of the selected model. For further details refer to \link{save_or_load_model}. \cr \tab \cr
 \code{data_set} \tab Seroprevalence survey label.\cr \tab \cr
@@ -32,8 +32,8 @@ Function to generate a summary of a model.
 \examples{
 \dontrun{
 serodata <- prepare_serodata(serodata)
-model_object <- run_seromodel(serodata = serodata,
+seromodel_object <- run_seromodel(serodata = serodata,
                           seromodel_name = "constant_foi_bi")
-extract_seromodel_summary (model_object)
+extract_seromodel_summary (seromodel_object)
 }
 }

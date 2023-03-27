@@ -34,11 +34,11 @@ Function that generates the sero positivity plot from raw data
 \examples{
 \dontrun{
  data_test <- prepare_serodata(serodata)
- model_object <- run_seromodel(
+ seromodel_object <- run_seromodel(
  serodata = data_test,
  seromodel_name = "constant_foi_bi",
  n_iters = 1000
 )
-plot_seroprev(model_object, size_text = 15)
+plot_seroprev(seromodel_object, size_text = 15)
 }
 }

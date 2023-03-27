@@ -4,10 +4,10 @@
 \alias{get_table_rhats}
 \title{Get Table Rhats}
 \usage{
-get_table_rhats(model_object)
+get_table_rhats(seromodel_object)
 }
 \arguments{
-\item{model_object}{model_object}
+\item{seromodel_object}{seromodel_object}
 }
 \value{
 rhats table
@@ -18,8 +18,8 @@ Function that makes the rhats table
 \examples{
 \dontrun{
 serodata <- prepare_serodata(serodata = serodata, alpha = 0.05)
-model_object <- run_seromodel(
+seromodel_object <- run_seromodel(
 serodata = serodata, seromodel_name = "constant_foi_bi")
-get_table_rhats (model_object)
+get_table_rhats (seromodel_object)
 }
 }

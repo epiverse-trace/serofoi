@@ -21,12 +21,12 @@
 #' @examples
 #' \dontrun{
 #'  data_test <- prepare_serodata(serodata)
-#'  model_object <- run_seromodel(
+#'  seromodel_object <- run_seromodel(
 #'  serodata = data_test,
 #'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
-#' plot_seroprev(model_object, size_text = 15)
+#' plot_seroprev(seromodel_object, size_text = 15)
 #' }
 #' @export
 plot_seroprev <- function(serodata,
@@ -48,28 +48,28 @@ plot_seroprev <- function(serodata,
 #' Generate sero-positivity plot with fitted model
 #'
 #' Function that generates the seropositivity graph with fitted model. Age is located on the x axis and seropositivity on the y axis with its corresponding confidence interval.
-#' @param model_object Object containing the results of fitting a model by means of \link{run_seromodel}.
+#' @param seromodel_object Object containing the results of fitting a model by means of \link{run_seromodel}.
 #' @param size_text Text size of the graph returned by the function.
 #' @return A ggplot object containing the seropositivity-vs-age graph including the data, the fitted model and their corresponding confindence intervals.
 #' @examples
 #' \dontrun{
 #'  data_test <- prepare_serodata(serodata)
-#'  model_object <- run_seromodel(
+#'  seromodel_object <- run_seromodel(
 #'  serodata = data_test,
 #'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
-#' plot_seroprev_fitted(model_object, size_text = 15)
+#' plot_seroprev_fitted(seromodel_object, size_text = 15)
 #' }
 #' @export
-plot_seroprev_fitted <- function(model_object,
+plot_seroprev_fitted <- function(seromodel_object,
                                  size_text = 6) {
 
-  if (is.character(model_object$fit) == FALSE)  {
-    if  (class(model_object$fit@sim$samples)  != "NULL" ) {
+  if (is.character(seromodel_object$fit) == FALSE)  {
+    if  (class(seromodel_object$fit@sim$samples)  != "NULL" ) {
 
-      foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]
-      prev_expanded <- get_prev_expanded(foi, serodata = model_object$serodata)
+      foi <- rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]
+      prev_expanded <- get_prev_expanded(foi, serodata = seromodel_object$serodata)
       prev_plot <-
         ggplot2::ggplot(prev_expanded) +
         ggplot2::geom_ribbon(
@@ -124,32 +124,32 @@ plot_seroprev_fitted <- function(model_object,
 #' Generate Force-of-Infection Plot
 #'
 #' Function that generates the Force-of-Infection plot. The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
-#' @param model_object Object containing the results of fitting a model by means of \link{run_seromodel}.
+#' @param seromodel_object Object containing the results of fitting a model by means of \link{run_seromodel}.
 #' @param size_text Text size use in the theme of the graph returned by the function.
 #' @return A ggplot2 object containing the Force-of-infection-vs-time including the corresponding confidence interval.
 #' @examples
 #' \dontrun{
 #'    data_test <- prepare_serodata(serodata)
-#'    model_object <- run_seromodel(
+#'    seromodel_object <- run_seromodel(
 #'    serodata = data_test,
 #'    seromodel_name = "constant_foi_bi",
 #'    n_iters = 1000
 #' )
-#' plot_foi(model_object, size_text = 15)
+#' plot_foi(seromodel_object, size_text = 15)
 #' }
 #' @export
-plot_foi <- function(model_object,
+plot_foi <- function(seromodel_object,
                      lambda_sim = NA,
                      max_lambda = NA,
                      size_text = 25) {
-  if (is.character(model_object$fit) == FALSE) {
-    if (class(model_object$fit@sim$samples) != "NULL") {
-      foi <- rstan::extract(model_object$fit,
+  if (is.character(seromodel_object$fit) == FALSE) {
+    if (class(seromodel_object$fit@sim$samples) != "NULL") {
+      foi <- rstan::extract(seromodel_object$fit,
                             "foi",
                             inc_warmup = FALSE)[[1]]
 
       #-------- This bit is to get the actual length of the foi data
-      foi_data <- model_object$foi_cent_est
+      foi_data <- seromodel_object$foi_cent_est
 
       if (!is.na(lambda_sim)) {
         lambda_mod_length <- NROW(foi_data)
@@ -217,25 +217,25 @@ plot_foi <- function(model_object,
 #'
 #' Function that generates the convergence graph of a model. The x axis corresponds to the decades covered by the survey and the y axis to the value of the rhats. 
 #' All rhats must be smaller than 1 to ensure convergence.
-#' @param model_object Object containing the results of fitting a model by means of \link{run_seromodel}.
+#' @param seromodel_object Object containing the results of fitting a model by means of \link{run_seromodel}.
 #' @param size_text Text size use in the theme of the graph returned by the function.
 #' @return The rhats-convergence plot of the selected model.
 #' @examples
 #' \dontrun{
 #' data_test <- prepare_serodata(serodata)
-#' model_object <- run_seromodel(
+#' seromodel_object <- run_seromodel(
 #'  serodata = data_test,
 #'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
-#' plot_rhats(model_object, size_text = 15)
+#' plot_rhats(seromodel_object, size_text = 15)
 #' }
 #' @export
-plot_rhats <- function(model_object,
+plot_rhats <- function(seromodel_object,
                        size_text = 25) {
-  if (is.character(model_object$fit) == FALSE) {
-    if (class(model_object$fit@sim$samples) != "NULL") {
-      rhats <- get_table_rhats(model_object)
+  if (is.character(seromodel_object$fit) == FALSE) {
+    if (class(seromodel_object$fit@sim$samples) != "NULL") {
+      rhats <- get_table_rhats(seromodel_object)
 
       rhats_plot <-
         ggplot2::ggplot(rhats, ggplot2::aes(year, rhat)) +
@@ -278,41 +278,41 @@ plot_rhats <- function(model_object,
 #' Generate a vertical arrange of plots summarizing the results of the model implementation
 #'
 #' Function that generates the combined plots summarizing the results of the model implementation
-#' @param model_object Object containing the results of fitting a model by means of \link{run_seromodel}.
+#' @param seromodel_object Object containing the results of fitting a model by means of \link{run_seromodel}.
 #' @param size_text Text size use in the theme of the graph returned by the function.
 #' @return A ggplot object with a vertical arrange containing the seropositivity, force of infection, and convergence plots.
 #' @examples
 #' \dontrun{
 #' data_test <- prepare_serodata(serodata)
-#' model_object <- run_seromodel(
+#' seromodel_object <- run_seromodel(
 #'  serodata = data_test,
 #'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
-#' plot_seromodel(model_object, size_text = 15)
+#' plot_seromodel(seromodel_object, size_text = 15)
 #' }
 #' @export
-plot_seromodel <- function(model_object,
+plot_seromodel <- function(seromodel_object,
                        lambda_sim = NA,
                        max_lambda = NA,
                        size_text = 25) {
-  if (is.character(model_object$fit) == FALSE) {
-    if (class(model_object$fit@sim$samples) != "NULL") {
-      prev_plot <- plot_seroprev_fitted(model_object = model_object,
+  if (is.character(seromodel_object$fit) == FALSE) {
+    if (class(seromodel_object$fit@sim$samples) != "NULL") {
+      prev_plot <- plot_seroprev_fitted(seromodel_object = seromodel_object,
                                  size_text = size_text)
 
       foi_plot <- plot_foi(
-        model_object = model_object,
+        seromodel_object = seromodel_object,
         lambda_sim = lambda_sim,
         max_lambda = max_lambda,
         size_text = size_text
       )
 
-      rhats_plot <- plot_rhats(model_object = model_object,
+      rhats_plot <- plot_rhats(seromodel_object = seromodel_object,
                                size_text = size_text)
 
       summary_table <- t(
-        dplyr::select(model_object$model_summary, 
+        dplyr::select(seromodel_object$model_summary, 
         c('seromodel_name', 'dataset', 'elpd', 'se', 'converged')))
       summary_plot <-
         plot_info_table(summary_table, size_text = size_text)
@@ -348,7 +348,7 @@ plot_seromodel <- function(model_object,
       ggplot2::ylab(" ") +
       ggplot2::xlab(" ")
     g1 <- g0
-    g0 <- g0 + ggplot2::labs(subtitle = model_object$model) +
+    g0 <- g0 + ggplot2::labs(subtitle = seromodel_object$model) +
       ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
 
     plot_arrange <-
@@ -368,12 +368,12 @@ plot_seromodel <- function(model_object,
 #' @examples
 #' \dontrun{
 #'  data_test <- prepare_serodata(serodata)
-#'  model_object <- run_seromodel(
+#'  seromodel_object <- run_seromodel(
 #'  serodata = data_test,
 #'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
-#' info = t(model_object$model_summary)
+#' info = t(seromodel_object$model_summary)
 #' plot_info_table (info, size_text = 15)
 #' }
 #' @export

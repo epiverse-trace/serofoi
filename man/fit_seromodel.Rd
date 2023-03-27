@@ -37,7 +37,7 @@ For further details refer to the \code{control} parameter in \link[rstan]{sampli
 \item{decades}{Number of decades covered by the survey data.}
 }
 \value{
-\code{model_object}. An object containing relevant information about the implementation of the model. It contains the following:
+\code{seromodel_object}. An object containing relevant information about the implementation of the model. It contains the following:
 \tabular{ll}{
 \code{fit} \tab \code{stanfit} object returned by the function \link[rstan]{sampling} \cr \tab \cr
 \code{serodata} \tab A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.\cr \tab \cr

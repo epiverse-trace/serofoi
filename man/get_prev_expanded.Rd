@@ -7,7 +7,7 @@
 get_prev_expanded(foi, serodata)
 }
 \arguments{
-\item{foi}{Object containing the information of the force of infection. It is obtained from \code{rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]}.}
+\item{foi}{Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]}.}
 
 \item{serodata}{A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.}
 }
@@ -20,9 +20,9 @@ Function that generates the expanded prevalence
 \examples{
 \dontrun{
 serodata <- prepare_serodata(serodata)
-model_object <- run_seromodel(serodata = serodata,
+seromodel_object <- run_seromodel(serodata = serodata,
                           seromodel_name = "constant_foi_bi")
-foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]
+foi <- rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]
 get_prev_expanded <- function(foi, serodata)
 }
 }

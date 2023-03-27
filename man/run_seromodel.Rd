@@ -58,7 +58,7 @@ For further details refer to the \code{control} parameter in \link[rstan]{sampli
 \item{decades}{Number of decades covered by the survey data.}
 }
 \value{
-\code{model_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seromodel}.
+\code{seromodel_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seromodel}.
 }
 \description{
 Run the specified stan model for the force-of-infection

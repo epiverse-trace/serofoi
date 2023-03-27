@@ -4,10 +4,10 @@
 \alias{plot_seromodel}
 \title{Generate a vertical arrange of plots summarizing the results of the model implementation}
 \usage{
-plot_seromodel(model_object, lambda_sim = NA, max_lambda = NA, size_text = 25)
+plot_seromodel(seromodel_object, lambda_sim = NA, max_lambda = NA, size_text = 25)
 }
 \arguments{
-\item{model_object}{Object containing the results of fitting a model by means of \link{run_seromodel}.}
+\item{seromodel_object}{Object containing the results of fitting a model by means of \link{run_seromodel}.}
 
 \item{size_text}{Text size use in the theme of the graph returned by the function.}
 }
@@ -20,11 +20,11 @@ Function that generates the combined plots summarizing the results of the model 
 \examples{
 \dontrun{
 data_test <- prepare_serodata(serodata)
-model_object <- run_seromodel(
+seromodel_object <- run_seromodel(
  serodata = data_test,
  seromodel_name = "constant_foi_bi",
  n_iters = 1000
 )
-plot_seromodel(model_object, size_text = 15)
+plot_seromodel(seromodel_object, size_text = 15)
 }
 }
