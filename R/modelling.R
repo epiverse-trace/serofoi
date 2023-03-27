@@ -1,5 +1,4 @@
-# TODO For some reason, the examples cannot access the serodata variable
-#' Run the specified stan model for the force-of-infection
+#' Run the specified stan model for the Force-of-Infection and estimates de seroprevalence based on the result of the fit.
 #'
 #' @param serodata A data frame containing the data from a seroprevalence survey.
 #' This data frame must contain the following columns:
@@ -50,19 +49,22 @@ run_seromodel <- function(serodata,
                       n_thin = 2,
                       delta = 0.90,
                       m_treed = 10,
-                      decades = 0) {
+                      decades = 0,
+                      print_summary = TRUE) {
   survey <- unique(serodata$survey)
   if (length(survey) > 1) warning("You have more than 1 surveys or survey codes")
   seromodel_object <- fit_seromodel(serodata = serodata,
-                            seromodel_name = seromodel_name,
-                            n_iters = n_iters,
-                            n_thin = n_thin,
-                            delta = delta,
-                            m_treed = m_treed,
-                            decades = decades); print(paste0("serofoi model ",
-                                                              seromodel_name,
-                                                              " finished running ------"))
-  print(t(seromodel_object$model_summary))
+                                    seromodel_name = seromodel_name,
+                                    n_iters = n_iters,
+                                    n_thin = n_thin,
+                                    delta = delta,
+                                    m_treed = m_treed,
+                                    decades = decades); print(paste0("serofoi model ",
+                                                                      seromodel_name,
+                                                                      " finished running ------"))
+  if (print_summary){
+    print(t(seromodel_object$model_summary))
+  }
   return(seromodel_object)
 }
 
