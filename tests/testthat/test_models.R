@@ -27,12 +27,12 @@ test_that("individual models", {
                      "continuous_foi_normal_log")
   models_short_names <- c("constant", "normal", "normal_log")
 
-  models_list <- lapply(models_to_run, run_seroprev_model, seroprev_data = data_test, n_iters = 1000)
+  models_list <- lapply(models_to_run, run_seromodel, seroprev_data = data_test, n_iters = 1000)
 
   #----- Generate plots for each model
   i = 1
   for (model in models_list) {
-    model_plot <- plot_seroprev_model(model, size_text = 6)
+    model_plot <- plot_seromodel(model, size_text = 6)
     vdiffr::expect_doppelganger(paste0(models_short_names[i], "_model_plot"), model_plot)
 
     model_seroprev_plot <- plot_seroprev_fitted(model, size_text = 15)

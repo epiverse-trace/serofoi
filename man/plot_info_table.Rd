@@ -20,9 +20,9 @@ Function that generates the information table
 \examples{
 \dontrun{
  data_test <- prepare_seroprev_data(serodata)
- model_object <- run_seroprev_model(
+ model_object <- run_seromodel(
  seroprev_data = data_test,
- seroprev_model_name = "constant_foi_bi",
+ seromodel_name = "constant_foi_bi",
  n_iters = 1000
 )
 info = t(model_object$model_summary)

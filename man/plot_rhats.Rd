@@ -7,7 +7,7 @@
 plot_rhats(model_object, size_text = 25)
 }
 \arguments{
-\item{model_object}{Object containing the results of fitting a model by means of \link{run_seroprev_model}.}
+\item{model_object}{Object containing the results of fitting a model by means of \link{run_seromodel}.}
 
 \item{size_text}{Text size use in the theme of the graph returned by the function.}
 }
@@ -21,9 +21,9 @@ All rhats must be smaller than 1 to ensure convergence.
 \examples{
 \dontrun{
 data_test <- prepare_seroprev_data(serodata)
-model_object <- run_seroprev_model(
+model_object <- run_seromodel(
  seroprev_data = data_test,
- seroprev_model_name = "constant_foi_bi",
+ seromodel_name = "constant_foi_bi",
  n_iters = 1000
 )
 plot_rhats(model_object, size_text = 15)

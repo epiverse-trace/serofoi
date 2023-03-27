@@ -64,7 +64,7 @@ prepare_seroprev_data <- function(seroprev_data = serodata,
 #' Prepare data to plot binomial confidence intervals
 #'
 #' Function that prepares the data for modelling
-#' @param seroprev_data A data frame containing the data from a seroprevalence survey. For more information see the function \link{run_seroprev_model}.
+#' @param seroprev_data A data frame containing the data from a seroprevalence survey. For more information see the function \link{run_seromodel}.
 #' This data frame must contain the following columns:
 #' \tabular{ll}{
 #' \code{survey} \tab survey Label of the current survey \cr \tab \cr

@@ -21,9 +21,9 @@
 #' @examples
 #' \dontrun{
 #'  data_test <- prepare_seroprev_data(serodata)
-#'  model_object <- run_seroprev_model(
+#'  model_object <- run_seromodel(
 #'  seroprev_data = data_test,
-#'  seroprev_model_name = "constant_foi_bi",
+#'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
 #' plot_seroprev(model_object, size_text = 15)
@@ -48,15 +48,15 @@ plot_seroprev <- function(seroprev_data,
 #' Generate sero-positivity plot with fitted model
 #'
 #' Function that generates the seropositivity graph with fitted model. Age is located on the x axis and seropositivity on the y axis with its corresponding confidence interval.
-#' @param model_object Object containing the results of fitting a model by means of \link{run_seroprev_model}.
+#' @param model_object Object containing the results of fitting a model by means of \link{run_seromodel}.
 #' @param size_text Text size of the graph returned by the function.
 #' @return A ggplot object containing the seropositivity-vs-age graph including the data, the fitted model and their corresponding confindence intervals.
 #' @examples
 #' \dontrun{
 #'  data_test <- prepare_seroprev_data(serodata)
-#'  model_object <- run_seroprev_model(
+#'  model_object <- run_seromodel(
 #'  seroprev_data = data_test,
-#'  seroprev_model_name = "constant_foi_bi",
+#'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
 #' plot_seroprev_fitted(model_object, size_text = 15)
@@ -124,15 +124,15 @@ plot_seroprev_fitted <- function(model_object,
 #' Generate Force-of-Infection Plot
 #'
 #' Function that generates the Force-of-Infection plot. The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
-#' @param model_object Object containing the results of fitting a model by means of \link{run_seroprev_model}.
+#' @param model_object Object containing the results of fitting a model by means of \link{run_seromodel}.
 #' @param size_text Text size use in the theme of the graph returned by the function.
 #' @return A ggplot2 object containing the Force-of-infection-vs-time including the corresponding confidence interval.
 #' @examples
 #' \dontrun{
 #'    data_test <- prepare_seroprev_data(serodata)
-#'    model_object <- run_seroprev_model(
+#'    model_object <- run_seromodel(
 #'    seroprev_data = data_test,
-#'    seroprev_model_name = "constant_foi_bi",
+#'    seromodel_name = "constant_foi_bi",
 #'    n_iters = 1000
 #' )
 #' plot_foi(model_object, size_text = 15)
@@ -217,15 +217,15 @@ plot_foi <- function(model_object,
 #'
 #' Function that generates the convergence graph of a model. The x axis corresponds to the decades covered by the survey and the y axis to the value of the rhats. 
 #' All rhats must be smaller than 1 to ensure convergence.
-#' @param model_object Object containing the results of fitting a model by means of \link{run_seroprev_model}.
+#' @param model_object Object containing the results of fitting a model by means of \link{run_seromodel}.
 #' @param size_text Text size use in the theme of the graph returned by the function.
 #' @return The rhats-convergence plot of the selected model.
 #' @examples
 #' \dontrun{
 #' data_test <- prepare_seroprev_data(serodata)
-#' model_object <- run_seroprev_model(
+#' model_object <- run_seromodel(
 #'  seroprev_data = data_test,
-#'  seroprev_model_name = "constant_foi_bi",
+#'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
 #' plot_rhats(model_object, size_text = 15)
@@ -278,21 +278,21 @@ plot_rhats <- function(model_object,
 #' Generate a vertical arrange of plots summarizing the results of the model implementation
 #'
 #' Function that generates the combined plots summarizing the results of the model implementation
-#' @param model_object Object containing the results of fitting a model by means of \link{run_seroprev_model}.
+#' @param model_object Object containing the results of fitting a model by means of \link{run_seromodel}.
 #' @param size_text Text size use in the theme of the graph returned by the function.
 #' @return A ggplot object with a vertical arrange containing the seropositivity, force of infection, and convergence plots.
 #' @examples
 #' \dontrun{
 #' data_test <- prepare_seroprev_data(serodata)
-#' model_object <- run_seroprev_model(
+#' model_object <- run_seromodel(
 #'  seroprev_data = data_test,
-#'  seroprev_model_name = "constant_foi_bi",
+#'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
-#' plot_seroprev_model(model_object, size_text = 15)
+#' plot_seromodel(model_object, size_text = 15)
 #' }
 #' @export
-plot_seroprev_model <- function(model_object,
+plot_seromodel <- function(model_object,
                        lambda_sim = NA,
                        max_lambda = NA,
                        size_text = 25) {
@@ -313,7 +313,7 @@ plot_seroprev_model <- function(model_object,
 
       summary_table <- t(
         dplyr::select(model_object$model_summary, 
-        c('seroprev_model_name', 'dataset', 'elpd', 'se', 'converged')))
+        c('seromodel_name', 'dataset', 'elpd', 'se', 'converged')))
       summary_plot <-
         plot_info_table(summary_table, size_text = size_text)
 
@@ -368,9 +368,9 @@ plot_seroprev_model <- function(model_object,
 #' @examples
 #' \dontrun{
 #'  data_test <- prepare_seroprev_data(serodata)
-#'  model_object <- run_seroprev_model(
+#'  model_object <- run_seromodel(
 #'  seroprev_data = data_test,
-#'  seroprev_model_name = "constant_foi_bi",
+#'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
 #' info = t(model_object$model_summary)

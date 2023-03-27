@@ -7,7 +7,7 @@
 prepare_bin_data(seroprev_data)
 }
 \arguments{
-\item{seroprev_data}{A data frame containing the data from a seroprevalence survey. For more information see the function \link{run_seroprev_model}.
+\item{seroprev_data}{A data frame containing the data from a seroprevalence survey. For more information see the function \link{run_seromodel}.
 This data frame must contain the following columns:
 \tabular{ll}{
 \code{survey} \tab survey Label of the current survey \cr \tab \cr

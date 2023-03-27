@@ -23,7 +23,7 @@
 #' \code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
 #' }
 #' The last six colums can be added to \code{seroprev_data} by means of the function \code{\link{prepare_seroprev_data}}.
-#' @param seroprev_model_name Name of the selected model. Current version provides three options:
+#' @param seromodel_name Name of the selected model. Current version provides three options:
 #' \describe{
 #' \item{\code{"constant_foi_bi"}}{Runs a constant model}
 #' \item{\code{"continuous_foi_normal_bi"}}{Runs a normal model}
@@ -36,16 +36,16 @@
 #' For further details refer to the \code{control} parameter in \link[rstan]{sampling} or \href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.
 #' @param m_treed Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the \code{control} parameter in \link[rstan]{sampling}.
 #' @param decades Number of decades covered by the survey data.
-#' @return \code{model_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seroprev_model}.
+#' @return \code{model_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seromodel}.
 #' @examples
 #' \dontrun{
 #' seroprev_data <- prepare_seroprev_data(serodata)
-#' run_seroprev_model (seroprev_data,
-#'            seroprev_model_name = "constant_foi_bi")
+#' run_seromodel (seroprev_data,
+#'            seromodel_name = "constant_foi_bi")
 #' }
 #' @export
-run_seroprev_model <- function(seroprev_data,
-                      seroprev_model_name = "constant_foi_bi",
+run_seromodel <- function(seroprev_data,
+                      seromodel_name = "constant_foi_bi",
                       n_iters = 1000,
                       n_thin = 2,
                       delta = 0.90,
@@ -53,14 +53,14 @@ run_seroprev_model <- function(seroprev_data,
                       decades = 0) {
   survey <- unique(seroprev_data$survey)
   if (length(survey) > 1) warning("You have more than 1 surveys or survey codes")
-  model_object <- fit_seroprev_model(seroprev_data = seroprev_data,
-                            seroprev_model_name = seroprev_model_name,
+  model_object <- fit_seromodel(seroprev_data = seroprev_data,
+                            seromodel_name = seromodel_name,
                             n_iters = n_iters,
                             n_thin = n_thin,
                             delta = delta,
                             m_treed = m_treed,
                             decades = decades); print(paste0("serofoi model ",
-                                                              seroprev_model_name,
+                                                              seromodel_name,
                                                               " finished running ------"))
   print(t(model_object$model_summary))
   return(model_object)
@@ -71,7 +71,7 @@ run_seroprev_model <- function(seroprev_data,
 #' This function determines whether the corresponding .RDS file of the selected model exists or not.
 #' In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the
 #' \link[rstan]{stan_model} function, saved as an .RDS file and returned as the output of the function.
-#' @param seroprev_model_name Name of the selected model. Current version provides three options:
+#' @param seromodel_name Name of the selected model. Current version provides three options:
 #' \describe{
 #' \item{\code{"constant_foi_bi"}}{Runs a constant model}
 #' \item{\code{"continuous_foi_normal_bi"}}{Runs a normal model}
@@ -79,17 +79,17 @@ run_seroprev_model <- function(seroprev_data,
 #' }
 #' @return \code{model}. The rstan model object corresponding to the selected model.
 #' @examples
-#' save_or_load_model(seroprev_model_name="constant_foi_bi")
+#' save_or_load_model(seromodel_name="constant_foi_bi")
 #' @export
 
-save_or_load_model <- function(seroprev_model_name = "constant_foi_bi") {
+save_or_load_model <- function(seromodel_name = "constant_foi_bi") {
   base_path <- config::get("stan_models_base_path",
     file = system.file("config.yml", package = "serofoi", mustWork = TRUE))
-  rds_path <- system.file(base_path, paste(seroprev_model_name, ".rds", sep = ""), package = getPackageName())
+  rds_path <- system.file(base_path, paste(seromodel_name, ".rds", sep = ""), package = getPackageName())
   if (!file.exists(rds_path)) {
-    message(sprintf("\nNo rds file found for model %s. Compiling stan model...", seroprev_model_name))
+    message(sprintf("\nNo rds file found for model %s. Compiling stan model...", seromodel_name))
   }
-  stan_path <- system.file(base_path, paste(seroprev_model_name, ".stan", sep = ""), package = getPackageName())
+  stan_path <- system.file(base_path, paste(seromodel_name, ".stan", sep = ""), package = getPackageName())
 
   model <- rstan::stan_model(stan_path, auto_write = TRUE)
 
@@ -100,8 +100,8 @@ save_or_load_model <- function(seroprev_model_name = "constant_foi_bi") {
 #' Fit Model
 #'
 #' Function that fits the selected model to the data
-#' @param seroprev_data A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seroprev_model}.
-#' @param seroprev_model_name Name of the selected model. Current version provides three options:
+#' @param seroprev_data A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
+#' @param seromodel_name Name of the selected model. Current version provides three options:
 #' \describe{
 #' \item{\code{"constant_foi_bi"}}{Runs a constant model}
 #' \item{\code{"continuous_foi_normal_bi"}}{Runs a normal model}
@@ -117,7 +117,7 @@ save_or_load_model <- function(seroprev_model_name = "constant_foi_bi") {
 #' @return \code{model_object}. An object containing relevant information about the implementation of the model. It contains the following:
 #' \tabular{ll}{
 #' \code{fit} \tab \code{stanfit} object returned by the function \link[rstan]{sampling} \cr \tab \cr
-#' \code{seroprev_data} \tab A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seroprev_model}.\cr \tab \cr
+#' \code{seroprev_data} \tab A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.\cr \tab \cr
 #' \code{stan_data} \tab List containing \code{Nobs}, \code{Npos}, \code{Ntotal}, \code{Age}, \code{Ymax}, \code{AgeExpoMatrix} and \code{NDecades}.
 #' This object is used as an input for the \link[rstan]{sampling} function \cr \tab \cr
 #' \code{exposure_years} \tab Integer atomic vector containing the actual exposure years (1946, ..., 2007 e.g.) \cr \tab \cr
@@ -125,32 +125,32 @@ save_or_load_model <- function(seroprev_model_name = "constant_foi_bi") {
 #' \code{n_iters} \tab Number of interations for eah chain including the warmup. \cr \tab \cr
 #' \code{n_thin} \tab Positive integer specifying the period for saving samples. \cr \tab \cr
 #' \code{n_warmup} \tab Number of warm up iterations. Set by default as n_iters/2. \cr \tab \cr
-#' \code{seroprev_model_name} \tab The name of the model\cr \tab \cr
+#' \code{seromodel_name} \tab The name of the model\cr \tab \cr
 #' \code{delta} \tab Real number between 0 and 1 that represents the target average acceptance probability. \cr \tab \cr
 #' \code{m_treed} \tab Maximum tree depth for the binary tree used in the NUTS stan sampler. \cr \tab \cr
 #' \code{loo_fit} \tab Efficient approximate leave-one-out cross-validation. Refer to \link[loo]{loo} for further details. \cr \tab \cr
 #' \code{foi_cent_est} \tab A data fram e containing \code{year} (corresponding to \code{exposure_years}), \code{lower}, \code{upper}, and \code{medianv} \cr \tab \cr
 #' \code{foi_post_s} \tab Sample n rows from a table. Refer to \link[dplyr]{sample_n} for further details. \cr \tab \cr
-#' \code{model_summary} \tab A data fram containing the summary of the model. Refer to \link{extract_seroprev_model_summary} for further details. \cr \tab \cr
+#' \code{model_summary} \tab A data fram containing the summary of the model. Refer to \link{extract_seromodel_summary} for further details. \cr \tab \cr
 #' }
 
 #' @examples
 #' \dontrun{
 #' seroprev_data <- prepare_seroprev_data(serodata)
-#' fit_seroprev_model (seroprev_data,
-#'            seroprev_model_name = "constant_foi_bi")
+#' fit_seromodel (seroprev_data,
+#'            seromodel_name = "constant_foi_bi")
 #' }
 #'
 #' @export
-fit_seroprev_model <- function(seroprev_data,
-                      seroprev_model_name,
+fit_seromodel <- function(seroprev_data,
+                      seromodel_name,
                       n_iters = 1000,
                       n_thin = 2,
                       delta = 0.90,
                       m_treed = 10,
                       decades = 0) {
   # add a warning because there are exceptions where a minimal amount of iterations need to be run
-  model <- save_or_load_model(seroprev_model_name)
+  model <- save_or_load_model(seromodel_name)
   exposure_ages <- get_exposure_ages(seroprev_data)
   exposure_years <- (min(seroprev_data$birth_year):seroprev_data$tsur[1])[-1]
   exposure_matrix <- get_exposure_matrix(seroprev_data)
@@ -168,7 +168,7 @@ fit_seroprev_model <- function(seroprev_data,
 
   n_warmup <- floor(n_iters / 2)
 
-  if (seroprev_model_name == "continuous_foi_normal_log") {
+  if (seromodel_name == "continuous_foi_normal_log") {
     f_init <- function() {
       list(log_foi = rep(-3, length(exposure_ages)))
     }
@@ -236,7 +236,7 @@ fit_seroprev_model <- function(seroprev_data,
       n_iters = n_iters,
       n_thin = n_thin,
       n_warmup = n_warmup,
-      seroprev_model_name = seroprev_model_name,
+      seromodel_name = seromodel_name,
       delta = delta,
       m_treed = m_treed,
       loo_fit = loo_fit,
@@ -244,7 +244,7 @@ fit_seroprev_model <- function(seroprev_data,
       foi_post_s = foi_post_s
     )
     model_object$model_summary <-
-      extract_seroprev_model_summary(model_object)
+      extract_seromodel_summary(model_object)
   } else {
     loo_fit <- c(-1e10, 0)
     model_object <- list(
@@ -256,7 +256,7 @@ fit_seroprev_model <- function(seroprev_data,
       n_iters = n_iters,
       n_thin = n_thin,
       n_warmup = n_warmup,
-      model = seroprev_model_name,
+      model = seromodel_name,
       delta = delta,
       m_treed = m_treed,
       loo_fit = loo_fit,
@@ -311,10 +311,10 @@ get_exposure_matrix <- function(seroprev_data) {
 #' Extract Model Summary
 #'
 #' Function to generate a summary of a model.
-#' @param model_object \code{model_object}. An object containing relevant information about the implementation of the model. Refer to \link{fit_seroprev_model} for further details.
+#' @param model_object \code{model_object}. An object containing relevant information about the implementation of the model. Refer to \link{fit_seromodel} for further details.
 #' @return \code{model_summary}. Object with a summary of \code{model_object} containing the following:
 #' \tabular{ll}{
-#' \code{seroprev_model_name} \tab Name of the selected model. For further details refer to \link{save_or_load_model}. \cr \tab \cr
+#' \code{seromodel_name} \tab Name of the selected model. For further details refer to \link{save_or_load_model}. \cr \tab \cr
 #' \code{data_set} \tab Seroprevalence survey label.\cr \tab \cr
 #' \code{country} \tab Name of the country were the survey was conducted in. \cr \tab \cr
 #' \code{year} \tab Year in which the survey was conducted. \cr \tab \cr
@@ -330,13 +330,13 @@ get_exposure_matrix <- function(seroprev_data) {
 #' @examples
 #' \dontrun{
 #' seroprev_data <- prepare_seroprev_data(serodata)
-#' model_object <- run_seroprev_model(seroprev_data = seroprev_data,
-#'                           seroprev_model_name = "constant_foi_bi")
-#' extract_seroprev_model_summary (model_object)
+#' model_object <- run_seromodel(seroprev_data = seroprev_data,
+#'                           seromodel_name = "constant_foi_bi")
+#' extract_seromodel_summary (model_object)
 #' }
 #' @export
-extract_seroprev_model_summary <- function(model_object) {
-  seroprev_model_name <- model_object$seroprev_model_name
+extract_seromodel_summary <- function(model_object) {
+  seromodel_name <- model_object$seromodel_name
   seroprev_data <- model_object$seroprev_data
   #------- Loo estimates
 
@@ -347,7 +347,7 @@ extract_seroprev_model_summary <- function(model_object) {
     lll <- c(-1e10, 0)
   }
   model_summary <- data.frame(
-    seroprev_model_name = seroprev_model_name,
+    seromodel_name = seromodel_name,
     dataset = seroprev_data$survey[1],
     country = seroprev_data$country[1],
     year = seroprev_data$tsur[1],
@@ -373,14 +373,14 @@ extract_seroprev_model_summary <- function(model_object) {
 #' Get Prevalence Expanded
 #'
 #' Function that generates the expanded prevalence
-#' @param seroprev_data A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seroprev_model}.
+#' @param seroprev_data A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
 #' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]}.
 #' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
 #' @examples
 #' \dontrun{
 #' seroprev_data <- prepare_seroprev_data(serodata)
-#' model_object <- run_seroprev_model(seroprev_data = seroprev_data,
-#'                           seroprev_model_name = "constant_foi_bi")
+#' model_object <- run_seromodel(seroprev_data = seroprev_data,
+#'                           seromodel_name = "constant_foi_bi")
 #' foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]
 #' get_prev_expanded <- function(foi, seroprev_data)
 #' }
