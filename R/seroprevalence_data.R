@@ -1,7 +1,7 @@
-#' Prepare data
+#' Function that prepares the data from a serological survey for modelling.
 #'
-#' Function that prepares the data for modelling
-#' @param serodata A data frame containing the data from a seroprevalence survey.
+#' This function adds the necessary additional variables to the given dataset \code{serodata} corresponding to a serological survey.
+#' @param serodata A data frame containing the data from a serological survey.
 #' This data frame must contain the following columns:
 #' \tabular{ll}{
 #' \code{survey} \tab survey Label of the current survey \cr \tab \cr
@@ -28,13 +28,13 @@
 #' }
 #' @examples
 #'\dontrun{
-#' data_test <- readRDS("data/data.RDS")
-#' data_test <- prepare_serodata(serodata, alpha)
+#' data("serodata")
+#' data_test <- prepare_serodata(serodata)
 #' }
 #' @export
 prepare_serodata <- function(serodata = serodata,
-                                  alpha = 0.05, 
-                                  add_age_mean_f = TRUE) {
+                            alpha = 0.05, 
+                            add_age_mean_f = TRUE) {
   if(add_age_mean_f){
     serodata <- serodata %>%
       dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total)) %>%
@@ -61,9 +61,11 @@ prepare_serodata <- function(serodata = serodata,
 }
 
 
-#' Prepare data to plot binomial confidence intervals
+#' Function that prepares a pre-processed serological survey dataset to plot the binomial confidence intervals of the seroprevalence grouped by
+#' age group.
 #'
-#' Function that prepares the data for modelling
+#' This function prepapares a given pre-processed serological dataset (see \code{\link{prepare_serodata}}) to plot the binomial confidence intervals 
+#' of its corresponding seroprevalence grouped by age group. 
 #' @param serodata A data frame containing the data from a seroprevalence survey. For more information see the function \link{run_seromodel}.
 #' This data frame must contain the following columns:
 #' \tabular{ll}{

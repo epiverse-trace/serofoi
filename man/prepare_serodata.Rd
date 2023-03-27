@@ -2,12 +2,12 @@
 % Please edit documentation in R/seroprevalence_data.R
 \name{prepare_serodata}
 \alias{prepare_serodata}
-\title{Prepare data}
+\title{Function that prepares the data from a serological survey for modelling.}
 \usage{
 prepare_serodata(serodata = serodata, alpha = 0.05, add_age_mean_f = TRUE)
 }
 \arguments{
-\item{serodata}{A data frame containing the data from a seroprevalence survey.
+\item{serodata}{A data frame containing the data from a serological survey.
 This data frame must contain the following columns:
 \tabular{ll}{
 \code{survey} \tab survey Label of the current survey \cr \tab \cr
@@ -37,11 +37,11 @@ serodata with additional columns necessary for the analysis. These columns are:
 }
 }
 \description{
-Function that prepares the data for modelling
+This function adds the necessary additional variables to the given dataset \code{serodata} corresponding to a serological survey.
 }
 \examples{
 \dontrun{
-data_test <- readRDS("data/data.RDS")
-data_test <- prepare_serodata(serodata, alpha)
+data("serodata")
+data_test <- prepare_serodata(serodata)
 }
 }

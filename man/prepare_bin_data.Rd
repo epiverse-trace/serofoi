@@ -2,7 +2,8 @@
 % Please edit documentation in R/seroprevalence_data.R
 \name{prepare_bin_data}
 \alias{prepare_bin_data}
-\title{Prepare data to plot binomial confidence intervals}
+\title{Function that prepares a pre-processed serological survey dataset to plot the binomial confidence intervals of the seroprevalence grouped by
+age group.}
 \usage{
 prepare_bin_data(serodata)
 }
@@ -34,7 +35,8 @@ The last six colums can be added to \code{serodata} by means of the function \co
 data set with the binomial confidence intervals
 }
 \description{
-Function that prepares the data for modelling
+This function prepapares a given pre-processed serological dataset (see \code{\link{prepare_serodata}}) to plot the binomial confidence intervals 
+of its corresponding seroprevalence grouped by age group.
 }
 \examples{
 \dontrun{

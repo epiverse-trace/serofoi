@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualization.R
 \name{plot_rhats}
 \alias{plot_rhats}
-\title{Generate Rhats-Convergence Plot}
+\title{Function that generates a plot of the R-hat estimates of the specified fitted serological model.}
 \usage{
 plot_rhats(seromodel_object, size_text = 25)
 }
@@ -15,17 +15,20 @@ plot_rhats(seromodel_object, size_text = 25)
 The rhats-convergence plot of the selected model.
 }
 \description{
-Function that generates the convergence graph of a model. The x axis corresponds to the decades covered by the survey and the y axis to the value of the rhats. 
-All rhats must be smaller than 1 to ensure convergence.
+This function generates a plot of the R-hat estimates obtained for a specified fitted serological model \code{seromodel_object}. 
+The x axis corresponds to the decades covered by the survey and the y axis to the value of the rhats. 
+All rhats must be smaller than 1 to ensure convergence (for further details check \link[bayesplot]{rhat}).
 }
 \examples{
 \dontrun{
+data("serodata")
 data_test <- prepare_serodata(serodata)
 seromodel_object <- run_seromodel(
  serodata = data_test,
  seromodel_name = "constant_foi_bi",
  n_iters = 1000
 )
-plot_rhats(seromodel_object, size_text = 15)
+plot_rhats(seromodel_object, 
+           size_text = 15)
 }
 }

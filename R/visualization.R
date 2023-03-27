@@ -1,6 +1,5 @@
-#' Generate sero-positivity plot from raw data
+#' Function that generates the sero-positivity plot from a raw serological survey dataset.
 #'
-#' Function that generates the sero positivity plot from raw data
 #' @param serodata A data frame containing the data from a seroprevalence survey.
 #' This data frame must contain the following columns:
 #' \tabular{ll}{
@@ -45,20 +44,21 @@ plot_seroprev <- function(serodata,
 
 }
 
-#' Generate sero-positivity plot with fitted model
+#' Function that generates a seropositivity plot corresponding to the specified fitted serological model.
 #'
-#' Function that generates the seropositivity graph with fitted model. Age is located on the x axis and seropositivity on the y axis with its corresponding confidence interval.
+#' This function generates a seropositivity plot of the specified serological model object. This includes the original data grouped by age
+#' as well as the obtained fitting from the model implementation. Age is located on the x axis and seropositivity on the y axis with its 
+#' corresponding confidence interval.
 #' @param seromodel_object Object containing the results of fitting a model by means of \link{run_seromodel}.
 #' @param size_text Text size of the graph returned by the function.
 #' @return A ggplot object containing the seropositivity-vs-age graph including the data, the fitted model and their corresponding confindence intervals.
 #' @examples
 #' \dontrun{
-#'  data_test <- prepare_serodata(serodata)
-#'  seromodel_object <- run_seromodel(
-#'  serodata = data_test,
-#'  seromodel_name = "constant_foi_bi",
-#'  n_iters = 1000
-#')
+#' data("serodata")
+#' data_test <- prepare_serodata(serodata)
+#' seromodel_object <- run_seromodel(serodata = data_test,
+#'                                   seromodel_name = "constant_foi_bi",
+#'                                   n_iters = 1000)
 #' plot_seroprev_fitted(seromodel_object, size_text = 15)
 #' }
 #' @export
@@ -121,9 +121,11 @@ plot_seroprev_fitted <- function(seromodel_object,
   return(prev_plot)
 }
 
-#' Generate Force-of-Infection Plot
+#' Function that generates a Force-of-Infection plot corresponding to the specified fitted serological model.
 #'
-#' Function that generates the Force-of-Infection plot. The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
+#' This function generates a Force-of-Infection plot from the results obtained by fitting a serological model.
+#' This includes the corresponding binomial confidence interval. 
+#' The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
 #' @param seromodel_object Object containing the results of fitting a model by means of \link{run_seromodel}.
 #' @param size_text Text size use in the theme of the graph returned by the function.
 #' @return A ggplot2 object containing the Force-of-infection-vs-time including the corresponding confidence interval.
@@ -213,22 +215,25 @@ plot_foi <- function(seromodel_object,
   return(foi_plot)
 }
 
-#' Generate Rhats-Convergence Plot
+#' Function that generates a plot of the R-hat estimates of the specified fitted serological model.
 #'
-#' Function that generates the convergence graph of a model. The x axis corresponds to the decades covered by the survey and the y axis to the value of the rhats. 
-#' All rhats must be smaller than 1 to ensure convergence.
+#' This function generates a plot of the R-hat estimates obtained for a specified fitted serological model \code{seromodel_object}. 
+#' The x axis corresponds to the decades covered by the survey and the y axis to the value of the rhats. 
+#' All rhats must be smaller than 1 to ensure convergence (for further details check \link[bayesplot]{rhat}).
 #' @param seromodel_object Object containing the results of fitting a model by means of \link{run_seromodel}.
 #' @param size_text Text size use in the theme of the graph returned by the function.
 #' @return The rhats-convergence plot of the selected model.
 #' @examples
 #' \dontrun{
+#' data("serodata")
 #' data_test <- prepare_serodata(serodata)
 #' seromodel_object <- run_seromodel(
 #'  serodata = data_test,
 #'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
-#' plot_rhats(seromodel_object, size_text = 15)
+#' plot_rhats(seromodel_object, 
+#'            size_text = 15)
 #' }
 #' @export
 plot_rhats <- function(seromodel_object,
@@ -275,9 +280,9 @@ plot_rhats <- function(seromodel_object,
 }
 
 
-#' Generate a vertical arrange of plots summarizing the results of the model implementation
+#' Function that generates a vertical arrange of plots showing a summary of a given implemented model, as well as its corresponding
+#' seroprevalence, Force-of-Infection and R-hat estimates plots.
 #'
-#' Function that generates the combined plots summarizing the results of the model implementation
 #' @param seromodel_object Object containing the results of fitting a model by means of \link{run_seromodel}.
 #' @param size_text Text size use in the theme of the graph returned by the function.
 #' @return A ggplot object with a vertical arrange containing the seropositivity, force of infection, and convergence plots.
@@ -359,9 +364,8 @@ plot_seromodel <- function(seromodel_object,
 }
 
 
-#' Plot Info Table
+#' Auxiliary function that generates a plot of a given table
 #'
-#' Function that generates the information table
 #' @param info the information that will be contained in the table
 #' @param size_text Text size of the graph returned by the function
 #' @return p, a variable that will be used in the \link{visualisation} module
