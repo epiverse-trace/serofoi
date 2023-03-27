@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{get_exposure_matrix}
 \alias{get_exposure_matrix}
-\title{Get Exposure Matrix}
+\title{Function that generates the exposure matrix corresponding to a serological survey.}
 \usage{
 get_exposure_matrix(serodata)
 }
@@ -13,11 +13,12 @@ get_exposure_matrix(serodata)
 \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{serodata} by year.
 }
 \description{
-Function that generates the exposure matrix for a seroprevalence survey.
+Function that generates the exposure matrix corresponding to the specified serological survey data \code{serodata}.
 }
 \examples{
 \dontrun{
-serodata <- prepare_serodata(serodata = serodata, alpha = 0.05)
+data("serodata")
+serodata <- prepare_serodata(serodata = serodata)
 exposure_matrix <- get_exposure_matrix(serodata = serodata)
 }
 }

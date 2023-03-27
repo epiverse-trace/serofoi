@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{run_seromodel}
 \alias{run_seromodel}
-\title{Run the specified stan model for the force-of-infection}
+\title{Run the specified stan model for the Force-of-Infection and estimates de seroprevalence based on the result of the fit.}
 \usage{
 run_seromodel(
   serodata,
@@ -11,7 +11,8 @@ run_seromodel(
   n_thin = 2,
   delta = 0.9,
   m_treed = 10,
-  decades = 0
+  decades = 0,
+  print_summary = TRUE
 )
 }
 \arguments{
@@ -61,7 +62,8 @@ For further details refer to the \code{control} parameter in \link[rstan]{sampli
 \code{seromodel_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seromodel}.
 }
 \description{
-Run the specified stan model for the force-of-infection
+This function runs the specified model for the Force-of-Infection \code{seromodel_name} using the data froma seroprevalence survey 
+\code{serodata} as the input data. See \link{fit_seromodel} for further details.
 }
 \examples{
 \dontrun{

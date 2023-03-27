@@ -4,7 +4,12 @@
 \alias{plot_seromodel}
 \title{Generate a vertical arrange of plots summarizing the results of the model implementation}
 \usage{
-plot_seromodel(seromodel_object, lambda_sim = NA, max_lambda = NA, size_text = 25)
+plot_seromodel(
+  seromodel_object,
+  lambda_sim = NA,
+  max_lambda = NA,
+  size_text = 25
+)
 }
 \arguments{
 \item{seromodel_object}{Object containing the results of fitting a model by means of \link{run_seromodel}.}

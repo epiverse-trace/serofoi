@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{get_exposure_ages}
 \alias{get_exposure_ages}
-\title{Get exposure years}
+\title{Function that generates an atomic vector containing the corresponding exposition years of a serological survey.}
 \usage{
 get_exposure_ages(serodata)
 }
@@ -13,10 +13,12 @@ get_exposure_ages(serodata)
 \code{exposure_ages}. An atomic vector with the numeration of the exposition years in serodata
 }
 \description{
-Function that generates an atomic vector with the exposition years in serodata. The exposition years to the disease for each individual corresponds to the time from birth to the moment of the survey.
+This function generates an atomic vector containing the exposition years corresponding to the specified serological survey data \code{serodata}. 
+The exposition years to the disease for each individual corresponds to the time from birth to the moment of the survey.
 }
 \examples{
 \dontrun{
+data("serodata")
 serodata <- prepare_serodata(serodata = serodata, alpha = 0.05)
 exposure_ages <- get_exposure_ages(serodata)
 }

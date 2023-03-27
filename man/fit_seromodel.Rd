@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{fit_seromodel}
 \alias{fit_seromodel}
-\title{Fit Model}
+\title{Function that fits the selected model to the specified seroprevalence survey data.}
 \usage{
 fit_seromodel(
   serodata,
@@ -58,13 +58,16 @@ This object is used as an input for the \link[rstan]{sampling} function \cr \tab
 }
 }
 \description{
-Function that fits the selected model to the data
+This function fits the specified model \code{seromodel_name} to the serological survey data \code{serodata} 
+by means of the \link[rstan]{sampling} method. The function determines whether the corresponding stan model 
+object needs to be compiled by means of the function \link{save_or_load_model}.
 }
 \examples{
 \dontrun{
+data("serodata")
 serodata <- prepare_serodata(serodata)
-fit_seromodel (serodata,
-           seromodel_name = "constant_foi_bi")
+seromodel_fit <- fit_seromodel(serodata = serodata,
+                               seromodel_name = "constant_foi_bi")
 }
 
 }

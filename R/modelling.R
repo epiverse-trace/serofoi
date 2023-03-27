@@ -1,4 +1,7 @@
-#' Run the specified stan model for the Force-of-Infection and estimates de seroprevalence based on the result of the fit.
+#' Run the specified stan model for the Force-of-Infection and estimates de seroprevalence based on the result of the fit. 
+#' 
+#' This function runs the specified model for the Force-of-Infection \code{seromodel_name} using the data froma seroprevalence survey 
+#' \code{serodata} as the input data. See \link{fit_seromodel} for further details.
 #'
 #' @param serodata A data frame containing the data from a seroprevalence survey.
 #' This data frame must contain the following columns:
@@ -44,13 +47,13 @@
 #' }
 #' @export
 run_seromodel <- function(serodata,
-                      seromodel_name = "constant_foi_bi",
-                      n_iters = 1000,
-                      n_thin = 2,
-                      delta = 0.90,
-                      m_treed = 10,
-                      decades = 0,
-                      print_summary = TRUE) {
+                          seromodel_name = "constant_foi_bi",
+                          n_iters = 1000,
+                          n_thin = 2,
+                          delta = 0.90,
+                          m_treed = 10,
+                          decades = 0,
+                          print_summary = TRUE) {
   survey <- unique(serodata$survey)
   if (length(survey) > 1) warning("You have more than 1 surveys or survey codes")
   seromodel_object <- fit_seromodel(serodata = serodata,
@@ -68,7 +71,8 @@ run_seromodel <- function(serodata,
   return(seromodel_object)
 }
 
-#' Save or load model
+# TODO The warning 'recompiling to avoid crashing R session' still appears when the function is run for a second time.
+#' Auxiliar function used to determine whether the stan model corresponding to the specified serological model has been already compiled or not.
 #'
 #' This function determines whether the corresponding .RDS file of the selected model exists or not.
 #' In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the
@@ -81,7 +85,10 @@ run_seromodel <- function(serodata,
 #' }
 #' @return \code{model}. The rstan model object corresponding to the selected model.
 #' @examples
-#' save_or_load_model(seromodel_name="constant_foi_bi")
+#' \dontrun{
+#' model <- save_or_load_model(seromodel_name="constant_foi_bi")
+#' }
+#' 
 #' @export
 
 save_or_load_model <- function(seromodel_name = "constant_foi_bi") {
@@ -99,9 +106,11 @@ save_or_load_model <- function(seromodel_name = "constant_foi_bi") {
 }
 
 
-#' Fit Model
-#'
-#' Function that fits the selected model to the data
+#' Function that fits the selected model to the specified seroprevalence survey data. 
+#' 
+#' This function fits the specified model \code{seromodel_name} to the serological survey data \code{serodata} 
+#' by means of the \link[rstan]{sampling} method. The function determines whether the corresponding stan model 
+#' object needs to be compiled by means of the function \link{save_or_load_model}. 
 #' @param serodata A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
 #' @param seromodel_name Name of the selected model. Current version provides three options:
 #' \describe{
@@ -138,20 +147,21 @@ save_or_load_model <- function(seromodel_name = "constant_foi_bi") {
 
 #' @examples
 #' \dontrun{
+#' data("serodata")
 #' serodata <- prepare_serodata(serodata)
-#' fit_seromodel (serodata,
-#'            seromodel_name = "constant_foi_bi")
+#' seromodel_fit <- fit_seromodel(serodata = serodata,
+#'                                seromodel_name = "constant_foi_bi")
 #' }
 #'
 #' @export
 fit_seromodel <- function(serodata,
-                      seromodel_name,
-                      n_iters = 1000,
-                      n_thin = 2,
-                      delta = 0.90,
-                      m_treed = 10,
-                      decades = 0) {
-  # add a warning because there are exceptions where a minimal amount of iterations need to be run
+                          seromodel_name,
+                          n_iters = 1000,
+                          n_thin = 2,
+                          delta = 0.90,
+                          m_treed = 10,
+                          decades = 0) {
+  # TODO Add a warning because there are exceptions where a minimal amount of iterations is needed.
   model <- save_or_load_model(seromodel_name)
   exposure_ages <- get_exposure_ages(serodata)
   exposure_years <- (min(serodata$birth_year):serodata$tsur[1])[-1]
@@ -270,31 +280,33 @@ fit_seromodel <- function(serodata,
 }
 
 
-#' Get exposure years
+#' Function that generates an atomic vector containing the corresponding exposition years of a serological survey.
 #'
-#' Function that generates an atomic vector with the exposition years in serodata. The exposition years to the disease for each individual corresponds to the time from birth to the moment of the survey.
+#' This function generates an atomic vector containing the exposition years corresponding to the specified serological survey data \code{serodata}. 
+#' The exposition years to the disease for each individual corresponds to the time from birth to the moment of the survey.
 #' @param serodata A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_serodata} function.
 #' @return \code{exposure_ages}. An atomic vector with the numeration of the exposition years in serodata
 #' @examples
 #' \dontrun{
+#' data("serodata")
 #' serodata <- prepare_serodata(serodata = serodata, alpha = 0.05)
 #' exposure_ages <- get_exposure_ages(serodata)
 #' }
 #' @export
 get_exposure_ages <- function(serodata) {
-  # TODO Verify if this change is correct
   return(seq_along(min(serodata$birth_year):(serodata$tsur[1] - 1)))
 }
 
-
-#' Get Exposure Matrix
+# TODO Is necessary to explain better what we mean by the exposure matrix.
+#' Function that generates the exposure matrix corresponding to a serological survey.
 #'
-#' Function that generates the exposure matrix for a seroprevalence survey.
+#' Function that generates the exposure matrix corresponding to the specified serological survey data \code{serodata}.
 #' @param serodata A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_serodata} function.
 #' @return \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{serodata} by year.
 #' @examples
 #' \dontrun{
-#' serodata <- prepare_serodata(serodata = serodata, alpha = 0.05)
+#' data("serodata")
+#' serodata <- prepare_serodata(serodata = serodata)
 #' exposure_matrix <- get_exposure_matrix(serodata = serodata)
 #' }
 #' @export
@@ -310,10 +322,14 @@ get_exposure_matrix <- function(serodata) {
 }
 
 
-#' Extract Model Summary
+#' Method to extact a summary of the specified serological model object.
 #'
-#' Function to generate a summary of a model.
-#' @param seromodel_object \code{seromodel_object}. An object containing relevant information about the implementation of the model. Refer to \link{fit_seromodel} for further details.
+#' This method extracts a summary corresponding to a serological model object that contains information about the original serological 
+#' survey data used to fit the model, such as the year when the survey took place, the type of test taken and the corresponding antibody, 
+#' as well as information about the convergence of the model, like the expected log pointwise predictive density \code{elpd} and its 
+#' corresponding standar deviation.
+#' @param seromodel_object \code{seromodel_object}. An object containing relevant information about the implementation of the model. 
+#' Refer to \link{fit_seromodel} for further details.
 #' @return \code{model_summary}. Object with a summary of \code{seromodel_object} containing the following:
 #' \tabular{ll}{
 #' \code{seromodel_name} \tab Name of the selected model. For further details refer to \link{save_or_load_model}. \cr \tab \cr
@@ -331,10 +347,11 @@ get_exposure_matrix <- function(serodata) {
 #' }
 #' @examples
 #' \dontrun{
+#' data("serodata")
 #' serodata <- prepare_serodata(serodata)
 #' seromodel_object <- run_seromodel(serodata = serodata,
-#'                           seromodel_name = "constant_foi_bi")
-#' extract_seromodel_summary (seromodel_object)
+#'                                   seromodel_name = "constant_foi_bi")
+#' extract_seromodel_summary(seromodel_object)
 #' }
 #' @export
 extract_seromodel_summary <- function(seromodel_object) {
@@ -372,9 +389,11 @@ extract_seromodel_summary <- function(seromodel_object) {
 }
 
 
-#' Get Prevalence Expanded
+#' Auxiliary function that generates an object containing the confidence interval based on a 
+#' Force-of-Infection fitting performed for a specified serological survey data. 
 #'
-#' Function that generates the expanded prevalence
+#' This function computes the corresponding binomial confidence intervals for the obtained prevalence based on a fitting
+#' of the Force-of-Infection \code{foi} for plotting an analysis purposes. 
 #' @param serodata A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
 #' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]}.
 #' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
@@ -383,7 +402,7 @@ extract_seromodel_summary <- function(seromodel_object) {
 #' serodata <- prepare_serodata(serodata)
 #' seromodel_object <- run_seromodel(serodata = serodata,
 #'                           seromodel_name = "constant_foi_bi")
-#' foi <- rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]
+#' foi <- rstan::extract(seromodel_object$fit, "foi")[[1]]
 #' get_prev_expanded <- function(foi, serodata)
 #' }
 #' @export

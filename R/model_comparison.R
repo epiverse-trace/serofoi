@@ -1,12 +1,17 @@
-#' Method for extracting 
+#' Method for extracting a dataframe containing the R-hat estimates for a given serological model. 
+#' 
+#' This method relies in the function \link[bayesplot]{rhat} to extract the R-hat estimates of the serological model object 
+#' \code{seromodel_object} and returns a table a dataframe with the estimates for each year of birth. 
 #' @param seromodel_object seromodel_object
 #' @return rhats table
 #' @examples
 #' \dontrun{
-#' serodata <- prepare_serodata(serodata = serodata, alpha = 0.05)
-#' seromodel_object <- run_seromodel(
-#' serodata = serodata, seromodel_name = "constant_foi_bi")
-#' get_table_rhats (seromodel_object)
+#' data("serodata")
+#' data_test <- prepare_serodata(serodata = serodata)
+#' model_constant <- run_seromodel(serodata = data_test, 
+#'                                 seromodel_name = "constant_foi_bi", 
+#'                                 n_iters = 1500)
+#' get_table_rhats(model_object = model_constant)
 #' }
 #' @export
 get_table_rhats <- function(seromodel_object) {
