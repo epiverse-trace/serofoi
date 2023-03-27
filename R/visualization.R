@@ -1,7 +1,7 @@
 #' Generate sero-positivity plot from raw data
 #'
 #' Function that generates the sero positivity plot from raw data
-#' @param seroprev_data A data frame containing the data from a seroprevalence survey.
+#' @param serodata A data frame containing the data from a seroprevalence survey.
 #' This data frame must contain the following columns:
 #' \tabular{ll}{
 #' \code{survey} \tab survey Label of the current survey \cr \tab \cr
@@ -20,18 +20,18 @@
 #' @return A ggplot object containing the seropositivity-vs-age graph of the raw data of a given seroprevalence survey with its corresponging binomial confidence interval.
 #' @examples
 #' \dontrun{
-#'  data_test <- prepare_seroprev_data(serodata)
+#'  data_test <- prepare_serodata(serodata)
 #'  model_object <- run_seromodel(
-#'  seroprev_data = data_test,
+#'  serodata = data_test,
 #'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
 #' plot_seroprev(model_object, size_text = 15)
 #' }
 #' @export
-plot_seroprev <- function(seroprev_data,
+plot_seroprev <- function(serodata,
                           size_text = 6) {
-  xx <- prepare_bin_data(seroprev_data)
+  xx <- prepare_bin_data(serodata)
   seroprev_plot <-
     ggplot2::ggplot(data = xx) +
     ggplot2::geom_errorbar(ggplot2::aes(age, ymin = p_obs_bin_l, ymax = p_obs_bin_u), width = 0.1) +
@@ -53,9 +53,9 @@ plot_seroprev <- function(seroprev_data,
 #' @return A ggplot object containing the seropositivity-vs-age graph including the data, the fitted model and their corresponding confindence intervals.
 #' @examples
 #' \dontrun{
-#'  data_test <- prepare_seroprev_data(serodata)
+#'  data_test <- prepare_serodata(serodata)
 #'  model_object <- run_seromodel(
-#'  seroprev_data = data_test,
+#'  serodata = data_test,
 #'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
@@ -69,7 +69,7 @@ plot_seroprev_fitted <- function(model_object,
     if  (class(model_object$fit@sim$samples)  != "NULL" ) {
 
       foi <- rstan::extract(model_object$fit, "foi", inc_warmup = FALSE)[[1]]
-      prev_expanded <- get_prev_expanded(foi, seroprev_data = model_object$seroprev_data)
+      prev_expanded <- get_prev_expanded(foi, serodata = model_object$serodata)
       prev_plot <-
         ggplot2::ggplot(prev_expanded) +
         ggplot2::geom_ribbon(
@@ -129,9 +129,9 @@ plot_seroprev_fitted <- function(model_object,
 #' @return A ggplot2 object containing the Force-of-infection-vs-time including the corresponding confidence interval.
 #' @examples
 #' \dontrun{
-#'    data_test <- prepare_seroprev_data(serodata)
+#'    data_test <- prepare_serodata(serodata)
 #'    model_object <- run_seromodel(
-#'    seroprev_data = data_test,
+#'    serodata = data_test,
 #'    seromodel_name = "constant_foi_bi",
 #'    n_iters = 1000
 #' )
@@ -222,9 +222,9 @@ plot_foi <- function(model_object,
 #' @return The rhats-convergence plot of the selected model.
 #' @examples
 #' \dontrun{
-#' data_test <- prepare_seroprev_data(serodata)
+#' data_test <- prepare_serodata(serodata)
 #' model_object <- run_seromodel(
-#'  seroprev_data = data_test,
+#'  serodata = data_test,
 #'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
@@ -283,9 +283,9 @@ plot_rhats <- function(model_object,
 #' @return A ggplot object with a vertical arrange containing the seropositivity, force of infection, and convergence plots.
 #' @examples
 #' \dontrun{
-#' data_test <- prepare_seroprev_data(serodata)
+#' data_test <- prepare_serodata(serodata)
 #' model_object <- run_seromodel(
-#'  seroprev_data = data_test,
+#'  serodata = data_test,
 #'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')
@@ -367,9 +367,9 @@ plot_seromodel <- function(model_object,
 #' @return p, a variable that will be used in the \link{visualisation} module
 #' @examples
 #' \dontrun{
-#'  data_test <- prepare_seroprev_data(serodata)
+#'  data_test <- prepare_serodata(serodata)
 #'  model_object <- run_seromodel(
-#'  seroprev_data = data_test,
+#'  serodata = data_test,
 #'  seromodel_name = "constant_foi_bi",
 #'  n_iters = 1000
 #')

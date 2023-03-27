@@ -20,9 +20,9 @@ All rhats must be smaller than 1 to ensure convergence.
 }
 \examples{
 \dontrun{
-data_test <- prepare_seroprev_data(serodata)
+data_test <- prepare_serodata(serodata)
 model_object <- run_seromodel(
- seroprev_data = data_test,
+ serodata = data_test,
  seromodel_name = "constant_foi_bi",
  n_iters = 1000
 )

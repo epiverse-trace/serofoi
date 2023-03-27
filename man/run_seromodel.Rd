@@ -5,7 +5,7 @@
 \title{Run the specified stan model for the force-of-infection}
 \usage{
 run_seromodel(
-  seroprev_data,
+  serodata,
   seromodel_name = "constant_foi_bi",
   n_iters = 1000,
   n_thin = 2,
@@ -15,7 +15,7 @@ run_seromodel(
 )
 }
 \arguments{
-\item{seroprev_data}{A data frame containing the data from a seroprevalence survey.
+\item{serodata}{A data frame containing the data from a seroprevalence survey.
 This data frame must contain the following columns:
 \tabular{ll}{
 \code{survey} \tab survey Label of the current survey \cr \tab \cr
@@ -36,7 +36,7 @@ This data frame must contain the following columns:
 \code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
 \code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
 }
-The last six colums can be added to \code{seroprev_data} by means of the function \code{\link{prepare_seroprev_data}}.}
+The last six colums can be added to \code{serodata} by means of the function \code{\link{prepare_serodata}}.}
 
 \item{seromodel_name}{Name of the selected model. Current version provides three options:
 \describe{
@@ -65,8 +65,8 @@ Run the specified stan model for the force-of-infection
 }
 \examples{
 \dontrun{
-seroprev_data <- prepare_seroprev_data(serodata)
-run_seromodel (seroprev_data,
+serodata <- prepare_serodata(serodata)
+run_seromodel (serodata,
            seromodel_name = "constant_foi_bi")
 }
 }

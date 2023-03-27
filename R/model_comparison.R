@@ -5,9 +5,9 @@
 #' @return rhats table
 #' @examples
 #' \dontrun{
-#' seroprev_data <- prepare_seroprev_data(seroprev_data = serodata, alpha = 0.05)
+#' serodata <- prepare_serodata(serodata = serodata, alpha = 0.05)
 #' model_object <- run_seromodel(
-#' seroprev_data = seroprev_data, seromodel_name = "constant_foi_bi")
+#' serodata = serodata, seromodel_name = "constant_foi_bi")
 #' get_table_rhats (model_object)
 #' }
 #' @export

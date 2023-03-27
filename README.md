@@ -60,14 +60,14 @@ head(serodata, 5)
 #> 5 IgG anti-T.cruzi
 ```
 
-The function `prepare_seroprev_data` will prepare the entry data for
+The function `prepare_serodata` will prepare the entry data for
 entering the modelling functions. The seroprevalence *prepared data* can
 be visualised with the `plot_seroprev` function. This function also
 plots the binomial confidence interval of the observed data.
 
 ``` r
 
-data_test <- prepare_seroprev_data(serodata)
+data_test <- prepare_serodata(serodata)
 
 plot_seroprev(data_test, size_text = 15)
 ```
@@ -95,7 +95,7 @@ achieving convergence, as it only fits one parameter (the constant FoI)
 from a binomial distribution.
 
 ``` r
-model_1 <- run_seromodel(seroprev_data = data_test,
+model_1 <- run_seromodel(serodata = data_test,
                      seromodel_name = "constant_foi_bi",
                      n_iters = 500, 
                      n_thin = 2)
@@ -124,7 +124,7 @@ of years, reflected by the difference between year of the serosurvey and
 the maximum age-class sampled.
 
 ``` r
-model_2 <- run_seromodel(seroprev_data = data_test,
+model_2 <- run_seromodel(serodata = data_test,
                      seromodel_name = "continuous_foi_normal_bi",
                      n_iters = 1500, 
                      n_thin = 2)
@@ -150,7 +150,7 @@ For the *fast* *epidemic model,* a larger number of iterations is
 required for achieving convergence, compared to the previous models.
 
 ``` r
-model_3 <- run_seromodel(seroprev_data = data_test,
+model_3 <- run_seromodel(serodata = data_test,
                      seromodel_name = "continuous_foi_normal_log",
                      n_iters = 1500, 
                      n_thin = 2)

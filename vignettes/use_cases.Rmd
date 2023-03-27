@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 library(serofoi)
 library(tidyverse)
 rownames(serodata) <- NULL 
-data_test <- prepare_seroprev_data(serodata)
+data_test <- prepare_serodata(serodata)
 
 
 ```
@@ -74,7 +74,7 @@ $$ P(a,t) = 1−exp(−\lambda{a})$$
 The corresponding code for the constant-FoI model with binomial distribution is:
 
 ```{r model_1, include = FALSE, echo=TRUE, errors = FALSE, warning = FALSE, message = FALSE }
-model_1 <- run_seromodel(seroprev_data = data_test,
+model_1 <- run_seromodel(serodata = data_test,
                              seromodel_name = "constant_foi_bi",
                              n_iters = 500, 
                              n_thin = 2)
@@ -94,14 +94,14 @@ Therefore, a serosurvey completed at time $t$ and including ages $a$ from {$age_
 Currently, two models within *serofoi* allow time-varying FoI, with corresponding code:
 
 ```{r model_2, include = FALSE, echo = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
-model_2 <- run_seromodel(seroprev_data = data_test,
+model_2 <- run_seromodel(serodata = data_test,
                              seromodel_name = "continuous_foi_normal_bi",
                              n_iters = 1500, 
                              n_thin = 2)
 ```
 
 ```{r model_3, include = FALSE, echo = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
-model_3 <- run_seromodel(seroprev_data = data_test,
+model_3 <- run_seromodel(serodata = data_test,
                              seromodel_name = "continuous_foi_normal_log",
                              n_iters = 1500, 
                              n_thin = 2)
@@ -125,14 +125,14 @@ After preparing the data we can run two models (constant and time varying) avail
 
 ```{r three models, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
 
-chagas2012p <- prepare_seroprev_data(chagas2012)
+chagas2012p <- prepare_serodata(chagas2012)
 
-m1_cha <- run_seromodel(seroprev_data = chagas2012p,
+m1_cha <- run_seromodel(serodata = chagas2012p,
                      seromodel_name = "constant_foi_bi",
                      n_iters = 500, 
                      n_thin = 2)
 
-m2_cha <- run_seromodel(seroprev_data = chagas2012p,
+m2_cha <- run_seromodel(serodata = chagas2012p,
                      seromodel_name = "continuous_foi_normal_bi",
                      n_iters = 1500, 
                      n_thin = 2)
@@ -160,19 +160,19 @@ head(veev2012, 5)
 
 ```{r models_veev, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
 
-veev2012p <- prepare_seroprev_data(veev2012)
+veev2012p <- prepare_serodata(veev2012)
 
-m1_veev <- run_seromodel(seroprev_data = veev2012p,
+m1_veev <- run_seromodel(serodata = veev2012p,
                      seromodel_name = "constant_foi_bi",
                      n_iters = 500, 
                      n_thin = 2)
 
-m2_veev <- run_seromodel(seroprev_data = veev2012p,
+m2_veev <- run_seromodel(serodata = veev2012p,
                      seromodel_name = "continuous_foi_normal_bi",
                      n_iters = 500, 
                      n_thin = 2)
 
-m3_veev <- run_seromodel(seroprev_data = veev2012p,
+m3_veev <- run_seromodel(serodata = veev2012p,
                      seromodel_name = "continuous_foi_normal_log",
                      n_iters = 500, 
                      n_thin = 2)
@@ -203,19 +203,19 @@ head(chik2015, 5)
 
 ```{r models_chik, include = TRUE, errors = FALSE, warning = FALSE, message=FALSE }
 
-chik2015p <- prepare_seroprev_data(chik2015)
+chik2015p <- prepare_serodata(chik2015)
 
-mod1_chik <- run_seromodel(seroprev_data = chik2015p,
+mod1_chik <- run_seromodel(serodata = chik2015p,
                      seromodel_name = "constant_foi_bi",
                      n_iters = 1000, 
                      n_thin = 2)
 
-mod2_chik <- run_seromodel(seroprev_data = chik2015p,
+mod2_chik <- run_seromodel(serodata = chik2015p,
                      seromodel_name = "continuous_foi_normal_bi",
                      n_iters = 1500, 
                      n_thin = 2)
 
-mod3_chik <- run_seromodel(seroprev_data = chik2015p,
+mod3_chik <- run_seromodel(serodata = chik2015p,
                      seromodel_name = "continuous_foi_normal_log",
                      n_iters = 1500, 
                      n_thin = 2)

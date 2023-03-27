@@ -15,7 +15,7 @@ test_that("individual models", {
     "extdata", "data.RDS"
   )
   data("serodata")
-  data_test <- serodata %>% prepare_seroprev_data(alpha = 0.05)
+  data_test <- serodata %>% prepare_serodata(alpha = 0.05)
 
   #----- Plot raw data
   data_test_plot <- plot_seroprev(data_test, size_text = 15)
@@ -27,7 +27,7 @@ test_that("individual models", {
                      "continuous_foi_normal_log")
   models_short_names <- c("constant", "normal", "normal_log")
 
-  models_list <- lapply(models_to_run, run_seromodel, seroprev_data = data_test, n_iters = 1000)
+  models_list <- lapply(models_to_run, run_seromodel, serodata = data_test, n_iters = 1000)
 
   #----- Generate plots for each model
   i = 1

@@ -19,9 +19,9 @@ Function that generates the combined plots summarizing the results of the model 
 }
 \examples{
 \dontrun{
-data_test <- prepare_seroprev_data(serodata)
+data_test <- prepare_serodata(serodata)
 model_object <- run_seromodel(
- seroprev_data = data_test,
+ serodata = data_test,
  seromodel_name = "constant_foi_bi",
  n_iters = 1000
 )
