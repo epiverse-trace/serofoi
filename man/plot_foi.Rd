@@ -2,12 +2,12 @@
 % Please edit documentation in R/visualization.R
 \name{plot_foi}
 \alias{plot_foi}
-\title{Generate Force-of-Infection Plot}
+\title{Function that generates a Force-of-Infection plot corresponding to the specified fitted serological model.}
 \usage{
-plot_foi(model_object, lambda_sim = NA, max_lambda = NA, size_text = 25)
+plot_foi(seromodel_object, lambda_sim = NA, max_lambda = NA, size_text = 25)
 }
 \arguments{
-\item{model_object}{Object containing the results of fitting a model by means of \link{run_seroprev_model}.}
+\item{seromodel_object}{Object containing the results of fitting a model by means of \link{run_seromodel}.}
 
 \item{size_text}{Text size use in the theme of the graph returned by the function.}
 }
@@ -15,16 +15,18 @@ plot_foi(model_object, lambda_sim = NA, max_lambda = NA, size_text = 25)
 A ggplot2 object containing the Force-of-infection-vs-time including the corresponding confidence interval.
 }
 \description{
-Function that generates the Force-of-Infection plot. The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
+This function generates a Force-of-Infection plot from the results obtained by fitting a serological model.
+This includes the corresponding binomial confidence interval. 
+The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
 }
 \examples{
 \dontrun{
-   data_test <- prepare_seroprev_data(serodata)
-   model_object <- run_seroprev_model(
-   seroprev_data = data_test,
-   seroprev_model_name = "constant_foi_bi",
+   data_test <- prepare_serodata(serodata)
+   seromodel_object <- run_seromodel(
+   serodata = data_test,
+   seromodel_name = "constant_foi_bi",
    n_iters = 1000
 )
-plot_foi(model_object, size_text = 15)
+plot_foi(seromodel_object, size_text = 15)
 }
 }

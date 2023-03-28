@@ -2,12 +2,12 @@
 % Please edit documentation in R/visualization.R
 \name{plot_seroprev_fitted}
 \alias{plot_seroprev_fitted}
-\title{Generate sero-positivity plot with fitted model}
+\title{Function that generates a seropositivity plot corresponding to the specified fitted serological model.}
 \usage{
-plot_seroprev_fitted(model_object, size_text = 6)
+plot_seroprev_fitted(seromodel_object, size_text = 6)
 }
 \arguments{
-\item{model_object}{Object containing the results of fitting a model by means of \link{run_seroprev_model}.}
+\item{seromodel_object}{Object containing the results of fitting a model by means of \link{run_seromodel}.}
 
 \item{size_text}{Text size of the graph returned by the function.}
 }
@@ -15,16 +15,17 @@ plot_seroprev_fitted(model_object, size_text = 6)
 A ggplot object containing the seropositivity-vs-age graph including the data, the fitted model and their corresponding confindence intervals.
 }
 \description{
-Function that generates the seropositivity graph with fitted model. Age is located on the x axis and seropositivity on the y axis with its corresponding confidence interval.
+This function generates a seropositivity plot of the specified serological model object. This includes the original data grouped by age
+as well as the obtained fitting from the model implementation. Age is located on the x axis and seropositivity on the y axis with its 
+corresponding confidence interval.
 }
 \examples{
 \dontrun{
- data_test <- prepare_seroprev_data(serodata)
- model_object <- run_seroprev_model(
- seroprev_data = data_test,
- seroprev_model_name = "constant_foi_bi",
- n_iters = 1000
-)
-plot_seroprev_fitted(model_object, size_text = 15)
+data("serodata")
+data_test <- prepare_serodata(serodata)
+seromodel_object <- run_seromodel(serodata = data_test,
+                                  seromodel_name = "constant_foi_bi",
+                                  n_iters = 1000)
+plot_seroprev_fitted(seromodel_object, size_text = 15)
 }
 }

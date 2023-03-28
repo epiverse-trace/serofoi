@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualization.R
 \name{plot_info_table}
 \alias{plot_info_table}
-\title{Plot Info Table}
+\title{Auxiliary function that generates a plot of a given table}
 \usage{
 plot_info_table(info, size_text)
 }
@@ -15,17 +15,17 @@ plot_info_table(info, size_text)
 p, a variable that will be used in the \link{visualisation} module
 }
 \description{
-Function that generates the information table
+Auxiliary function that generates a plot of a given table
 }
 \examples{
 \dontrun{
- data_test <- prepare_seroprev_data(serodata)
- model_object <- run_seroprev_model(
- seroprev_data = data_test,
- seroprev_model_name = "constant_foi_bi",
+ data_test <- prepare_serodata(serodata)
+ seromodel_object <- run_seromodel(
+ serodata = data_test,
+ seromodel_name = "constant_foi_bi",
  n_iters = 1000
 )
-info = t(model_object$model_summary)
+info = t(seromodel_object$model_summary)
 plot_info_table (info, size_text = 15)
 }
 }
