@@ -1,4 +1,4 @@
-#' Function that prepares the data from a serological survey for modelling.
+#' Function that prepares the data from a serological survey for modelling
 #'
 #' This function adds the necessary additional variables to the given dataset \code{serodata} corresponding to a serological survey.
 #' @param serodata A data frame containing the data from a serological survey.
@@ -62,7 +62,7 @@ prepare_serodata <- function(serodata = serodata,
 
 
 #' Function that prepares a pre-processed serological survey dataset to plot the binomial confidence intervals of the seroprevalence grouped by
-#' age group.
+#' age group
 #'
 #' This function prepapares a given pre-processed serological dataset (see \code{\link{prepare_serodata}}) to plot the binomial confidence intervals 
 #' of its corresponding seroprevalence grouped by age group. 

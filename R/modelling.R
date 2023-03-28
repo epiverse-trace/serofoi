@@ -1,4 +1,4 @@
-#' Run the specified stan model for the Force-of-Infection and estimates de seroprevalence based on the result of the fit. 
+#' Function that runs the specified stan model for the Force-of-Infection and estimates de seroprevalence based on the result of the fit 
 #' 
 #' This function runs the specified model for the Force-of-Infection \code{seromodel_name} using the data froma seroprevalence survey 
 #' \code{serodata} as the input data. See \link{fit_seromodel} for further details.
@@ -72,7 +72,7 @@ run_seromodel <- function(serodata,
 }
 
 # TODO The warning 'recompiling to avoid crashing R session' still appears when the function is run for a second time.
-#' Auxiliar function used to determine whether the stan model corresponding to the specified serological model has been already compiled or not.
+#' Function used to determine whether the stan model corresponding to the specified serological model has been already compiled or not
 #'
 #' This function determines whether the corresponding .RDS file of the selected model exists or not.
 #' In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the
@@ -106,7 +106,7 @@ save_or_load_model <- function(seromodel_name = "constant_foi_bi") {
 }
 
 
-#' Function that fits the selected model to the specified seroprevalence survey data. 
+#' Function that fits the selected model to the specified seroprevalence survey data
 #' 
 #' This function fits the specified model \code{seromodel_name} to the serological survey data \code{serodata} 
 #' by means of the \link[rstan]{sampling} method. The function determines whether the corresponding stan model 
@@ -161,7 +161,7 @@ fit_seromodel <- function(serodata,
                           delta = 0.90,
                           m_treed = 10,
                           decades = 0) {
-  # TODO Add a warning because there are exceptions where a minimal amount of iterations is needed.
+  # TODO Add a warning because there are exceptions where a minimal amount of iterations is needed
   model <- save_or_load_model(seromodel_name)
   exposure_ages <- get_exposure_ages(serodata)
   exposure_years <- (min(serodata$birth_year):serodata$tsur[1])[-1]
@@ -280,7 +280,7 @@ fit_seromodel <- function(serodata,
 }
 
 
-#' Function that generates an atomic vector containing the corresponding exposition years of a serological survey.
+#' Function that generates an atomic vector containing the corresponding exposition years of a serological survey
 #'
 #' This function generates an atomic vector containing the exposition years corresponding to the specified serological survey data \code{serodata}. 
 #' The exposition years to the disease for each individual corresponds to the time from birth to the moment of the survey.
@@ -298,7 +298,7 @@ get_exposure_ages <- function(serodata) {
 }
 
 # TODO Is necessary to explain better what we mean by the exposure matrix.
-#' Function that generates the exposure matrix corresponding to a serological survey.
+#' Function that generates the exposure matrix corresponding to a serological survey
 #'
 #' Function that generates the exposure matrix corresponding to the specified serological survey data \code{serodata}.
 #' @param serodata A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_serodata} function.
@@ -322,7 +322,7 @@ get_exposure_matrix <- function(serodata) {
 }
 
 
-#' Method to extact a summary of the specified serological model object.
+#' Method to extact a summary of the specified serological model object
 #'
 #' This method extracts a summary corresponding to a serological model object that contains information about the original serological 
 #' survey data used to fit the model, such as the year when the survey took place, the type of test taken and the corresponding antibody, 
@@ -389,8 +389,8 @@ extract_seromodel_summary <- function(seromodel_object) {
 }
 
 
-#' Auxiliary function that generates an object containing the confidence interval based on a 
-#' Force-of-Infection fitting performed for a specified serological survey data. 
+#' Function that generates an object containing the confidence interval based on a 
+#' Force-of-Infection fitting performed for a serological survey
 #'
 #' This function computes the corresponding binomial confidence intervals for the obtained prevalence based on a fitting
 #' of the Force-of-Infection \code{foi} for plotting an analysis purposes. 

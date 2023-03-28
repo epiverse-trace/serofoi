@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_comparison.R
 \name{get_table_rhats}
 \alias{get_table_rhats}
-\title{Method for extracting a dataframe containing the R-hat estimates for a given serological model.}
+\title{Method for extracting a dataframe containing the R-hat estimates for a given serological model}
 \usage{
 get_table_rhats(seromodel_object)
 }

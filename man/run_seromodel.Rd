@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{run_seromodel}
 \alias{run_seromodel}
-\title{Run the specified stan model for the Force-of-Infection and estimates de seroprevalence based on the result of the fit.}
+\title{Function that runs the specified stan model for the Force-of-Infection and estimates de seroprevalence based on the result of the fit}
 \usage{
 run_seromodel(
   serodata,

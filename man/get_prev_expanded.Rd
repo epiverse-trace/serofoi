@@ -2,8 +2,8 @@
 % Please edit documentation in R/modelling.R
 \name{get_prev_expanded}
 \alias{get_prev_expanded}
-\title{Auxiliary function that generates an object containing the confidence interval based on a 
-Force-of-Infection fitting performed for a specified serological survey data.}
+\title{Function that generates an object containing the confidence interval based on a 
+Force-of-Infection fitting performed for a serological survey}
 \usage{
 get_prev_expanded(foi, serodata)
 }

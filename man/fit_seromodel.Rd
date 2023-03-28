@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{fit_seromodel}
 \alias{fit_seromodel}
-\title{Function that fits the selected model to the specified seroprevalence survey data.}
+\title{Function that fits the selected model to the specified seroprevalence survey data}
 \usage{
 fit_seromodel(
   serodata,

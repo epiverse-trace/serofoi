@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{save_or_load_model}
 \alias{save_or_load_model}
-\title{Auxiliar function used to determine whether the stan model corresponding to the specified serological model has been already compiled or not.}
+\title{Function used to determine whether the stan model corresponding to the specified serological model has been already compiled or not}
 \usage{
 save_or_load_model(seromodel_name = "constant_foi_bi")
 }

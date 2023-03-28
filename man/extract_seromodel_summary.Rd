@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{extract_seromodel_summary}
 \alias{extract_seromodel_summary}
-\title{Method to extact a summary of the specified serological model object.}
+\title{Method to extact a summary of the specified serological model object}
 \usage{
 extract_seromodel_summary(seromodel_object)
 }

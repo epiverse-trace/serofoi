@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualization.R
 \name{plot_info_table}
 \alias{plot_info_table}
-\title{Auxiliary function that generates a plot of a given table}
+\title{Function that generates a plot for a given table}
 \usage{
 plot_info_table(info, size_text)
 }
@@ -15,7 +15,7 @@ plot_info_table(info, size_text)
 p, a variable that will be used in the \link{visualisation} module
 }
 \description{
-Auxiliary function that generates a plot of a given table
+Function that generates a plot for a given table
 }
 \examples{
 \dontrun{

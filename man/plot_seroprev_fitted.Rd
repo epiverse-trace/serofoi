@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualization.R
 \name{plot_seroprev_fitted}
 \alias{plot_seroprev_fitted}
-\title{Function that generates a seropositivity plot corresponding to the specified fitted serological model.}
+\title{Function that generates a seropositivity plot corresponding to the specified fitted serological model}
 \usage{
 plot_seroprev_fitted(seromodel_object, size_text = 6)
 }

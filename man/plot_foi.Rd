@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualization.R
 \name{plot_foi}
 \alias{plot_foi}
-\title{Function that generates a Force-of-Infection plot corresponding to the specified fitted serological model.}
+\title{Function that generates a Force-of-Infection plot corresponding to the specified fitted serological model}
 \usage{
 plot_foi(seromodel_object, lambda_sim = NA, max_lambda = NA, size_text = 25)
 }

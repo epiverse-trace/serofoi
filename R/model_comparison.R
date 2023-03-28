@@ -1,4 +1,4 @@
-#' Method for extracting a dataframe containing the R-hat estimates for a given serological model. 
+#' Method for extracting a dataframe containing the R-hat estimates for a given serological model
 #' 
 #' This method relies in the function \link[bayesplot]{rhat} to extract the R-hat estimates of the serological model object 
 #' \code{seromodel_object} and returns a table a dataframe with the estimates for each year of birth. 

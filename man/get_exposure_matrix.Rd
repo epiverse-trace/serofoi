@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{get_exposure_matrix}
 \alias{get_exposure_matrix}
-\title{Function that generates the exposure matrix corresponding to a serological survey.}
+\title{Function that generates the exposure matrix corresponding to a serological survey}
 \usage{
 get_exposure_matrix(serodata)
 }
