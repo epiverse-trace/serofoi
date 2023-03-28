@@ -2,12 +2,12 @@
 % Please edit documentation in R/visualization.R
 \name{plot_seroprev}
 \alias{plot_seroprev}
-\title{Generate sero-positivity plot from raw data}
+\title{Function that generates the sero-positivity plot from a raw serological survey dataset.}
 \usage{
-plot_seroprev(seroprev_data, size_text = 6)
+plot_seroprev(serodata, size_text = 6)
 }
 \arguments{
-\item{seroprev_data}{A data frame containing the data from a seroprevalence survey.
+\item{serodata}{A data frame containing the data from a seroprevalence survey.
 This data frame must contain the following columns:
 \tabular{ll}{
 \code{survey} \tab survey Label of the current survey \cr \tab \cr
@@ -29,16 +29,16 @@ This data frame must contain the following columns:
 A ggplot object containing the seropositivity-vs-age graph of the raw data of a given seroprevalence survey with its corresponging binomial confidence interval.
 }
 \description{
-Function that generates the sero positivity plot from raw data
+Function that generates the sero-positivity plot from a raw serological survey dataset.
 }
 \examples{
 \dontrun{
- data_test <- prepare_seroprev_data(serodata)
- model_object <- run_seroprev_model(
- seroprev_data = data_test,
- seroprev_model_name = "constant_foi_bi",
+ data_test <- prepare_serodata(serodata)
+ seromodel_object <- run_seromodel(
+ serodata = data_test,
+ seromodel_name = "constant_foi_bi",
  n_iters = 1000
 )
-plot_seroprev(model_object, size_text = 15)
+plot_seroprev(seromodel_object, size_text = 15)
 }
 }

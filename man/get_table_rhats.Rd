@@ -2,24 +2,27 @@
 % Please edit documentation in R/model_comparison.R
 \name{get_table_rhats}
 \alias{get_table_rhats}
-\title{Get Table Rhats}
+\title{Method for extracting a dataframe containing the R-hat estimates for a given serological model.}
 \usage{
-get_table_rhats(model_object)
+get_table_rhats(seromodel_object)
 }
 \arguments{
-\item{model_object}{model_object}
+\item{seromodel_object}{seromodel_object}
 }
 \value{
 rhats table
 }
 \description{
-Function that makes the rhats table
+This method relies in the function \link[bayesplot]{rhat} to extract the R-hat estimates of the serological model object 
+\code{seromodel_object} and returns a table a dataframe with the estimates for each year of birth.
 }
 \examples{
 \dontrun{
-seroprev_data <- prepare_seroprev_data(seroprev_data = serodata, alpha = 0.05)
-model_object <- run_seroprev_model(
-seroprev_data = seroprev_data, seroprev_model_name = "constant_foi_bi")
-get_table_rhats (model_object)
+data("serodata")
+data_test <- prepare_serodata(serodata = serodata)
+model_constant <- run_seromodel(serodata = data_test, 
+                                seromodel_name = "constant_foi_bi", 
+                                n_iters = 1500)
+get_table_rhats(model_object = model_constant)
 }
 }
