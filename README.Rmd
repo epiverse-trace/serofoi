@@ -105,9 +105,9 @@ from a binomial distribution.
 
 ```{r model_1, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_1 <- run_seromodel(serodata = data_test,
-                     seromodel_name = "constant_foi_bi",
-                     n_iters = 500, 
-                     n_thin = 2)
+                        foi_model = "constant",
+                        n_iters = 500, 
+                        n_thin = 2)
 
 ```
 
@@ -121,9 +121,9 @@ the maximum age-class sampled.
 
 ```{r model_2, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_2 <- run_seromodel(serodata = data_test,
-                     seromodel_name = "continuous_foi_normal_bi",
-                     n_iters = 1500, 
-                     n_thin = 2)
+                        foi_model = "tv_normal",
+                        n_iters = 1500, 
+                        n_thin = 2)
 ```
 
 #### Model 3. Time-varying Force-of-Infection (fast epidemic model)
@@ -133,9 +133,9 @@ required for achieving convergence, compared to the previous models.
 
 ```{r model_3, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_3 <- run_seromodel(serodata = data_test,
-                     seromodel_name = "continuous_foi_normal_log",
-                     n_iters = 1500, 
-                     n_thin = 2)
+                        foi_model = "tv_normal_log",
+                        n_iters = 1500, 
+                        n_thin = 2)
 ```
 
 For each model, the plot_seromodel function generate a vertical arrange of

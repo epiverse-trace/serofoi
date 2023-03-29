@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{get_exposure_ages}
 \alias{get_exposure_ages}
-\title{Function that generates an atomic vector containing the corresponding exposition years of a serological survey.}
+\title{Function that generates an atomic vector containing the corresponding exposition years of a serological survey}
 \usage{
 get_exposure_ages(serodata)
 }

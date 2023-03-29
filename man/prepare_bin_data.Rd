@@ -3,7 +3,7 @@
 \name{prepare_bin_data}
 \alias{prepare_bin_data}
 \title{Function that prepares a pre-processed serological survey dataset to plot the binomial confidence intervals of the seroprevalence grouped by
-age group.}
+age group}
 \usage{
 prepare_bin_data(serodata)
 }

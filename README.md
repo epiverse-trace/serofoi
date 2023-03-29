@@ -96,12 +96,12 @@ from a binomial distribution.
 
 ``` r
 model_1 <- run_seromodel(serodata = data_test,
-                     seromodel_name = "constant_foi_bi",
+                     foi_model = "constant",
                      n_iters = 500, 
                      n_thin = 2)
-#> [1] "serofoi model constant_foi_bi finished running ------"
+#> [1] "serofoi model constant finished running ------"
 #>                     [,1]              
-#> seromodel_name "constant_foi_bi" 
+#> foi_model "constant" 
 #> dataset             "COL-035-93"      
 #> country             "COL"             
 #> year                "2012"            
@@ -125,12 +125,12 @@ the maximum age-class sampled.
 
 ``` r
 model_2 <- run_seromodel(serodata = data_test,
-                     seromodel_name = "continuous_foi_normal_bi",
+                     foi_model = "tv_normal",
                      n_iters = 1500, 
                      n_thin = 2)
-#> [1] "serofoi model continuous_foi_normal_bi finished running ------"
+#> [1] "serofoi model tv_normal finished running ------"
 #>                     [,1]                      
-#> seromodel_name "continuous_foi_normal_bi"
+#> foi_model "tv_normal"
 #> dataset             "COL-035-93"              
 #> country             "COL"                     
 #> year                "2012"                    
@@ -151,12 +151,12 @@ required for achieving convergence, compared to the previous models.
 
 ``` r
 model_3 <- run_seromodel(serodata = data_test,
-                     seromodel_name = "continuous_foi_normal_log",
-                     n_iters = 1500, 
-                     n_thin = 2)
-#> [1] "serofoi model continuous_foi_normal_log finished running ------"
+                        foi_model = "tv_normal_log",
+                        n_iters = 1500, 
+                        n_thin = 2)
+#> [1] "serofoi model tv_normal_log finished running ------"
 #>                     [,1]                       
-#> seromodel_name "continuous_foi_normal_log"
+#> foi_model "tv_normal_log"
 #> dataset             "COL-035-93"               
 #> country             "COL"                      
 #> year                "2012"                     
