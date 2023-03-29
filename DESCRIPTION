@@ -57,7 +57,8 @@ Imports:
     BH,
     RcppEigen,
     RcppParallel,
-    purrr
+    purrr,
+    cowplot
 Suggests: 
     knitr,
     rmarkdown

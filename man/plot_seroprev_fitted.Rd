@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualization.R
 \name{plot_seroprev_fitted}
 \alias{plot_seroprev_fitted}
-\title{Function that generates a seropositivity plot corresponding to the specified fitted serological model.}
+\title{Function that generates a seropositivity plot corresponding to the specified fitted serological model}
 \usage{
 plot_seroprev_fitted(seromodel_object, size_text = 6)
 }
@@ -24,7 +24,7 @@ corresponding confidence interval.
 data("serodata")
 data_test <- prepare_serodata(serodata)
 seromodel_object <- run_seromodel(serodata = data_test,
-                                  seromodel_name = "constant_foi_bi",
+                                  foi_model = "constant",
                                   n_iters = 1000)
 plot_seroprev_fitted(seromodel_object, size_text = 15)
 }

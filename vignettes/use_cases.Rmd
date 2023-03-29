@@ -1,3 +1,4 @@
+
 ---
 title: "Use cases"
 output: rmarkdown::html_vignette
@@ -75,9 +76,9 @@ The corresponding code for the constant-FoI model with binomial distribution is:
 
 ```{r model_1, include = FALSE, echo=TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_1 <- run_seromodel(serodata = data_test,
-                             seromodel_name = "constant_foi_bi",
-                             n_iters = 500, 
-                             n_thin = 2)
+                        foi_model = "constant",
+                        n_iters = 500, 
+                        n_thin = 2)
 
 ```
 
@@ -95,16 +96,16 @@ Currently, two models within *serofoi* allow time-varying FoI, with correspondin
 
 ```{r model_2, include = FALSE, echo = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_2 <- run_seromodel(serodata = data_test,
-                             seromodel_name = "continuous_foi_normal_bi",
-                             n_iters = 1500, 
-                             n_thin = 2)
+                        foi_model = "tv_normal",
+                        n_iters = 1500, 
+                        n_thin = 2)
 ```
 
 ```{r model_3, include = FALSE, echo = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_3 <- run_seromodel(serodata = data_test,
-                             seromodel_name = "continuous_foi_normal_log",
-                             n_iters = 1500, 
-                             n_thin = 2)
+                        foi_model = "tv_normal_log",
+                        n_iters = 1500, 
+                        n_thin = 2)
 ```
 
 ## Fitting process
@@ -128,14 +129,14 @@ After preparing the data we can run two models (constant and time varying) avail
 chagas2012p <- prepare_serodata(chagas2012)
 
 m1_cha <- run_seromodel(serodata = chagas2012p,
-                     seromodel_name = "constant_foi_bi",
-                     n_iters = 500, 
-                     n_thin = 2)
+                        foi_model = "constant",
+                        n_iters = 500, 
+                        n_thin = 2)
 
 m2_cha <- run_seromodel(serodata = chagas2012p,
-                     seromodel_name = "continuous_foi_normal_bi",
-                     n_iters = 1500, 
-                     n_thin = 2)
+                        foi_model = "tv_normal",
+                        n_iters = 1500, 
+                        n_thin = 2)
 
 ```
 
@@ -163,19 +164,19 @@ head(veev2012, 5)
 veev2012p <- prepare_serodata(veev2012)
 
 m1_veev <- run_seromodel(serodata = veev2012p,
-                     seromodel_name = "constant_foi_bi",
-                     n_iters = 500, 
-                     n_thin = 2)
+                        foi_model = "constant",
+                        n_iters = 500, 
+                        n_thin = 2)
 
 m2_veev <- run_seromodel(serodata = veev2012p,
-                     seromodel_name = "continuous_foi_normal_bi",
-                     n_iters = 500, 
-                     n_thin = 2)
+                        foi_model = "tv_normal",
+                        n_iters = 500, 
+                        n_thin = 2)
 
 m3_veev <- run_seromodel(serodata = veev2012p,
-                     seromodel_name = "continuous_foi_normal_log",
-                     n_iters = 500, 
-                     n_thin = 2)
+                        foi_model = "tv_normal_log",
+                        n_iters = 500, 
+                        n_thin = 2)
 ```
 
 Now, we can plot the results of the three models to compare. On Figure 3, we can observe a large increase in the estimated FOI. As suggested in @Carrera2020, an important increase in the transmission of VEEV in this region is inferred. Although the three fitted models converge well, we see much larger support for a more sudden increase in recent years with highest FoI values at 0.25 (consistent with an epidemic).
@@ -206,19 +207,19 @@ head(chik2015, 5)
 chik2015p <- prepare_serodata(chik2015)
 
 mod1_chik <- run_seromodel(serodata = chik2015p,
-                     seromodel_name = "constant_foi_bi",
-                     n_iters = 1000, 
-                     n_thin = 2)
+                          foi_model = "constant",
+                          n_iters = 1000, 
+                          n_thin = 2)
 
 mod2_chik <- run_seromodel(serodata = chik2015p,
-                     seromodel_name = "continuous_foi_normal_bi",
-                     n_iters = 1500, 
-                     n_thin = 2)
+                          foi_model = "tv_normal",
+                          n_iters = 1500, 
+                          n_thin = 2)
 
 mod3_chik <- run_seromodel(serodata = chik2015p,
-                     seromodel_name = "continuous_foi_normal_log",
-                     n_iters = 1500, 
-                     n_thin = 2)
+                          foi_model = "tv_normal_log",
+                          n_iters = 1500, 
+                          n_thin = 2)
 ```
 
 In Figure 4, we can observe the comparison between the three serofoi models. Here serofoi shows strong statistical support for a sudden increase in the transmission of CHIKV close to the year of the serosurvey (2015). The exact year is not possible to estimate, mainly given the data used is largely aggregated by 20-years age groups. Despite that, the results are consistent with the empirical evidence shown by [@dias2018] with both interviews, and IgM testing.
