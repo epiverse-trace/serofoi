@@ -145,7 +145,7 @@ Now, we can plot the results of the two models to compare (Figure 1). As shown i
 p1_cha <- plot_seromodel(m1_cha, size_text = 12, max_lambda = 0.02)
 p2_cha <- plot_seromodel(m2_cha, size_text = 12, max_lambda = 0.02)
 
-plot_seromodels_grid(p1_cha, p2_cha, n_row = 1, n_col = 2)
+cowplot::plot_grid(p1_cha, p2_cha, nrow = 1, ncol = 2)
 ```
 
 ## Case study 2. Hidden Alphaviruses epidemics in Panama
@@ -185,7 +185,7 @@ p1_veev <- plot_seromodel(m1_veev, size_text = 10, max_lambda = 0.6)
 p2_veev <- plot_seromodel(m2_veev, size_text = 10, max_lambda = 0.6)
 p3_veev <- plot_seromodel(m3_veev, size_text = 10, max_lambda = 0.6)
 
-plot_seromodels_grid(p1_veev, p2_veev, p3_veev, n_row = 1, n_col = 3)
+cowplot::plot_grid(p1_veev, p2_veev, p3_veev, nrow = 1, ncol = 3)
 
 ```
 
@@ -228,7 +228,7 @@ p1_chik <- plot_seromodel(mod1_chik, size_text = 10, max_lambda = 0.08)
 p2_chik <- plot_seromodel(mod2_chik, size_text = 10, max_lambda = 0.08)
 p3_chik <- plot_seromodel(mod3_chik, size_text = 10, max_lambda = 0.08)
 
-plot_seromodels_grid(p1_chik, p2_chik, p3_chik, n_row = 1, n_col = 3)
+cowplot::plot_grid(p1_chik, p2_chik, p3_chik, nrow = 1, ncol = 3)
 
 ```
 
