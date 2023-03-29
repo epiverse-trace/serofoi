@@ -6,7 +6,7 @@
 \usage{
 run_seromodel(
   serodata,
-  seromodel_name = "constant_foi_bi",
+  foi_model = "constant",
   n_iters = 1000,
   n_thin = 2,
   delta = 0.9,
@@ -39,11 +39,11 @@ This data frame must contain the following columns:
 }
 The last six colums can be added to \code{serodata} by means of the function \code{\link{prepare_serodata}}.}
 
-\item{seromodel_name}{Name of the selected model. Current version provides three options:
+\item{foi_model}{Name of the selected model. Current version provides three options:
 \describe{
-\item{\code{"constant_foi_bi"}}{Runs a constant model}
-\item{\code{"continuous_foi_normal_bi"}}{Runs a normal model}
-\item{\code{"continuous_foi_normal_log"}}{Runs a normal logarithmic model}
+\item{\code{"constant"}}{Runs a constant model}
+\item{\code{"tv_normal"}}{Runs a normal model}
+\item{\code{"tv_normal_log"}}{Runs a normal logarithmic model}
 }}
 
 \item{n_iters}{Number of interations for eah chain including the warmup. \code{iter} in \link[rstan]{sampling}.}
@@ -62,13 +62,13 @@ For further details refer to the \code{control} parameter in \link[rstan]{sampli
 \code{seromodel_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seromodel}.
 }
 \description{
-This function runs the specified model for the Force-of-Infection \code{seromodel_name} using the data froma seroprevalence survey 
+This function runs the specified model for the Force-of-Infection \code{foi_model} using the data froma seroprevalence survey 
 \code{serodata} as the input data. See \link{fit_seromodel} for further details.
 }
 \examples{
 \dontrun{
 serodata <- prepare_serodata(serodata)
 run_seromodel (serodata,
-           seromodel_name = "constant_foi_bi")
+           foi_model = "constant")
 }
 }

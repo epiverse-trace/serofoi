@@ -75,7 +75,7 @@ The corresponding code for the constant-FoI model with binomial distribution is:
 
 ```{r model_1, include = FALSE, echo=TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_1 <- run_seromodel(serodata = data_test,
-                             seromodel_name = "constant_foi_bi",
+                             foi_model = "constant",
                              n_iters = 500, 
                              n_thin = 2)
 
@@ -95,14 +95,14 @@ Currently, two models within *serofoi* allow time-varying FoI, with correspondin
 
 ```{r model_2, include = FALSE, echo = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_2 <- run_seromodel(serodata = data_test,
-                             seromodel_name = "continuous_foi_normal_bi",
+                             foi_model = "tv_normal",
                              n_iters = 1500, 
                              n_thin = 2)
 ```
 
 ```{r model_3, include = FALSE, echo = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
 model_3 <- run_seromodel(serodata = data_test,
-                             seromodel_name = "continuous_foi_normal_log",
+                             foi_model = "tv_normal_log",
                              n_iters = 1500, 
                              n_thin = 2)
 ```
@@ -128,12 +128,12 @@ After preparing the data we can run two models (constant and time varying) avail
 chagas2012p <- prepare_serodata(chagas2012)
 
 m1_cha <- run_seromodel(serodata = chagas2012p,
-                     seromodel_name = "constant_foi_bi",
+                     foi_model = "constant",
                      n_iters = 500, 
                      n_thin = 2)
 
 m2_cha <- run_seromodel(serodata = chagas2012p,
-                     seromodel_name = "continuous_foi_normal_bi",
+                     foi_model = "tv_normal",
                      n_iters = 1500, 
                      n_thin = 2)
 
@@ -163,17 +163,17 @@ head(veev2012, 5)
 veev2012p <- prepare_serodata(veev2012)
 
 m1_veev <- run_seromodel(serodata = veev2012p,
-                     seromodel_name = "constant_foi_bi",
+                     foi_model = "constant",
                      n_iters = 500, 
                      n_thin = 2)
 
 m2_veev <- run_seromodel(serodata = veev2012p,
-                     seromodel_name = "continuous_foi_normal_bi",
+                     foi_model = "tv_normal",
                      n_iters = 500, 
                      n_thin = 2)
 
 m3_veev <- run_seromodel(serodata = veev2012p,
-                     seromodel_name = "continuous_foi_normal_log",
+                     foi_model = "tv_normal_log",
                      n_iters = 500, 
                      n_thin = 2)
 ```
@@ -206,17 +206,17 @@ head(chik2015, 5)
 chik2015p <- prepare_serodata(chik2015)
 
 mod1_chik <- run_seromodel(serodata = chik2015p,
-                     seromodel_name = "constant_foi_bi",
+                     foi_model = "constant",
                      n_iters = 1000, 
                      n_thin = 2)
 
 mod2_chik <- run_seromodel(serodata = chik2015p,
-                     seromodel_name = "continuous_foi_normal_bi",
+                     foi_model = "tv_normal",
                      n_iters = 1500, 
                      n_thin = 2)
 
 mod3_chik <- run_seromodel(serodata = chik2015p,
-                     seromodel_name = "continuous_foi_normal_log",
+                     foi_model = "tv_normal_log",
                      n_iters = 1500, 
                      n_thin = 2)
 ```

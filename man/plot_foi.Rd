@@ -24,7 +24,7 @@ The x axis corresponds to the decades covered by the survey the y axis to the Fo
    data_test <- prepare_serodata(serodata)
    seromodel_object <- run_seromodel(
    serodata = data_test,
-   seromodel_name = "constant_foi_bi",
+   foi_model = "constant",
    n_iters = 1000
 )
 plot_foi(seromodel_object, size_text = 15)

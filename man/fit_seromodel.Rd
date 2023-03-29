@@ -6,7 +6,7 @@
 \usage{
 fit_seromodel(
   serodata,
-  seromodel_name,
+  foi_model,
   n_iters = 1000,
   n_thin = 2,
   delta = 0.9,
@@ -17,11 +17,11 @@ fit_seromodel(
 \arguments{
 \item{serodata}{A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.}
 
-\item{seromodel_name}{Name of the selected model. Current version provides three options:
+\item{foi_model}{Name of the selected model. Current version provides three options:
 \describe{
-\item{\code{"constant_foi_bi"}}{Runs a constant model}
-\item{\code{"continuous_foi_normal_bi"}}{Runs a normal model}
-\item{\code{"continuous_foi_normal_log"}}{Runs a normal logarithmic model}
+\item{\code{"constant"}}{Runs a constant model}
+\item{\code{"tv_normal"}}{Runs a normal model}
+\item{\code{"tv_normal_log"}}{Runs a normal logarithmic model}
 }}
 
 \item{n_iters}{Number of interations for eah chain including the warmup. \code{iter} in \link[rstan]{sampling}.}
@@ -48,7 +48,7 @@ This object is used as an input for the \link[rstan]{sampling} function \cr \tab
 \code{n_iters} \tab Number of interations for eah chain including the warmup. \cr \tab \cr
 \code{n_thin} \tab Positive integer specifying the period for saving samples. \cr \tab \cr
 \code{n_warmup} \tab Number of warm up iterations. Set by default as n_iters/2. \cr \tab \cr
-\code{seromodel_name} \tab The name of the model\cr \tab \cr
+\code{foi_model} \tab The name of the model\cr \tab \cr
 \code{delta} \tab Real number between 0 and 1 that represents the target average acceptance probability. \cr \tab \cr
 \code{m_treed} \tab Maximum tree depth for the binary tree used in the NUTS stan sampler. \cr \tab \cr
 \code{loo_fit} \tab Efficient approximate leave-one-out cross-validation. Refer to \link[loo]{loo} for further details. \cr \tab \cr
@@ -58,7 +58,7 @@ This object is used as an input for the \link[rstan]{sampling} function \cr \tab
 }
 }
 \description{
-This function fits the specified model \code{seromodel_name} to the serological survey data \code{serodata} 
+This function fits the specified model \code{foi_model} to the serological survey data \code{serodata} 
 by means of the \link[rstan]{sampling} method. The function determines whether the corresponding stan model 
 object needs to be compiled by means of the function \link{save_or_load_model}.
 }
@@ -67,7 +67,7 @@ object needs to be compiled by means of the function \link{save_or_load_model}.
 data("serodata")
 serodata <- prepare_serodata(serodata)
 seromodel_fit <- fit_seromodel(serodata = serodata,
-                               seromodel_name = "constant_foi_bi")
+                               foi_model = "constant")
 }
 
 }

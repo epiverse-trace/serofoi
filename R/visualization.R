@@ -22,7 +22,7 @@
 #'  data_test <- prepare_serodata(serodata)
 #'  seromodel_object <- run_seromodel(
 #'  serodata = data_test,
-#'  seromodel_name = "constant_foi_bi",
+#'  foi_model = "constant",
 #'  n_iters = 1000
 #')
 #' plot_seroprev(seromodel_object, size_text = 15)
@@ -57,7 +57,7 @@ plot_seroprev <- function(serodata,
 #' data("serodata")
 #' data_test <- prepare_serodata(serodata)
 #' seromodel_object <- run_seromodel(serodata = data_test,
-#'                                   seromodel_name = "constant_foi_bi",
+#'                                   foi_model = "constant",
 #'                                   n_iters = 1000)
 #' plot_seroprev_fitted(seromodel_object, size_text = 15)
 #' }
@@ -134,7 +134,7 @@ plot_seroprev_fitted <- function(seromodel_object,
 #'    data_test <- prepare_serodata(serodata)
 #'    seromodel_object <- run_seromodel(
 #'    serodata = data_test,
-#'    seromodel_name = "constant_foi_bi",
+#'    foi_model = "constant",
 #'    n_iters = 1000
 #' )
 #' plot_foi(seromodel_object, size_text = 15)
@@ -229,7 +229,7 @@ plot_foi <- function(seromodel_object,
 #' data_test <- prepare_serodata(serodata)
 #' seromodel_object <- run_seromodel(
 #'  serodata = data_test,
-#'  seromodel_name = "constant_foi_bi",
+#'  foi_model = "constant",
 #'  n_iters = 1000
 #')
 #' plot_rhats(seromodel_object, 
@@ -291,7 +291,7 @@ plot_rhats <- function(seromodel_object,
 #' data_test <- prepare_serodata(serodata)
 #' seromodel_object <- run_seromodel(
 #'  serodata = data_test,
-#'  seromodel_name = "constant_foi_bi",
+#'  foi_model = "constant",
 #'  n_iters = 1000
 #')
 #' plot_seromodel(seromodel_object, size_text = 15)
@@ -318,7 +318,7 @@ plot_seromodel <- function(seromodel_object,
 
       summary_table <- t(
         dplyr::select(seromodel_object$model_summary, 
-        c('seromodel_name', 'dataset', 'elpd', 'se', 'converged')))
+        c('foi_model', 'dataset', 'elpd', 'se', 'converged')))
       summary_plot <-
         plot_info_table(summary_table, size_text = size_text)
 
@@ -374,7 +374,7 @@ plot_seromodel <- function(seromodel_object,
 #'  data_test <- prepare_serodata(serodata)
 #'  seromodel_object <- run_seromodel(
 #'  serodata = data_test,
-#'  seromodel_name = "constant_foi_bi",
+#'  foi_model = "constant",
 #'  n_iters = 1000
 #')
 #' info = t(seromodel_object$model_summary)

@@ -21,7 +21,7 @@ This method relies in the function \link[bayesplot]{rhat} to extract the R-hat e
 data("serodata")
 data_test <- prepare_serodata(serodata = serodata)
 model_constant <- run_seromodel(serodata = data_test, 
-                                seromodel_name = "constant_foi_bi", 
+                                foi_model = "constant", 
                                 n_iters = 1500)
 get_table_rhats(model_object = model_constant)
 }
