@@ -300,7 +300,6 @@ get_exposure_ages <- function(serodata) {
 # TODO Is necessary to explain better what we mean by the exposure matrix.
 #' Function that generates the exposure matrix corresponding to a serological survey
 #'
-#' Function that generates the exposure matrix corresponding to the specified serological survey data \code{serodata}.
 #' @param serodata A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_serodata} function.
 #' @return \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{serodata} by year.
 #' @examples
@@ -390,7 +389,7 @@ extract_seromodel_summary <- function(seromodel_object) {
 
 
 #' Function that generates an object containing the confidence interval based on a 
-#' Force-of-Infection fitting performed for a serological survey
+#' Force-of-Infection fitting
 #'
 #' This function computes the corresponding binomial confidence intervals for the obtained prevalence based on a fitting
 #' of the Force-of-Infection \code{foi} for plotting an analysis purposes. 

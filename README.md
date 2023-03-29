@@ -151,9 +151,9 @@ required for achieving convergence, compared to the previous models.
 
 ``` r
 model_3 <- run_seromodel(serodata = data_test,
-                     foi_model = "tv_normal_log",
-                     n_iters = 1500, 
-                     n_thin = 2)
+                        foi_model = "tv_normal_log",
+                        n_iters = 1500, 
+                        n_thin = 2)
 #> [1] "serofoi model tv_normal_log finished running ------"
 #>                     [,1]                       
 #> foi_model "tv_normal_log"
