@@ -176,10 +176,10 @@ plotting functions. Crucially, it shows the (expected) log-predictive
 density `elpd`, standard error `se`, and allows to check convergence
 based on `R-hat` convergence diagnostics.
 
-Also, the `plot_seromodels_grid` allows a visual a comparison of
+Also, by means of the function `cowplot::plot_grid` a comparison of
 the models based on the (expected) log-predictive density `elpd`,
 standard error `se`, and allows to check convergence based on `R-hat`
-convergence diagnostics.
+convergence diagnostics can be visualized.
 
 For more detailed information and examples, please check the [online
 documentation](https://epiverse-trace.github.io/serofoi/articles) as
