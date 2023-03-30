@@ -3,7 +3,7 @@
 \name{get_prev_expanded}
 \alias{get_prev_expanded}
 \title{Function that generates an object containing the confidence interval based on a 
-Force-of-Infection fitting performed for a serological survey}
+Force-of-Infection fitting}
 \usage{
 get_prev_expanded(foi, serodata)
 }
