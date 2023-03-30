@@ -15,8 +15,6 @@ This data frame must contain the following columns:
 \code{counts} \tab Number of positive samples for each age group\cr \tab \cr
 \code{age_min} \tab age_min \cr \tab \cr
 \code{age_max} \tab age_max \cr \tab \cr
-\code{year_init} \tab year_init \cr \tab \cr
-\code{year_end} \tab year_end \cr \tab \cr
 \code{tsur} \tab Year in which the survey took place \cr \tab \cr
 \code{country} \tab The country where the survey took place \cr \tab \cr
 \code{test} \tab The type of test taken \cr \tab \cr

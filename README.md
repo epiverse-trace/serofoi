@@ -46,12 +46,12 @@ The package provides an example dataset of the observed serosurvey data,
 # Load example serodata data included with the package
 data(serodata)
 head(serodata, 5)
-#>       survey total counts age_min age_max year_init year_end tsur country  test
-#> 1 COL-035-93    34      0       1       1      2012     2012 2012     COL ELISA
-#> 2 COL-035-93    25      0       2       2      2012     2012 2012     COL ELISA
-#> 3 COL-035-93    35      1       3       3      2012     2012 2012     COL ELISA
-#> 4 COL-035-93    29      0       4       4      2012     2012 2012     COL ELISA
-#> 5 COL-035-93    36      0       5       5      2012     2012 2012     COL ELISA
+#>       survey total counts age_min age_max tsur country  test
+#> 1 COL-035-93    34      0       1       1 2012     COL ELISA
+#> 2 COL-035-93    25      0       2       2 2012     COL ELISA
+#> 3 COL-035-93    35      1       3       3 2012     COL ELISA
+#> 4 COL-035-93    29      0       4       4 2012     COL ELISA
+#> 5 COL-035-93    36      0       5       5 2012     COL ELISA
 #>           antibody
 #> 1 IgG anti-T.cruzi
 #> 2 IgG anti-T.cruzi
