@@ -176,9 +176,14 @@ plot_foi <- function(seromodel_object,
         ggplot2::xlab("Year")
       #TODO Add warning for foi_sim of different length than exposure years
       if (!is.null(foi_sim)){
-        n_foi_years <- length(foi_data$year)-length(foi_sim)
+        foi_data_length <- nrow(foi_data)
+        foi_sim_length <- length(foi_sim)
+        remove_x_values <- foi_sim_length - foi_data_length
+        # n_foi_years <- length(foi_data$year)-length(foi_sim)
+        # foi_sim_data <- data.frame(year = foi_data$year, 
+        #                           foi_sim = foi_sim[n_foi_years:-1])
         foi_sim_data <- data.frame(year = foi_data$year, 
-                                  foi_sim = foi_sim[n_foi_years:-1])
+                                  foi_sim = foi_sim[-c(1:remove_x_values)])    
         foi_plot <- foi_plot + 
           ggplot2::geom_point(data = foi_sim_data, ggplot2::aes(year, foi_sim))
       }

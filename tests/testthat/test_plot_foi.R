@@ -28,14 +28,19 @@ test_that("individual models", {
                         n_iters = 1000)
 
   #----- Results visualisation
+  size_text <- 6
+  max_lambda <- 1.55
   constant_plot <- plot_seromodel(models_list[[1]],
-                                  size_text = 6,
+                                  size_text = size_text,
+                                  max_lambda = max_lambda,
                                   foi_sim = foi_sim)
   tv_normal_plot <- plot_seromodel(models_list[[2]],
-                                   size_text = 6,
+                                   size_text = size_text,
+                                   max_lambda = max_lambda,
                                    foi_sim = foi_sim)
   tv_normal_log_plot <- plot_seromodel(models_list[[3]],
-                                       size_text = 6,
+                                       size_text = size_text,
+                                       max_lambda = max_lambda,
                                        foi_sim = foi_sim)
   plot_arrange <- cowplot::plot_grid(constant_plot,
                                      tv_normal_plot,
