@@ -11,13 +11,6 @@ test_that("individual models", {
   library(vdiffr)
 
   #----- Read and prepare data
-  # data_test_path <- testthat::test_path(
-  #   "extdata", "simdata_foiD_n05_group.RDS"
-  # )
-  # simdata_rds <- readRDS(data_test_path)
-  # simdata <- simdata_rds$serodata_sim %>% prepare_serodata()
-  # foi_sim <- simdata_rds$foi_sim
-
   data("serodata_simD")
   simdata <- serodata_simD %>% prepare_serodata()
   no_transm <- 0.0000000001

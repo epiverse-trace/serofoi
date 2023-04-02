@@ -179,13 +179,13 @@ plot_foi <- function(seromodel_object,
         foi_data_length <- nrow(foi_data)
         foi_sim_length <- length(foi_sim)
         remove_x_values <- foi_sim_length - foi_data_length
-        # n_foi_years <- length(foi_data$year)-length(foi_sim)
-        # foi_sim_data <- data.frame(year = foi_data$year, 
-        #                           foi_sim = foi_sim[n_foi_years:-1])
+
         foi_sim_data <- data.frame(year = foi_data$year, 
                                   foi_sim = foi_sim[-c(1:remove_x_values)])    
         foi_plot <- foi_plot + 
-          ggplot2::geom_point(data = foi_sim_data, ggplot2::aes(year, foi_sim))
+          ggplot2::geom_line(data = foi_sim_data, ggplot2::aes(x = year, y = foi_sim),
+                            colour = "#b30909",
+                            size = size_text/8)
       }
     }
   } else {
