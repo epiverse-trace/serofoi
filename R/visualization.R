@@ -139,9 +139,9 @@ plot_seroprev_fitted <- function(seromodel_object,
 #' }
 #' @export
 plot_foi <- function(seromodel_object,
-                     lambda_sim = NA,
                      max_lambda = NA,
-                     size_text = 25) {
+                     size_text = 25,
+                     foi_sim = NULL) {
   if (is.character(seromodel_object$fit) == FALSE) {
     if (class(seromodel_object$fit@sim$samples) != "NULL") {
       foi <- rstan::extract(seromodel_object$fit,
@@ -150,18 +150,6 @@ plot_foi <- function(seromodel_object,
 
       #-------- This bit is to get the actual length of the foi data
       foi_data <- seromodel_object$foi_cent_est
-
-      if (!is.na(lambda_sim)) {
-        lambda_mod_length <- NROW(foi_data)
-        lambda_sim_length <- length(lambda_sim)
-
-        if (lambda_mod_length < lambda_sim_length) {
-          remove_x_values <- lambda_sim_length - lambda_mod_length
-          lambda_sim <- lambda_sim[-c(1:remove_x_values)]
-        }
-
-        foi_data$simulated <- lambda_sim
-      }
 
       #--------
       foi_data$medianv[1] <- NA
@@ -186,6 +174,19 @@ plot_foi <- function(seromodel_object,
         ggplot2::coord_cartesian(ylim = c(0, max_lambda)) +
         ggplot2::ylab("Force-of-Infection") +
         ggplot2::xlab("Year")
+      #TODO Add warning for foi_sim of different length than exposure years
+      if (!is.null(foi_sim)){
+        foi_data_length <- nrow(foi_data)
+        foi_sim_length <- length(foi_sim)
+        remove_x_values <- foi_sim_length - foi_data_length
+
+        foi_sim_data <- data.frame(year = foi_data$year, 
+                                  foi_sim = foi_sim[-c(1:remove_x_values)])    
+        foi_plot <- foi_plot + 
+          ggplot2::geom_line(data = foi_sim_data, ggplot2::aes(x = year, y = foi_sim),
+                            colour = "#b30909",
+                            size = size_text/8)
+      }
     }
   } else {
     print("model did not run")
@@ -296,9 +297,9 @@ plot_rhats <- function(seromodel_object,
 #' }
 #' @export
 plot_seromodel <- function(seromodel_object,
-                       lambda_sim = NA,
-                       max_lambda = NA,
-                       size_text = 25) {
+                          max_lambda = NA,
+                          size_text = 25,
+                          foi_sim = NULL) {
   if (is.character(seromodel_object$fit) == FALSE) {
     if (class(seromodel_object$fit@sim$samples) != "NULL") {
       prev_plot <- plot_seroprev_fitted(seromodel_object = seromodel_object,
@@ -306,9 +307,9 @@ plot_seromodel <- function(seromodel_object,
 
       foi_plot <- plot_foi(
         seromodel_object = seromodel_object,
-        lambda_sim = lambda_sim,
         max_lambda = max_lambda,
-        size_text = size_text
+        size_text = size_text,
+        foi_sim = foi_sim
       )
 
       rhats_plot <- plot_rhats(seromodel_object = seromodel_object,

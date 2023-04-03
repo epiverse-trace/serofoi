@@ -4,14 +4,12 @@
 #'
 #' @docType data
 #'
-#' @usage data_test
+#' @usage serodata_simD
 #'
 #' @format An object of class \code{"cross"}; see \code{\link[qtl]{read.cross}}.
 #'
 #' @keywords datasets
 #'
 #' @examples
-#' \dontrun{
-#' data_test
-#' }
-"data_test"
+#' serodata_simD
+"serodata_simD"
