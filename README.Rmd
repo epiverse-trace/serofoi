@@ -11,8 +11,7 @@ link-citations: true
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  fig.path = "man/figures/README-"
 )
 ```
 
@@ -29,16 +28,9 @@ coverage](https://codecov.io/gh/TRACE-LAC/serofoi/branch/dev/graph/badge.svg)](h
 
 <!-- badges: end -->
 
-***serofoi*** is an R package to estimate the *Force-of-Infection (FoI)* of a given pathogen from age-disaggregated population-based 
-cross-sectional serosurveys, using a Bayesian framework. The package provides a set of features for assessing model fitting, 
-convergence and visualisation. 
+***serofoi*** is an R package to estimate the *Force-of-Infection (FoI)* of a given pathogen from age-disaggregated population-based cross-sectional serosurveys, using a Bayesian framework. The package provides a set of features for assessing model fitting, convergence and visualisation. 
 
-***serofoi*** relies on the [`rstan`](https://mc-stan.org/users/interfaces/rstan) package, which provides an R interface for the Stan 
-programming language for statistical Bayesian modelling. 
-Particularly, ***serofoi*** relies on the use of a *Hamiltonian Monte Carlo (HCM)* algorithm implemented by 
-*Stan for Markov chain Monte Carlo (MCMC)* sampling.
-The implemented methods are outlined in [@cucunubá2017] and [@carrera2020] 
-(see [FoI Models](https://trace-lac.github.io/serofoi/articles/foi_models.html) for further details)
+***serofoi*** relies on the [`rstan`](https://mc-stan.org/users/interfaces/rstan) package, which provides an R interface for the Stan programming language for statistical Bayesian modelling. Particularly, ***serofoi*** relies on the use of a *Hamiltonian Monte Carlo (HCM)* algorithm implemented by *Stan for Markov chain Monte Carlo (MCMC)* sampling. The implemented methods are outlined in [@cucunubá2017] and [@carrera2020] (see [FoI Models](https://trace-lac.github.io/serofoi/articles/foi_models.html) for further details)
 
 ***serofoi*** is part of the [Epiverse Initiative](https://data.org/initiatives/epiverse/).
 
@@ -67,9 +59,7 @@ data("serodata")
 head(serodata, 5)
 ```
 
-The function `prepare_serodata` will prepare the entry data for the use of the modelling module; 
-this function computes the sample size, the years of birth and the binomial confidence interval for each age group in the provided dataset. 
-A visualisation of the prepared seroprevalence data can be obtained using the function plot_seroprev:
+The function `prepare_serodata` will prepare the entry data for the use of the modelling module; this function computes the sample size, the years of birth and the binomial confidence interval for each age group in the provided dataset. A visualisation of the prepared seroprevalence data can be obtained using the function plot_seroprev:
 
 ```{r data_test, include = TRUE, out.fig.height="30%", out.width="50%", fig.align="center", message=FALSE}
 serodata_test <- prepare_serodata(serodata)
