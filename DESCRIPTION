@@ -1,7 +1,7 @@
 Package: serofoi
 Type: Package
 Title: Estimates the Force-of-Infection of a given pathogen from population based sero-prevalence studies
-Version: 0.1.0
+Version: 0.0.9
 Authors@R: 
     c(
         person(

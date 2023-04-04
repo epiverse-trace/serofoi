@@ -13,7 +13,7 @@ get_exposure_matrix(serodata)
 \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{serodata} by year.
 }
 \description{
-Function that generates the exposure matrix corresponding to the specified serological survey data \code{serodata}.
+Function that generates the exposure matrix corresponding to a serological survey
 }
 \examples{
 \dontrun{
