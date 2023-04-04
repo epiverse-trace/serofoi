@@ -11,8 +11,7 @@ link-citations: true
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  fig.path = "man/figures/README-"
 )
 ```
 
@@ -29,28 +28,19 @@ coverage](https://codecov.io/gh/TRACE-LAC/serofoi/branch/dev/graph/badge.svg)](h
 
 <!-- badges: end -->
 
-***serofoi*** is an R package to estimates the *Force-of-Infection* of a
-given pathogen from age-disaggregated population based sero-prevalence
-studies, using a Bayesian framework.
+***serofoi*** is an R package to estimate the *Force-of-Infection (FoI)* of a given pathogen from age-disaggregated population-based cross-sectional serosurveys, using a Bayesian framework. The package provides a set of features for assessing model fitting, convergence and visualisation. 
 
-***serofoi*** implements methods outlined in [@cucunubá2017] and
-[@carrera2020]
+***serofoi*** relies on the [`rstan`](https://mc-stan.org/users/interfaces/rstan) package, which provides an R interface for the Stan programming language for statistical Bayesian modelling. Particularly, ***serofoi*** relies on the use of a *Hamiltonian Monte Carlo (HCM)* algorithm implemented by *Stan for Markov chain Monte Carlo (MCMC)* sampling. The implemented methods are outlined in [@cucunubá2017] and [@carrera2020] (see [FoI Models](https://trace-lac.github.io/serofoi/articles/foi_models.html) for further details)
 
-***serofoi*** relies on
-[`rstan`](https://mc-stan.org/users/interfaces/rstan)
-
-***serofoi*** is part of the [Epiverse
-Initiative](https://data.org/initiatives/epiverse/).
+***serofoi*** is part of the [Epiverse Initiative](https://data.org/initiatives/epiverse/).
 
 ## Installation
 
-You can install the **development version** of `serofoi` from
-[GitHub](https://github.com/) with:
+You can install the **development version** of ***serofoi*** from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("remotes")
-# remotes::install_github("TRACE-LAC/serofoi")
-library(serofoi)
+if(!require("remotes")) install.packages("remotes")
+remotes::install_github("TRACE-LAC/serofoi")
 ```
 
 ## Quick start
@@ -61,110 +51,20 @@ rownames(serodata) <- NULL
 
 ```
 
-The package provides an example dataset of the observed serosurvey data,
-`serodata`. This example is the basic entry for the package.
+***serofoi*** provides a minimal serosurvey dataset, `serodata`, that can be used to test out the package.
 
 ```{r ex, include = TRUE}
-
 # Load example serodata data included with the package
-data(serodata)
+data("serodata")
 head(serodata, 5)
-
 ```
 
-The function `prepare_serodata` will prepare the entry data for entering the
-modelling functions. The seroprevalence *prepared data* can be
-visualised with the `plot_seroprev` function. This function also plots
-the binomial confidence interval of the observed data.
+The function `prepare_serodata` will prepare the entry data for the use of the modelling module; this function computes the sample size, the years of birth and the binomial confidence interval for each age group in the provided dataset. A visualisation of the prepared seroprevalence data can be obtained using the function plot_seroprev:
 
-```{r data_test, include = TRUE, fig.height=6, fig.width=6, message=FALSE}
-
-data_test <- prepare_serodata(serodata)
-
-plot_seroprev(data_test, size_text = 15)
-
+```{r data_test, include = TRUE, out.fig.height="30%", out.width="50%", fig.align="center", message=FALSE}
+serodata_test <- prepare_serodata(serodata)
+plot_seroprev(serodata_test, size_text = 15)
 ```
-
-#### Current version of the package runs ***three*** different FoI models
-
-The `run_seromodel` function allows specifying the Bayesian model from *R*,
-while running in the back from `rstan`. The number of iterations,
-thinning, and other parameters can be customised.
-
-::: {.alert .alert-primary}
-NOTE: Running the *serofoi* models for the first time on your local
-computer make take a few minutes while the *rstan* code is compiled
-locally. Afterwards, no further local compilation is needed.
-:::
-
-#### Model 1. Constant Force-of-Infection (endemic model)
-
-For the *endemic model* a small number of iterations is enough for
-achieving convergence, as it only fits one parameter (the constant FoI)
-from a binomial distribution.
-
-```{r model_1, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
-model_1 <- run_seromodel(serodata = data_test,
-                        foi_model = "constant",
-                        n_iters = 500, 
-                        n_thin = 2)
-
-```
-
-#### Model 2. Time-varying Force-of-Infection (epidemic model)
-
-For the *epidemic model,* a larger number of iterations is required for
-achieving convergence, as it fits yearly FoI values from a binomial
-distribution. The number of iterations required may depend on the number
-of years, reflected by the difference between year of the serosurvey and
-the maximum age-class sampled.
-
-```{r model_2, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
-model_2 <- run_seromodel(serodata = data_test,
-                        foi_model = "tv_normal",
-                        n_iters = 1500, 
-                        n_thin = 2)
-```
-
-#### Model 3. Time-varying Force-of-Infection (fast epidemic model)
-
-For the *fast* *epidemic model,* a larger number of iterations is
-required for achieving convergence, compared to the previous models.
-
-```{r model_3, include = TRUE, errors = FALSE, warning = FALSE, message = FALSE }
-model_3 <- run_seromodel(serodata = data_test,
-                        foi_model = "tv_normal_log",
-                        n_iters = 1500, 
-                        n_thin = 2)
-```
-
-For each model, the plot_seromodel function generate a vertical arrange of
-plots summarising the results of the model implementation plotting
-functions. Crucially, it shows the (expected) log-predictive density
-`elpd`, standard error `se`, and allows to check convergence based on
-`R-hat` convergence diagnostics.
-
-```{r plot_seromodel, include = FALSE, echo = TRUE, errors = FALSE, warning = FALSE, message = FALSE, fig.height=12, fig.width=6}
-
-plot_seromodel(model_2, size_text = 15)
-```
-
-Also, by means of the function `cowplot::plot_grid` a comparison of
-the models based on the (expected) log-predictive density `elpd`,
-standard error `se`, and allows to check convergence based on `R-hat`
-convergence diagnostics can be visualized.
-
-```{r, model_comp, include=FALSE, echo=TRUE, warning=FALSE, message=FALSE, fig.height=12, message=FALSE}
-p1 <- plot_seromodel(model_1, size_text = 15)
-p2 <- plot_seromodel(model_2, size_text = 15)
-p3 <- plot_seromodel(model_3, size_text = 15)
-
-cowplot::plot_grid(p1, p2, p3, nrow = 1, ncol = 3)
-```
-
-For more detailed information and examples, please check the [online
-documentation](https://epiverse-trace.github.io/serofoi/articles) as
-package vignettes under Get Started.
 
 ### Contributions
 
@@ -188,27 +88,26 @@ Contributors to the project include:
 
 ## Package vignettes
 
-More details on how to use ***serofoi*** can be found in the [online
-documentation as package
-vignettes](https://epiverse-trace.github.io/serofoi/), under "Get
-Started".
+More details on how to use ***serofoi*** can be found in the 
+[online documentation](https://epiverse-trace.github.io/serofoi/) as package vignettes, under 
+[**Get Started**](https://trace-lac.github.io/serofoi/articles/serofoi.html), 
+[**FoI Models**](https://trace-lac.github.io/serofoi/articles/foi_models.html) and 
+[**Use Cases**](https://trace-lac.github.io/serofoi/articles/use_cases.html)
 
 ## Help
 
 To report a bug please open an
-[issue](https://github.com/epiverse-trace/serofoi/issues/new/choose).
+[issue](https://github.com/TRACE-LAC/serofoi/issues).
 
 ## Contribute
 
-Contributions to ***serofoi*** are welcomed. Please follow the [package
-contributing
-guide](https://github.com/epiverse-trace/serofoi/blob/main/.github/CONTRIBUTING.md).
+Contributions to ***serofoi*** are welcomed. Please follow the 
+[package contributing guide](https://github.com/epiverse-trace/serofoi/blob/main/.github/CONTRIBUTING.md).
 
 ## Code of conduct
 
 Please note that the ***serofoi*** project is released with a
-[Contributor Code of
-Conduct](https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md).
+[Contributor Code of Conduct](https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
 
 ## References
