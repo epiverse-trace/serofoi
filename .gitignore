@@ -47,7 +47,7 @@ vignettes/*.pdf
 inst/extdata/stanmodels/*.RDS
 inst/extdata/stanmodels/*.rds
 inst/doc
-# docs
+docs
 /Meta/
 _snaps/
 !tests/testthat/_snaps
