@@ -23,7 +23,7 @@ of the Force-of-Infection \code{foi} for plotting an analysis purposes.
 \dontrun{
 serodata <- prepare_serodata(serodata)
 seromodel_object <- run_seromodel(serodata = serodata,
-                          foi_model = "constant")
+                                  foi_model = "constant")
 foi <- rstan::extract(seromodel_object$fit, "foi")[[1]]
 get_prev_expanded <- function(foi, serodata)
 }
