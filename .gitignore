@@ -53,5 +53,3 @@ _snaps/
 !tests/testthat/_snaps
 tests/testthat/Rplots.pdf
 t,
-tests/testthat/extdata/plots/actual/*.png
-tests/testthat/extdata/dataframes/actual/*.csv
