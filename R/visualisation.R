@@ -67,7 +67,7 @@ plot_seroprev_fitted <- function(seromodel_object,
     if  (class(seromodel_object$fit@sim$samples)  != "NULL" ) {
 
       foi <- rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]
-      prev_expanded <- get_prev_expanded(foi, serodata = seromodel_object$serodata)
+      prev_expanded <- get_prev_expanded(foi, serodata = seromodel_object$serodata, bin_data = TRUE)
       prev_plot <-
         ggplot2::ggplot(prev_expanded) +
         ggplot2::geom_ribbon(

@@ -404,7 +404,8 @@ extract_seromodel_summary <- function(seromodel_object) {
 #' }
 #' @export
 get_prev_expanded <- function(foi,
-                              serodata) {
+                              serodata,
+                              bin_data = FALSE) {
   dim_foi <- dim(foi)[2]
   # TODO: check whether this conditional is necessary
   if (dim_foi < 80) {
@@ -461,22 +462,23 @@ get_prev_expanded <- function(foi,
                 observed_prev,
                 by = "age",
                 all.x = TRUE) %>% dplyr::mutate(survey = serodata$survey[1])
-
-  # I added this here for those cases when binned is prefered for plotting
-  if (serodata$age_max[1] - serodata$age_min[1] < 3) {
-  xx <- prepare_bin_data(serodata)
-    prev_final <-
-      base::merge(prev_expanded, xx, by = "age", all.x = TRUE)
-  } else {
-    prev_final <- prev_expanded %>% dplyr::mutate(
-      cut_ages = "original",
-      bin_size = .data$sample_by_age,
-      bin_pos = .data$positives,
-      p_obs_bin = .data$prev_obs,
-      p_obs_bin_l = .data$prev_obs_lower,
-      p_obs_bin_u = .data$prev_obs_upper
-    )
+  if (bin_data) {
+    # I added this here for those cases when binned is prefered for plotting
+    if (serodata$age_max[1] - serodata$age_min[1] < 3) {
+    xx <- prepare_bin_data(serodata)
+      prev_expanded <-
+        base::merge(prev_expanded, xx, by = "age", all.x = TRUE)
+    } else {
+      prev_expanded <- prev_expanded %>% dplyr::mutate(
+        cut_ages = "original",
+        bin_size = .data$sample_by_age,
+        bin_pos = .data$positives,
+        p_obs_bin = .data$prev_obs,
+        p_obs_bin_l = .data$prev_obs_lower,
+        p_obs_bin_u = .data$prev_obs_upper
+      )
+    }
   }
 
-  return(prev_final)
+  return(prev_expanded)
 }
