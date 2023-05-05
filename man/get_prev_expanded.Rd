@@ -2,10 +2,10 @@
 % Please edit documentation in R/modelling.R
 \name{get_prev_expanded}
 \alias{get_prev_expanded}
-\title{Function that generates an object containing the confidence interval based on a 
+\title{Function that generates an object containing the confidence interval based on a
 Force-of-Infection fitting}
 \usage{
-get_prev_expanded(foi, serodata)
+get_prev_expanded(foi, serodata, bin_data = FALSE)
 }
 \arguments{
 \item{foi}{Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]}.}
@@ -23,7 +23,7 @@ of the Force-of-Infection \code{foi} for plotting an analysis purposes.
 \dontrun{
 serodata <- prepare_serodata(serodata)
 seromodel_object <- run_seromodel(serodata = serodata,
-                                  foi_model = "constant")
+                          foi_model = "constant")
 foi <- rstan::extract(seromodel_object$fit, "foi")[[1]]
 get_prev_expanded <- function(foi, serodata)
 }

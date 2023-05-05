@@ -7,7 +7,7 @@
 extract_seromodel_summary(seromodel_object)
 }
 \arguments{
-\item{seromodel_object}{\code{seromodel_object}. An object containing relevant information about the implementation of the model. 
+\item{seromodel_object}{\code{seromodel_object}. An object containing relevant information about the implementation of the model.
 Refer to \link{fit_seromodel} for further details.}
 }
 \value{
@@ -28,9 +28,9 @@ Refer to \link{fit_seromodel} for further details.}
 }
 }
 \description{
-This method extracts a summary corresponding to a serological model object that contains information about the original serological 
-survey data used to fit the model, such as the year when the survey took place, the type of test taken and the corresponding antibody, 
-as well as information about the convergence of the model, like the expected log pointwise predictive density \code{elpd} and its 
+This method extracts a summary corresponding to a serological model object that contains information about the original serological
+survey data used to fit the model, such as the year when the survey took place, the type of test taken and the corresponding antibody,
+as well as information about the convergence of the model, like the expected log pointwise predictive density \code{elpd} and its
 corresponding standar deviation.
 }
 \examples{

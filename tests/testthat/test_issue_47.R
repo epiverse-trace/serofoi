@@ -1,4 +1,4 @@
-test_that("issue 47",{
+test_that("issue 47", {
   skip_on_os(c("windows", "mac"))
   source("testing_utils.R")
 
