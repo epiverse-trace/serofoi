@@ -15,7 +15,11 @@ plot_seromodel(
 \arguments{
 \item{seromodel_object}{Object containing the results of fitting a model by means of \link{run_seromodel}.}
 
+\item{max_lambda}{TBD}
+
 \item{size_text}{Text size use in the theme of the graph returned by the function.}
+
+\item{foi_sim}{TBD}
 }
 \value{
 A ggplot object with a vertical arrange containing the seropositivity, force of infection, and convergence plots.

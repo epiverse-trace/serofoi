@@ -119,6 +119,8 @@ plot_seroprev_fitted <- function(seromodel_object,
   return(prev_plot)
 }
 
+# TODO Complete @param documentation
+
 #' Function that generates a Force-of-Infection plot corresponding to the specified fitted serological model
 #'
 #' This function generates a Force-of-Infection plot from the results obtained by fitting a serological model.
@@ -126,6 +128,8 @@ plot_seroprev_fitted <- function(seromodel_object,
 #' The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
 #' @param seromodel_object Object containing the results of fitting a model by means of \link{run_seromodel}.
 #' @param size_text Text size use in the theme of the graph returned by the function.
+#' @param max_lambda TBD
+#' @param foi_sim TBD
 #' @return A ggplot2 object containing the Force-of-infection-vs-time including the corresponding confidence interval.
 #' @examples
 #' \dontrun{
@@ -278,12 +282,15 @@ plot_rhats <- function(seromodel_object,
   return(rhats_plot)
 }
 
+# TODO Complete @param documentation
 
 #' Function that generates a vertical arrange of plots showing a summary of a model, the estimated seroprevalence,
 #' the Force-of-Infection fit and the R-hat estimates plots.
 #'
 #' @param seromodel_object Object containing the results of fitting a model by means of \link{run_seromodel}.
 #' @param size_text Text size use in the theme of the graph returned by the function.
+#' @param max_lambda TBD
+#' @param foi_sim TBD
 #' @return A ggplot object with a vertical arrange containing the seropositivity, force of infection, and convergence plots.
 #' @examples
 #' \dontrun{
@@ -362,12 +369,13 @@ plot_seromodel <- function(seromodel_object,
   return(plot_arrange)
 }
 
-
+# TODO Improve documentation of @return. 
+# TODO Give more details about the generated plot
 #' Function that generates a plot for a given table
 #'
 #' @param info the information that will be contained in the table
 #' @param size_text Text size of the graph returned by the function
-#' @return p, a variable that will be used in the \link{visualisation} module
+#' @return p the plot for the given table
 #' @examples
 #' \dontrun{
 #'  data_test <- prepare_serodata(serodata)

@@ -1,3 +1,6 @@
+# TODO Complete @param documentation
+
+
 #' Function that prepares the data from a serological survey for modelling
 #'
 #' This function adds the necessary additional variables to the given dataset \code{serodata} corresponding to a serological survey.
@@ -14,7 +17,8 @@
 #' \code{test} \tab The type of test taken \cr \tab \cr
 #' \code{antibody} \tab antibody \cr \tab \cr
 #' }
-#' @param alpha probability of a type I error. For further details refer to \link{Hmisc::binconf}.
+#' @param alpha probability of a type I error. For further details refer to \link[Hmisc]{binconf}.
+#' @param add_age_mean_f TBD
 #' @return serodata with additional columns necessary for the analysis. These columns are:
 #' \tabular{ll}{
 #' \code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr

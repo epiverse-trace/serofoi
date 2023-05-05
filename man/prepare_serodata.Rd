@@ -21,7 +21,9 @@ This data frame must contain the following columns:
 \code{antibody} \tab antibody \cr \tab \cr
 }}
 
-\item{alpha}{probability of a type I error. For further details refer to \link{Hmisc::binconf}.}
+\item{alpha}{probability of a type I error. For further details refer to \link[Hmisc]{binconf}.}
+
+\item{add_age_mean_f}{TBD}
 }
 \value{
 serodata with additional columns necessary for the analysis. These columns are:

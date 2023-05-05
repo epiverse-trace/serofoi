@@ -11,6 +11,8 @@ get_prev_expanded(foi, serodata, bin_data = FALSE)
 \item{foi}{Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]}.}
 
 \item{serodata}{A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.}
+
+\item{bin_data}{TBD}
 }
 \value{
 \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.

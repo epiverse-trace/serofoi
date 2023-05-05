@@ -12,7 +12,7 @@ plot_info_table(info, size_text)
 \item{size_text}{Text size of the graph returned by the function}
 }
 \value{
-p, a variable that will be used in the \link{visualisation} module
+p the plot for the given table
 }
 \description{
 Function that generates a plot for a given table
