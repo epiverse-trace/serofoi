@@ -58,7 +58,8 @@ Imports:
     RcppEigen,
     RcppParallel,
     purrr,
-    cowplot
+    cowplot,
+    jsonlite
 Suggests: 
     knitr,
     rmarkdown
