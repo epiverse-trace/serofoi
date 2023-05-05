@@ -59,7 +59,8 @@ Imports:
     RcppParallel,
     purrr,
     cowplot,
-    jsonlite
+    jsonlite,
+    qtl
 Suggests: 
     knitr,
     rmarkdown

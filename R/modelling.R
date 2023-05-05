@@ -1,3 +1,6 @@
+  # TODO Complete @param documentation
+
+
 #' Function that runs the specified stan model for the Force-of-Infection and estimates de seroprevalence based on the result of the fit
 #'
 #' This function runs the specified model for the Force-of-Infection \code{foi_model} using the data froma seroprevalence survey
@@ -36,6 +39,7 @@
 #' For further details refer to the \code{control} parameter in \link[rstan]{sampling} or \href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.
 #' @param m_treed Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the \code{control} parameter in \link[rstan]{sampling}.
 #' @param decades Number of decades covered by the survey data.
+#' @param print_summary TBD
 #' @return \code{seromodel_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seromodel}.
 #' @examples
 #' \dontrun{
@@ -385,14 +389,15 @@ extract_seromodel_summary <- function(seromodel_object) {
   return(model_summary)
 }
 
-
+# TODO Complete @param documentation
 #' Function that generates an object containing the confidence interval based on a
 #' Force-of-Infection fitting
 #'
 #' This function computes the corresponding binomial confidence intervals for the obtained prevalence based on a fitting
 #' of the Force-of-Infection \code{foi} for plotting an analysis purposes.
-#' @param serodata A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
 #' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]}.
+#' @param serodata A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
+#' @param bin_data TBD
 #' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
 #' @examples
 #' \dontrun{

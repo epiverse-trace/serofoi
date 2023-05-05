@@ -9,7 +9,11 @@ plot_foi(seromodel_object, max_lambda = NA, size_text = 25, foi_sim = NULL)
 \arguments{
 \item{seromodel_object}{Object containing the results of fitting a model by means of \link{run_seromodel}.}
 
+\item{max_lambda}{TBD}
+
 \item{size_text}{Text size use in the theme of the graph returned by the function.}
+
+\item{foi_sim}{TBD}
 }
 \value{
 A ggplot2 object containing the Force-of-infection-vs-time including the corresponding confidence interval.
