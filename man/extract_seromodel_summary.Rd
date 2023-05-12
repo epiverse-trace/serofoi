@@ -13,7 +13,7 @@ Refer to \link{fit_seromodel} for further details.}
 \value{
 \code{model_summary}. Object with a summary of \code{seromodel_object} containing the following:
 \tabular{ll}{
-\code{foi_model} \tab Name of the selected model. For further details refer to \link{save_or_load_model}. \cr \tab \cr
+\code{foi_model} \tab Name of the selected model. \cr \tab \cr
 \code{data_set} \tab Seroprevalence survey label.\cr \tab \cr
 \code{country} \tab Name of the country were the survey was conducted in. \cr \tab \cr
 \code{year} \tab Year in which the survey was conducted. \cr \tab \cr
