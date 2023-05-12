@@ -73,46 +73,11 @@ run_seromodel <- function(serodata,
   return(seromodel_object)
 }
 
-# TODO The warning 'recompiling to avoid crashing R session' still appears when the function is run for a second time.
-#' Function used to determine whether the stan model corresponding to the specified serological model has been already compiled or not
-#'
-#' This function determines whether the corresponding .RDS file of the selected model exists or not.
-#' In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the
-#' \link[rstan]{stan_model} function, saved as an .RDS file and returned as the output of the function.
-#' @param foi_model Name of the selected model. Current version provides three options:
-#' \describe{
-#' \item{\code{"constant"}}{Runs a constant model}
-#' \item{\code{"tv_normal"}}{Runs a normal model}
-#' \item{\code{"tv_normal_log"}}{Runs a normal logarithmic model}
-#' }
-#' @return \code{model}. The rstan model object corresponding to the selected model.
-#' @examples
-#' \dontrun{
-#' model <- save_or_load_model(foi_model="constant")
-#' }
-#'
-#' @export
-
-save_or_load_model <- function(foi_model = "constant") {
-  base_path <- config::get("stan_models_base_path",
-    file = system.file("config.yml", package = "serofoi", mustWork = TRUE))
-  rds_path <- system.file(base_path, paste(foi_model, ".rds", sep = ""), package = getPackageName())
-  if (!file.exists(rds_path)) {
-    message(sprintf("\nNo rds file found for model %s. Compiling stan model...", foi_model))
-  }
-  stan_path <- system.file(base_path, paste(foi_model, ".stan", sep = ""), package = getPackageName())
-
-  model <- rstan::stan_model(stan_path, auto_write = TRUE)
-
-  return(model)
-}
-
-
 #' Function that fits the selected model to the specified seroprevalence survey data
 #'
 #' This function fits the specified model \code{foi_model} to the serological survey data \code{serodata}
 #' by means of the \link[rstan]{sampling} method. The function determines whether the corresponding stan model
-#' object needs to be compiled by means of the function \link{save_or_load_model}.
+#' object needs to be compiled by rstan.
 #' @param serodata A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
 #' @param foi_model Name of the selected model. Current version provides three options:
 #' \describe{
@@ -164,7 +129,7 @@ fit_seromodel <- function(serodata,
                           m_treed = 10,
                           decades = 0) {
   # TODO Add a warning because there are exceptions where a minimal amount of iterations is needed
-  model <- save_or_load_model(foi_model)
+  model <- stanmodels[[foi_model]]
   exposure_ages <- get_exposure_ages(serodata)
   exposure_years <- (min(serodata$birth_year):serodata$tsur[1])[-1]
   exposure_matrix <- get_exposure_matrix(serodata)
@@ -333,7 +298,7 @@ get_exposure_matrix <- function(serodata) {
 #' Refer to \link{fit_seromodel} for further details.
 #' @return \code{model_summary}. Object with a summary of \code{seromodel_object} containing the following:
 #' \tabular{ll}{
-#' \code{foi_model} \tab Name of the selected model. For further details refer to \link{save_or_load_model}. \cr \tab \cr
+#' \code{foi_model} \tab Name of the selected model. \cr \tab \cr
 #' \code{data_set} \tab Seroprevalence survey label.\cr \tab \cr
 #' \code{country} \tab Name of the country were the survey was conducted in. \cr \tab \cr
 #' \code{year} \tab Year in which the survey was conducted. \cr \tab \cr
