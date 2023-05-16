@@ -62,6 +62,8 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown
+Config/Needs/website:
+    epiverse-trace/epiversetheme
 VignetteBuilder: knitr
 URL: https://trace-lac.github.io/serofoi/
 Additional_repositories:
