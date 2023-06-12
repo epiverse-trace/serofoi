@@ -48,7 +48,7 @@ test_that("individual models", {
     max_lambda = max_lambda,
     foi_sim = foi_sim
   )
-
+  
   plot_arrange <- cowplot::plot_grid(constant_plot,
     tv_normal_plot,
     tv_normal_log_plot,

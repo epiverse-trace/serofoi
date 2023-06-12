@@ -2,6 +2,7 @@ library(devtools)
 library(dplyr)
 library(serofoi)
 library(testthat)
+library(jsonlite)
 
 set.seed(1234) # For reproducibility
 
@@ -24,10 +25,10 @@ models_list <- lapply(models_to_run,
                       n_iters = 1000)
 
 model_constant_json <- jsonlite::serializeJSON(models_list[[1]])
-write_json(model_constant_json, testthat::test_path("extdata", "model_constant.json"))
+jsonlite::write_json(model_constant_json, testthat::test_path("extdata", "model_constant.json"))
 
 model_tv_normal_json <- jsonlite::serializeJSON(models_list[[2]])
-write_json(model_tv_normal_json, testthat::test_path("extdata", "model_tv_normal.json"))
+jsonlite::write_json(model_tv_normal_json, testthat::test_path("extdata", "model_tv_normal.json"))
 
 model_tv_normal_log_json <- jsonlite::serializeJSON(models_list[[3]])
-write_json(model_tv_normal_json, testthat::test_path("extdata", "model_tv_normal_log.json"))
+jsonlite::write_json(model_tv_normal_log_json, testthat::test_path("extdata", "model_tv_normal_log.json"))
