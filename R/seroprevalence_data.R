@@ -141,211 +141,129 @@ prepare_bin_data <- function(serodata) {
   return(xx)
 }
 
-#' Function that generates the probabilities of being previously exposed to a
-#' pathogen given a historical Force-of-Infection.
+# TODO: Complete the documentation of get_sim_counts
+#' Function that randomly generates a sample of counts for a simulated dataset
 #'
 #' @param sim_data A dataframe object containing the following columns:
-#' \describe{
-#'   \item{`age_mean_f`}{Age group markers}
-#'   \item{`tsur`}{Year of the survey}
+#' \tabular{ll}{
+#' \code{birth_year} \tab List of years in which the subjects were borned \cr \tab \cr
+#' \code{tsur} \tab Year of the survey\cr \tab \cr
+#' \code{country} \tab Default to 'none'.\cr \tab \cr
+#' \code{survey} \tab Survey label \cr \tab \cr
+#' \code{age_mean_f} \tab Age \cr \tab \cr
 #' }
-#' @param foi Numeric atomic vector corresponding to the desired
-#'   Force-of-Infection ordered from past to present
-#' @return A dataframe containing the following columns:
-#' \describe{
-#'   \item{`age`}{Exposure ages}
-#'   \item{`probability`}{Probability to obtain a seropositive case for each age
-#'     according to the provided FoI}
-#' }
+#' @return A simulated list of counts following a binomial distribution in accordance with a given force of infection and age class sizes.
 #' @examples
-#' n_years <- 50
-#' sim_data <- data.frame(
-#'   age_mean_f = seq(1,n_years),
-#'   tsur = 2050
-#' )
-#' foi <- rep(0.02, n_years)
-#' sim_probability <- get_sim_probability(sim_data = sim_data, foi=foi)
-#' @export
-get_sim_probability <- function(sim_data, foi) {
-  sim_data <- sim_data %>%
-    mutate(birth_year = .data$tsur - .data$age_mean_f)
-  cohort_ages <- get_cohort_ages(sim_data)
-  exposure_ages <- rev(cohort_ages$age)
-  exposure_matrix <- get_exposure_matrix(sim_data) # nolint: object_usage_linter
-  probabilities <- 1 - exp(-drop(exposure_matrix %*% foi))
-
-  sim_probability <- data.frame(
-    age = exposure_ages,
-    probability = probabilities
-  )
-  return(sim_probability)
-}
-
-#' Function that generates a sample of counts of seropositive individuals by
-#' sampling from a binomial distribution
+#'\dontrun{
 #'
-#' @inheritParams get_sim_probability
-#' @param sample_size_by_age Integer indicating the sample size by age group.
-#' This corresponds to the number of trials `size` in [rbinom][stats::rbinom].
-#' @param seed Seed for random number generation.
-#' @return A dataframe containing the following columns:
-#' \describe{
-#'   \item{`age`}{Age by the time of the survey}
-#'   \item{`n_seropositive`}{Number of positive cases sampled according to the
-#'     provided FoI}
 #' }
-#'   simulated list of counts following a binomial distribution in accordance
-#'   with a given force of infection and age group sizes.
-#' @examples
-#' n_years <- 50
-#' sim_data <- data.frame(
-#'   age_mean_f = seq(1,n_years),
-#'   tsur = 2050
-#' )
-#' foi <- rep(0.02, n_years)
-#' sample_size_by_age <- as.integer(runif(n = n_years, 5, 10))
-#' sim_n_seropositive <- get_sim_n_seropositive(
-#'   sim_data = sim_data,
-#'   foi = foi,
-#'   sample_size_by_age = sample_size_by_age
-#' )
 #' @export
-get_sim_n_seropositive <- function(sim_data,
-                                   foi,
-                                   sample_size_by_age,
-                                   seed = 1234) {
-  sim_probability <- get_sim_probability(sim_data = sim_data, foi = foi)
+get_sim_counts <- function(sim_data, foi, size_age_class, seed = 1234){
+  exposure_ages <- get_exposure_ages(sim_data)
+  exposure_matrix <- get_exposure_matrix(sim_data)
 
   set.seed(seed = seed)
-  n_seropositive <- purrr::map2_int(
-    sample_size_by_age,
-    sim_probability$probability,
-    ~rbinom(1, size = .x, prob = .y
-            )
-    )
+  sim_probabilities <- purrr::map_dbl(exposure_ages, ~1-exp(-pracma::dot(exposure_matrix[., ], foi)))
+  sim_counts <- purrr::map_int(sim_probabilities, ~rbinom(1, size_age_class, .))
 
-  sim_n_seropositive <- data.frame(
-    age = sim_probability$age,
-    n_seropositive = n_seropositive
-  )
-  return(sim_n_seropositive)
+  return(sim_counts)
 }
 
-#' Function that generates a simulated serosurvey according to the specified FoI
+# TODO: Complete the documentation of generate_sim_data
+#' Function that generates simulated data from a given Force-of-Infection
 #'
-#' @inheritParams get_sim_n_seropositive
-#' @param survey_label Label for the resulting simulated serosurvey.
-#' @return Dataframe containing the simulated serosurvey.
+#' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection
+#' @return Dataframe object containing the simulated data generated from \code{foi}
 #' @examples
-#' n_years <- 50
-#' sim_data <- data.frame(
-#'   age_mean_f = seq(1,n_years),
-#'   tsur = 2050
-#' )
-#' foi <- rep(0.02, n_years)
-#' sample_size_by_age <- as.integer(runif(n = n_years, 5, 10))
-#' sim_data <- generate_sim_data(
-#'   sim_data = sim_data,
-#'   foi = foi,
-#'   sample_size_by_age = sample_size_by_age,
-#'   survey_label = "sim_constant_foi"
-#' )
+#'\dontrun{
+#' size_age_class = 5
+#' foi <- rep(0.02, 50)
+#' sim_data <- generate_sim_data(foi = foi,
+#'                               size_age_class = size_age_class,
+#'                               tsur = 2050,
+#'                               birth_year_min = 2000,
+#'                               survey_label = 'sim_constant_foi')
+#' }
 #' @export
-generate_sim_data <- function(sim_data,
-                              foi,
-                              sample_size_by_age,
+generate_sim_data <- function(foi,
+                              size_age_class,
+                              tsur,
+                              birth_year_min,
                               survey_label,
+                              test = "fake",
+                              antibody = "IgG",
                               seed = 1234
-) {
-  sim_n_seropositive <- get_sim_n_seropositive(
-    sim_data,
-    foi,
-    sample_size_by_age,
-    seed = seed
-    )
+                              ){
+    sim_data <- data.frame(birth_year = c(birth_year_min:(tsur - 1))) %>%
+        mutate(tsur = tsur,
+            country = 'None',
+            test = test,
+            antibody = antibody,
+            survey = survey_label,
+            age_mean_f = tsur - birth_year)
+    sim_data <- sim_data %>%
+        mutate(counts = get_sim_counts(sim_data, foi, size_age_class, seed = seed),
+            total = size_age_class) %>%
+        prepare_serodata(add_age_mean_f = FALSE)
 
-  # TODO Improve simulation of age_min and age_max
-  sim_data <- sim_data %>%
-    mutate(
-      age_min = .data$age_mean_f,
-      age_max = .data$age_mean_f,
-      counts = sim_n_seropositive$n_seropositive,
-      total = sample_size_by_age,
-      survey = survey_label
-      )
-
-  return(sim_data)
+    return(sim_data)
 }
 
-#' Method for constructing age-group variable from age column
+# TODO: Complete the documentation of group_sim_data
+#' Function that generates  grouped simulated data from a given Force-of-Infection
 #'
-#' This function was taken from [get_age_group][vaccineff::get_age_group].
-#' This method splits an age interval from age_min to age_max into
-#' `(age_max-age_min)/step` intervals.
-#' By default age_min is set 0, however it can be assigned by
-#' convenience.
-#' If the method finds ages greater or equal than age_max
-#' it assigns the string `">{age_max}"`.
-#' To avoid errors it is necessary to set `step<age_max`.
-#' It is also suggested to choose the step such
-#' that `age_max%%(step+1)=0`.
-#' @param age vector containing age information
-#' @param  step step used to split the age interval
-#' @return age_group factor variable grouping `age` by the age intervals
-#' specified by `min(age)`, `max(age)`.
-get_age_group <- function(age, step) {
-  age_min <- min(age)
-  age_max <- max(age)
-  n_steps <- as.integer((age_max - age_min) / step) + 1
-  limits_low <- c(as.integer(seq(age_min,
-    age_max,
-    length.out = n_steps
-  )))
-  limits_hgh <- limits_low + step
-  lim_labels <- paste(as.character(limits_low), as.character(limits_hgh),
-    sep = "-"
-  )
-  lim_labels[length(lim_labels)] <- paste0(
-    "+",
-    limits_low[length(limits_low)]
-  )
-  lim_breaks <- c(-Inf, limits_low[2:length(limits_low)] - 1, Inf)
-
-  age_group <- cut(age,
-    breaks = lim_breaks,
-    labels = lim_labels,
-    # this is for the intervals to be closed to the left and open to the right
-    right = FALSE
-  )
-  return(age_group)
-}
-
-#' Function that groups a simulated serological dataset by age
-#'
-#' @param sim_data Dataframe with the same structure as the output of
-#'   [generate_sim_data()].
-#' @param col_age name of the column containing the age information
-#' @param step step used to split the age interval
-#' @return Dataframe object containing grouped simulated data generated from
-#'   `foi`
+#' @param sim_data Dataframe with the structure of the output of \code{\linl{generate_sim_data}}.
+#' @return Dataframe object containing grouped simulated data generated from \code{foi}
+#' @examples
+#'\dontrun{
+#' size_age_class = 5
+#' foi <- rep(0.02, 50)
+#' sim_data <- generate_sim_data(foi = foi,
+#'                               size_age_class = size_age_class,
+#'                               tsur = 2050,
+#'                               birth_year_min = 2000,
+#'                               survey_label = 'sim_constant_foi')
+#' sim_data_grouped <- group_sim_data(sim_data = sim_data,
+#'                                    foi = foi,
+#'                                    size_age_class = size_age_class,
+#'                                    tsur = 2050,
+#'                                    birth_year_min = 2000,
+#'                                    survey_label = 'sim_constant_foi_grouped')
+#' }
+#' @export
 group_sim_data <- function(sim_data,
-                           col_age = "age_mean_f",
-                           step = 5) {
-  age <- sim_data[[col_age]]
-  sim_data$age_group <- get_age_group(age = age, step = step)
-  sim_data_grouped <- sim_data %>%
-    group_by(.data$age_group) %>%
-    dplyr::summarise(total = sum(.data$total), counts = sum(.data$counts)) %>%
-    mutate(
-      tsur = sim_data$tsur[1],
-      country = "None",
-      survey = sim_data$survey[1],
-      test = sim_data$test[1],
-      antibody = sim_data$antibody[1],
-      age_min = as.integer(sub("\\-.*", "", .data$age_group)),
-      age_max = as.integer(sub(".*\\-", "", .data$age_group))
-    ) %>%
-    prepare_serodata()
+                          foi,
+                          size_age_class,
+                          tsur,
+                          birth_year_min,
+                          survey_label,
+                          test = "fake",
+                          antibody = "IgG",
+                          seed = 1234) {
 
-  return(sim_data_grouped)
+    sim_data <- sim_data %>% mutate(age_group = 'NA', age = age_mean_f) %>% arrange(age)
+    sim_data$age_group[sim_data$age > 0 & sim_data$age < 5] <-   '01-04'
+    sim_data$age_group[sim_data$age > 4 & sim_data$age < 10] <-  '05-09'
+    sim_data$age_group[sim_data$age > 9 & sim_data$age < 15] <-  '10-14'
+    sim_data$age_group[sim_data$age > 14 & sim_data$age < 20] <- '15-19'
+    sim_data$age_group[sim_data$age > 19 & sim_data$age < 25] <- '20-24'
+    sim_data$age_group[sim_data$age > 24 & sim_data$age < 30] <- '25-29'
+    sim_data$age_group[sim_data$age > 29 & sim_data$age < 35] <- '30-34'
+    sim_data$age_group[sim_data$age > 34 & sim_data$age < 40] <- '35-39'
+    sim_data$age_group[sim_data$age > 39 & sim_data$age < 45] <- '40-44'
+    sim_data$age_group[sim_data$age > 44 & sim_data$age < 51] <- '45-50'
+
+
+    sim_data_grouped <- sim_data %>% group_by(age_group) %>%
+      dplyr::summarise(total = sum(total), counts = sum(counts)) %>%
+      mutate(tsur = sim_data$tsur[1],
+              country = "None",
+              survey = survey_label,
+              test = test,
+              antibody = antibody) %>%
+      mutate(age_min = as.numeric(substr(age_group, 1, 2)),
+              age_max = as.numeric(substr(age_group, 4, 5))) %>%
+      prepare_serodata()
+
+    return(sim_data_grouped)
 }
