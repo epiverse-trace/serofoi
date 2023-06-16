@@ -14,8 +14,8 @@ Authors@R:
         person(
             given = "Nicolás",
             family = "T-Domínguez",
-            role = c("aut")
-            email = "ex-ntorres@javeriana.edu.co"
+            role = c("aut"),
+            email = "ex-ntorres@javeriana.edu.co",
             comment = c(ORCID = "https://orcid.org/0009-0002-8484-1298")
         ),
         person(
