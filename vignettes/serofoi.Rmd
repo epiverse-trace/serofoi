@@ -1,5 +1,5 @@
 ---
-title: "serofoi"
+title: "An introduction to serofoi"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{serofoi}
