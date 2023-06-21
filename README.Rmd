@@ -24,7 +24,7 @@ MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.or
 [![R-CMD-check](https://github.com/epiverse-trace/serofoi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/epiverse-trace/serofoi/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/epiverse-trace/serofoi/branch/dev/graph/badge.svg)](https://app.codecov.io/gh/epiverse-trace/serofoi/tree/dev/R?displayType=list)
-[![lifecycle-concept](https://raw.githubusercontent.com/reconverse/reconverse.github.io/master/images/badge-concept.svg)](https://www.reconverse.org/lifecycle.html#concept)
+[![lifecycle-maturing](https://raw.githubusercontent.com/reconverse/reconverse.github.io/master/images/badge-maturing.svg)](https://www.reconverse.org/lifecycle.html#maturing)
 
 <!-- badges: end -->
 
