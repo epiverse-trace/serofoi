@@ -79,7 +79,7 @@ Contributors to the project include:
 - [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author,
   maintainer)
 
-- [Nicolás Tórres](https://github.com/ntorresd) (author)
+- [Nicolás T. Domínguez](https://github.com/ntorresd) (author)
 
 - [Benjamin Lambert](https://ben-lambert.com/about/) (author)
 
