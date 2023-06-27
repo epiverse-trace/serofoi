@@ -1,5 +1,5 @@
 ---
-title: "FoI Models"
+title: "An introduction to Force-of-Infection (FoI) Models"
 output: rmarkdown::html_vignette
 bibliography: references.bib
 link-citations: true

@@ -5,10 +5,10 @@
 
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![R-CMD-check](https://github.com/TRACE-LAC/serofoi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/TRACE-LAC/serofoi/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/epiverse-trace/serofoi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/epiverse-trace/serofoi/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/TRACE-LAC/serofoi/branch/dev/graph/badge.svg)](https://app.codecov.io/gh/TRACE-LAC/serofoi/tree/dev/R?displayType=list)
-[![lifecycle-concept](https://raw.githubusercontent.com/reconverse/reconverse.github.io/master/images/badge-concept.svg)](https://www.reconverse.org/lifecycle.html#concept)
+coverage](https://codecov.io/gh/epiverse-trace/serofoi/branch/dev/graph/badge.svg)](https://app.codecov.io/gh/epiverse-trace/serofoi/tree/dev/R?displayType=list)
+[![lifecycle-maturing](https://raw.githubusercontent.com/reconverse/reconverse.github.io/master/images/badge-maturing.svg)](https://www.reconverse.org/lifecycle.html#maturing)
 
 <!-- badges: end -->
 
@@ -26,7 +26,7 @@ the use of a *Hamiltonian Monte Carlo (HCM)* algorithm implemented by
 *Stan for Markov chain Monte Carlo (MCMC)* sampling. The implemented
 methods are outlined in ([Cucunubá et al. 2017](#ref-cucunubá2017)) and
 ([Carrera et al. 2020](#ref-carrera2020)) (see [FoI
-Models](https://trace-lac.github.io/serofoi/articles/foi_models.html)
+Models](https://epiverse-trace.github.io/serofoi/articles/foi_models.html)
 for further details)
 
 ***serofoi*** is part of the [Epiverse
@@ -39,7 +39,7 @@ You can install the **development version** of ***serofoi*** from
 
 ``` r
 if(!require("remotes")) install.packages("remotes")
-remotes::install_github("TRACE-LAC/serofoi")
+remotes::install_github("epiverse-trace/serofoi")
 ```
 
 ## Quick start
@@ -96,16 +96,16 @@ Contributors to the project include:
 More details on how to use ***serofoi*** can be found in the [online
 documentation](https://epiverse-trace.github.io/serofoi/) as package
 vignettes, under [**Get
-Started**](https://trace-lac.github.io/serofoi/articles/serofoi.html),
+Started**](https://epiverse-trace.github.io/serofoi/articles/serofoi.html),
 [**FoI
-Models**](https://trace-lac.github.io/serofoi/articles/foi_models.html)
+Models**](https://epiverse-trace.github.io/serofoi/articles/foi_models.html)
 and [**Use
-Cases**](https://trace-lac.github.io/serofoi/articles/use_cases.html)
+Cases**](https://epiverse-trace.github.io/serofoi/articles/use_cases.html)
 
 ## Help
 
 To report a bug please open an
-[issue](https://github.com/TRACE-LAC/serofoi/issues).
+[issue](https://github.com/epiverse-trace/serofoi/issues).
 
 ## Contribute
 
