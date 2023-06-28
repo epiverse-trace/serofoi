@@ -81,3 +81,5 @@ Additional_repositories:
     https://mc-stan.org/r-packages/
 Remotes:
     tidyverse/purrr
+Biarch: true
+SystemRequirements: GNU make
