@@ -92,3 +92,5 @@ t,
 *.app
 
 inst/stan/*.rds
+
+src/
