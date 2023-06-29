@@ -55,12 +55,14 @@ For further details refer to the \code{control} parameter in \link[rstan]{sampli
 \item{m_treed}{Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the \code{control} parameter in \link[rstan]{sampling}.}
 
 \item{decades}{Number of decades covered by the survey data.}
+
+\item{print_summary}{TBD}
 }
 \value{
 \code{seromodel_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seromodel}.
 }
 \description{
-This function runs the specified model for the Force-of-Infection \code{foi_model} using the data froma seroprevalence survey 
+This function runs the specified model for the Force-of-Infection \code{foi_model} using the data froma seroprevalence survey
 \code{serodata} as the input data. See \link{fit_seromodel} for further details.
 }
 \examples{

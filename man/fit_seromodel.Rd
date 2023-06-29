@@ -58,9 +58,9 @@ This object is used as an input for the \link[rstan]{sampling} function \cr \tab
 }
 }
 \description{
-This function fits the specified model \code{foi_model} to the serological survey data \code{serodata} 
-by means of the \link[rstan]{sampling} method. The function determines whether the corresponding stan model 
-object needs to be compiled by means of the function \link{save_or_load_model}.
+This function fits the specified model \code{foi_model} to the serological survey data \code{serodata}
+by means of the \link[rstan]{sampling} method. The function determines whether the corresponding stan model
+object needs to be compiled by rstan.
 }
 \examples{
 \dontrun{
