@@ -1,10 +1,10 @@
 ---
-title: "Real-life use cases for _serofoi_"
+title: "Real-life use cases for serofoi"
 output: rmarkdown::html_vignette
 bibliography: references.bib
 link-citations: true
 vignette: >
-  %\VignetteIndexEntry{FoI Models}
+  %\VignetteIndexEntry{Real-life use cases for serofoi}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
