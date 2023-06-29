@@ -4,7 +4,7 @@ output: rmarkdown::html_vignette
 bibliography: references.bib
 link-citations: true
 vignette: >
-  %\VignetteIndexEntry{FoI Models}
+  %\VignetteIndexEntry{An introduction to Force-of-Infection (FoI) Models}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

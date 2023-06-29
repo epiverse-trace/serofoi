@@ -2,7 +2,7 @@
 title: "An introduction to serofoi"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{serofoi}
+  %\VignetteIndexEntry{An introduction to serofoi}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

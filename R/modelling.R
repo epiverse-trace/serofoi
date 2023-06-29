@@ -1,6 +1,9 @@
-#' Function that runs the specified stan model for the Force-of-Infection and estimates de seroprevalence based on the result of the fit 
-#' 
-#' This function runs the specified model for the Force-of-Infection \code{foi_model} using the data froma seroprevalence survey 
+  # TODO Complete @param documentation
+
+
+#' Function that runs the specified stan model for the Force-of-Infection and estimates de seroprevalence based on the result of the fit
+#'
+#' This function runs the specified model for the Force-of-Infection \code{foi_model} using the data froma seroprevalence survey
 #' \code{serodata} as the input data. See \link{fit_seromodel} for further details.
 #'
 #' @param serodata A data frame containing the data from a seroprevalence survey.
@@ -36,6 +39,7 @@
 #' For further details refer to the \code{control} parameter in \link[rstan]{sampling} or \href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.
 #' @param m_treed Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the \code{control} parameter in \link[rstan]{sampling}.
 #' @param decades Number of decades covered by the survey data.
+#' @param print_summary TBD
 #' @return \code{seromodel_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seromodel}.
 #' @examples
 #' \dontrun{
@@ -69,46 +73,11 @@ run_seromodel <- function(serodata,
   return(seromodel_object)
 }
 
-# TODO The warning 'recompiling to avoid crashing R session' still appears when the function is run for a second time.
-#' Function used to determine whether the stan model corresponding to the specified serological model has been already compiled or not
-#'
-#' This function determines whether the corresponding .RDS file of the selected model exists or not.
-#' In case the .RDS file exists, it is read and returned; otherwise, the object model is created through the
-#' \link[rstan]{stan_model} function, saved as an .RDS file and returned as the output of the function.
-#' @param foi_model Name of the selected model. Current version provides three options:
-#' \describe{
-#' \item{\code{"constant"}}{Runs a constant model}
-#' \item{\code{"tv_normal"}}{Runs a normal model}
-#' \item{\code{"tv_normal_log"}}{Runs a normal logarithmic model}
-#' }
-#' @return \code{model}. The rstan model object corresponding to the selected model.
-#' @examples
-#' \dontrun{
-#' model <- save_or_load_model(foi_model="constant")
-#' }
-#' 
-#' @export
-
-save_or_load_model <- function(foi_model = "constant") {
-  base_path <- config::get("stan_models_base_path",
-    file = system.file("config.yml", package = "serofoi", mustWork = TRUE))
-  rds_path <- system.file(base_path, paste(foi_model, ".rds", sep = ""), package = getPackageName())
-  if (!file.exists(rds_path)) {
-    message(sprintf("\nNo rds file found for model %s. Compiling stan model...", foi_model))
-  }
-  stan_path <- system.file(base_path, paste(foi_model, ".stan", sep = ""), package = getPackageName())
-
-  model <- rstan::stan_model(stan_path, auto_write = TRUE)
-
-  return(model)
-}
-
-
 #' Function that fits the selected model to the specified seroprevalence survey data
-#' 
-#' This function fits the specified model \code{foi_model} to the serological survey data \code{serodata} 
-#' by means of the \link[rstan]{sampling} method. The function determines whether the corresponding stan model 
-#' object needs to be compiled by means of the function \link{save_or_load_model}. 
+#'
+#' This function fits the specified model \code{foi_model} to the serological survey data \code{serodata}
+#' by means of the \link[rstan]{sampling} method. The function determines whether the corresponding stan model
+#' object needs to be compiled by rstan.
 #' @param serodata A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
 #' @param foi_model Name of the selected model. Current version provides three options:
 #' \describe{
@@ -160,7 +129,7 @@ fit_seromodel <- function(serodata,
                           m_treed = 10,
                           decades = 0) {
   # TODO Add a warning because there are exceptions where a minimal amount of iterations is needed
-  model <- save_or_load_model(foi_model)
+  model <- stanmodels[[foi_model]]
   exposure_ages <- get_exposure_ages(serodata)
   exposure_years <- (min(serodata$birth_year):serodata$tsur[1])[-1]
   exposure_matrix <- get_exposure_matrix(serodata)
@@ -280,7 +249,7 @@ fit_seromodel <- function(serodata,
 
 #' Function that generates an atomic vector containing the corresponding exposition years of a serological survey
 #'
-#' This function generates an atomic vector containing the exposition years corresponding to the specified serological survey data \code{serodata}. 
+#' This function generates an atomic vector containing the exposition years corresponding to the specified serological survey data \code{serodata}.
 #' The exposition years to the disease for each individual corresponds to the time from birth to the moment of the survey.
 #' @param serodata A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_serodata} function.
 #' @return \code{exposure_ages}. An atomic vector with the numeration of the exposition years in serodata
@@ -321,15 +290,15 @@ get_exposure_matrix <- function(serodata) {
 
 #' Method to extact a summary of the specified serological model object
 #'
-#' This method extracts a summary corresponding to a serological model object that contains information about the original serological 
-#' survey data used to fit the model, such as the year when the survey took place, the type of test taken and the corresponding antibody, 
-#' as well as information about the convergence of the model, like the expected log pointwise predictive density \code{elpd} and its 
+#' This method extracts a summary corresponding to a serological model object that contains information about the original serological
+#' survey data used to fit the model, such as the year when the survey took place, the type of test taken and the corresponding antibody,
+#' as well as information about the convergence of the model, like the expected log pointwise predictive density \code{elpd} and its
 #' corresponding standar deviation.
-#' @param seromodel_object \code{seromodel_object}. An object containing relevant information about the implementation of the model. 
+#' @param seromodel_object \code{seromodel_object}. An object containing relevant information about the implementation of the model.
 #' Refer to \link{fit_seromodel} for further details.
 #' @return \code{model_summary}. Object with a summary of \code{seromodel_object} containing the following:
 #' \tabular{ll}{
-#' \code{foi_model} \tab Name of the selected model. For further details refer to \link{save_or_load_model}. \cr \tab \cr
+#' \code{foi_model} \tab Name of the selected model. \cr \tab \cr
 #' \code{data_set} \tab Seroprevalence survey label.\cr \tab \cr
 #' \code{country} \tab Name of the country were the survey was conducted in. \cr \tab \cr
 #' \code{year} \tab Year in which the survey was conducted. \cr \tab \cr
@@ -385,14 +354,15 @@ extract_seromodel_summary <- function(seromodel_object) {
   return(model_summary)
 }
 
-
-#' Function that generates an object containing the confidence interval based on a 
+# TODO Complete @param documentation
+#' Function that generates an object containing the confidence interval based on a
 #' Force-of-Infection fitting
 #'
 #' This function computes the corresponding binomial confidence intervals for the obtained prevalence based on a fitting
-#' of the Force-of-Infection \code{foi} for plotting an analysis purposes. 
-#' @param serodata A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
+#' of the Force-of-Infection \code{foi} for plotting an analysis purposes.
 #' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]}.
+#' @param serodata A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
+#' @param bin_data TBD
 #' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
 #' @examples
 #' \dontrun{
@@ -404,8 +374,10 @@ extract_seromodel_summary <- function(seromodel_object) {
 #' }
 #' @export
 get_prev_expanded <- function(foi,
-                              serodata) {
+                              serodata,
+                              bin_data = FALSE) {
   dim_foi <- dim(foi)[2]
+  # TODO: check whether this conditional is necessary
   if (dim_foi < 80) {
     oldest_year <- 80 - dim_foi + 1
     foin <- matrix(NA, nrow = dim(foi)[1], 80)
@@ -438,7 +410,7 @@ get_prev_expanded <- function(foi,
   medianv <- apply(prev_pn, 2, function(x) quantile(x, 0.5))
 
   predicted_prev <- data.frame(
-    age = 1:80,
+    age = 1:age_max,
     predicted_prev = medianv,
     predicted_prev_lower = lower,
     predicted_prev_upper = upper
@@ -460,22 +432,23 @@ get_prev_expanded <- function(foi,
                 observed_prev,
                 by = "age",
                 all.x = TRUE) %>% dplyr::mutate(survey = serodata$survey[1])
-
-  # I added this here for those cases when binned is prefered for plotting
-  if (serodata$age_max[1] - serodata$age_min[1] < 3) {
-  xx <- prepare_bin_data(serodata)
-    prev_final <-
-      base::merge(prev_expanded, xx, by = "age", all.x = TRUE)
-  } else {
-    prev_final <- prev_expanded %>% dplyr::mutate(
-      cut_ages = "original",
-      bin_size = .data$sample_by_age,
-      bin_pos = .data$positives,
-      p_obs_bin = .data$prev_obs,
-      p_obs_bin_l = .data$prev_obs_lower,
-      p_obs_bin_u = .data$prev_obs_upper
-    )
+  if (bin_data) {
+    # I added this here for those cases when binned is prefered for plotting
+    if (serodata$age_max[1] - serodata$age_min[1] < 3) {
+    xx <- prepare_bin_data(serodata)
+      prev_expanded <-
+        base::merge(prev_expanded, xx, by = "age", all.x = TRUE)
+    } else {
+      prev_expanded <- prev_expanded %>% dplyr::mutate(
+        cut_ages = "original",
+        bin_size = .data$sample_by_age,
+        bin_pos = .data$positives,
+        p_obs_bin = .data$prev_obs,
+        p_obs_bin_l = .data$prev_obs_lower,
+        p_obs_bin_u = .data$prev_obs_upper
+      )
+    }
   }
 
-  return(prev_final)
+  return(prev_expanded)
 }

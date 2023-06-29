@@ -13,7 +13,7 @@ get_exposure_ages(serodata)
 \code{exposure_ages}. An atomic vector with the numeration of the exposition years in serodata
 }
 \description{
-This function generates an atomic vector containing the exposition years corresponding to the specified serological survey data \code{serodata}. 
+This function generates an atomic vector containing the exposition years corresponding to the specified serological survey data \code{serodata}.
 The exposition years to the disease for each individual corresponds to the time from birth to the moment of the survey.
 }
 \examples{
