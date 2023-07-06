@@ -21,10 +21,8 @@ get_table_rhats <- function(seromodel_object,
   rhats <- bayesplot::rhat(seromodel_object, "foi")
 
   if (any(is.nan(rhats))) {
-    rhats[which(is.nan(rhats))] <- 0
+    rhats[which(is.nan(rhats))] <- NA
   }
-  model_rhats <- data.frame(year = cohort_ages$birth_year, rhat = rhats)
-  model_rhats$rhat[model_rhats$rhat == 0] <- NA
-
+  model_rhats <- data.frame(year = seromodel_object$exposure_years, rhat = rhats)
   return(model_rhats)
 }
