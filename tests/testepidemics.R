@@ -1,2 +1,0 @@
-# TODO Convert to testthat
-
