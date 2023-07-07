@@ -1,7 +1,4 @@
 test_that("simulated data", {
-    library(dplyr)
-    library(serofoi)
-
     seed <- 1234
     size_age_class <- 5
     #----- Test for constant FoI
