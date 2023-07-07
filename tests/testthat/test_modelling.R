@@ -1,9 +1,4 @@
 test_that("individual models", {
-  # So far we are skipping tests on these platforms until
-  # we find an efficient way to update rstan testthat snapshots on all of them
-
-  skip_on_os(c("windows", "mac"))
-  source("testing_utils.R")
   set.seed(1234) # For reproducibility
 
   library(devtools)
@@ -13,9 +8,9 @@ test_that("individual models", {
   data(chagas2012)
   serodata <- prepare_serodata(chagas2012, alpha = 0.05)
 
-  data_constant_path <- testthat::test_path("extdata", "prev_expanded_constant.RDS")
-  data_tv_normal_path <- testthat::test_path("extdata", "prev_expanded_tv_normal.RDS")
-  data_tv_normal_log_path <- testthat::test_path("extdata", "prev_expanded_tv_normal_log.RDS")
+  data_constant_path <- test_path("testdata", "prev_expanded_constant.RDS")
+  data_tv_normal_path <- test_path("testdata", "prev_expanded_tv_normal.RDS")
+  data_tv_normal_log_path <- test_path("testdata", "prev_expanded_tv_normal_log.RDS")
 
   prev_expanded_tv_normal_log <- readRDS(data_constant_path)
 
