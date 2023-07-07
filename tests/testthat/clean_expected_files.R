@@ -4,9 +4,8 @@
 # Rstan, https://mc-stan.org/docs/2_18/reference-manual/reproducibility-chapter.html
 # thus all files with expected results (both tables and graphs) become
 # obsolete and need to be regenerated
-
-library(testthat)
-paths <- c(testthat::test_path("_snaps", "*"), testthat::test_path("extdata", "dataframes", "expected", "*"))
+paths <- c(test_path("_snaps", "*"), test_path("testdata", "dataframes",
+                                               "expected", "*"))
 
 for (path in paths) {
     cat("Deleting", path, "\n")

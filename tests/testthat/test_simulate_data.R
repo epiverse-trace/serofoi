@@ -24,11 +24,11 @@ test_that("simulated data", {
 
     #----- Results paths
     path_data_no_grouped <- testthat::test_path(
-      "extdata", paste0(case_label, "sim_data_no_grouped.csv")
+      "testdata", paste0(case_label, "sim_data_no_grouped.csv")
     )
 
     path_data_grouped <- testthat::test_path(
-      "extdata", paste0(case_label, "sim_data_grouped.csv")
+      "testdata", paste0(case_label, "sim_data_grouped.csv")
     )
 
     #----- Test function generate_sim_data
