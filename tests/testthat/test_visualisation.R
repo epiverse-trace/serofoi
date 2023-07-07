@@ -3,10 +3,6 @@
 library(testthat)
 
 test_that("individual models", {
-  # So far we are skipping tests on these platforms until
-  # we find an efficient way to update rstan testthat snapshots on all of them
-  skip_on_os(c("windows", "mac"))
-  source("testing_utils.R")
   set.seed(1234) # For reproducibility
 
   library(devtools)
