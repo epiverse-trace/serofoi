@@ -45,7 +45,7 @@ test_that("simulated data", {
     model_object <- run_seromodel(serodata = sim_data,
                                   foi_model = foi_model)
 
-    model_plot <- plot_seromodel(model_object, size_text = 6, , max_lambda = max_lambda)
+    model_plot <- plot_seromodel(model_object, size_text = 6, max_lambda = max_lambda)
     vdiffr::expect_doppelganger(paste0(case_label, foi_model, "_no_group"), model_plot, foi_plot = foi_plot)
 
     foi_plot <- plot_foi(model_object, size_text = 10, max_lambda = max_lambda, foi_sim = foi_sim) +
