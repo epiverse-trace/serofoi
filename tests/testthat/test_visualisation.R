@@ -1,7 +1,4 @@
 # Test for the function plot_seroprev_fitted
-
-library(testthat)
-
 test_that("individual models", {
   set.seed(1234) # For reproducibility
 
