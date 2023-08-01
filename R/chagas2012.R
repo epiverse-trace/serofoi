@@ -1,7 +1,6 @@
 # TODO Check if we really need to have the package `qtl` installed. Otherwise remove all entries of the form `see \code{\link[qtl]...`
-#' Seroprevalence data on serofoi
 #'
-#' Data from a serological surveys
+#' Data from a sero-prevalence survey on Trypanosona cruzi in Colombia in ...
 #'
 #' @docType data
 #'
@@ -12,5 +11,7 @@
 #' @keywords datasets
 #'
 #' @examples
+#'
+#' @source
 #' chagas2012
 "chagas2012"
