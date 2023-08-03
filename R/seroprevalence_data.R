@@ -162,8 +162,10 @@ get_sim_prob <- function(sim_data, foi, seed = 1234) {
 #' \code{age_mean_f} \tab Age \cr \tab \cr
 #' }
 #' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection.
-#' @param size_age_class This corresponds to the number of trials \code{size} in \link[stats]{rbinom}.
-#' @param seed The seed for random number generation. 
+#' @param size_age_class Size of each age group specified by either an atomic
+#' vector of the same size as \code{foi} or an integer.
+#' This corresponds to the number of trials \code{size} in \link[stats]{rbinom}.
+#' @param seed The seed for random number generation.
 #' @return A simulated list of counts following a binomial distribution in accordance with a given 
 #' force of infection and age class sizes.
 #' @examples
@@ -178,10 +180,12 @@ get_sim_counts <- function(sim_data, foi, size_age_class, seed = 1234) {
   return(sim_counts)
 }
 
-# TODO: Complete the documentation of generate_sim_data
 #' Function that generates simulated positive counts assuming a known historical force of infection
 #'
 #' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection
+#' @param size_age_class Size of each age group specified by either an atomic
+#' vector of the same size as \code{foi} or an integer.
+#' This corresponds to the number of trials \code{size} in \link[stats]{rbinom}.
 #' @return Dataframe object containing the simulated data generated from \code{foi}
 #' @examples
 #'\dontrun{
