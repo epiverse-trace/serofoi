@@ -49,13 +49,15 @@
 #' }
 #' @export
 run_seromodel <- function(serodata,
-                          foi_model = "constant",
+                          foi_model = c("constant", "tv_normal_log",
+                                        "tv_normal"),
                           n_iters = 1000,
                           n_thin = 2,
                           delta = 0.90,
                           m_treed = 10,
                           decades = 0,
                           print_summary = TRUE) {
+  foi_model <- match.arg(foi_model)
   survey <- unique(serodata$survey)
   if (length(survey) > 1) warning("You have more than 1 surveys or survey codes")
   seromodel_object <- fit_seromodel(serodata = serodata,
