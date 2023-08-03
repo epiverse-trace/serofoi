@@ -6,7 +6,7 @@
 \usage{
 run_seromodel(
   serodata,
-  foi_model = "constant",
+  foi_model = c("constant", "tv_normal_log", "tv_normal"),
   n_iters = 1000,
   n_thin = 2,
   delta = 0.9,
