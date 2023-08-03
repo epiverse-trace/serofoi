@@ -41,11 +41,11 @@ prepare_serodata <- function(serodata = serodata,
   checkmate::assert_logical(add_age_mean_f)
   #Check that serodata has the right columns
   stopifnot("serodata must contain the right columns" =
-            setequal(names(serodata),
-                     c("survey", "total", "counts", "age_min","age_max",
-                       "tsur", "country","test", "antibody"
-                       )
-                     )
+            all(c("survey", "total", "counts", "age_min", "age_max", "tsur",
+                  "country","test","antibody"
+                  ) %in%
+                  colnames(serodata)
+                )
             )
   if(add_age_mean_f){
     serodata <- serodata %>%
