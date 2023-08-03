@@ -276,10 +276,11 @@ get_age_group <- function(data, col_age, max_val, min_val, step) {
   return(age_group)
 }
 
-# TODO: Complete the documentation of group_sim_data
-#' Function that generates grouped simulated data by age from a given Force-of-Infection
+#' Function that groups a simulated serological dataset by age
 #'
-#' @param sim_data Dataframe with the structure of the output of \code{\linl{generate_sim_data}}.
+#' @param sim_data Dataframe with the same structure as the output of \code{\linl{generate_sim_data}}.
+#' @param col_age name of the column containing the age information
+#' @param step step used to split the age interval
 #' @return Dataframe object containing grouped simulated data generated from \code{foi}
 #' @examples
 #'\dontrun{
