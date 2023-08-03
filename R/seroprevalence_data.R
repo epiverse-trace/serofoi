@@ -37,6 +37,16 @@
 prepare_serodata <- function(serodata = serodata,
                             alpha = 0.05, 
                             add_age_mean_f = TRUE) {
+  checkmate::assert_numeric(alpha, lower = 0, upper = 1)
+  checkmate::assert_logical(add_age_mean_f)
+  #Check that serodata has the right columns
+  stopifnot("serodata must contain the right columns" =
+            setequal(names(serodata),
+                     c("survey", "total", "counts", "age_min","age_max",
+                       "tsur", "country","test", "antibody"
+                       )
+                     )
+            )
   if(add_age_mean_f){
     serodata <- serodata %>%
       dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total)) %>%
