@@ -122,7 +122,6 @@ prepare_bin_data <- function(serodata) {
   return(xx)
 }
 
-# TODO: Complete the documentation of get_sim_counts
 #' Function that randomly generates a sample of counts for a simulated dataset
 #'
 #' @param sim_data A dataframe object containing the following columns:
@@ -133,6 +132,9 @@ prepare_bin_data <- function(serodata) {
 #' \code{survey} \tab Survey label \cr \tab \cr
 #' \code{age_mean_f} \tab Age \cr \tab \cr
 #' }
+#' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection.
+#' @param size_age_class This corresponds to the number of trials \code{size} in \link[stats]{rbinom}.
+#' @param seed The seed for random number generation. 
 #' @return A simulated list of counts following a binomial distribution in accordance with a given force of infection and age class sizes.
 #' @examples
 #'\dontrun{
