@@ -122,6 +122,35 @@ prepare_bin_data <- function(serodata) {
   return(xx)
 }
 
+#' Function that generates the probabilities of being previously exposed to a pathogen.
+#'
+#' @param sim_data A dataframe object containing the following columns:
+#' \tabular{ll}{
+#' \code{birth_year} \tab List of years in which the subjects were borned \cr \tab \cr
+#' \code{tsur} \tab Year of the survey\cr \tab \cr
+#' \code{country} \tab Default to 'none'.\cr \tab \cr
+#' \code{survey} \tab Survey label \cr \tab \cr
+#' \code{age_mean_f} \tab Age \cr \tab \cr
+#' }
+#' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection.
+#' @param seed The seed for random number generation.
+#' @return A simulated list containing a seropositivity distribution by age for given simulated
+#' dataset and desired foi trend.
+#' @examples
+#'\dontrun{
+#'
+#' }
+#' @export
+get_sim_prob <- function(sim_data, foi, seed = 1234) {
+  exposure_ages <- get_exposure_ages(sim_data)
+  exposure_matrix <- get_exposure_matrix(sim_data)
+
+  set.seed(seed = seed)
+  sim_probabilities <- purrr::map_dbl(exposure_ages, ~1-exp(-pracma::dot(exposure_matrix[., ], foi)))
+
+  return(sim_probabilities)
+}
+
 #' Function that randomly generates a sample of counts for a simulated dataset
 #'
 #' @param sim_data A dataframe object containing the following columns:
@@ -135,18 +164,15 @@ prepare_bin_data <- function(serodata) {
 #' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection.
 #' @param size_age_class This corresponds to the number of trials \code{size} in \link[stats]{rbinom}.
 #' @param seed The seed for random number generation. 
-#' @return A simulated list of counts following a binomial distribution in accordance with a given force of infection and age class sizes.
+#' @return A simulated list of counts following a binomial distribution in accordance with a given 
+#' force of infection and age class sizes.
 #' @examples
 #'\dontrun{
 #'
 #' }
 #' @export
-get_sim_counts <- function(sim_data, foi, size_age_class, seed = 1234){
-  exposure_ages <- get_exposure_ages(sim_data)
-  exposure_matrix <- get_exposure_matrix(sim_data)
-
-  set.seed(seed = seed)
-  sim_probabilities <- purrr::map_dbl(exposure_ages, ~1-exp(-pracma::dot(exposure_matrix[., ], foi)))
+get_sim_counts <- function(sim_data, foi, size_age_class, seed = 1234) {
+  sim_probabilities <- get_sim_prob(sim_data = sim_data, foi = foi, seed = 1234)
   sim_counts <- purrr::map_int(sim_probabilities, ~rbinom(1, size_age_class, .))
 
   return(sim_counts)
