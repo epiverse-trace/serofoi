@@ -265,7 +265,9 @@ get_age_group <- function(data, col_age, max_val, min_val, step) {
 
   age_group <- cut(data[[col_age]],
                    breaks = lim_breaks,
-                   labels = lim_labels)
+                   labels = lim_labels,
+                   # this is for the intervals to be closed to the left and open to the right
+                   right = FALSE) 
   return(age_group)
 }
 
@@ -292,37 +294,22 @@ get_age_group <- function(data, col_age, max_val, min_val, step) {
 #' }
 #' @export
 group_sim_data <- function(sim_data,
-                          foi,
-                          size_age_class,
-                          tsur,
-                          birth_year_min,
-                          survey_label,
-                          test = "fake",
-                          antibody = "IgG",
-                          seed = 1234) {
-
-    sim_data <- sim_data %>% mutate(age_group = 'NA', age = age_mean_f) %>% arrange(age)
-    sim_data$age_group[sim_data$age > 0 & sim_data$age < 5] <-   '01-04'
-    sim_data$age_group[sim_data$age > 4 & sim_data$age < 10] <-  '05-09'
-    sim_data$age_group[sim_data$age > 9 & sim_data$age < 15] <-  '10-14'
-    sim_data$age_group[sim_data$age > 14 & sim_data$age < 20] <- '15-19'
-    sim_data$age_group[sim_data$age > 19 & sim_data$age < 25] <- '20-24'
-    sim_data$age_group[sim_data$age > 24 & sim_data$age < 30] <- '25-29'
-    sim_data$age_group[sim_data$age > 29 & sim_data$age < 35] <- '30-34'
-    sim_data$age_group[sim_data$age > 34 & sim_data$age < 40] <- '35-39'
-    sim_data$age_group[sim_data$age > 39 & sim_data$age < 45] <- '40-44'
-    sim_data$age_group[sim_data$age > 44 & sim_data$age < 51] <- '45-50'
-
-
+                          col_age = "age_mean_f",
+                          step = 5) {
+    sim_data$age_group <-  get_age_group(data = sim_data,
+                                        col_age = col_age,
+                                        max_val = max(sim_data[[col_age]]),
+                                        min_val = min(sim_data[[col_age]]),
+                                        step = step)
     sim_data_grouped <- sim_data %>% group_by(age_group) %>%
-      dplyr::summarise(total = sum(total), counts = sum(counts)) %>%
+    dplyr::summarise(total = sum(total), counts = sum(counts)) %>%
       mutate(tsur = sim_data$tsur[1],
               country = "None",
-              survey = survey_label,
-              test = test,
-              antibody = antibody) %>%
-      mutate(age_min = as.numeric(substr(age_group, 1, 2)),
-              age_max = as.numeric(substr(age_group, 4, 5))) %>%
+              survey = sim_data$survey[1],
+              test = sim_data$test[1],
+              antibody = sim_data$antibody[1]) %>%
+      mutate(age_min = as.integer(sub("\\-.*", "", age_group)),
+              age_max = as.integer(sub(".*\\-", "", age_group))) %>%
       prepare_serodata()
 
     return(sim_data_grouped)
