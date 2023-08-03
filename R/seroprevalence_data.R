@@ -151,7 +151,7 @@ get_sim_counts <- function(sim_data, foi, size_age_class, seed = 1234){
 }
 
 # TODO: Complete the documentation of generate_sim_data
-#' Function that generates simulated data from a given Force-of-Infection
+#' Function that generates simulated positive counts assuming a known historical force of infection
 #'
 #' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection
 #' @return Dataframe object containing the simulated data generated from \code{foi}
