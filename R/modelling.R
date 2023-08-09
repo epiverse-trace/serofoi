@@ -68,7 +68,9 @@ run_seromodel <- function(serodata,
                                                                       foi_model,
                                                                       " finished running ------"))
   if (print_summary){
-    print(t(seromodel_object$model_summary))
+    seromodel_summary <- extract_seromodel_summary(seromodel_object,
+                                                  serodata = serodata)
+    print(t(seromodel_summary))
   }
   return(seromodel_object)
 }
@@ -183,9 +185,8 @@ fit_seromodel <- function(serodata,
   )
 
   if (class(fit@sim$samples) != "NULL") {
-    loo_fit <- loo::loo(fit, save_psis = TRUE, "logLikelihood")
+    # extracts foi from stan fit
     foi <- rstan::extract(fit, "foi", inc_warmup = FALSE)[[1]]
-    # foi <- rstan::extract(fit, "foi", inc_warmup = TRUE, permuted=FALSE)[[1]]
     # generates central estimations
     foi_cent_est <- data.frame(
       year = exposure_years,
@@ -196,7 +197,6 @@ fit_seromodel <- function(serodata,
       medianv = apply(foi, 2, function(x) quantile(x, medianv_quantile))
     )
 
-
     # generates a sample of iterations
     if (n_iters >= 2000) {
       foi_post_s <- dplyr::sample_n(as.data.frame(foi), size = 1000)
@@ -206,44 +206,12 @@ fit_seromodel <- function(serodata,
       colnames(foi_post_s) <- exposure_years
     }
 
-    seromodel_object <- list(
-      fit = fit,
-      serodata = serodata,
-      stan_data = stan_data,
-      exposure_years = exposure_years,
-      exposure_ages = exposure_ages,
-      n_iters = n_iters,
-      n_thin = n_thin,
-      n_warmup = n_warmup,
-      foi_model = foi_model,
-      delta = delta,
-      m_treed = m_treed,
-      loo_fit = loo_fit,
-      foi_cent_est = foi_cent_est,
-      foi_post_s = foi_post_s
-    )
-    seromodel_object$model_summary <-
-      extract_seromodel_summary(seromodel_object)
-  } else {
-    loo_fit <- c(-1e10, 0)
-    seromodel_object <- list(
-      fit = "no model",
-      serodata = serodata,
-      stan_data = stan_data,
-      exposure_years = exposure_years,
-      exposure_ages = exposure_ages,
-      n_iters = n_iters,
-      n_thin = n_thin,
-      n_warmup = n_warmup,
-      model = foi_model,
-      delta = delta,
-      m_treed = m_treed,
-      loo_fit = loo_fit,
-      model_summary = NA
-    )
-  }
+    return(fit)
 
-  return(seromodel_object)
+  } else {
+
+    return("no model")
+  }
 }
 
 
@@ -317,36 +285,36 @@ get_exposure_matrix <- function(serodata) {
 #' serodata <- prepare_serodata(serodata)
 #' seromodel_object <- run_seromodel(serodata = serodata,
 #'                                   foi_model = "constant")
-#' extract_seromodel_summary(seromodel_object)
+#' extract_seromodel_summary(seromodel_object,
+#'                           serodata)
 #' }
 #' @export
-extract_seromodel_summary <- function(seromodel_object) {
-  foi_model <- seromodel_object$foi_model
-  serodata <- seromodel_object$serodata
+extract_seromodel_summary <- function(seromodel_object,
+                                      serodata) {
   #------- Loo estimates
-
-  loo_fit <- seromodel_object$loo_fit
+  loo_fit <- loo::loo(seromodel_object, save_psis = TRUE, "logLikelihood")
   if (sum(is.na(loo_fit)) < 1) {
     lll <- as.numeric((round(loo_fit$estimates[1, ], 2)))
   } else {
     lll <- c(-1e10, 0)
   }
+  #-------
   model_summary <- data.frame(
-    foi_model = foi_model,
-    dataset = serodata$survey[1],
-    country = serodata$country[1],
-    year = serodata$tsur[1],
-    test = serodata$test[1],
-    antibody = serodata$antibody[1],
+    foi_model = seromodel_object@model_name,
+    dataset = unique(serodata$survey),
+    country = unique(serodata$country),
+    year = unique(serodata$tsur),
+    test = unique(serodata$test),
+    antibody = unique(serodata$antibody),
     n_sample = sum(serodata$total),
     n_agec = length(serodata$age_mean_f),
-    n_iter = seromodel_object$n_iters,
+    n_iter = seromodel_object@sim$iter,
     elpd = lll[1],
     se = lll[2],
     converged = NA
   )
 
-  rhats <- get_table_rhats(seromodel_object)
+  rhats <- get_table_rhats(seromodel_object, serodata)
   if (any(rhats$rhat > 1.1) == FALSE) {
     model_summary$converged <- "Yes"
   }

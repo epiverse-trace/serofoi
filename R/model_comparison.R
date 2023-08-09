@@ -11,16 +11,17 @@
 #' model_constant <- run_seromodel(serodata = data_test, 
 #'                                 foi_model = "constant", 
 #'                                 n_iters = 1500)
-#' get_table_rhats(model_object = model_constant)
+#' get_table_rhats(model_constant, data_test)
 #' }
 #' @export
-get_table_rhats <- function(seromodel_object) {
-  rhats <- bayesplot::rhat(seromodel_object$fit, "foi")
-
+get_table_rhats <- function(seromodel_object,
+                            serodata) {
+  rhats <- bayesplot::rhat(seromodel_object, "foi")
+  exposure_years <- (min(serodata$birth_year):serodata$tsur[1])[-1]
   if (any(is.nan(rhats))) {
     rhats[which(is.nan(rhats))] <- 0
   }
-  model_rhats <- data.frame(year = seromodel_object$exposure_years, rhat = rhats)
+  model_rhats <- data.frame(year = exposure_years, rhat = rhats)
   model_rhats$rhat[model_rhats$rhat == 0] <- NA
 
   return(model_rhats)
