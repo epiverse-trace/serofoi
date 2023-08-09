@@ -4,11 +4,13 @@
 \alias{extract_seromodel_summary}
 \title{Method to extact a summary of the specified serological model object}
 \usage{
-extract_seromodel_summary(seromodel_object)
+extract_seromodel_summary(seromodel_object, serodata)
 }
 \arguments{
 \item{seromodel_object}{\code{seromodel_object}. An object containing relevant information about the implementation of the model.
 Refer to \link{fit_seromodel} for further details.}
+
+\item{serodata}{A data frame containing the data from a seroprevalence survey.}
 }
 \value{
 \code{model_summary}. Object with a summary of \code{seromodel_object} containing the following:
@@ -39,6 +41,7 @@ data("serodata")
 serodata <- prepare_serodata(serodata)
 seromodel_object <- run_seromodel(serodata = serodata,
                                   foi_model = "constant")
-extract_seromodel_summary(seromodel_object)
+extract_seromodel_summary(seromodel_object,
+                          serodata)
 }
 }

@@ -4,7 +4,7 @@
 \alias{get_table_rhats}
 \title{Method for extracting a dataframe containing the R-hat estimates for a given serological model}
 \usage{
-get_table_rhats(seromodel_object)
+get_table_rhats(seromodel_object, serodata)
 }
 \arguments{
 \item{seromodel_object}{seromodel_object}
@@ -23,6 +23,6 @@ data_test <- prepare_serodata(serodata = serodata)
 model_constant <- run_seromodel(serodata = data_test, 
                                 foi_model = "constant", 
                                 n_iters = 1500)
-get_table_rhats(model_object = model_constant)
+get_table_rhats(model_constant, data_test)
 }
 }

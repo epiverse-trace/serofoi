@@ -45,7 +45,7 @@
 #' \dontrun{
 #' serodata <- prepare_serodata(serodata)
 #' run_seromodel (serodata,
-#'            foi_model = "constant")
+#'                foi_model = "constant")
 #' }
 #' @export
 run_seromodel <- function(serodata,
@@ -196,7 +196,6 @@ fit_seromodel <- function(serodata,
 
       medianv = apply(foi, 2, function(x) quantile(x, medianv_quantile))
     )
-
     # generates a sample of iterations
     if (n_iters >= 2000) {
       foi_post_s <- dplyr::sample_n(as.data.frame(foi), size = 1000)
@@ -207,7 +206,6 @@ fit_seromodel <- function(serodata,
     }
 
     return(fit)
-
   } else {
 
     return("no model")
@@ -235,7 +233,9 @@ get_exposure_ages <- function(serodata) {
 # TODO Is necessary to explain better what we mean by the exposure matrix.
 #' Function that generates the exposure matrix corresponding to a serological survey
 #'
-#' @param serodata A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_serodata} function.
+#' @param serodata A data frame containing the data from a seroprevalence survey.
+#' This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur).
+#' birth_year can be constructed by means of the \link{prepare_serodata} function.
 #' @return \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{serodata} by year.
 #' @examples
 #' \dontrun{
@@ -264,6 +264,7 @@ get_exposure_matrix <- function(serodata) {
 #' corresponding standar deviation.
 #' @param seromodel_object \code{seromodel_object}. An object containing relevant information about the implementation of the model.
 #' Refer to \link{fit_seromodel} for further details.
+#' @param serodata A data frame containing the data from a seroprevalence survey.
 #' @return \code{model_summary}. Object with a summary of \code{seromodel_object} containing the following:
 #' \tabular{ll}{
 #' \code{foi_model} \tab Name of the selected model. \cr \tab \cr

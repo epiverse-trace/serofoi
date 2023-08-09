@@ -7,7 +7,9 @@
 get_exposure_matrix(serodata)
 }
 \arguments{
-\item{serodata}{A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_serodata} function.}
+\item{serodata}{A data frame containing the data from a seroprevalence survey.
+This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur).
+birth_year can be constructed by means of the \link{prepare_serodata} function.}
 }
 \value{
 \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{serodata} by year.
