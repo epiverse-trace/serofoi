@@ -21,14 +21,14 @@ All rhats must be smaller than 1 to ensure convergence (for further details chec
 }
 \examples{
 \dontrun{
-data("serodata")
-data_test <- prepare_serodata(serodata)
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
 seromodel_object <- run_seromodel(
- serodata = data_test,
+ serodata = serodata,
  foi_model = "constant",
  n_iters = 1000
-)
-plot_rhats(seromodel_object, 
+ )
+plot_rhats(seromodel_object,
            size_text = 15)
 }
 }

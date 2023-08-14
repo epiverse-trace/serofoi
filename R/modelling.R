@@ -43,9 +43,9 @@
 #' @return \code{seromodel_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seromodel}.
 #' @examples
 #' \dontrun{
-#' serodata <- prepare_serodata(serodata)
-#' run_seromodel (serodata,
-#'            foi_model = "constant")
+#' serodata <- prepare_serodata(chagas2012)
+#' run_seromodel (chagas2012,
+#'                foi_model = "constant")
 #' }
 #' @export
 run_seromodel <- function(serodata,
@@ -114,8 +114,8 @@ run_seromodel <- function(serodata,
 
 #' @examples
 #' \dontrun{
-#' data("serodata")
-#' serodata <- prepare_serodata(serodata)
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
 #' seromodel_fit <- fit_seromodel(serodata = serodata,
 #'                                foi_model = "constant")
 #' }
@@ -255,8 +255,8 @@ fit_seromodel <- function(serodata,
 #' @return \code{exposure_ages}. An atomic vector with the numeration of the exposition years in serodata
 #' @examples
 #' \dontrun{
-#' data("serodata")
-#' serodata <- prepare_serodata(serodata = serodata, alpha = 0.05)
+#' data(chagas2012)
+#' serodata <- prepare_serodata(serodata = chagas2012, alpha = 0.05)
 #' exposure_ages <- get_exposure_ages(serodata)
 #' }
 #' @export
@@ -271,8 +271,8 @@ get_exposure_ages <- function(serodata) {
 #' @return \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{serodata} by year.
 #' @examples
 #' \dontrun{
-#' data("serodata")
-#' serodata <- prepare_serodata(serodata = serodata)
+#' data(chagas2012)
+#' serodata <- prepare_serodata(serodata = chagas2012)
 #' exposure_matrix <- get_exposure_matrix(serodata = serodata)
 #' }
 #' @export
@@ -313,8 +313,8 @@ get_exposure_matrix <- function(serodata) {
 #' }
 #' @examples
 #' \dontrun{
-#' data("serodata")
-#' serodata <- prepare_serodata(serodata)
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
 #' seromodel_object <- run_seromodel(serodata = serodata,
 #'                                   foi_model = "constant")
 #' extract_seromodel_summary(seromodel_object)
@@ -366,7 +366,8 @@ extract_seromodel_summary <- function(seromodel_object) {
 #' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
 #' @examples
 #' \dontrun{
-#' serodata <- prepare_serodata(serodata)
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
 #' seromodel_object <- run_seromodel(serodata = serodata,
 #'                           foi_model = "constant")
 #' foi <- rstan::extract(seromodel_object$fit, "foi")[[1]]

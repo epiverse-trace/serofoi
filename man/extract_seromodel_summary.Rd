@@ -35,8 +35,8 @@ corresponding standar deviation.
 }
 \examples{
 \dontrun{
-data("serodata")
-serodata <- prepare_serodata(serodata)
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
 seromodel_object <- run_seromodel(serodata = serodata,
                                   foi_model = "constant")
 extract_seromodel_summary(seromodel_object)
