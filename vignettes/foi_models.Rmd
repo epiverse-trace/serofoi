@@ -18,8 +18,6 @@ knitr::opts_chunk$set(
 
 ```{r cleaning, include = FALSE, echo = TRUE}
 library(serofoi)
-rownames(serodata) <- NULL 
-
 ```
 
 The current version of ***serofoi*** supports three different models for estimating the *Force-of-Infection (FoI)*, including constant and time-varying trajectories. For fitting the model to the sero-prevalence data we use a suit of bayesian models that include prior and upper prior distributions
