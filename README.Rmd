@@ -47,22 +47,20 @@ remotes::install_github("epiverse-trace/serofoi")
 
 ```{r cleaning, include = FALSE, echo = TRUE}
 library(serofoi)
-rownames(serodata) <- NULL 
-
 ```
 
 ***serofoi*** provides a minimal serosurvey dataset, `serodata`, that can be used to test out the package.
 
 ```{r ex, include = TRUE}
-# Load example serodata data included with the package
-data("serodata")
-head(serodata, 5)
+# Load example dataset chagas2012 included with the package
+data(chagas2012)
+head(chagas2012, 5)
 ```
 
 The function `prepare_serodata` will prepare the entry data for the use of the modelling module; this function computes the sample size, the years of birth and the binomial confidence interval for each age group in the provided dataset. A visualisation of the prepared seroprevalence data can be obtained using the function plot_seroprev:
 
 ```{r data_test, include = TRUE, out.fig.height="30%", out.width="50%", fig.align="center", message=FALSE}
-serodata_test <- prepare_serodata(serodata)
+serodata_test <- prepare_serodata(chagas2012)
 plot_seroprev(serodata_test, size_text = 15)
 ```
 
