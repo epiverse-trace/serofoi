@@ -7,12 +7,11 @@ test_that("individual models", {
   set.seed(1234) # For reproducibility
 
   library(devtools)
-  library(dplyr)
   library(vdiffr)
 
   #----- Read and prepare data
-  data("serodata")
-  data_test <- serodata %>% prepare_serodata(alpha = 0.05)
+  data(chagas2012)
+  serodata <- prepare_serodata(chagas2012, alpha = 0.05)
 
   data_constant_path <- testthat::test_path("extdata", "prev_expanded_constant.RDS")
   data_tv_normal_path <- testthat::test_path("extdata", "prev_expanded_tv_normal.RDS")
@@ -23,7 +22,7 @@ test_that("individual models", {
   #----- Test for the constant model
 
   model_name <- "constant"
-  model_object <- run_seromodel(serodata = data_test,
+  model_object <- run_seromodel(serodata = serodata,
                                 foi_model = model_name,
                                 n_iters = 1000,
                                 print_summary = FALSE)
@@ -37,7 +36,7 @@ test_that("individual models", {
   #----- Test for the tv_normal model
 
   model_name <- "tv_normal"
-  model_object <- run_seromodel(serodata = data_test,
+  model_object <- run_seromodel(serodata = serodata,
                                 foi_model = model_name,
                                 n_iters = 1000)
 
@@ -49,7 +48,7 @@ test_that("individual models", {
   #----- Test for the tv_normal_log model
 
   model_name <- "tv_normal_log"
-  model_object <- run_seromodel(serodata = data_test,
+  model_object <- run_seromodel(serodata = serodata,
                                 foi_model = model_name,
                                 n_iters = 1000)
 
