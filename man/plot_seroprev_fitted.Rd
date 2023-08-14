@@ -21,9 +21,9 @@ corresponding confidence interval.
 }
 \examples{
 \dontrun{
-data("serodata")
-data_test <- prepare_serodata(serodata)
-seromodel_object <- run_seromodel(serodata = data_test,
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
+seromodel_object <- run_seromodel(serodata = serodata,
                                   foi_model = "constant",
                                   n_iters = 1000)
 plot_seroprev_fitted(seromodel_object, size_text = 15)

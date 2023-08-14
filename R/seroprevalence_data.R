@@ -30,8 +30,8 @@
 #' }
 #' @examples
 #'\dontrun{
-#' data("serodata")
-#' data_test <- prepare_serodata(serodata)
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
 #' }
 #' @export
 prepare_serodata <- function(serodata = serodata,
@@ -91,7 +91,8 @@ prepare_serodata <- function(serodata = serodata,
 #' @return data set with the binomial confidence intervals
 #' @examples
 #'\dontrun{
-#' prepare_bin_data (serodata)
+#' data(chagas2012)
+#' prepare_bin_data(chagas2012)
 #' }
 #' @export
 prepare_bin_data <- function(serodata) {

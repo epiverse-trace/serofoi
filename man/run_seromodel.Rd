@@ -67,8 +67,8 @@ This function runs the specified model for the Force-of-Infection \code{foi_mode
 }
 \examples{
 \dontrun{
-serodata <- prepare_serodata(serodata)
-run_seromodel (serodata,
-           foi_model = "constant")
+serodata <- prepare_serodata(chagas2012)
+run_seromodel (chagas2012,
+               foi_model = "constant")
 }
 }
