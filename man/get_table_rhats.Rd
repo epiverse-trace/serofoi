@@ -18,10 +18,10 @@ This method relies in the function \link[bayesplot]{rhat} to extract the R-hat e
 }
 \examples{
 \dontrun{
-data("serodata")
-data_test <- prepare_serodata(serodata = serodata)
-model_constant <- run_seromodel(serodata = data_test, 
-                                foi_model = "constant", 
+data(chagas2012)
+data_test <- prepare_serodata(serodata = chagas2012)
+model_constant <- run_seromodel(serodata = data_test,
+                                foi_model = "constant",
                                 n_iters = 1500)
 get_table_rhats(model_object = model_constant)
 }

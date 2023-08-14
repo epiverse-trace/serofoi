@@ -41,7 +41,7 @@ This function adds the necessary additional variables to the given dataset \code
 }
 \examples{
 \dontrun{
-data("serodata")
-data_test <- prepare_serodata(serodata)
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
 }
 }
