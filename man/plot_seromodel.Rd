@@ -30,12 +30,13 @@ the Force-of-Infection fit and the R-hat estimates plots.
 }
 \examples{
 \dontrun{
-data_test <- prepare_serodata(serodata)
-seromodel_object <- run_seromodel(
- serodata = data_test,
- foi_model = "constant",
- n_iters = 1000
-)
+ data(chagas2012)
+ serodata <- prepare_serodata(chagas2012)
+ seromodel_object <- run_seromodel(
+   serodata = serodata,
+   foi_model = "constant",
+   n_iters = 1000
+ )
 plot_seromodel(seromodel_object, size_text = 15)
 }
 }

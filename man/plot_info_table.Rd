@@ -19,12 +19,12 @@ Function that generates a plot for a given table
 }
 \examples{
 \dontrun{
- data_test <- prepare_serodata(serodata)
+ serodata <- prepare_serodata(chagas2012)
  seromodel_object <- run_seromodel(
- serodata = data_test,
- foi_model = "constant",
- n_iters = 1000
-)
+   serodata = serodata,
+   foi_model = "constant",
+   n_iters = 1000
+ )
 info = t(seromodel_object$model_summary)
 plot_info_table (info, size_text = 15)
 }
