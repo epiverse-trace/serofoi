@@ -180,34 +180,15 @@ fit_seromodel <- function(serodata,
       serodata = serodata,
       stan_data = stan_data,
       exposure_years = exposure_years,
-      exposure_ages = exposure_ages,
-      n_iters = n_iters,
-      n_thin = n_thin,
-      n_warmup = n_warmup,
-      foi_model = foi_model,
-      delta = delta,
-      m_treed = m_treed,
-      loo_fit = loo_fit,
-      foi_cent_est = foi_cent_est,
-      foi_post_s = foi_post_s
+      exposure_ages = exposure_ages
     )
-    seromodel_object$model_summary <-
-      extract_seromodel_summary(seromodel_object)
   } else {
     seromodel_object <- list(
       seromodel_fit = "no model",
       serodata = serodata,
       stan_data = stan_data,
       exposure_years = exposure_years,
-      exposure_ages = exposure_ages,
-      n_iters = n_iters,
-      n_thin = n_thin,
-      n_warmup = n_warmup,
-      model = foi_model,
-      delta = delta,
-      m_treed = m_treed,
-      loo_fit = loo_fit,
-      model_summary = NA
+      exposure_ages = exposure_ages
     )
   }
 
