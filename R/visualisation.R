@@ -64,10 +64,10 @@ plot_seroprev <- function(serodata,
 plot_seroprev_fitted <- function(seromodel_object,
                                  size_text = 6) {
 
-  if (is.character(seromodel_object$fit) == FALSE)  {
-    if  (class(seromodel_object$fit@sim$samples)  != "NULL" ) {
+  if (is.character(seromodel_object$seromodel_fit) == FALSE)  {
+    if  (class(seromodel_object$seromodel_fit@sim$samples)  != "NULL" ) {
 
-      foi <- rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]
+      foi <- rstan::extract(seromodel_object$seromodel_fit, "foi", inc_warmup = FALSE)[[1]]
       prev_expanded <- get_prev_expanded(foi, serodata = seromodel_object$serodata, bin_data = TRUE)
       prev_plot <-
         ggplot2::ggplot(prev_expanded) +
@@ -148,14 +148,14 @@ plot_foi <- function(seromodel_object,
                      max_lambda = NA,
                      size_text = 25,
                      foi_sim = NULL) {
-  if (is.character(seromodel_object$fit) == FALSE) {
-    if (class(seromodel_object$fit@sim$samples) != "NULL") {
-      foi <- rstan::extract(seromodel_object$fit,
+  if (is.character(seromodel_object$seromodel_fit) == FALSE) {
+    if (class(seromodel_object$seromodel_fit@sim$samples) != "NULL") {
+      foi <- rstan::extract(seromodel_object$seromodel_fit,
                             "foi",
                             inc_warmup = FALSE)[[1]]
 
       #-------- This bit is to get the actual length of the foi data
-      foi_data <- seromodel_object$foi_cent_est
+      foi_data <- get_foi_central_estimates(seromodel_object = seromodel_object)
 
       #--------
       foi_data$medianv[1] <- NA
@@ -243,8 +243,8 @@ plot_foi <- function(seromodel_object,
 #' @export
 plot_rhats <- function(seromodel_object,
                        size_text = 25) {
-  if (is.character(seromodel_object$fit) == FALSE) {
-    if (class(seromodel_object$fit@sim$samples) != "NULL") {
+  if (is.character(seromodel_object$seromodel_fit) == FALSE) {
+    if (class(seromodel_object$seromodel_fit@sim$samples) != "NULL") {
       rhats <- get_table_rhats(seromodel_object)
 
       rhats_plot <-
@@ -310,8 +310,8 @@ plot_seromodel <- function(seromodel_object,
                           max_lambda = NA,
                           size_text = 25,
                           foi_sim = NULL) {
-  if (is.character(seromodel_object$fit) == FALSE) {
-    if (class(seromodel_object$fit@sim$samples) != "NULL") {
+  if (is.character(seromodel_object$seromodel_fit) == FALSE) {
+    if (class(seromodel_object$seromodel_fit@sim$samples) != "NULL") {
       prev_plot <- plot_seroprev_fitted(seromodel_object = seromodel_object,
                                  size_text = size_text)
 
