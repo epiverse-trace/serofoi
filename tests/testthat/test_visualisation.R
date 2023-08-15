@@ -10,12 +10,11 @@ test_that("individual models", {
   set.seed(1234) # For reproducibility
 
   library(devtools)
-  library(dplyr)
   library(vdiffr)
   library(jsonlite)
 
-  data("simdata_large_epi")
-  simdata <- simdata_large_epi %>% prepare_serodata()
+  data(simdata_large_epi)
+  simdata <- prepare_serodata(simdata_large_epi)
   no_transm <- 0.0000000001
   big_outbreak <- 1.5
   foi_sim <- c(rep(no_transm, 32), rep(big_outbreak, 3), rep(no_transm, 15)) # 1 epidemics
