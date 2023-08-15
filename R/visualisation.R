@@ -324,9 +324,9 @@ plot_seromodel <- function(seromodel_object,
 
       rhats_plot <- plot_rhats(seromodel_object = seromodel_object,
                                size_text = size_text)
-
+      model_summary <- extract_seromodel_summary(seromodel_object = seromodel_object)
       summary_table <- t(
-        dplyr::select(seromodel_object$model_summary, 
+        dplyr::select(model_summary, 
         c('foi_model', 'dataset', 'elpd', 'se', 'converged')))
       summary_plot <-
         plot_info_table(summary_table, size_text = size_text)
