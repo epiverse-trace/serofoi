@@ -367,7 +367,7 @@ extract_seromodel_summary <- function(seromodel_object) {
 #'
 #' This function computes the corresponding binomial confidence intervals for the obtained prevalence based on a fitting
 #' of the Force-of-Infection \code{foi} for plotting an analysis purposes.
-#' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]}.
+#' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$seromodel, "foi", inc_warmup = FALSE)[[1]]}.
 #' @param serodata A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
 #' @param bin_data TBD
 #' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
