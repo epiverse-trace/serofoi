@@ -68,7 +68,8 @@ run_seromodel <- function(serodata,
                                                                       foi_model,
                                                                       " finished running ------"))
   if (print_summary){
-    print(t(seromodel_object$model_summary))
+    model_summary <- extract_seromodel_summary(seromodel_object = seromodel_object)
+    print(t(model_summary))
   }
   return(seromodel_object)
 }
@@ -328,26 +329,24 @@ get_foi_central_estimates <- function(seromodel_object) {
 #' }
 #' @export
 extract_seromodel_summary <- function(seromodel_object) {
-  foi_model <- seromodel_object$foi_model
-  serodata <- seromodel_object$serodata
   #------- Loo estimates
-
-  loo_fit <- seromodel_object$loo_fit
+  loo_fit <- loo::loo(seromodel_object$seromodel_fit, save_psis = TRUE, "logLikelihood")
   if (sum(is.na(loo_fit)) < 1) {
     lll <- as.numeric((round(loo_fit$estimates[1, ], 2)))
   } else {
     lll <- c(-1e10, 0)
   }
+  #-------
   model_summary <- data.frame(
-    foi_model = foi_model,
-    dataset = serodata$survey[1],
-    country = serodata$country[1],
-    year = serodata$tsur[1],
-    test = serodata$test[1],
-    antibody = serodata$antibody[1],
-    n_sample = sum(serodata$total),
-    n_agec = length(serodata$age_mean_f),
-    n_iter = seromodel_object$n_iters,
+    foi_model = seromodel_object$seromodel_fit@model_name,
+    dataset = unique(seromodel_object$serodata$survey),
+    country = unique(seromodel_object$serodata$country),
+    year = unique(seromodel_object$serodata$tsur),
+    test = unique(seromodel_object$serodata$test),
+    antibody = unique(seromodel_object$serodata$antibody),
+    n_sample = sum(seromodel_object$serodata$total),
+    n_agec = length(seromodel_object$serodata$age_mean_f),
+    n_iter = seromodel_object$seromodel_fit@sim$iter,
     elpd = lll[1],
     se = lll[2],
     converged = NA
