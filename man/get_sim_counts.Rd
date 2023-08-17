@@ -2,21 +2,20 @@
 % Please edit documentation in R/seroprevalence_data.R
 \name{get_sim_counts}
 \alias{get_sim_counts}
-\title{Function that randomly generates a sample of counts for a simulated dataset}
+\title{Function that generates a sample of counts of seropositive individuals by sampling from a binomial distribution}
 \usage{
 get_sim_counts(sim_data, foi, size_age_class, seed = 1234)
 }
 \arguments{
 \item{sim_data}{A dataframe object containing the following columns:
 \tabular{ll}{
-\code{birth_year} \tab List of years in which the subjects were borned \cr \tab \cr
 \code{tsur} \tab Year of the survey\cr \tab \cr
-\code{country} \tab Default to 'none'.\cr \tab \cr
-\code{survey} \tab Survey label \cr \tab \cr
 \code{age_mean_f} \tab Age \cr \tab \cr
+\code{birth_year} \tab Years in which the subjects were borned
+according to the age group marker \code{age_mean_f}\cr \tab \cr
 }}
 
-\item{foi}{Numeric atomic vector corresponding to the desired Force-of-Infection.}
+\item{foi}{Numeric atomic vector corresponding to the desired Force-of-Infection ordered from past to present}
 
 \item{size_age_class}{Size of each age group specified by either an atomic
 vector of the same size as \code{foi} or an integer.
@@ -25,11 +24,11 @@ This corresponds to the number of trials \code{size} in \link[stats]{rbinom}.}
 \item{seed}{The seed for random number generation.}
 }
 \value{
-A simulated list of counts following a binomial distribution in accordance with a given 
+A simulated list of counts following a binomial distribution in accordance with a given
 force of infection and age class sizes.
 }
 \description{
-Function that randomly generates a sample of counts for a simulated dataset
+Function that generates a sample of counts of seropositive individuals by sampling from a binomial distribution
 }
 \examples{
 \dontrun{
