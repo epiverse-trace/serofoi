@@ -30,7 +30,9 @@ serodata with additional columns necessary for the analysis. These columns are:
 \tabular{ll}{
 \code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
 \code{sample_size} \tab The size of the sample \cr \tab \cr
-\code{birth_year} \tab The year in which the individuals of each age group were bornt \cr \tab \cr
+\code{birth_year} \tab Years in which the subjects were borned 
+according to the age group marker \code{age_mean_f}\cr \tab \cr
+according to the age group marker \code{age_mean_f}\cr \tab \cr
 \code{prev_obs} \tab Observed prevalence \cr \tab \cr
 \code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
 \code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
