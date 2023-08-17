@@ -4,7 +4,7 @@
 \alias{get_sim_counts}
 \title{Function that generates a sample of counts of seropositive individuals by sampling from a binomial distribution}
 \usage{
-get_sim_counts(sim_data, foi, size_age_class, seed = 1234)
+get_sim_counts(sim_data, foi, sample_size_by_age, seed = 1234)
 }
 \arguments{
 \item{sim_data}{A dataframe object containing the following columns:
@@ -17,8 +17,8 @@ according to the age group marker \code{age_mean_f}\cr \tab \cr
 
 \item{foi}{Numeric atomic vector corresponding to the desired Force-of-Infection ordered from past to present}
 
-\item{size_age_class}{Size of each age group specified by either an atomic
-vector of the same size as \code{foi} or an integer.
+\item{sample_size_by_age}{Sample size for each age group: either a single integer indicating that the sample size is 
+the same for all ages or a vector of sample sizes the same length as
 This corresponds to the number of trials \code{size} in \link[stats]{rbinom}.}
 
 \item{seed}{The seed for random number generation.}

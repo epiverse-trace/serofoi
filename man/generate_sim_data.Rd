@@ -6,7 +6,7 @@
 \usage{
 generate_sim_data(
   foi,
-  size_age_class,
+  sample_size_by_age,
   tsur,
   birth_year_min,
   survey_label,
@@ -18,7 +18,7 @@ generate_sim_data(
 \arguments{
 \item{foi}{Numeric atomic vector corresponding to the desired Force-of-Infection ordered from past to present}
 
-\item{size_age_class}{Size of each age group specified by either an atomic
+\item{sample_size_by_age}{Size of each age group specified by either an atomic
 vector of the same size as \code{foi} or an integer.
 This corresponds to the number of trials \code{size} in \link[stats]{rbinom}.}
 }
@@ -30,10 +30,10 @@ Function that generates a simulated serosurvey according to the specified FoI
 }
 \examples{
 \dontrun{
-size_age_class = 5
+sample_size_by_age = 5
 foi <- rep(0.02, 50)
 sim_data <- generate_sim_data(foi = foi,
-                              size_age_class = size_age_class,
+                              sample_size_by_age = sample_size_by_age,
                               tsur = 2050,
                               birth_year_min = 2000,
                               survey_label = 'sim_constant_foi')

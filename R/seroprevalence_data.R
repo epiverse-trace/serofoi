@@ -232,7 +232,8 @@ generate_sim_data <- function(foi,
 #' @param  max_val maximum value of age interval to split
 #' @param  min_val minimum value of age interval to split
 #' @param  step step used to split the age interval
-#' @return age_group
+#' @return age_group factor variable grouping \code{data} by the age intervals 
+#' specified by \code{min_val}, \code{max_val} and \code{col_age}
 #' @examples
 #' \dontrun{
 #' sim_data <- generate_sim_data(foi = rep(0.02, 50),
