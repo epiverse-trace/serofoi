@@ -151,8 +151,8 @@ get_sim_prob <- function(sim_data, foi) {
 #' according to the age group marker \code{age_mean_f}\cr \tab \cr
 #' }
 #' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection ordered from past to present
-#' @param size_age_class Size of each age group specified by either an atomic
-#' vector of the same size as \code{foi} or an integer.
+#' @param sample_size_by_age Sample size for each age group: either a single integer indicating that the sample size is 
+#' the same for all ages or a vector of sample sizes the same length as
 #' This corresponds to the number of trials \code{size} in \link[stats]{rbinom}.
 #' @param seed The seed for random number generation.
 #' @return A simulated list of counts following a binomial distribution in accordance with a given
@@ -162,11 +162,11 @@ get_sim_prob <- function(sim_data, foi) {
 #'
 #' }
 #' @export
-get_sim_counts <- function(sim_data, foi, size_age_class, seed = 1234) {
+get_sim_counts <- function(sim_data, foi, sample_size_by_age, seed = 1234) {
   sim_probabilities <- get_sim_prob(sim_data = sim_data, foi = foi)
 
   set.seed(seed = seed)
-  sim_counts <- purrr::map_int(sim_probabilities, ~rbinom(1, size_age_class, .))
+  sim_counts <- purrr::map_int(sim_probabilities, ~rbinom(1, sample_size_by_age, .))
 
   return(sim_counts)
 }
@@ -174,23 +174,23 @@ get_sim_counts <- function(sim_data, foi, size_age_class, seed = 1234) {
 #' Function that generates a simulated serosurvey according to the specified FoI
 #'
 #' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection ordered from past to present
-#' @param size_age_class Size of each age group specified by either an atomic
+#' @param sample_size_by_age Size of each age group specified by either an atomic
 #' vector of the same size as \code{foi} or an integer.
 #' This corresponds to the number of trials \code{size} in \link[stats]{rbinom}.
 #' @return Dataframe object containing the simulated data generated from \code{foi}
 #' @examples
 #'\dontrun{
-#' size_age_class = 5
+#' sample_size_by_age = 5
 #' foi <- rep(0.02, 50)
 #' sim_data <- generate_sim_data(foi = foi,
-#'                               size_age_class = size_age_class,
+#'                               sample_size_by_age = sample_size_by_age,
 #'                               tsur = 2050,
 #'                               birth_year_min = 2000,
 #'                               survey_label = 'sim_constant_foi')
 #' }
 #' @export
 generate_sim_data <- function(foi,
-                              size_age_class,
+                              sample_size_by_age,
                               tsur,
                               birth_year_min,
                               survey_label,
@@ -206,8 +206,8 @@ generate_sim_data <- function(foi,
             survey = survey_label,
             age_mean_f = tsur - birth_year)
     sim_data <- sim_data %>%
-        mutate(counts = get_sim_counts(sim_data, foi, size_age_class, seed = seed),
-            total = size_age_class) %>%
+        mutate(counts = get_sim_counts(sim_data, foi, sample_size_by_age, seed = seed),
+            total = sample_size_by_age) %>%
         prepare_serodata(add_age_mean_f = FALSE)
 
     return(sim_data)
@@ -236,7 +236,7 @@ generate_sim_data <- function(foi,
 #' @examples
 #' \dontrun{
 #' sim_data <- generate_sim_data(foi = rep(0.02, 50),
-#'                               size_age_class = 5,
+#'                               sample_size_by_age = 5,
 #'                               tsur = 2050,
 #'                               birth_year_min = 2000,
 #'                               survey_label = 'sim_constant_foi')
@@ -274,16 +274,16 @@ get_age_group <- function(data, col_age, max_val, min_val, step) {
 #' @return Dataframe object containing grouped simulated data generated from \code{foi}
 #' @examples
 #'\dontrun{
-#' size_age_class = 5
+#' sample_size_by_age = 5
 #' foi <- rep(0.02, 50)
 #' sim_data <- generate_sim_data(foi = foi,
-#'                               size_age_class = size_age_class,
+#'                               sample_size_by_age = sample_size_by_age,
 #'                               tsur = 2050,
 #'                               birth_year_min = 2000,
 #'                               survey_label = 'sim_constant_foi')
 #' sim_data_grouped <- group_sim_data(sim_data = sim_data,
 #'                                    foi = foi,
-#'                                    size_age_class = size_age_class,
+#'                                    sample_size_by_age = sample_size_by_age,
 #'                                    tsur = 2050,
 #'                                    birth_year_min = 2000,
 #'                                    survey_label = 'sim_constant_foi_grouped')

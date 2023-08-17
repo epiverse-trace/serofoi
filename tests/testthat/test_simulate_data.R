@@ -8,7 +8,7 @@ test_that("simulated data", {
     library(serofoi)
 
     seed <- 1234
-    size_age_class <- 5
+    sample_size_by_age <- 5
     #----- Test for constant FoI
     # foi_model <- "constant"
     # foi_sim <- rep(0.02, 50)
@@ -33,7 +33,7 @@ test_that("simulated data", {
 
     #----- Test function generate_sim_data
     sim_data <- generate_sim_data(foi = foi_sim,
-                                  size_age_class = size_age_class,
+                                  sample_size_by_age = sample_size_by_age,
                                   tsur = 2050,
                                   birth_year_min = 2000,
                                   survey_label = 'foi_sim',
