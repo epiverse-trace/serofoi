@@ -121,10 +121,8 @@ prepare_bin_data <- function(serodata) {
 #'
 #' @param sim_data A dataframe object containing the following columns:
 #' \tabular{ll}{
-#' \code{birth_year} \tab List of years in which the subjects were borned \cr \tab \cr
+#' \code{birth_year} \tab Years in which the subjects were borned \cr \tab \cr
 #' \code{tsur} \tab Year of the survey\cr \tab \cr
-#' \code{country} \tab Default to 'none'.\cr \tab \cr
-#' \code{survey} \tab Survey label \cr \tab \cr
 #' \code{age_mean_f} \tab Age \cr \tab \cr
 #' }
 #' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection.
@@ -136,11 +134,9 @@ prepare_bin_data <- function(serodata) {
 #'
 #' }
 #' @export
-get_sim_prob <- function(sim_data, foi, seed = 1234) {
+get_sim_prob <- function(sim_data, foi) {
   exposure_ages <- get_exposure_ages(sim_data)
   exposure_matrix <- get_exposure_matrix(sim_data)
-
-  set.seed(seed = seed)
   sim_probabilities <- purrr::map_dbl(exposure_ages, ~1-exp(-pracma::dot(exposure_matrix[., ], foi)))
 
   return(sim_probabilities)
@@ -169,7 +165,9 @@ get_sim_prob <- function(sim_data, foi, seed = 1234) {
 #' }
 #' @export
 get_sim_counts <- function(sim_data, foi, size_age_class, seed = 1234) {
-  sim_probabilities <- get_sim_prob(sim_data = sim_data, foi = foi, seed = 1234)
+  sim_probabilities <- get_sim_prob(sim_data = sim_data, foi = foi)
+
+  set.seed(seed = seed)
   sim_counts <- purrr::map_int(sim_probabilities, ~rbinom(1, size_age_class, .))
 
   return(sim_counts)
