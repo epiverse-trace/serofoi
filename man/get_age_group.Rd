@@ -20,7 +20,8 @@ information}
 \item{step}{step used to split the age interval}
 }
 \value{
-age_group
+age_group factor variable grouping \code{data} by the age intervals 
+specified by \code{min_val}, \code{max_val} and \code{col_age}
 }
 \description{
 This function was taken from \link[vaccineff]{get_age_group}.
@@ -37,7 +38,7 @@ that max_val%%(step+1) = 0.
 \examples{
 \dontrun{
 sim_data <- generate_sim_data(foi = rep(0.02, 50),
-                              size_age_class = 5,
+                              sample_size_by_age = 5,
                               tsur = 2050,
                               birth_year_min = 2000,
                               survey_label = 'sim_constant_foi')

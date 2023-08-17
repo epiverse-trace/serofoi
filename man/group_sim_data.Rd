@@ -21,16 +21,16 @@ Function that groups a simulated serological dataset by age
 }
 \examples{
 \dontrun{
-size_age_class = 5
+sample_size_by_age = 5
 foi <- rep(0.02, 50)
 sim_data <- generate_sim_data(foi = foi,
-                              size_age_class = size_age_class,
+                              sample_size_by_age = sample_size_by_age,
                               tsur = 2050,
                               birth_year_min = 2000,
                               survey_label = 'sim_constant_foi')
 sim_data_grouped <- group_sim_data(sim_data = sim_data,
                                    foi = foi,
-                                   size_age_class = size_age_class,
+                                   sample_size_by_age = sample_size_by_age,
                                    tsur = 2050,
                                    birth_year_min = 2000,
                                    survey_label = 'sim_constant_foi_grouped')
