@@ -55,12 +55,7 @@ test_that("simulated data", {
     vdiffr::expect_doppelganger(paste0(case_label, foi_model, "_no_group_foi"), foi_plot)
 
     #----- Test function sim_data_grouped
-    sim_data_grouped <- group_sim_data(sim_data = sim_data,
-                                      foi = foi_sim,
-                                      size_age_class = size_age_class,
-                                      tsur = 2050,
-                                      birth_year_min = 2000,
-                                      survey_label = "foi_model")
+    sim_data_grouped <- group_sim_data(sim_data = sim_data)
     write.csv(sim_data_grouped, path_data_grouped, row.names = FALSE)
 
     model_object_grouped <- run_seromodel(serodata = sim_data_grouped,
