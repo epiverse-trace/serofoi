@@ -167,7 +167,14 @@ get_sim_n_seropositive <- function(sim_data, foi) {
 #' force of infection and age class sizes.
 #' @examples
 #'\dontrun{
-#'
+#' foi <- rep(0.02, 50)
+#' sim_data <- generate_sim_data(foi = foi,
+#'                               sample_size_by_age = 5,
+#'                               tsur = 2050,
+#'                               birth_year_min = 2000,
+#'                               survey_label = 'foi_sim')
+#' sim_n_seropositive <- get_sim_n_seropositive(sim_data = sim_data,
+#'                                              foi = foi)
 #' }
 #' @export
 get_sim_counts <- function(sim_data, foi, sample_size_by_age, seed = 1234) {

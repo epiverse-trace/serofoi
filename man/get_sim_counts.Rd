@@ -32,6 +32,13 @@ Function that generates a sample of counts of seropositive individuals by sampli
 }
 \examples{
 \dontrun{
-
+foi <- rep(0.02, 50)
+sim_data <- generate_sim_data(foi = foi,
+                              sample_size_by_age = 5,
+                              tsur = 2050,
+                              birth_year_min = 2000,
+                              survey_label = 'foi_sim')
+sim_n_seropositive <- get_sim_n_seropositive(sim_data = sim_data,
+                                             foi = foi)
 }
 }
