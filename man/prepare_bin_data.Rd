@@ -38,6 +38,7 @@ of its corresponding seroprevalence grouped by age group.
 }
 \examples{
 \dontrun{
-prepare_bin_data (serodata)
+data(chagas2012)
+prepare_bin_data(chagas2012)
 }
 }

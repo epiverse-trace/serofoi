@@ -18,8 +18,8 @@ The exposition years to the disease for each individual corresponds to the time 
 }
 \examples{
 \dontrun{
-data("serodata")
-serodata <- prepare_serodata(serodata = serodata, alpha = 0.05)
+data(chagas2012)
+serodata <- prepare_serodata(serodata = chagas2012, alpha = 0.05)
 exposure_ages <- get_exposure_ages(serodata)
 }
 }

@@ -1,5 +1,5 @@
 
-## *serofoi*: force-of-infection from population based serosurveys with age-disagregated data <img src="man/figures/serofoi-logo.png" align="right" width="130"/>
+## *serofoi*: force-of-infection from population based serosurveys with age-disagregated data <img src="man/figures/logo.svg" align="right" width="130"/>
 
 <!-- badges: start -->
 
@@ -48,9 +48,9 @@ remotes::install_github("epiverse-trace/serofoi")
 can be used to test out the package.
 
 ``` r
-# Load example serodata data included with the package
-data("serodata")
-head(serodata, 5)
+# Load example dataset chagas2012 included with the package
+data(chagas2012)
+head(chagas2012, 5)
 #>       survey total counts age_min age_max tsur country  test         antibody
 #> 1 COL-035-93    34      0       1       1 2012     COL ELISA IgG anti-T.cruzi
 #> 2 COL-035-93    25      0       2       2 2012     COL ELISA IgG anti-T.cruzi
@@ -66,7 +66,7 @@ in the provided dataset. A visualisation of the prepared seroprevalence
 data can be obtained using the function plot_seroprev:
 
 ``` r
-serodata_test <- prepare_serodata(serodata)
+serodata_test <- prepare_serodata(chagas2012)
 plot_seroprev(serodata_test, size_text = 15)
 ```
 
@@ -97,10 +97,10 @@ More details on how to use ***serofoi*** can be found in the [online
 documentation](https://epiverse-trace.github.io/serofoi/) as package
 vignettes, under [**Get
 Started**](https://epiverse-trace.github.io/serofoi/articles/serofoi.html),
-[**FoI
+[**An Introduction to FoI
 Models**](https://epiverse-trace.github.io/serofoi/articles/foi_models.html)
-and [**Use
-Cases**](https://epiverse-trace.github.io/serofoi/articles/use_cases.html)
+and [**Real-life Use Cases for
+serofoi**](https://epiverse-trace.github.io/serofoi/articles/use_cases.html)
 
 ## Help
 
