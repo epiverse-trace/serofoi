@@ -7,7 +7,7 @@
 get_age_group(data, col_age, max_val, min_val, step)
 }
 \arguments{
-\item{data}{dataset with at least a column containing the age
+\item{data}{dataframe with at least a column containing the age
 information}
 
 \item{col_age}{name of the column containing the age

@@ -248,7 +248,7 @@ generate_sim_data <- function(foi,
 #' To avoid errors it is necessary to set step < max_val.
 #' It is also suggested to choose the step such
 #' that max_val%%(step+1) = 0.
-#' @param data dataset with at least a column containing the age
+#' @param data dataframe with at least a column containing the age
 #' information
 #' @param col_age name of the column containing the age
 #' information
