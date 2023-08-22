@@ -131,14 +131,23 @@ prepare_bin_data <- function(serodata) {
 #' }
 #' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection ordered from past to present
 #' @param seed The seed for random number generation.
-#' @return A simulated list containing a seropositivity distribution by age for given simulated
-#' dataset and desired foi trend.
-get_sim_prob <- function(sim_data, foi) {
+#' @return A dataframe containing the following columns:
+#' \tabular{ll}{
+#' \code{age} \tab Exposure ages \cr \tab \cr
+#' \code{probability} \tab Probability to obtain a seropositive case for each age according to the provided FoI\cr \tab \cr
+#' \code{birth_year} \tab Years in which the subjects were borned 
+#' according to the age group marker \code{age_mean_f}\cr \tab \cr
+#' }
+get_sim_probability <- function(sim_data, foi) {
   exposure_ages <- get_exposure_ages(sim_data)
   exposure_matrix <- get_exposure_matrix(sim_data)
-  sim_probabilities <- purrr::map_dbl(exposure_ages, ~1-exp(-pracma::dot(exposure_matrix[., ], foi)))
+  probabilities <- purrr::map_dbl(exposure_ages, ~1-exp(-pracma::dot(exposure_matrix[., ], foi)))
 
-  return(sim_probabilities)
+  sim_probabilty <- data.frame(
+    age = exposure_ages,
+    probability = probabilities
+  )
+  return(sim_probability)
 }
 
 #' Function that generates a sample of counts of seropositive individuals by sampling from a binomial distribution
@@ -170,7 +179,7 @@ get_sim_prob <- function(sim_data, foi) {
 #' }
 #' @export
 get_sim_counts <- function(sim_data, foi, sample_size_by_age, seed = 1234) {
-  sim_probabilities <- get_sim_prob(sim_data = sim_data, foi = foi)
+  sim_probability <- get_sim_probability(sim_data = sim_data, foi = foi)
 
   set.seed(seed = seed)
   sim_counts <- purrr::map_int(sim_probabilities, ~rbinom(1, sample_size_by_age, .))
