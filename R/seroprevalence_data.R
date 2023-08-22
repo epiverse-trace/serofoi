@@ -134,15 +134,13 @@ prepare_bin_data <- function(serodata) {
 #' \tabular{ll}{
 #' \code{age} \tab Exposure ages \cr \tab \cr
 #' \code{probability} \tab Probability to obtain a seropositive case for each age according to the provided FoI\cr \tab \cr
-#' \code{birth_year} \tab Years in which the subjects were borned 
-#' according to the age group marker \code{age_mean_f}\cr \tab \cr
 #' }
 get_sim_probability <- function(sim_data, foi) {
   exposure_ages <- get_exposure_ages(sim_data)
   exposure_matrix <- get_exposure_matrix(sim_data)
   probabilities <- purrr::map_dbl(exposure_ages, ~1-exp(-pracma::dot(exposure_matrix[., ], foi)))
 
-  sim_probabilty <- data.frame(
+  sim_probability <- data.frame(
     age = exposure_ages,
     probability = probabilities
   )
@@ -163,7 +161,12 @@ get_sim_probability <- function(sim_data, foi) {
 #' the same for all ages or a vector of sample sizes the same length as
 #' This corresponds to the number of trials \code{size} in \link[stats]{rbinom}.
 #' @param seed The seed for random number generation.
-#' @return A simulated list of counts following a binomial distribution in accordance with a given
+#' @return A dataframe containing the following columns:
+#' \tabular{ll}{
+#' \code{age} \tab Age by the time of the survey \cr \tab \cr
+#' \code{n_seropositive} \tab Number of positive cases sampled according to the provided FoI \cr \tab \cr
+#' }
+#' simulated list of counts following a binomial distribution in accordance with a given
 #' force of infection and age class sizes.
 #' @examples
 #'\dontrun{
@@ -177,13 +180,17 @@ get_sim_probability <- function(sim_data, foi) {
 #'                                              foi = foi)
 #' }
 #' @export
-get_sim_counts <- function(sim_data, foi, sample_size_by_age, seed = 1234) {
+get_sim_n_seropositive <- function(sim_data, foi, sample_size_by_age, seed = 1234) {
   sim_probability <- get_sim_probability(sim_data = sim_data, foi = foi)
 
   set.seed(seed = seed)
-  sim_counts <- purrr::map_int(sim_probabilities, ~rbinom(1, sample_size_by_age, .))
+  n_seropositive <- purrr::map_int(sim_probability$probability, ~rbinom(1, sample_size_by_age, .))
 
-  return(sim_counts)
+  sim_n_seropositive <- data.frame(
+    age = sim_probability$age,
+    n_seropositive = n_seropositive
+  )
+  return(sim_n_seropositive)
 }
 
 #' Function that generates a simulated serosurvey according to the specified FoI
@@ -220,9 +227,10 @@ generate_sim_data <- function(foi,
             antibody = antibody,
             survey = survey_label,
             age_mean_f = tsur - birth_year)
+    sim_n_seropositive <- get_sim_n_seropositive(sim_data, foi, sample_size_by_age, seed = seed)
     sim_data <- sim_data %>%
-        mutate(counts = get_sim_counts(sim_data, foi, sample_size_by_age, seed = seed),
-            total = sample_size_by_age) %>%
+        mutate(counts = sim_n_seropositive$n_seropositive,
+               total = sample_size_by_age) %>%
         prepare_serodata(add_age_mean_f = FALSE)
 
     return(sim_data)

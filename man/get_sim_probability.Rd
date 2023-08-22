@@ -24,8 +24,6 @@ A dataframe containing the following columns:
 \tabular{ll}{
 \code{age} \tab Exposure ages \cr \tab \cr
 \code{probability} \tab Probability to obtain a seropositive case for each age according to the provided FoI\cr \tab \cr
-\code{birth_year} \tab Years in which the subjects were borned 
-according to the age group marker \code{age_mean_f}\cr \tab \cr
 }
 }
 \description{
