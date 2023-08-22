@@ -31,9 +31,10 @@ Function that generates the sero-positivity plot from a raw serological survey d
 }
 \examples{
 \dontrun{
- data_test <- prepare_serodata(serodata)
+ data(chagas2012)
+ serodata <- prepare_serodata(chagas2012)
  seromodel_object <- run_seromodel(
- serodata = data_test,
+ serodata = serodata,
  foi_model = "constant",
  n_iters = 1000
 )
