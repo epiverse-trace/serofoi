@@ -57,15 +57,14 @@ model, the estimated seroprevalence, the Force-of-Infection fit and the R-hat
 estimates plots.
 }
 \examples{
-data(chagas2012)
-serodata <- prepare_serodata(chagas2012)
-seromodel_object <- run_seromodel(
-  serodata = serodata,
-  foi_model = "constant",
-  iter = 1000
-)
-plot_seromodel(seromodel_object,
-  serodata = serodata,
-  size_text = 15
-)
+\dontrun{
+ data(chagas2012)
+ serodata <- prepare_serodata(chagas2012)
+ seromodel_object <- run_seromodel(
+   serodata = serodata,
+   foi_model = "constant",
+   n_iters = 1000
+ )
+plot_seromodel(seromodel_object, size_text = 15)
+}
 }

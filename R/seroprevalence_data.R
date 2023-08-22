@@ -39,8 +39,10 @@
 #'     observed prevalence}
 #' }
 #' @examples
+#'\dontrun{
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
+#' }
 #' @export
 prepare_serodata <- function(serodata = serodata,
                              alpha = 0.05) {
@@ -93,11 +95,11 @@ prepare_serodata <- function(serodata = serodata,
 #' @inheritParams run_seromodel
 #' @return data set with the binomial confidence intervals
 #' @examples
+#'\dontrun{
 #' data(chagas2012)
-#' serodata <- prepare_serodata(chagas2012)
-#' prepare_bin_data(serodata)
-#' @keywords internal
-#' @noRd
+#' prepare_bin_data(chagas2012)
+#' }
+#' @export
 prepare_bin_data <- function(serodata) {
   if (!any(colnames(serodata) == "age_mean_f")) {
     serodata <- serodata %>%

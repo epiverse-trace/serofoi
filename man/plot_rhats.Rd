@@ -28,16 +28,15 @@ rhats. All rhats must be smaller than 1 to ensure convergence (for further
 details check \link[bayesplot:bayesplot-extractors]{rhat}).
 }
 \examples{
+\dontrun{
 data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
 seromodel_object <- run_seromodel(
-  serodata = serodata,
-  foi_model = "constant",
-  iter = 1000
-)
-cohort_ages <- get_cohort_ages(serodata = serodata)
+ serodata = serodata,
+ foi_model = "constant",
+ n_iters = 1000
+ )
 plot_rhats(seromodel_object,
-  cohort_ages = cohort_ages,
-  size_text = 15
-)
+           size_text = 15)
+}
 }

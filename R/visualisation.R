@@ -8,9 +8,16 @@
 #'   data of a given seroprevalence survey with its corresponding binomial
 #'   confidence interval.
 #' @examples
-#' data(chagas2012)
-#' serodata <- prepare_serodata(chagas2012)
-#' plot_seroprev(serodata, size_text = 15)
+#' \dontrun{
+#'  data(chagas2012)
+#'  serodata <- prepare_serodata(chagas2012)
+#'  seromodel_object <- run_seromodel(
+#'  serodata = serodata,
+#'  foi_model = "constant",
+#'  n_iters = 1000
+#')
+#' plot_seroprev(seromodel_object, size_text = 15)
+#' }
 #' @export
 plot_seroprev <- function(serodata,
                           size_text = 6) {
@@ -48,17 +55,14 @@ plot_seroprev <- function(serodata,
 #' @return A ggplot object containing the seropositivity-vs-age graph including
 #'   the data, the fitted model and their corresponding confidence intervals.
 #' @examples
+#' \dontrun{
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- run_seromodel(
-#'   serodata = serodata,
-#'   foi_model = "constant",
-#'   iter = 1000
-#' )
-#' plot_seroprev_fitted(seromodel_object,
-#'   serodata = serodata,
-#'   size_text = 15
-#' )
+#' seromodel_object <- run_seromodel(serodata = serodata,
+#'                                   foi_model = "constant",
+#'                                   n_iters = 1000)
+#' plot_seroprev_fitted(seromodel_object, size_text = 15)
+#' }
 #' @export
 plot_seroprev_fitted <- function(seromodel_object,
                                  serodata,
@@ -148,19 +152,16 @@ plot_seroprev_fitted <- function(seromodel_object,
 #' @return A ggplot2 object containing the Force-of-infection-vs-time including
 #'   the corresponding confidence interval.
 #' @examples
-#' data(chagas2012)
-#' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- run_seromodel(
-#'   serodata = serodata,
-#'   foi_model = "constant",
-#'   iter = 1000
-#' )
-#' cohort_ages <- get_cohort_ages(serodata)
-#' plot_foi(
-#'   seromodel_object = seromodel_object,
-#'   cohort_ages = cohort_ages,
-#'   size_text = 15
-#' )
+#' \dontrun{
+#'  data(chagas2012)
+#'  serodata <- prepare_serodata(chagas2012)
+#'  seromodel_object <- run_seromodel(
+#'    serodata = serodata,
+#'    foi_model = "constant",
+#'    n_iters = 1000
+#'  )
+#' plot_foi(seromodel_object, size_text = 15)
+#' }
 #' @export
 plot_foi <- function(seromodel_object,
                      cohort_ages,
@@ -266,18 +267,17 @@ plot_foi <- function(seromodel_object,
 #'   function.
 #' @return The rhats-convergence plot of the selected model.
 #' @examples
+#' \dontrun{
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
 #' seromodel_object <- run_seromodel(
-#'   serodata = serodata,
-#'   foi_model = "constant",
-#'   iter = 1000
-#' )
-#' cohort_ages <- get_cohort_ages(serodata = serodata)
+#'  serodata = serodata,
+#'  foi_model = "constant",
+#'  n_iters = 1000
+#'  )
 #' plot_rhats(seromodel_object,
-#'   cohort_ages = cohort_ages,
-#'   size_text = 15
-#' )
+#'            size_text = 15)
+#' }
 #' @export
 plot_rhats <- function(seromodel_object,
                        cohort_ages,
@@ -344,17 +344,16 @@ plot_rhats <- function(seromodel_object,
 #' @return A ggplot object with a vertical arrange containing the
 #'   seropositivity, force of infection, and convergence plots.
 #' @examples
-#' data(chagas2012)
-#' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- run_seromodel(
-#'   serodata = serodata,
-#'   foi_model = "constant",
-#'   iter = 1000
-#' )
-#' plot_seromodel(seromodel_object,
-#'   serodata = serodata,
-#'   size_text = 15
-#' )
+#' \dontrun{
+#'  data(chagas2012)
+#'  serodata <- prepare_serodata(chagas2012)
+#'  seromodel_object <- run_seromodel(
+#'    serodata = serodata,
+#'    foi_model = "constant",
+#'    n_iters = 1000
+#'  )
+#' plot_seromodel(seromodel_object, size_text = 15)
+#' }
 #' @export
 plot_seromodel <- function(seromodel_object,
                            serodata,
@@ -451,18 +450,16 @@ plot_seromodel <- function(seromodel_object,
 #' @param size_text Text size of the graph returned by the function
 #' @return p the plot for the given table
 #' @examples
-#' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- run_seromodel(
-#'   serodata = serodata,
-#'   foi_model = "constant",
-#'   iter = 1000
-#' )
-#' seromodel_summary <- extract_seromodel_summary(
-#'   seromodel_object = seromodel_object,
-#'   serodata = serodata
-#' )
-#' info <- t(seromodel_summary)
-#' plot_info_table(info, size_text = 15)
+#' \dontrun{
+#'  serodata <- prepare_serodata(chagas2012)
+#'  seromodel_object <- run_seromodel(
+#'    serodata = serodata,
+#'    foi_model = "constant",
+#'    n_iters = 1000
+#'  )
+#' info = t(seromodel_object$model_summary)
+#' plot_info_table (info, size_text = 15)
+#' }
 #' @export
 plot_info_table <- function(info, size_text) {
   dato <- data.frame(

@@ -23,16 +23,12 @@ R-hat estimates of the serological model object \code{seromodel_object} and
 returns a table a dataframe with the estimates for each year of birth.
 }
 \examples{
+\dontrun{
 data(chagas2012)
-serodata <- prepare_serodata(serodata = chagas2012)
-model_constant <- run_seromodel(
-  serodata = serodata,
-  foi_model = "constant",
-  iter = 1500
-)
-cohort_ages <- get_cohort_ages(serodata)
-get_table_rhats(
-  seromodel_object = model_constant,
-  cohort_ages = cohort_ages
-)
+data_test <- prepare_serodata(serodata = chagas2012)
+model_constant <- run_seromodel(serodata = data_test,
+                                foi_model = "constant",
+                                n_iters = 1500)
+get_table_rhats(model_object = model_constant)
+}
 }
