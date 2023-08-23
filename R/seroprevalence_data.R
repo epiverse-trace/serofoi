@@ -284,23 +284,6 @@ get_age_group <- function(data, col_age, max_val, min_val, step) {
 #' @param col_age name of the column containing the age information
 #' @param step step used to split the age interval
 #' @return Dataframe object containing grouped simulated data generated from \code{foi}
-#' @examples
-#'\dontrun{
-#' sample_size_by_age = 5
-#' foi <- rep(0.02, 50)
-#' sim_data <- generate_sim_data(foi = foi,
-#'                               sample_size_by_age = sample_size_by_age,
-#'                               tsur = 2050,
-#'                               birth_year_min = 2000,
-#'                               survey_label = 'sim_constant_foi')
-#' sim_data_grouped <- group_sim_data(sim_data = sim_data,
-#'                                    foi = foi,
-#'                                    sample_size_by_age = sample_size_by_age,
-#'                                    tsur = 2050,
-#'                                    birth_year_min = 2000,
-#'                                    survey_label = 'sim_constant_foi_grouped')
-#' }
-#' @export
 group_sim_data <- function(sim_data,
                           col_age = "age_mean_f",
                           step = 5) {
