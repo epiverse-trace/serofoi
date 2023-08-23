@@ -4,34 +4,26 @@
 \alias{get_age_group}
 \title{Method for constructing age-group variable from age column}
 \usage{
-get_age_group(data, col_age, max_val, min_val, step)
+get_age_group(age, step)
 }
 \arguments{
-\item{data}{dataframe with at least a column containing the age
-information}
-
-\item{col_age}{name of the column containing the age
-information}
-
-\item{max_val}{maximum value of age interval to split}
-
-\item{min_val}{minimum value of age interval to split}
+\item{age}{vector containing age information}
 
 \item{step}{step used to split the age interval}
 }
 \value{
-age_group factor variable grouping \code{data} by the age intervals 
-specified by \code{min_val}, \code{max_val} and \code{col_age}
+age_group factor variable grouping \code{age} by the age intervals 
+specified by \code{min(age)}, \code{max(age)}.
 }
 \description{
 This function was taken from \link[vaccineff]{get_age_group}.
-This method splits an age interval from min_val to max_val into
-(max_val-min_val)/step intervals.
-By default min_val is set 0, however it can be assigned by
+This method splits an age interval from age_min to age_max into
+(age_max-age_min)/step intervals.
+By default age_min is set 0, however it can be assigned by
 convenience.
-If the method finds ages greater or equal than max_val
-it assigns the string ">{max_val}".
-To avoid errors it is necessary to set step < max_val.
+If the method finds ages greater or equal than age_max
+it assigns the string ">{age_max}".
+To avoid errors it is necessary to set step < age_max.
 It is also suggested to choose the step such
-that max_val%%(step+1) = 0.
+that age_max%%(step+1) = 0.
 }

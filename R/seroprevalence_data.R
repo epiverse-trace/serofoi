@@ -239,28 +239,25 @@ generate_sim_data <- function(foi,
 #' Method for constructing age-group variable from age column
 #'
 #' This function was taken from \link[vaccineff]{get_age_group}.
-#' This method splits an age interval from min_val to max_val into
-#' (max_val-min_val)/step intervals.
-#' By default min_val is set 0, however it can be assigned by
+#' This method splits an age interval from age_min to age_max into
+#' (age_max-age_min)/step intervals.
+#' By default age_min is set 0, however it can be assigned by
 #' convenience.
-#' If the method finds ages greater or equal than max_val
-#' it assigns the string ">{max_val}".
-#' To avoid errors it is necessary to set step < max_val.
+#' If the method finds ages greater or equal than age_max
+#' it assigns the string ">{age_max}".
+#' To avoid errors it is necessary to set step < age_max.
 #' It is also suggested to choose the step such
-#' that max_val%%(step+1) = 0.
-#' @param data dataframe with at least a column containing the age
-#' information
-#' @param col_age name of the column containing the age
-#' information
-#' @param  max_val maximum value of age interval to split
-#' @param  min_val minimum value of age interval to split
+#' that age_max%%(step+1) = 0.
+#' @param age vector containing age information
 #' @param  step step used to split the age interval
-#' @return age_group factor variable grouping \code{data} by the age intervals 
-#' specified by \code{min_val}, \code{max_val} and \code{col_age}
-get_age_group <- function(data, col_age, max_val, min_val, step) {
-  n_steps <- as.integer((max_val - min_val) / step) + 1
-  limits_low <- c(as.integer(seq(min_val,
-                                 max_val,
+#' @return age_group factor variable grouping \code{age} by the age intervals 
+#' specified by \code{min(age)}, \code{max(age)}.
+get_age_group <- function(age, step) {
+  age_min <- min(age)
+  age_max <- max(age)
+  n_steps <- as.integer((age_max - age_min) / step) + 1
+  limits_low <- c(as.integer(seq(age_min,
+                                 age_max,
                                  length.out = n_steps)))
   limits_hgh <- limits_low + step
   lim_labels <- paste(as.character(limits_low), as.character(limits_hgh),
@@ -269,7 +266,7 @@ get_age_group <- function(data, col_age, max_val, min_val, step) {
                                            limits_low[length(limits_low)])
   lim_breaks <- c(-Inf, limits_low[2:length(limits_low)] - 1, Inf)
 
-  age_group <- cut(data[[col_age]],
+  age_group <- cut(age,
                    breaks = lim_breaks,
                    labels = lim_labels,
                    # this is for the intervals to be closed to the left and open to the right
@@ -286,11 +283,8 @@ get_age_group <- function(data, col_age, max_val, min_val, step) {
 group_sim_data <- function(sim_data,
                           col_age = "age_mean_f",
                           step = 5) {
-    sim_data$age_group <-  get_age_group(data = sim_data,
-                                        col_age = col_age,
-                                        max_val = max(sim_data[[col_age]]),
-                                        min_val = min(sim_data[[col_age]]),
-                                        step = step)
+    age <- sim_data[[col_age]]
+    sim_data$age_group <-  get_age_group(age = age, step = step)
     sim_data_grouped <- sim_data %>% group_by(age_group) %>%
     dplyr::summarise(total = sum(total), counts = sum(counts)) %>%
       mutate(tsur = sim_data$tsur[1],
