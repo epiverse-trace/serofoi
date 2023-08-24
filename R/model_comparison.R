@@ -15,7 +15,7 @@
 #' }
 #' @export
 get_table_rhats <- function(seromodel_object) {
-  rhats <- bayesplot::rhat(seromodel_object$fit, "foi")
+  rhats <- bayesplot::rhat(seromodel_object$seromodel_fit, "foi")
 
   if (any(is.nan(rhats))) {
     rhats[which(is.nan(rhats))] <- 0
