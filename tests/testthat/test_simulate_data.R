@@ -22,15 +22,6 @@ test_that("simulated data", {
     case_label <- "sw_dec_foi_"
     max_lambda <- 0.3
 
-    #----- Results paths
-    path_data_no_grouped <- testthat::test_path(
-      "extdata", paste0(case_label, "sim_data_no_grouped.csv")
-    )
-
-    path_data_grouped <- testthat::test_path(
-      "extdata", paste0(case_label, "sim_data_grouped.csv")
-    )
-
     #----- Test function generate_sim_data
     sim_data <- generate_sim_data(foi = foi_sim,
                                   sample_size_by_age = sample_size_by_age,
