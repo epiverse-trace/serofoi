@@ -40,8 +40,6 @@ test_that("simulated data", {
                                   seed = seed)
 
     sim_data <- sim_data %>% mutate(age_min = age_mean_f, age_max = age_mean_f)
-    write.csv(sim_data, path_data_no_grouped, row.names = FALSE)
-
     model_object <- run_seromodel(serodata = sim_data,
                                   foi_model = foi_model)
 
@@ -56,8 +54,6 @@ test_that("simulated data", {
 
     #----- Test function sim_data_grouped
     sim_data_grouped <- group_sim_data(sim_data = sim_data)
-    write.csv(sim_data_grouped, path_data_grouped, row.names = FALSE)
-
     model_object_grouped <- run_seromodel(serodata = sim_data_grouped,
                                           foi_model = foi_model)
 
