@@ -59,7 +59,8 @@ Imports:
     reshape2,
     tidyverse,
     usethis,
-    vdiffr (>= 1.0.0)    
+    vdiffr (>= 1.0.0),
+    rlang
 LinkingTo: 
     BH (>= 1.66.0),
     Rcpp (>= 0.12.0),

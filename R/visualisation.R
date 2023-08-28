@@ -26,14 +26,15 @@
 #')
 #' plot_seroprev(seromodel_object, size_text = 15)
 #' }
+#' @importFrom rlang .data
 #' @export
 plot_seroprev <- function(serodata,
                           size_text = 6) {
   xx <- prepare_bin_data(serodata)
   seroprev_plot <-
     ggplot2::ggplot(data = xx) +
-    ggplot2::geom_errorbar(ggplot2::aes(age, ymin = p_obs_bin_l, ymax = p_obs_bin_u), width = 0.1) +
-    ggplot2::geom_point(ggplot2::aes(age, p_obs_bin, size = xx$bin_size), fill = "#7a0177", colour = "black", shape = 21) +
+    ggplot2::geom_errorbar(ggplot2::aes(.data$age, ymin = .data$p_obs_bin_l, ymax = .data$p_obs_bin_u), width = 0.1) +
+    ggplot2::geom_point(ggplot2::aes(.data$age, .data$p_obs_bin, size = xx$bin_size), fill = "#7a0177", colour = "black", shape = 21) +
     ggplot2::theme_bw(size_text) +
     ggplot2::coord_cartesian(xlim = c(0, 60), ylim = c(0,1)) +
     ggplot2::theme(legend.position = "none") +
@@ -60,6 +61,7 @@ plot_seroprev <- function(serodata,
 #'                                   n_iters = 1000)
 #' plot_seroprev_fitted(seromodel_object, size_text = 15)
 #' }
+#' @importFrom rlang .data
 #' @export
 plot_seroprev_fitted <- function(seromodel_object,
                                  size_text = 6) {
@@ -73,17 +75,17 @@ plot_seroprev_fitted <- function(seromodel_object,
         ggplot2::ggplot(prev_expanded) +
         ggplot2::geom_ribbon(
           ggplot2::aes(
-            x = age,
-            ymin = predicted_prev_lower,
-            ymax = predicted_prev_upper
+            x = .data$age,
+            ymin = .data$predicted_prev_lower,
+            ymax = .data$predicted_prev_upper
           ),
           fill = "#c994c7"
         ) +
-        ggplot2::geom_line(ggplot2::aes(x = age, y = predicted_prev), colour = "#7a0177") +
-        ggplot2::geom_errorbar(ggplot2::aes(age, ymin = p_obs_bin_l, ymax = p_obs_bin_u),
+        ggplot2::geom_line(ggplot2::aes(x = .data$age, y = .data$predicted_prev), colour = "#7a0177") +
+        ggplot2::geom_errorbar(ggplot2::aes(.data$age, ymin = .data$p_obs_bin_l, ymax = .data$p_obs_bin_u),
                                width = 0.1) +
         ggplot2::geom_point(
-          ggplot2::aes(age, p_obs_bin, size = bin_size),
+          ggplot2::aes(.data$age, .data$p_obs_bin, size = .data$bin_size),
           fill = "#7a0177",
           colour = "black",
           shape = 21
@@ -143,6 +145,7 @@ plot_seroprev_fitted <- function(seromodel_object,
 #'  )
 #' plot_foi(seromodel_object, size_text = 15)
 #' }
+#' @importFrom rlang .data
 #' @export
 plot_foi <- function(seromodel_object,
                      max_lambda = NA,
@@ -166,14 +169,14 @@ plot_foi <- function(seromodel_object,
         ggplot2::ggplot(foi_data) +
         ggplot2::geom_ribbon(
           ggplot2::aes(
-            x = year,
-            ymin = lower,
-            ymax = upper
+            x = .data$year,
+            ymin = .data$lower,
+            ymax = .data$upper
           ),
           fill = "#41b6c4",
           alpha = 0.5
         ) +
-        ggplot2::geom_line(ggplot2::aes(x = year, y = medianv),
+        ggplot2::geom_line(ggplot2::aes(x = .data$year, y = .data$medianv),
                            colour = "#253494",
                            size = size_text / 8) +
         ggplot2::theme_bw(size_text) +
@@ -189,7 +192,7 @@ plot_foi <- function(seromodel_object,
         foi_sim_data <- data.frame(year = foi_data$year, 
                                   foi_sim = foi_sim[-c(1:remove_x_values)])    
         foi_plot <- foi_plot + 
-          ggplot2::geom_line(data = foi_sim_data, ggplot2::aes(x = year, y = foi_sim),
+          ggplot2::geom_line(data = foi_sim_data, ggplot2::aes(x = .data$year, y = foi_sim),
                             colour = "#b30909",
                             size = size_text/8)
       }
@@ -240,6 +243,7 @@ plot_foi <- function(seromodel_object,
 #' plot_rhats(seromodel_object,
 #'            size_text = 15)
 #' }
+#' @importFrom rlang .data
 #' @export
 plot_rhats <- function(seromodel_object,
                        size_text = 25) {
@@ -248,7 +252,7 @@ plot_rhats <- function(seromodel_object,
       rhats <- get_table_rhats(seromodel_object)
 
       rhats_plot <-
-        ggplot2::ggplot(rhats, ggplot2::aes(year, rhat)) +
+        ggplot2::ggplot(rhats, ggplot2::aes(.data$year, .data$rhat)) +
         ggplot2::geom_line(colour = "purple") +
         ggplot2::geom_point() +
         ggplot2::coord_cartesian(ylim = c(0.7, 2)) +
@@ -390,11 +394,12 @@ plot_seromodel <- function(seromodel_object,
 #' info = t(seromodel_object$model_summary)
 #' plot_info_table (info, size_text = 15)
 #' }
+#' @importFrom rlang .data
 #' @export
 plot_info_table <- function(info, size_text) {
   dato <- data.frame(y = NROW(info):seq_len(1),
                      text = paste0(rownames(info), ": ", info[, 1]))
-  p <- ggplot2::ggplot(dato, ggplot2::aes(x = 1, y = y)) +
+  p <- ggplot2::ggplot(dato, ggplot2::aes(x = 1, y = .data$y)) +
     ggplot2::scale_y_continuous(limits = c(0, NROW(info) + 1), breaks = NULL) +
     ggplot2::theme_void() +
     ggplot2::geom_text(ggplot2::aes(label = text),

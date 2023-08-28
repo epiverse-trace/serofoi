@@ -33,13 +33,14 @@
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
 #' }
+#' @importFrom rlang .data
 #' @export
 prepare_serodata <- function(serodata = serodata,
                             alpha = 0.05, 
                             add_age_mean_f = TRUE) {
   if(add_age_mean_f){
     serodata <- serodata %>%
-      dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total)) %>%
+      dplyr::mutate(age_mean_f = floor((.data$age_min + .data$age_max) / 2), sample_size = sum(.data$total)) %>%
       dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
   }
   serodata <- serodata %>%
@@ -53,9 +54,9 @@ prepare_serodata <- function(serodata = serodata,
       )
     ) %>%
     dplyr::rename(
-      prev_obs = PointEst,
-      prev_obs_lower = Lower,
-      prev_obs_upper = Upper
+      prev_obs = .data$PointEst,
+      prev_obs_lower = .data$Lower,
+      prev_obs_upper = .data$Upper
     ) %>%
     dplyr::arrange(.data$age_mean_f)
 
@@ -94,6 +95,7 @@ prepare_serodata <- function(serodata = serodata,
 #' data(chagas2012)
 #' prepare_bin_data(chagas2012)
 #' }
+#' @importFrom rlang .data
 #' @export
 prepare_bin_data <- function(serodata) {
   serodata$cut_ages <-
@@ -109,7 +111,7 @@ prepare_bin_data <- function(serodata) {
       text = gsub("[^.0-9]", " ", levels(xx$cut_ages)),
       col.names = c("lower", "upper")
     ) %>%
-    dplyr::mutate(lev = levels(xx$cut_ages), mid_age = round((lower + upper) / 2)) %>%
+    dplyr::mutate(lev = levels(xx$cut_ages), mid_age = round((.data$lower + .data$upper) / 2)) %>%
     dplyr::select(.data$mid_age, .data$lev)
   xx$mid_age <- labs$mid_age[labs$lev %in% xx$cut_ages]
   conf <-

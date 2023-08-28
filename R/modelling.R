@@ -373,6 +373,7 @@ extract_seromodel_summary <- function(seromodel_object) {
 #' foi <- rstan::extract(seromodel_object$fit, "foi")[[1]]
 #' get_prev_expanded <- function(foi, serodata)
 #' }
+#' @importFrom rlang .data
 #' @export
 get_prev_expanded <- function(foi,
                               serodata,
@@ -418,15 +419,15 @@ get_prev_expanded <- function(foi,
   )
 
   observed_prev <- serodata %>%
-    dplyr::select(age_mean_f,
-                  prev_obs,
-                  prev_obs_lower,
-                  prev_obs_upper,
-                  total,
-                  counts) %>%
-    dplyr::rename(age = age_mean_f,
-                  sample_by_age = total,
-                  positives = counts)
+    dplyr::select(.data$age_mean_f,
+                  .data$prev_obs,
+                  .data$prev_obs_lower,
+                  .data$prev_obs_upper,
+                  .data$total,
+                  .data$counts) %>%
+    dplyr::rename(age = .data$age_mean_f,
+                  sample_by_age = .data$total,
+                  positives = .data$counts)
 
   prev_expanded <-
     base::merge(predicted_prev,
