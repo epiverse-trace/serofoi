@@ -37,8 +37,7 @@ This function prepapares a given pre-processed serological dataset (see \code{\l
 of its corresponding seroprevalence grouped by age group.
 }
 \examples{
-\dontrun{
 data(chagas2012)
-prepare_bin_data(chagas2012)
-}
+serodata <- prepare_serodata(chagas2012)
+prepare_bin_data(serodata)
 }

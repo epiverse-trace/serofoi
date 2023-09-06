@@ -5,14 +5,12 @@
 #' @param seromodel_object seromodel_object
 #' @return rhats table
 #' @examples
-#' \dontrun{
 #' data(chagas2012)
 #' data_test <- prepare_serodata(serodata = chagas2012)
 #' model_constant <- run_seromodel(serodata = data_test,
 #'                                 foi_model = "constant",
 #'                                 n_iters = 1500)
-#' get_table_rhats(model_object = model_constant)
-#' }
+#' get_table_rhats(seromodel_object = model_constant)
 #' @export
 get_table_rhats <- function(seromodel_object) {
   rhats <- bayesplot::rhat(seromodel_object$seromodel_fit, "foi")
