@@ -68,7 +68,8 @@ run_seromodel <- function(serodata,
                                                                       foi_model,
                                                                       " finished running ------"))
   if (print_summary){
-    model_summary <- extract_seromodel_summary(seromodel_object = seromodel_object)
+    model_summary <- extract_seromodel_summary(seromodel_object = seromodel_object, 
+                                               serodata = serodata)
     print(t(model_summary))
   }
   return(seromodel_object)
@@ -175,24 +176,12 @@ fit_seromodel <- function(serodata,
   )
 
   if (class(seromodel_fit@sim$samples) != "NULL") {
-    seromodel_object <- list(
-      seromodel_fit = seromodel_fit,
-      serodata = serodata,
-      stan_data = stan_data,
-      exposure_years = exposure_years,
-      exposure_ages = exposure_ages
-    )
+    seromodel_object <- seromodel_fit
+    return(seromodel_object)
   } else {
-    seromodel_object <- list(
-      seromodel_fit = "no model",
-      serodata = serodata,
-      stan_data = stan_data,
-      exposure_years = exposure_years,
-      exposure_ages = exposure_ages
-    )
+    seromodel_object <- "no model"
+    return(seromodel_object)
   }
-
-  return(seromodel_object)
 }
 
 
@@ -251,9 +240,9 @@ get_exposure_matrix <- function(serodata) {
 #' }
 #'
 #' @export
-get_foi_central_estimates <- function(seromodel_object) {
+get_foi_central_estimates <- function(seromodel_object, serodata) {
 
-  if (seromodel_object$seromodel_fit@model_name == "tv_normal_log") {
+  if (seromodel_object@model_name == "tv_normal_log") {
     lower_quantile = 0.1
     upper_quantile = 0.9
     medianv_quantile = 0.5
@@ -264,10 +253,12 @@ get_foi_central_estimates <- function(seromodel_object) {
     medianv_quantile = 0.5
   }
     # extracts foi from stan fit
-    foi <- rstan::extract(seromodel_object$seromodel_fit, "foi", inc_warmup = FALSE)[[1]]
+    foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
+    # generate exposure years
+    exposure_years <- (min(serodata$birth_year):serodata$tsur[1])[-1]
     # generates central estimations
     foi_central_estimates <- data.frame(
-      year = seromodel_object$exposure_years,
+      year = exposure_years,
       lower = apply(foi, 2, function(x) quantile(x, lower_quantile)),
 
       upper = apply(foi, 2, function(x) quantile(x, upper_quantile)),
@@ -309,9 +300,10 @@ get_foi_central_estimates <- function(seromodel_object) {
 #' extract_seromodel_summary(seromodel_object)
 #' }
 #' @export
-extract_seromodel_summary <- function(seromodel_object) {
+extract_seromodel_summary <- function(seromodel_object, 
+                                      serodata) {
   #------- Loo estimates
-  loo_fit <- loo::loo(seromodel_object$seromodel_fit, save_psis = TRUE, "logLikelihood")
+  loo_fit <- loo::loo(seromodel_object, save_psis = TRUE, "logLikelihood")
   if (sum(is.na(loo_fit)) < 1) {
     lll <- as.numeric((round(loo_fit$estimates[1, ], 2)))
   } else {
@@ -319,21 +311,22 @@ extract_seromodel_summary <- function(seromodel_object) {
   }
   #-------
   model_summary <- data.frame(
-    foi_model = seromodel_object$seromodel_fit@model_name,
-    dataset = unique(seromodel_object$serodata$survey),
-    country = unique(seromodel_object$serodata$country),
-    year = unique(seromodel_object$serodata$tsur),
-    test = unique(seromodel_object$serodata$test),
-    antibody = unique(seromodel_object$serodata$antibody),
-    n_sample = sum(seromodel_object$serodata$total),
-    n_agec = length(seromodel_object$serodata$age_mean_f),
-    n_iter = seromodel_object$seromodel_fit@sim$iter,
+    foi_model = seromodel_object@model_name,
+    dataset = unique(serodata$survey),
+    country = unique(serodata$country),
+    year = unique(serodata$tsur),
+    test = unique(serodata$test),
+    antibody = unique(serodata$antibody),
+    n_sample = sum(serodata$total),
+    n_agec = length(serodata$age_mean_f),
+    n_iter = seromodel_object@sim$iter,
     elpd = lll[1],
     se = lll[2],
     converged = NA
   )
 
-  rhats <- get_table_rhats(seromodel_object)
+  rhats <- get_table_rhats(seromodel_object = seromodel_object,
+                           serodata = serodata)
   if (any(rhats$rhat > 1.1) == FALSE) {
     model_summary$converged <- "Yes"
   }

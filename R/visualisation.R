@@ -62,13 +62,14 @@ plot_seroprev <- function(serodata,
 #' }
 #' @export
 plot_seroprev_fitted <- function(seromodel_object,
+                                 serodata,
                                  size_text = 6) {
 
-  if (is.character(seromodel_object$seromodel_fit) == FALSE)  {
-    if  (class(seromodel_object$seromodel_fit@sim$samples)  != "NULL" ) {
+  if (is.character(seromodel_object) == FALSE)  {
+    if  (class(seromodel_object@sim$samples)  != "NULL" ) {
 
-      foi <- rstan::extract(seromodel_object$seromodel_fit, "foi", inc_warmup = FALSE)[[1]]
-      prev_expanded <- get_prev_expanded(foi, serodata = seromodel_object$serodata, bin_data = TRUE)
+      foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
+      prev_expanded <- get_prev_expanded(foi, serodata = serodata, bin_data = TRUE)
       prev_plot <-
         ggplot2::ggplot(prev_expanded) +
         ggplot2::geom_ribbon(
@@ -145,17 +146,19 @@ plot_seroprev_fitted <- function(seromodel_object,
 #' }
 #' @export
 plot_foi <- function(seromodel_object,
+                     serodata,
                      max_lambda = NA,
                      size_text = 25,
                      foi_sim = NULL) {
-  if (is.character(seromodel_object$seromodel_fit) == FALSE) {
-    if (class(seromodel_object$seromodel_fit@sim$samples) != "NULL") {
-      foi <- rstan::extract(seromodel_object$seromodel_fit,
+  if (is.character(seromodel_object) == FALSE) {
+    if (class(seromodel_object@sim$samples) != "NULL") {
+      foi <- rstan::extract(seromodel_object,
                             "foi",
                             inc_warmup = FALSE)[[1]]
 
       #-------- This bit is to get the actual length of the foi data
-      foi_data <- get_foi_central_estimates(seromodel_object = seromodel_object)
+      foi_data <- get_foi_central_estimates(seromodel_object = seromodel_object,
+                                            serodata = serodata)
 
       #--------
       foi_data$medianv[1] <- NA
@@ -242,10 +245,11 @@ plot_foi <- function(seromodel_object,
 #' }
 #' @export
 plot_rhats <- function(seromodel_object,
+                       serodata,
                        size_text = 25) {
-  if (is.character(seromodel_object$seromodel_fit) == FALSE) {
-    if (class(seromodel_object$seromodel_fit@sim$samples) != "NULL") {
-      rhats <- get_table_rhats(seromodel_object)
+  if (is.character(seromodel_object) == FALSE) {
+    if (class(seromodel_object@sim$samples) != "NULL") {
+      rhats <- get_table_rhats(seromodel_object, serodata)
 
       rhats_plot <-
         ggplot2::ggplot(rhats, ggplot2::aes(year, rhat)) +
@@ -307,24 +311,29 @@ plot_rhats <- function(seromodel_object,
 #' }
 #' @export
 plot_seromodel <- function(seromodel_object,
+                          serodata,
                           max_lambda = NA,
                           size_text = 25,
                           foi_sim = NULL) {
-  if (is.character(seromodel_object$seromodel_fit) == FALSE) {
-    if (class(seromodel_object$seromodel_fit@sim$samples) != "NULL") {
+  if (is.character(seromodel_object) == FALSE) {
+    if (class(seromodel_object@sim$samples) != "NULL") {
       prev_plot <- plot_seroprev_fitted(seromodel_object = seromodel_object,
-                                 size_text = size_text)
+                                        serodata = serodata,
+                                        size_text = size_text)
 
       foi_plot <- plot_foi(
         seromodel_object = seromodel_object,
+        serodata = serodata,
         max_lambda = max_lambda,
         size_text = size_text,
         foi_sim = foi_sim
       )
 
       rhats_plot <- plot_rhats(seromodel_object = seromodel_object,
+                               serodata = serodata,
                                size_text = size_text)
-      model_summary <- extract_seromodel_summary(seromodel_object = seromodel_object)
+      model_summary <- extract_seromodel_summary(seromodel_object = seromodel_object,
+                                                 serodata = serodata)
       summary_table <- t(
         dplyr::select(model_summary, 
         c('foi_model', 'dataset', 'elpd', 'se', 'converged')))
@@ -362,7 +371,8 @@ plot_seromodel <- function(seromodel_object,
       ggplot2::ylab(" ") +
       ggplot2::xlab(" ")
     g1 <- g0
-    g0 <- g0 + ggplot2::labs(subtitle = seromodel_object$model) +
+    # TODO: This 
+    g0 <- g0 + ggplot2::labs(subtitle = seromodel_object$model_name) +
       ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
 
     plot_arrange <-
