@@ -24,7 +24,6 @@ This includes the corresponding binomial confidence interval.
 The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
 }
 \examples{
-\dontrun{
  data(chagas2012)
  serodata <- prepare_serodata(chagas2012)
  seromodel_object <- run_seromodel(
@@ -33,5 +32,4 @@ The x axis corresponds to the decades covered by the survey the y axis to the Fo
    n_iters = 1000
  )
 plot_foi(seromodel_object, size_text = 15)
-}
 }
