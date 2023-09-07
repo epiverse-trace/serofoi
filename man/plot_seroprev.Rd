@@ -30,14 +30,7 @@ A ggplot object containing the seropositivity-vs-age graph of the raw data of a 
 Function that generates the sero-positivity plot from a raw serological survey dataset
 }
 \examples{
-\dontrun{
- data(chagas2012)
- serodata <- prepare_serodata(chagas2012)
- seromodel_object <- run_seromodel(
- serodata = serodata,
- foi_model = "constant",
- n_iters = 1000
-)
-plot_seroprev(seromodel_object, size_text = 15)
-}
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
+plot_seroprev(serodata, size_text = 15)
 }
