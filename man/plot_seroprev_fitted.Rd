@@ -4,7 +4,7 @@
 \alias{plot_seroprev_fitted}
 \title{Function that generates a seropositivity plot corresponding to the specified fitted serological model}
 \usage{
-plot_seroprev_fitted(seromodel_object, size_text = 6)
+plot_seroprev_fitted(seromodel_object, serodata, size_text = 6)
 }
 \arguments{
 \item{seromodel_object}{Object containing the results of fitting a model by means of \link{run_seromodel}.}
@@ -25,5 +25,7 @@ serodata <- prepare_serodata(chagas2012)
 seromodel_object <- run_seromodel(serodata = serodata,
                                   foi_model = "constant",
                                   n_iters = 1000)
-plot_seroprev_fitted(seromodel_object, size_text = 15)
+plot_seroprev_fitted(seromodel_object,
+                     serodata = serodata, 
+                     size_text = 15)
 }

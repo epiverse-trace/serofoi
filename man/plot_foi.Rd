@@ -4,7 +4,13 @@
 \alias{plot_foi}
 \title{Function that generates a Force-of-Infection plot corresponding to the specified fitted serological model}
 \usage{
-plot_foi(seromodel_object, max_lambda = NA, size_text = 25, foi_sim = NULL)
+plot_foi(
+  seromodel_object,
+  serodata,
+  max_lambda = NA,
+  size_text = 25,
+  foi_sim = NULL
+)
 }
 \arguments{
 \item{seromodel_object}{Object containing the results of fitting a model by means of \link{run_seromodel}.}
@@ -24,12 +30,14 @@ This includes the corresponding binomial confidence interval.
 The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
 }
 \examples{
- data(chagas2012)
- serodata <- prepare_serodata(chagas2012)
- seromodel_object <- run_seromodel(
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
+seromodel_object <- run_seromodel(
    serodata = serodata,
    foi_model = "constant",
    n_iters = 1000
  )
-plot_foi(seromodel_object, size_text = 15)
+plot_foi(seromodel_object = seromodel_object,
+         serodata = serodata,
+         size_text = 15)
 }

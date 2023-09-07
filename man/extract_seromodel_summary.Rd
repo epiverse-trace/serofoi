@@ -4,7 +4,7 @@
 \alias{extract_seromodel_summary}
 \title{Method to extact a summary of the specified serological model object}
 \usage{
-extract_seromodel_summary(seromodel_object)
+extract_seromodel_summary(seromodel_object, serodata)
 }
 \arguments{
 \item{seromodel_object}{\code{seromodel_object}. An object containing relevant information about the implementation of the model.
@@ -38,5 +38,6 @@ data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
 seromodel_object <- run_seromodel(serodata = serodata,
                                   foi_model = "constant")
-extract_seromodel_summary(seromodel_object)
+extract_seromodel_summary(seromodel_object,
+                          serodata = serodata)
 }

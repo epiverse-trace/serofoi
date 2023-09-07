@@ -25,7 +25,7 @@ of the Force-of-Infection \code{foi} for plotting an analysis purposes.
 data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
 seromodel_object <- run_seromodel(serodata = serodata,
-                          foi_model = "constant")
-foi <- rstan::extract(seromodel_object$seromodel_fit, "foi")[[1]]
+                                  foi_model = "constant")
+foi <- rstan::extract(seromodel_object, "foi")[[1]]
 get_prev_expanded(foi, serodata)
 }

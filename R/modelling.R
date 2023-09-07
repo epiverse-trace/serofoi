@@ -228,7 +228,8 @@ get_exposure_matrix <- function(serodata) {
 #' serodata <- prepare_serodata(chagas2012)
 #' seromodel_object <- fit_seromodel(serodata = serodata,
 #'                                   foi_model = "constant")
-#' foi_central_estimates <- get_foi_central_estimates(seromodel_object)
+#' foi_central_estimates <- get_foi_central_estimates(seromodel_object = seromodel_object, 
+#'                                                    serodata = serodata)
 #' @export
 get_foi_central_estimates <- function(seromodel_object, serodata) {
 
@@ -286,7 +287,8 @@ get_foi_central_estimates <- function(seromodel_object, serodata) {
 #' serodata <- prepare_serodata(chagas2012)
 #' seromodel_object <- run_seromodel(serodata = serodata,
 #'                                   foi_model = "constant")
-#' extract_seromodel_summary(seromodel_object)
+#' extract_seromodel_summary(seromodel_object,
+#'                           serodata = serodata)
 #' @export
 extract_seromodel_summary <- function(seromodel_object, 
                                       serodata) {
@@ -336,8 +338,8 @@ extract_seromodel_summary <- function(seromodel_object,
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
 #' seromodel_object <- run_seromodel(serodata = serodata,
-#'                           foi_model = "constant")
-#' foi <- rstan::extract(seromodel_object$seromodel_fit, "foi")[[1]]
+#'                                   foi_model = "constant")
+#' foi <- rstan::extract(seromodel_object, "foi")[[1]]
 #' get_prev_expanded(foi, serodata)
 #' @export
 get_prev_expanded <- function(foi,

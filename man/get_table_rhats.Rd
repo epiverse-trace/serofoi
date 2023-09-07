@@ -4,7 +4,7 @@
 \alias{get_table_rhats}
 \title{Method for extracting a dataframe containing the R-hat estimates for a given serological model}
 \usage{
-get_table_rhats(seromodel_object)
+get_table_rhats(seromodel_object, serodata)
 }
 \arguments{
 \item{seromodel_object}{seromodel_object}
@@ -18,9 +18,10 @@ This method relies in the function \link[bayesplot]{rhat} to extract the R-hat e
 }
 \examples{
 data(chagas2012)
-data_test <- prepare_serodata(serodata = chagas2012)
-model_constant <- run_seromodel(serodata = data_test,
+serodata <- prepare_serodata(serodata = chagas2012)
+model_constant <- run_seromodel(serodata = serodata,
                                 foi_model = "constant",
                                 n_iters = 1500)
-get_table_rhats(seromodel_object = model_constant)
+get_table_rhats(seromodel_object = model_constant,
+                serodata = serodata)
 }

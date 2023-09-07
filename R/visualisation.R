@@ -50,7 +50,9 @@ plot_seroprev <- function(serodata,
 #' seromodel_object <- run_seromodel(serodata = serodata,
 #'                                   foi_model = "constant",
 #'                                   n_iters = 1000)
-#' plot_seroprev_fitted(seromodel_object, size_text = 15)
+#' plot_seroprev_fitted(seromodel_object,
+#'                      serodata = serodata,
+#'                      size_text = 15)
 #' @export
 plot_seroprev_fitted <- function(seromodel_object,
                                  serodata,
@@ -125,14 +127,16 @@ plot_seroprev_fitted <- function(seromodel_object,
 #' @param foi_sim TBD
 #' @return A ggplot2 object containing the Force-of-infection-vs-time including the corresponding confidence interval.
 #' @examples
-#'  data(chagas2012)
-#'  serodata <- prepare_serodata(chagas2012)
-#'  seromodel_object <- run_seromodel(
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
+#' seromodel_object <- run_seromodel(
 #'    serodata = serodata,
 #'    foi_model = "constant",
 #'    n_iters = 1000
 #'  )
-#' plot_foi(seromodel_object, size_text = 15)
+#' plot_foi(seromodel_object = seromodel_object,
+#'          serodata = serodata,
+#'          size_text = 15)
 #' @export
 plot_foi <- function(seromodel_object,
                      serodata,
@@ -229,6 +233,7 @@ plot_foi <- function(seromodel_object,
 #'  n_iters = 1000
 #'  )
 #' plot_rhats(seromodel_object,
+#'            serodata = serodata,
 #'            size_text = 15)
 #' @export
 plot_rhats <- function(seromodel_object,
@@ -293,7 +298,9 @@ plot_rhats <- function(seromodel_object,
 #'    foi_model = "constant",
 #'    n_iters = 1000
 #'  )
-#' plot_seromodel(seromodel_object, size_text = 15)
+#' plot_seromodel(seromodel_object,
+#'                serodata = serodata,
+#'                size_text = 15)
 #' @export
 plot_seromodel <- function(seromodel_object,
                           serodata,
@@ -381,7 +388,8 @@ plot_seromodel <- function(seromodel_object,
 #'   foi_model = "constant",
 #'   n_iters = 1000
 #' )
-#' seromodel_summary = extract_seromodel_summary(seromodel_object)
+#' seromodel_summary <- extract_seromodel_summary(seromodel_object = seromodel_object,
+#'                                               serodata = serodata)
 #' info = t(seromodel_summary)
 #' plot_info_table (info, size_text = 15)
 #' @export

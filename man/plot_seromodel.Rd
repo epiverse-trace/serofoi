@@ -7,6 +7,7 @@ the Force-of-Infection fit and the R-hat estimates plots.}
 \usage{
 plot_seromodel(
   seromodel_object,
+  serodata,
   max_lambda = NA,
   size_text = 25,
   foi_sim = NULL
@@ -36,5 +37,7 @@ the Force-of-Infection fit and the R-hat estimates plots.
    foi_model = "constant",
    n_iters = 1000
  )
-plot_seromodel(seromodel_object, size_text = 15)
+plot_seromodel(seromodel_object,
+               serodata = serodata,
+               size_text = 15)
 }

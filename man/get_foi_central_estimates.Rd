@@ -4,7 +4,7 @@
 \alias{get_foi_central_estimates}
 \title{Function that generates the central estimates for the fitted forced FoI}
 \usage{
-get_foi_central_estimates(seromodel_object)
+get_foi_central_estimates(seromodel_object, serodata)
 }
 \arguments{
 \item{seromodel_object}{Object containing the results of fitting a model by means of \link{run_seromodel}.
@@ -21,5 +21,6 @@ data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
 seromodel_object <- fit_seromodel(serodata = serodata,
                                   foi_model = "constant")
-foi_central_estimates <- get_foi_central_estimates(seromodel_object)
+foi_central_estimates <- get_foi_central_estimates(seromodel_object = seromodel_object, 
+                                                   serodata = serodata)
 }

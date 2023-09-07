@@ -4,7 +4,7 @@
 \alias{plot_rhats}
 \title{Function that generates a plot of the R-hat estimates of the specified fitted serological model}
 \usage{
-plot_rhats(seromodel_object, size_text = 25)
+plot_rhats(seromodel_object, serodata, size_text = 25)
 }
 \arguments{
 \item{seromodel_object}{Object containing the results of fitting a model by means of \link{run_seromodel}.}
@@ -28,5 +28,6 @@ seromodel_object <- run_seromodel(
  n_iters = 1000
  )
 plot_rhats(seromodel_object,
+           serodata = serodata,
            size_text = 15)
 }
