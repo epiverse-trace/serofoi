@@ -20,7 +20,6 @@ The x axis corresponds to the decades covered by the survey and the y axis to th
 All rhats must be smaller than 1 to ensure convergence (for further details check \link[bayesplot]{rhat}).
 }
 \examples{
-\dontrun{
 data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
 seromodel_object <- run_seromodel(
@@ -30,5 +29,4 @@ seromodel_object <- run_seromodel(
  )
 plot_rhats(seromodel_object,
            size_text = 15)
-}
 }
