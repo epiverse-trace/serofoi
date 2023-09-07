@@ -40,8 +40,6 @@ serodata with additional columns necessary for the analysis. These columns are:
 This function adds the necessary additional variables to the given dataset \code{serodata} corresponding to a serological survey.
 }
 \examples{
-\dontrun{
 data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
-}
 }
