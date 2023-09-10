@@ -26,6 +26,6 @@ seromodel_object <- run_seromodel(serodata = serodata,
                                   foi_model = "constant",
                                   n_iters = 1000)
 plot_seroprev_fitted(seromodel_object,
-                     serodata = serodata, 
+                     serodata = serodata,
                      size_text = 15)
 }

@@ -19,8 +19,8 @@ get_table_rhats <- function(seromodel_object, serodata) {
   if (any(is.nan(rhats))) {
     rhats[which(is.nan(rhats))] <- 0
   }
-  exposure_years <- (min(serodata$birth_year):serodata$tsur[1])[-1]
-  model_rhats <- data.frame(year = exposure_years, rhat = rhats)
+  cohort_ages <- get_cohort_ages(serodata)
+  model_rhats <- data.frame(year = cohort_ages$birth_year, rhat = rhats)
   model_rhats$rhat[model_rhats$rhat == 0] <- NA
 
   return(model_rhats)

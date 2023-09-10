@@ -129,8 +129,7 @@ fit_seromodel <- function(serodata,
                           decades = 0) {
   # TODO Add a warning because there are exceptions where a minimal amount of iterations is needed
   model <- stanmodels[[foi_model]]
-  exposure_ages <- get_exposure_ages(serodata)
-  exposure_years <- (min(serodata$birth_year):serodata$tsur[1])[-1]
+  cohort_ages <- get_cohort_ages(serodata = serodata)
   exposure_matrix <- get_exposure_matrix(serodata)
   Nobs <- nrow(serodata)
 
@@ -139,7 +138,7 @@ fit_seromodel <- function(serodata,
     Npos = serodata$counts,
     Ntotal = serodata$total,
     Age = serodata$age_mean_f,
-    Ymax = max(exposure_ages),
+    Ymax = max(cohort_ages$age),
     AgeExpoMatrix = exposure_matrix,
     NDecades = decades
   )
@@ -147,12 +146,12 @@ fit_seromodel <- function(serodata,
   n_warmup <- floor(n_iters / 2)
   if (foi_model == "tv_normal_log") {
     f_init <- function() {
-      list(log_foi = rep(-3, length(exposure_ages)))
+      list(log_foi = rep(-3, nrow(cohort_ages)))
   }
   }
   else {
   f_init <- function() {
-    list(foi = rep(0.01, length(exposure_ages)))
+    list(foi = rep(0.01, nrow(cohort_ages)))
   }
   }
 
@@ -182,19 +181,24 @@ fit_seromodel <- function(serodata,
 }
 
 
-#' Function that generates an atomic vector containing the corresponding exposition years of a serological survey
+#' Function that generates a data.frame containing the age of each cohort corresponding to each birth year exluding the year of the survey.
 #'
-#' This function generates an atomic vector containing the exposition years corresponding to the specified serological survey data \code{serodata}.
-#' The exposition years to the disease for each individual corresponds to the time from birth to the moment of the survey.
-#' @param serodata A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_serodata} function.
-#' @return \code{exposure_ages}. An atomic vector with the numeration of the exposition years in serodata
+#' This function generates a data.frame containing the age of each cohort corresponding to each \code{birth_year} excluding the year of the survey,
+#' for which the cohort age is still 0.
+#' specified serological survey data \code{serodata} excluding the year of the survey.
+#' @inheritParams run_seromodel
+#' @return \code{cohort_ages}. A data.frame containing the age of each cohort corresponding to each birth year
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(serodata = chagas2012, alpha = 0.05)
-#' exposure_ages <- get_exposure_ages(serodata)
+#' cohort_ages <- get_cohort_ages(serodata = serodata)
 #' @export
-get_exposure_ages <- function(serodata) {
-  return(seq_along(min(serodata$birth_year):(serodata$tsur[1] - 1)))
+get_cohort_ages <- function(serodata) {
+  birth_year <- (min(serodata$birth_year):serodata$tsur[1])
+  age <- (seq_along(min(serodata$birth_year):(serodata$tsur[1] - 1)))
+
+  cohort_ages <- data.frame(birth_year = birth_year[-length(birth_year)], age = rev(age))
+  return(cohort_ages)
 }
 
 # TODO Is necessary to explain better what we mean by the exposure matrix.
@@ -209,8 +213,8 @@ get_exposure_ages <- function(serodata) {
 #' @export
 get_exposure_matrix <- function(serodata) {
   age_class <- serodata$age_mean_f
-  exposure_ages <- get_exposure_ages(serodata)
-  ly <- length(exposure_ages)
+  cohort_ages <- get_cohort_ages(serodata = serodata)
+  ly <- nrow(cohort_ages)
   exposure <- matrix(0, nrow = length(age_class), ncol = ly)
   for (k in 1:length(age_class))
     exposure[k, (ly - age_class[k] + 1):ly] <- 1
@@ -246,10 +250,10 @@ get_foi_central_estimates <- function(seromodel_object, serodata) {
     # extracts foi from stan fit
     foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
     # generate exposure years
-    exposure_years <- (min(serodata$birth_year):serodata$tsur[1])[-1]
+    cohort_ages <- get_cohort_ages(serodata = serodata)
     # generates central estimations
     foi_central_estimates <- data.frame(
-      year = exposure_years,
+      year = cohort_ages$birth_year,
       lower = apply(foi, 2, function(x) quantile(x, lower_quantile)),
 
       upper = apply(foi, 2, function(x) quantile(x, upper_quantile)),
