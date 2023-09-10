@@ -139,7 +139,7 @@ plot_seroprev_fitted <- function(seromodel_object,
 #'          size_text = 15)
 #' @export
 plot_foi <- function(seromodel_object,
-                     serodata,
+                     cohort_ages,
                      max_lambda = NA,
                      size_text = 25,
                      foi_sim = NULL) {
@@ -151,7 +151,7 @@ plot_foi <- function(seromodel_object,
 
       #-------- This bit is to get the actual length of the foi data
       foi_data <- get_foi_central_estimates(seromodel_object = seromodel_object,
-                                            serodata = serodata)
+                                            cohort_ages = cohort_ages)
 
       #--------
       foi_data$medianv[1] <- NA
@@ -232,16 +232,18 @@ plot_foi <- function(seromodel_object,
 #'  foi_model = "constant",
 #'  n_iters = 1000
 #'  )
+#' cohort_ages <- get_cohort_ages(serodata = serodata)
 #' plot_rhats(seromodel_object,
-#'            serodata = serodata,
+#'            cohort_ages = cohort_ages,
 #'            size_text = 15)
 #' @export
 plot_rhats <- function(seromodel_object,
-                       serodata,
+                       cohort_ages,
                        size_text = 25) {
   if (is.character(seromodel_object) == FALSE) {
     if (class(seromodel_object@sim$samples) != "NULL") {
-      rhats <- get_table_rhats(seromodel_object, serodata)
+      rhats <- get_table_rhats(seromodel_object = seromodel_object,
+                               cohort_ages = cohort_ages)
 
       rhats_plot <-
         ggplot2::ggplot(rhats, ggplot2::aes(year, rhat)) +
@@ -309,20 +311,22 @@ plot_seromodel <- function(seromodel_object,
                           foi_sim = NULL) {
   if (is.character(seromodel_object) == FALSE) {
     if (class(seromodel_object@sim$samples) != "NULL") {
+      cohort_ages <- get_cohort_ages(serodata = serodata)
+
       prev_plot <- plot_seroprev_fitted(seromodel_object = seromodel_object,
                                         serodata = serodata,
                                         size_text = size_text)
 
       foi_plot <- plot_foi(
         seromodel_object = seromodel_object,
-        serodata = serodata,
+        cohort_ages = cohort_ages,
         max_lambda = max_lambda,
         size_text = size_text,
         foi_sim = foi_sim
       )
 
       rhats_plot <- plot_rhats(seromodel_object = seromodel_object,
-                               serodata = serodata,
+                               cohort_ages = cohort_ages,
                                size_text = size_text)
       model_summary <- extract_seromodel_summary(seromodel_object = seromodel_object,
                                                  serodata = serodata)

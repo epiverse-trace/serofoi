@@ -232,10 +232,12 @@ get_exposure_matrix <- function(serodata) {
 #' serodata <- prepare_serodata(chagas2012)
 #' seromodel_object <- fit_seromodel(serodata = serodata,
 #'                                   foi_model = "constant")
+#' cohort_ages <- get_cohort_ages(serodata = serodata)
 #' foi_central_estimates <- get_foi_central_estimates(seromodel_object = seromodel_object, 
-#'                                                    serodata = serodata)
+#'                                                    cohort_ages = cohort_ages)
 #' @export
-get_foi_central_estimates <- function(seromodel_object, serodata) {
+get_foi_central_estimates <- function(seromodel_object,
+                                      cohort_ages) {
 
   if (seromodel_object@model_name == "tv_normal_log") {
     lower_quantile = 0.1
@@ -249,8 +251,7 @@ get_foi_central_estimates <- function(seromodel_object, serodata) {
   }
     # extracts foi from stan fit
     foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
-    # generate exposure years
-    cohort_ages <- get_cohort_ages(serodata = serodata)
+
     # generates central estimations
     foi_central_estimates <- data.frame(
       year = cohort_ages$birth_year,
@@ -318,9 +319,9 @@ extract_seromodel_summary <- function(seromodel_object,
     se = lll[2],
     converged = NA
   )
-
+  cohort_ages <- get_cohort_ages(serodata = serodata)
   rhats <- get_table_rhats(seromodel_object = seromodel_object,
-                           serodata = serodata)
+                           cohort_ages = cohort_ages)
   if (any(rhats$rhat > 1.1) == FALSE) {
     model_summary$converged <- "Yes"
   }

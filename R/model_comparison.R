@@ -11,15 +11,15 @@
 #'                                 foi_model = "constant",
 #'                                 n_iters = 1500)
 #' get_table_rhats(seromodel_object = model_constant,
-#'                 serodata = serodata)
+#'                 cohort_ages = cohort_ages)
 #' @export
-get_table_rhats <- function(seromodel_object, serodata) {
+get_table_rhats <- function(seromodel_object,
+                            cohort_ages) {
   rhats <- bayesplot::rhat(seromodel_object, "foi")
 
   if (any(is.nan(rhats))) {
     rhats[which(is.nan(rhats))] <- 0
   }
-  cohort_ages <- get_cohort_ages(serodata)
   model_rhats <- data.frame(year = cohort_ages$birth_year, rhat = rhats)
   model_rhats$rhat[model_rhats$rhat == 0] <- NA
 
