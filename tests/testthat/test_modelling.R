@@ -2,7 +2,7 @@ test_that("individual models", {
   # So far we are skipping tests on these platforms until
   # we find an efficient way to update rstan testthat snapshots on all of them
 
-  skip_on_os(c("windows", "mac"))
+  # skip_on_os(c("windows", "mac"))
   source("testing_utils.R")
   set.seed(1234) # For reproducibility
 
@@ -19,6 +19,10 @@ test_that("individual models", {
 
   prev_expanded_tv_normal_log <- readRDS(data_constant_path)
 
+  #----- Test for get_cohort_ages
+  cohort_ages <- get_cohort_ages(serodata = serodata)
+  expect_equal(nrow(cohort_ages), max(unique(serodata$tsur)) - min(serodata$birth_year))
+  
   #----- Test for the constant model
 
   model_name <- "constant"
