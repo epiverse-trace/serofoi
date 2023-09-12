@@ -175,6 +175,7 @@ fit_seromodel <- function(serodata,
     seromodel_object <- seromodel_fit
     return(seromodel_object)
   } else {
+    # This may happen for invalid inputs in rstan::sampling() (e.g. thin > iter)
     seromodel_object <- "no model"
     return(seromodel_object)
   }
