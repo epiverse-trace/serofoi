@@ -300,7 +300,9 @@ get_foi_central_estimates <- function(seromodel_object,
 extract_seromodel_summary <- function(seromodel_object, 
                                       serodata) {
   #------- Loo estimates
-  loo_fit <- loo::loo(seromodel_object, save_psis = TRUE, "logLikelihood")
+  # The argument parameter_name refers to the name given to the Log-likelihood in the stan models.
+  # See loo::extract_log_lik() documentation for further details
+  loo_fit <- loo::loo(seromodel_object, save_psis = FALSE, pars = c(parameter_name = "logLikelihood"))
   if (sum(is.na(loo_fit)) < 1) {
     lll <- as.numeric((round(loo_fit$estimates[1, ], 2)))
   } else {
