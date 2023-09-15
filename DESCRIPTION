@@ -57,7 +57,6 @@ Imports:
     purrr,
     qtl,
     reshape2,
-    tidyverse,
     usethis,
     vdiffr (>= 1.0.0)    
 LinkingTo: 
