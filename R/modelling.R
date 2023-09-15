@@ -171,7 +171,7 @@ fit_seromodel <- function(serodata,
     chain_id = 0 # https://github.com/stan-dev/rstan/issues/761#issuecomment-647029649
   )
 
-  if (class(seromodel_fit@sim$samples) != "NULL") {
+  if (seromodel_fit@mode == 0) {
     seromodel_object <- seromodel_fit
     return(seromodel_object)
   } else {
