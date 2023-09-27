@@ -200,6 +200,9 @@ get_sim_n_seropositive <- function(sim_data, foi, sample_size_by_age, seed = 123
 #' @param sample_size_by_age Size of each age group specified by either an atomic
 #' vector of the same size as \code{foi} or an integer.
 #' This corresponds to the number of trials \code{size} in \link[stats]{rbinom}.
+#' @param tsur Year in which the serosurvey was conducted.
+#' @param birth_year_min Minimum age of year in the simulated serosurvey.
+#' @param survey_label Label for the resulting simulated serosurvey.
 #' @return Dataframe object containing the simulated data generated from \code{foi}
 #' @examples
 #'\dontrun{
@@ -277,7 +280,7 @@ get_age_group <- function(age, step) {
 
 #' Function that groups a simulated serological dataset by age
 #'
-#' @param sim_data Dataframe with the same structure as the output of \code{\linl{generate_sim_data}}.
+#' @param sim_data Dataframe with the same structure as the output of \code{\link{generate_sim_data}}.
 #' @param col_age name of the column containing the age information
 #' @param step step used to split the age interval
 #' @return Dataframe object containing grouped simulated data generated from \code{foi}
