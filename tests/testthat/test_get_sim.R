@@ -1,6 +1,7 @@
 test_that("test get_sim functionalities", {
 
   library(serofoi)
+  library(dplyr)
 
   tsur <- 2050
   birth_year_min <- 2000
@@ -18,12 +19,19 @@ test_that("test get_sim functionalities", {
            age_mean_f = tsur - birth_year)
 
   #----- Test function generate_sim_probability
-  foi_sim <- rep(0.02, 50)
+  n_years <- 50
+  foi_sim <- rep(0.02, n_years)
   sim_probability <- get_sim_probability(sim_data = sim_data,
                                          foi = foi_sim)
+
+  exposure_matrix <- matrix(1, n_years, n_years)
+  exposure_matrix[lower.tri(exposure_matrix)] <- 0
+  probabilities <- purrr::map_dbl(1:n_years, ~1-exp(-pracma::dot(exposure_matrix[., ], foi_sim)))
+
   expect_s3_class(sim_probability, "data.frame")
   expect_type(sim_probability$age, "integer")
   expect_type(sim_probability$probability, "double")
+  expect_true(all(probabilities == sim_probability$probability))
 
   #----- Test function generate_sim_n_seropositivity
   sample_size_by_age <- 5
