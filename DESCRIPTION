@@ -55,6 +55,7 @@ Imports:
     jsonlite,
     loo,
     purrr,
+    pracma,
     qtl,
     reshape2,
     usethis,
