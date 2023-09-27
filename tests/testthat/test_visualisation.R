@@ -26,6 +26,7 @@ test_that("individual models", {
 
   model_constant <- readRDS(testthat::test_path("extdata", "model_constant.RDS"))
   constant_plot <- plot_seromodel(seromodel_object = model_constant,
+                                  serodata = simdata,
                                   size_text = size_text,
                                   max_lambda = max_lambda,
                                   foi_sim = foi_sim
@@ -33,6 +34,7 @@ test_that("individual models", {
 
   model_tv_normal <- readRDS(testthat::test_path("extdata", "model_tv_normal.RDS"))
   tv_normal_plot <- plot_seromodel(seromodel_object = model_tv_normal,
+                                   serodata = simdata,
                                    size_text = size_text,
                                    max_lambda = max_lambda,
                                    foi_sim = foi_sim
@@ -40,6 +42,7 @@ test_that("individual models", {
 
   model_tv_normal_log <- readRDS(testthat::test_path("extdata", "model_tv_normal_log.RDS"))
   tv_normal_log_plot <- plot_seromodel(seromodel_object = model_tv_normal_log,
+                                       serodata = simdata,
                                        size_text = size_text,
                                        max_lambda = max_lambda,
                                        foi_sim = foi_sim

@@ -66,6 +66,8 @@ serodata_test <- prepare_serodata(chagas2012)
 model_constant <- run_seromodel(serodata = serodata_test,
                                 foi_model = "constant")
 # Visualisation
-plot_seromodel(model_constant, size_text = 6)
+plot_seromodel(model_constant,
+               serodata = serodata_test,
+               size_text = 6)
 ```
 For details on the implementation of time-varying models and model comparison see [FoI Models](https://trace-lac.github.io/serofoi/articles/foi_models.html).
