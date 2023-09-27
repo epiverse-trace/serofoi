@@ -139,9 +139,6 @@ plot_foi <- function(seromodel_object,
                      foi_sim = NULL) {
   if (is.character(seromodel_object$seromodel_fit) == FALSE) {
     if (class(seromodel_object$seromodel_fit@sim$samples) != "NULL") {
-      foi <- rstan::extract(seromodel_object$seromodel_fit,
-                            "foi",
-                            inc_warmup = FALSE)[[1]]
 
       #-------- This bit is to get the actual length of the foi data
       foi_data <- get_foi_central_estimates(seromodel_object = seromodel_object)
