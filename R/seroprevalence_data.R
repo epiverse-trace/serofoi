@@ -135,6 +135,7 @@ prepare_bin_data <- function(serodata) {
 #' \code{age} \tab Exposure ages \cr \tab \cr
 #' \code{probability} \tab Probability to obtain a seropositive case for each age according to the provided FoI\cr \tab \cr
 #' }
+#' @export
 get_sim_probability <- function(sim_data, foi) {
   exposure_ages <- get_exposure_ages(sim_data)
   exposure_matrix <- get_exposure_matrix(sim_data)
@@ -285,7 +286,8 @@ group_sim_data <- function(sim_data,
                           step = 5) {
     age <- sim_data[[col_age]]
     sim_data$age_group <-  get_age_group(age = age, step = step)
-    sim_data_grouped <- sim_data %>% group_by(age_group) %>%
+    sim_data_grouped <- sim_data %>%
+      group_by(age_group) %>%
     dplyr::summarise(total = sum(total), counts = sum(counts)) %>%
       mutate(tsur = sim_data$tsur[1],
               country = "None",
