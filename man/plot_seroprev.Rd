@@ -7,7 +7,7 @@
 plot_seroprev(serodata, size_text = 6)
 }
 \arguments{
-\item{serodata}{A data frame containing the data from a seroprevalence survey.
+\item{serodata}{A data frame containing the data from a serological survey.
 This data frame must contain the following columns:
 \tabular{ll}{
 \code{survey} \tab survey Label of the current survey \cr \tab \cr
