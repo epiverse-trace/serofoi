@@ -66,9 +66,8 @@ This function runs the specified model for the Force-of-Infection \code{foi_mode
 \code{serodata} as the input data. See \link{fit_seromodel} for further details.
 }
 \examples{
-\dontrun{
-serodata <- prepare_serodata(serodata)
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
 run_seromodel (serodata,
-           foi_model = "constant")
-}
+               foi_model = "constant")
 }

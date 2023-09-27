@@ -31,10 +31,8 @@
 #' \code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
 #' }
 #' @examples
-#'\dontrun{
-#' data("serodata")
-#' data_test <- prepare_serodata(serodata)
-#' }
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
 #' @export
 prepare_serodata <- function(serodata = serodata,
                             alpha = 0.05, 
@@ -92,6 +90,11 @@ prepare_serodata <- function(serodata = serodata,
 #' }
 #' The last six colums can be added to \code{serodata} by means of the function \code{\link{prepare_serodata}}.
 #' @return data set with the binomial confidence intervals
+#' @examples
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
+#' prepare_bin_data(serodata)
+#' @export
 prepare_bin_data <- function(serodata) {
   serodata$cut_ages <-
     cut(as.numeric(serodata$age_mean_f),

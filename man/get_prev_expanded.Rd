@@ -8,7 +8,7 @@ Force-of-Infection fitting}
 get_prev_expanded(foi, serodata, bin_data = FALSE)
 }
 \arguments{
-\item{foi}{Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]}.}
+\item{foi}{Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$seromodel, "foi", inc_warmup = FALSE)[[1]]}.}
 
 \item{serodata}{A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.}
 
@@ -22,11 +22,10 @@ This function computes the corresponding binomial confidence intervals for the o
 of the Force-of-Infection \code{foi} for plotting an analysis purposes.
 }
 \examples{
-\dontrun{
-serodata <- prepare_serodata(serodata)
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
 seromodel_object <- run_seromodel(serodata = serodata,
                           foi_model = "constant")
-foi <- rstan::extract(seromodel_object$fit, "foi")[[1]]
-get_prev_expanded <- function(foi, serodata)
-}
+foi <- rstan::extract(seromodel_object$seromodel_fit, "foi")[[1]]
+get_prev_expanded(foi, serodata)
 }

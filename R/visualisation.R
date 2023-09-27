@@ -16,15 +16,9 @@
 #' @param size_text Text size use in the theme of the graph returned by the function.
 #' @return A ggplot object containing the seropositivity-vs-age graph of the raw data of a given seroprevalence survey with its corresponging binomial confidence interval.
 #' @examples
-#' \dontrun{
-#'  data_test <- prepare_serodata(serodata)
-#'  seromodel_object <- run_seromodel(
-#'  serodata = data_test,
-#'  foi_model = "constant",
-#'  n_iters = 1000
-#')
-#' plot_seroprev(seromodel_object, size_text = 15)
-#' }
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
+#' plot_seroprev(serodata, size_text = 15)
 #' @export
 plot_seroprev <- function(serodata,
                           size_text = 6) {
@@ -51,22 +45,20 @@ plot_seroprev <- function(serodata,
 #' @param size_text Text size of the graph returned by the function.
 #' @return A ggplot object containing the seropositivity-vs-age graph including the data, the fitted model and their corresponding confindence intervals.
 #' @examples
-#' \dontrun{
-#' data("serodata")
-#' data_test <- prepare_serodata(serodata)
-#' seromodel_object <- run_seromodel(serodata = data_test,
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
+#' seromodel_object <- run_seromodel(serodata = serodata,
 #'                                   foi_model = "constant",
 #'                                   n_iters = 1000)
 #' plot_seroprev_fitted(seromodel_object, size_text = 15)
-#' }
 #' @export
 plot_seroprev_fitted <- function(seromodel_object,
                                  size_text = 6) {
 
-  if (is.character(seromodel_object$fit) == FALSE)  {
-    if  (class(seromodel_object$fit@sim$samples)  != "NULL" ) {
+  if (is.character(seromodel_object$seromodel_fit) == FALSE)  {
+    if  (class(seromodel_object$seromodel_fit@sim$samples)  != "NULL" ) {
 
-      foi <- rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]
+      foi <- rstan::extract(seromodel_object$seromodel_fit, "foi", inc_warmup = FALSE)[[1]]
       prev_expanded <- get_prev_expanded(foi, serodata = seromodel_object$serodata, bin_data = TRUE)
       prev_plot <-
         ggplot2::ggplot(prev_expanded) +
@@ -132,28 +124,27 @@ plot_seroprev_fitted <- function(seromodel_object,
 #' @param foi_sim TBD
 #' @return A ggplot2 object containing the Force-of-infection-vs-time including the corresponding confidence interval.
 #' @examples
-#' \dontrun{
-#'    data_test <- prepare_serodata(serodata)
-#'    seromodel_object <- run_seromodel(
-#'    serodata = data_test,
+#'  data(chagas2012)
+#'  serodata <- prepare_serodata(chagas2012)
+#'  seromodel_object <- run_seromodel(
+#'    serodata = serodata,
 #'    foi_model = "constant",
 #'    n_iters = 1000
-#' )
+#'  )
 #' plot_foi(seromodel_object, size_text = 15)
-#' }
 #' @export
 plot_foi <- function(seromodel_object,
                      max_lambda = NA,
                      size_text = 25,
                      foi_sim = NULL) {
-  if (is.character(seromodel_object$fit) == FALSE) {
-    if (class(seromodel_object$fit@sim$samples) != "NULL") {
-      foi <- rstan::extract(seromodel_object$fit,
+  if (is.character(seromodel_object$seromodel_fit) == FALSE) {
+    if (class(seromodel_object$seromodel_fit@sim$samples) != "NULL") {
+      foi <- rstan::extract(seromodel_object$seromodel_fit,
                             "foi",
                             inc_warmup = FALSE)[[1]]
 
       #-------- This bit is to get the actual length of the foi data
-      foi_data <- seromodel_object$foi_cent_est
+      foi_data <- get_foi_central_estimates(seromodel_object = seromodel_object)
 
       #--------
       foi_data$medianv[1] <- NA
@@ -234,22 +225,20 @@ plot_foi <- function(seromodel_object,
 #' @param size_text Text size use in the theme of the graph returned by the function.
 #' @return The rhats-convergence plot of the selected model.
 #' @examples
-#' \dontrun{
-#' data("serodata")
-#' data_test <- prepare_serodata(serodata)
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
 #' seromodel_object <- run_seromodel(
-#'  serodata = data_test,
+#'  serodata = serodata,
 #'  foi_model = "constant",
 #'  n_iters = 1000
-#')
-#' plot_rhats(seromodel_object, 
+#'  )
+#' plot_rhats(seromodel_object,
 #'            size_text = 15)
-#' }
 #' @export
 plot_rhats <- function(seromodel_object,
                        size_text = 25) {
-  if (is.character(seromodel_object$fit) == FALSE) {
-    if (class(seromodel_object$fit@sim$samples) != "NULL") {
+  if (is.character(seromodel_object$seromodel_fit) == FALSE) {
+    if (class(seromodel_object$seromodel_fit@sim$samples) != "NULL") {
       rhats <- get_table_rhats(seromodel_object)
 
       rhats_plot <-
@@ -300,22 +289,21 @@ plot_rhats <- function(seromodel_object,
 #' @param foi_sim TBD
 #' @return A ggplot object with a vertical arrange containing the seropositivity, force of infection, and convergence plots.
 #' @examples
-#' \dontrun{
-#' data_test <- prepare_serodata(serodata)
-#' seromodel_object <- run_seromodel(
-#'  serodata = data_test,
-#'  foi_model = "constant",
-#'  n_iters = 1000
-#')
+#'  data(chagas2012)
+#'  serodata <- prepare_serodata(chagas2012)
+#'  seromodel_object <- run_seromodel(
+#'    serodata = serodata,
+#'    foi_model = "constant",
+#'    n_iters = 1000
+#'  )
 #' plot_seromodel(seromodel_object, size_text = 15)
-#' }
 #' @export
 plot_seromodel <- function(seromodel_object,
                           max_lambda = NA,
                           size_text = 25,
                           foi_sim = NULL) {
-  if (is.character(seromodel_object$fit) == FALSE) {
-    if (class(seromodel_object$fit@sim$samples) != "NULL") {
+  if (is.character(seromodel_object$seromodel_fit) == FALSE) {
+    if (class(seromodel_object$seromodel_fit@sim$samples) != "NULL") {
       prev_plot <- plot_seroprev_fitted(seromodel_object = seromodel_object,
                                  size_text = size_text)
 
@@ -328,9 +316,9 @@ plot_seromodel <- function(seromodel_object,
 
       rhats_plot <- plot_rhats(seromodel_object = seromodel_object,
                                size_text = size_text)
-
+      model_summary <- extract_seromodel_summary(seromodel_object = seromodel_object)
       summary_table <- t(
-        dplyr::select(seromodel_object$model_summary, 
+        dplyr::select(model_summary, 
         c('foi_model', 'dataset', 'elpd', 'se', 'converged')))
       summary_plot <-
         plot_info_table(summary_table, size_text = size_text)
@@ -384,16 +372,15 @@ plot_seromodel <- function(seromodel_object,
 #' @param size_text Text size of the graph returned by the function
 #' @return p the plot for the given table
 #' @examples
-#' \dontrun{
-#'  data_test <- prepare_serodata(serodata)
-#'  seromodel_object <- run_seromodel(
-#'  serodata = data_test,
-#'  foi_model = "constant",
-#'  n_iters = 1000
-#')
-#' info = t(seromodel_object$model_summary)
+#' serodata <- prepare_serodata(chagas2012)
+#' seromodel_object <- run_seromodel(
+#'   serodata = serodata,
+#'   foi_model = "constant",
+#'   n_iters = 1000
+#' )
+#' seromodel_summary = extract_seromodel_summary(seromodel_object)
+#' info = t(seromodel_summary)
 #' plot_info_table (info, size_text = 15)
-#' }
 #' @export
 plot_info_table <- function(info, size_text) {
   dato <- data.frame(y = NROW(info):seq_len(1),

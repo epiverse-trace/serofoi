@@ -37,3 +37,8 @@ data set with the binomial confidence intervals
 This function prepapares a given pre-processed serological dataset (see \code{\link{prepare_serodata}}) to plot the binomial confidence intervals 
 of its corresponding seroprevalence grouped by age group.
 }
+\examples{
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
+prepare_bin_data(serodata)
+}

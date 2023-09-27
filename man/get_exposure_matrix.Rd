@@ -16,9 +16,7 @@ get_exposure_matrix(serodata)
 Function that generates the exposure matrix corresponding to a serological survey
 }
 \examples{
-\dontrun{
-data("serodata")
-serodata <- prepare_serodata(serodata = serodata)
+data(chagas2012)
+serodata <- prepare_serodata(serodata = chagas2012)
 exposure_matrix <- get_exposure_matrix(serodata = serodata)
-}
 }

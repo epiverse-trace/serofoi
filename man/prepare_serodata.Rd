@@ -42,8 +42,6 @@ according to the age group marker \code{age_mean_f}\cr \tab \cr
 This function adds the necessary additional variables to the given dataset \code{serodata} corresponding to a serological survey.
 }
 \examples{
-\dontrun{
-data("serodata")
-data_test <- prepare_serodata(serodata)
-}
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
 }

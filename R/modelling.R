@@ -42,11 +42,10 @@
 #' @param print_summary TBD
 #' @return \code{seromodel_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seromodel}.
 #' @examples
-#' \dontrun{
-#' serodata <- prepare_serodata(serodata)
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
 #' run_seromodel (serodata,
-#'            foi_model = "constant")
-#' }
+#'                foi_model = "constant")
 #' @export
 run_seromodel <- function(serodata,
                           foi_model = "constant",
@@ -68,7 +67,8 @@ run_seromodel <- function(serodata,
                                                                       foi_model,
                                                                       " finished running ------"))
   if (print_summary){
-    print(t(seromodel_object$model_summary))
+    model_summary <- extract_seromodel_summary(seromodel_object = seromodel_object)
+    print(t(model_summary))
   }
   return(seromodel_object)
 }
@@ -113,12 +113,10 @@ run_seromodel <- function(serodata,
 #' }
 
 #' @examples
-#' \dontrun{
-#' data("serodata")
-#' serodata <- prepare_serodata(serodata)
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
 #' seromodel_fit <- fit_seromodel(serodata = serodata,
 #'                                foi_model = "constant")
-#' }
 #'
 #' @export
 fit_seromodel <- function(serodata,
@@ -146,27 +144,18 @@ fit_seromodel <- function(serodata,
   )
 
   n_warmup <- floor(n_iters / 2)
-
   if (foi_model == "tv_normal_log") {
     f_init <- function() {
       list(log_foi = rep(-3, length(exposure_ages)))
-    }
-    lower_quantile = 0.1
-    upper_quantile = 0.9
-    medianv_quantile = 0.5
   }
-
+  }
   else {
   f_init <- function() {
     list(foi = rep(0.01, length(exposure_ages)))
   }
-    lower_quantile = 0.05
-    upper_quantile = 0.95
-    medianv_quantile = 0.5
-
   }
 
-  fit <- rstan::sampling(
+  seromodel_fit <- rstan::sampling(
     model,
     data = stan_data,
     iter = n_iters,
@@ -182,64 +171,21 @@ fit_seromodel <- function(serodata,
     chain_id = 0 # https://github.com/stan-dev/rstan/issues/761#issuecomment-647029649
   )
 
-  if (class(fit@sim$samples) != "NULL") {
-    loo_fit <- loo::loo(fit, save_psis = TRUE, "logLikelihood")
-    foi <- rstan::extract(fit, "foi", inc_warmup = FALSE)[[1]]
-    # foi <- rstan::extract(fit, "foi", inc_warmup = TRUE, permuted=FALSE)[[1]]
-    # generates central estimations
-    foi_cent_est <- data.frame(
-      year = exposure_years,
-      lower = apply(foi, 2, function(x) quantile(x, lower_quantile)),
-
-      upper = apply(foi, 2, function(x) quantile(x, upper_quantile)),
-
-      medianv = apply(foi, 2, function(x) quantile(x, medianv_quantile))
-    )
-
-
-    # generates a sample of iterations
-    if (n_iters >= 2000) {
-      foi_post_s <- dplyr::sample_n(as.data.frame(foi), size = 1000)
-      colnames(foi_post_s) <- exposure_years
-    } else {
-      foi_post_s <- as.data.frame(foi)
-      colnames(foi_post_s) <- exposure_years
-    }
-
+  if (class(seromodel_fit@sim$samples) != "NULL") {
     seromodel_object <- list(
-      fit = fit,
+      seromodel_fit = seromodel_fit,
       serodata = serodata,
       stan_data = stan_data,
       exposure_years = exposure_years,
-      exposure_ages = exposure_ages,
-      n_iters = n_iters,
-      n_thin = n_thin,
-      n_warmup = n_warmup,
-      foi_model = foi_model,
-      delta = delta,
-      m_treed = m_treed,
-      loo_fit = loo_fit,
-      foi_cent_est = foi_cent_est,
-      foi_post_s = foi_post_s
+      exposure_ages = exposure_ages
     )
-    seromodel_object$model_summary <-
-      extract_seromodel_summary(seromodel_object)
   } else {
-    loo_fit <- c(-1e10, 0)
     seromodel_object <- list(
-      fit = "no model",
+      seromodel_fit = "no model",
       serodata = serodata,
       stan_data = stan_data,
       exposure_years = exposure_years,
-      exposure_ages = exposure_ages,
-      n_iters = n_iters,
-      n_thin = n_thin,
-      n_warmup = n_warmup,
-      model = foi_model,
-      delta = delta,
-      m_treed = m_treed,
-      loo_fit = loo_fit,
-      model_summary = NA
+      exposure_ages = exposure_ages
     )
   }
 
@@ -254,11 +200,9 @@ fit_seromodel <- function(serodata,
 #' @param serodata A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_serodata} function.
 #' @return \code{exposure_ages}. An atomic vector with the numeration of the exposition years in serodata
 #' @examples
-#' \dontrun{
-#' data("serodata")
-#' serodata <- prepare_serodata(serodata = serodata, alpha = 0.05)
+#' data(chagas2012)
+#' serodata <- prepare_serodata(serodata = chagas2012, alpha = 0.05)
 #' exposure_ages <- get_exposure_ages(serodata)
-#' }
 #' @export
 get_exposure_ages <- function(serodata) {
   return(seq_along(min(serodata$birth_year):(serodata$tsur[1] - 1)))
@@ -270,11 +214,9 @@ get_exposure_ages <- function(serodata) {
 #' @param serodata A data frame containing the data from a seroprevalence survey. This data frame must contain the year of birth for each individual (birth_year) and the time of the survey (tsur). birth_year can be constructed by means of the \link{prepare_serodata} function.
 #' @return \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{serodata} by year.
 #' @examples
-#' \dontrun{
-#' data("serodata")
-#' serodata <- prepare_serodata(serodata = serodata)
+#' data(chagas2012)
+#' serodata <- prepare_serodata(serodata = chagas2012)
 #' exposure_matrix <- get_exposure_matrix(serodata = serodata)
-#' }
 #' @export
 get_exposure_matrix <- function(serodata) {
   age_class <- serodata$age_mean_f
@@ -287,6 +229,43 @@ get_exposure_matrix <- function(serodata) {
   return(exposure_output)
 }
 
+#' Function that generates the central estimates for the fitted forced FoI
+#'
+#' @param seromodel_object Object containing the results of fitting a model by means of \link{run_seromodel}.
+#' generated by means of \link{get_exposure_ages}.
+#' @return \code{foi_central_estimates}. Central estimates for the fitted forced FoI
+#' @examples
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
+#' seromodel_object <- fit_seromodel(serodata = serodata,
+#'                                   foi_model = "constant")
+#' foi_central_estimates <- get_foi_central_estimates(seromodel_object)
+#' @export
+get_foi_central_estimates <- function(seromodel_object) {
+
+  if (seromodel_object$seromodel_fit@model_name == "tv_normal_log") {
+    lower_quantile = 0.1
+    upper_quantile = 0.9
+    medianv_quantile = 0.5
+  }
+  else {
+    lower_quantile = 0.05
+    upper_quantile = 0.95
+    medianv_quantile = 0.5
+  }
+    # extracts foi from stan fit
+    foi <- rstan::extract(seromodel_object$seromodel_fit, "foi", inc_warmup = FALSE)[[1]]
+    # generates central estimations
+    foi_central_estimates <- data.frame(
+      year = seromodel_object$exposure_years,
+      lower = apply(foi, 2, function(x) quantile(x, lower_quantile)),
+
+      upper = apply(foi, 2, function(x) quantile(x, upper_quantile)),
+
+      medianv = apply(foi, 2, function(x) quantile(x, medianv_quantile))
+    )
+    return(foi_central_estimates)
+}
 
 #' Method to extact a summary of the specified serological model object
 #'
@@ -312,35 +291,31 @@ get_exposure_matrix <- function(serodata) {
 #' \code{converged} \tab convergence \cr \tab \cr
 #' }
 #' @examples
-#' \dontrun{
-#' data("serodata")
-#' serodata <- prepare_serodata(serodata)
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
 #' seromodel_object <- run_seromodel(serodata = serodata,
 #'                                   foi_model = "constant")
 #' extract_seromodel_summary(seromodel_object)
-#' }
 #' @export
 extract_seromodel_summary <- function(seromodel_object) {
-  foi_model <- seromodel_object$foi_model
-  serodata <- seromodel_object$serodata
   #------- Loo estimates
-
-  loo_fit <- seromodel_object$loo_fit
+  loo_fit <- loo::loo(seromodel_object$seromodel_fit, save_psis = TRUE, "logLikelihood")
   if (sum(is.na(loo_fit)) < 1) {
     lll <- as.numeric((round(loo_fit$estimates[1, ], 2)))
   } else {
     lll <- c(-1e10, 0)
   }
+  #-------
   model_summary <- data.frame(
-    foi_model = foi_model,
-    dataset = serodata$survey[1],
-    country = serodata$country[1],
-    year = serodata$tsur[1],
-    test = serodata$test[1],
-    antibody = serodata$antibody[1],
-    n_sample = sum(serodata$total),
-    n_agec = length(serodata$age_mean_f),
-    n_iter = seromodel_object$n_iters,
+    foi_model = seromodel_object$seromodel_fit@model_name,
+    dataset = unique(seromodel_object$serodata$survey),
+    country = unique(seromodel_object$serodata$country),
+    year = unique(seromodel_object$serodata$tsur),
+    test = unique(seromodel_object$serodata$test),
+    antibody = unique(seromodel_object$serodata$antibody),
+    n_sample = sum(seromodel_object$serodata$total),
+    n_agec = length(seromodel_object$serodata$age_mean_f),
+    n_iter = seromodel_object$seromodel_fit@sim$iter,
     elpd = lll[1],
     se = lll[2],
     converged = NA
@@ -360,18 +335,17 @@ extract_seromodel_summary <- function(seromodel_object) {
 #'
 #' This function computes the corresponding binomial confidence intervals for the obtained prevalence based on a fitting
 #' of the Force-of-Infection \code{foi} for plotting an analysis purposes.
-#' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]}.
+#' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$seromodel, "foi", inc_warmup = FALSE)[[1]]}.
 #' @param serodata A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
 #' @param bin_data TBD
 #' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
 #' @examples
-#' \dontrun{
-#' serodata <- prepare_serodata(serodata)
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
 #' seromodel_object <- run_seromodel(serodata = serodata,
 #'                           foi_model = "constant")
-#' foi <- rstan::extract(seromodel_object$fit, "foi")[[1]]
-#' get_prev_expanded <- function(foi, serodata)
-#' }
+#' foi <- rstan::extract(seromodel_object$seromodel_fit, "foi")[[1]]
+#' get_prev_expanded(foi, serodata)
 #' @export
 get_prev_expanded <- function(foi,
                               serodata,

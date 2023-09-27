@@ -63,11 +63,9 @@ by means of the \link[rstan]{sampling} method. The function determines whether t
 object needs to be compiled by rstan.
 }
 \examples{
-\dontrun{
-data("serodata")
-serodata <- prepare_serodata(serodata)
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
 seromodel_fit <- fit_seromodel(serodata = serodata,
                                foi_model = "constant")
-}
 
 }
