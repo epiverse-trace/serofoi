@@ -40,7 +40,8 @@ seromodel_object <- run_seromodel(
    foi_model = "constant",
    n_iters = 1000
  )
+cohort_ages <- get_cohort_ages(serodata)
 plot_foi(seromodel_object = seromodel_object,
-         serodata = serodata,
+         cohort_ages = cohort_ages,
          size_text = 15)
 }
