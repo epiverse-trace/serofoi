@@ -67,9 +67,15 @@ m3_chik <- run_seromodel(serodata = chik2015p,
                          n_thin = 2)
 
 # Visualisation of the results
-p1_chik <- plot_seromodel(m1_chik, size_text = 6)
-p2_chik <- plot_seromodel(m2_chik, size_text = 6)
-p3_chik <- plot_seromodel(m3_chik, size_text = 6)
+p1_chik <- plot_seromodel(m1_chik,
+                          serodata = chik2015p,
+                          size_text = 6)
+p2_chik <- plot_seromodel(m2_chik,
+                          serodata = chik2015p,
+                          size_text = 6)
+p3_chik <- plot_seromodel(m3_chik,
+                          serodata = chik2015p,
+                          size_text = 6)
 
 cowplot::plot_grid(p1_chik, p2_chik, p3_chik, ncol=3)
 ```
@@ -98,24 +104,30 @@ veev2012p <- prepare_serodata(veev2012)
 
 # Implementation of the models
 m1_veev <- run_seromodel(serodata = veev2012p,
-                     	foi_model = "constant",
-                     	n_iters = 500,
-                     	n_thin = 2)
+                         foi_model = "constant",
+                         n_iters = 500,
+                         n_thin = 2)
 
 m2_veev <- run_seromodel(serodata = veev2012p,
-                     	foi_model = "tv_normal",
-                     	n_iters = 500,
-                     	n_thin = 2)
+                         foi_model = "tv_normal",
+                         n_iters = 500,
+                         n_thin = 2)
 
 m3_veev <- run_seromodel(serodata = veev2012p,
-                     	foi_model = "tv_normal_log",
-                     	n_iters = 500,
-                     	n_thin = 2)
+                         foi_model = "tv_normal_log",
+                         n_iters = 500,
+                         n_thin = 2)
 
 # Visualisation of the results
-p1_veev <- plot_seromodel(m1_veev, size_text = 6)
-p2_veev <- plot_seromodel(m2_veev, size_text = 6)
-p3_veev <- plot_seromodel(m3_veev, size_text = 6)
+p1_veev <- plot_seromodel(m1_veev,
+                          serodata = veev2012p,
+                          size_text = 6)
+p2_veev <- plot_seromodel(m2_veev,
+                          serodata = veev2012p,
+                          size_text = 6)
+p3_veev <- plot_seromodel(m3_veev,
+                          serodata = veev2012p,
+                          size_text = 6)
 
 cowplot::plot_grid(p1_veev, p2_veev, p3_veev, ncol=3)
 ```
@@ -150,9 +162,13 @@ m2_cha <- run_seromodel(serodata = chagas2012p,
                         n_iters = 800)
 
 # Visualisation of the results
-p1_cha <- plot_seromodel(m1_cha, size_text = 6)
-p2_cha <- plot_seromodel(m2_cha, size_text = 6)
-cowplot::plot_grid(p1_cha, p2_cha, ncol=2)
+p1_cha <- plot_seromodel(m1_cha,
+                         serodata = chagas2012p,
+                         size_text = 6)
+p2_cha <- plot_seromodel(m2_cha,
+                         serodata = chagas2012p,
+                         size_text = 6)
+cowplot::plot_grid(p1_cha, p2_cha, ncol = 2)
 ```
 Figure 3. ***serofoi*** endemic models for *FoI* estimates of *Trypanosoma cruzi* in a rural area of Colombia.
 ## References
