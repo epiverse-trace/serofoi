@@ -79,7 +79,7 @@ run_seromodel <- function(serodata,
 #' This function fits the specified model \code{foi_model} to the serological survey data \code{serodata}
 #' by means of the \link[rstan]{sampling} method. The function determines whether the corresponding stan model
 #' object needs to be compiled by rstan.
-#' @param serodata A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
+#' @inheritParams run_seromodel
 #' @param foi_model Name of the selected model. Current version provides three options:
 #' \describe{
 #' \item{\code{"constant"}}{Runs a constant model}
@@ -93,26 +93,7 @@ run_seromodel <- function(serodata,
 #' For further details refer to the \code{control} parameter in \link[rstan]{sampling} or \href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.
 #' @param m_treed Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the \code{control} parameter in \link[rstan]{sampling}.
 #' @param decades Number of decades covered by the survey data.
-#' @return \code{seromodel_object}. An object containing relevant information about the implementation of the model. It contains the following:
-#' \tabular{ll}{
-#' \code{fit} \tab \code{stanfit} object returned by the function \link[rstan]{sampling} \cr \tab \cr
-#' \code{serodata} \tab A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.\cr \tab \cr
-#' \code{stan_data} \tab List containing \code{Nobs}, \code{Npos}, \code{Ntotal}, \code{Age}, \code{Ymax}, \code{AgeExpoMatrix} and \code{NDecades}.
-#' This object is used as an input for the \link[rstan]{sampling} function \cr \tab \cr
-#' \code{exposure_years} \tab Integer atomic vector containing the actual exposure years (1946, ..., 2007 e.g.) \cr \tab \cr
-#' \code{exposure_ages} \tab Integer atomic vector containing the numeration of the exposure ages. \cr \tab \cr
-#' \code{n_iters} \tab Number of interations for eah chain including the warmup. \cr \tab \cr
-#' \code{n_thin} \tab Positive integer specifying the period for saving samples. \cr \tab \cr
-#' \code{n_warmup} \tab Number of warm up iterations. Set by default as n_iters/2. \cr \tab \cr
-#' \code{foi_model} \tab The name of the model\cr \tab \cr
-#' \code{delta} \tab Real number between 0 and 1 that represents the target average acceptance probability. \cr \tab \cr
-#' \code{m_treed} \tab Maximum tree depth for the binary tree used in the NUTS stan sampler. \cr \tab \cr
-#' \code{loo_fit} \tab Efficient approximate leave-one-out cross-validation. Refer to \link[loo]{loo} for further details. \cr \tab \cr
-#' \code{foi_cent_est} \tab A data fram e containing \code{year} (corresponding to \code{exposure_years}), \code{lower}, \code{upper}, and \code{medianv} \cr \tab \cr
-#' \code{foi_post_s} \tab Sample n rows from a table. Refer to \link[dplyr]{sample_n} for further details. \cr \tab \cr
-#' \code{model_summary} \tab A data fram containing the summary of the model. Refer to \link{extract_seromodel_summary} for further details. \cr \tab \cr
-#' }
-
+#' @return \code{seromodel_object}. \code{stanfit} object returned by the function \link[rstan]{sampling}
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
@@ -339,7 +320,7 @@ extract_seromodel_summary <- function(seromodel_object,
 #' This function computes the corresponding binomial confidence intervals for the obtained prevalence based on a fitting
 #' of the Force-of-Infection \code{foi} for plotting an analysis purposes.
 #' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$seromodel, "foi", inc_warmup = FALSE)[[1]]}.
-#' @param serodata A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.
+#' @inheritParams run_seromodel
 #' @param bin_data TBD
 #' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
 #' @examples
