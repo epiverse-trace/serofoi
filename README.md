@@ -1,5 +1,5 @@
 
-## *serofoi*: force-of-infection from population based serosurveys with age-disagregated data <img src="man/figures/serofoi-logo.png" align="right" width="130"/>
+## *serofoi*: force-of-infection from population based serosurveys with age-disagregated data <img src="man/figures/logo.svg" align="right" width="130"/>
 
 <!-- badges: start -->
 
