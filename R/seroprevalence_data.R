@@ -18,7 +18,6 @@
 #' \code{antibody} \tab antibody \cr \tab \cr
 #' }
 #' @param alpha probability of a type I error. For further details refer to \link[Hmisc]{binconf}.
-#' @param add_age_mean_f TBD
 #' @return serodata with additional columns necessary for the analysis. These columns are:
 #' \tabular{ll}{
 #' \code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
@@ -33,11 +32,13 @@
 #' serodata <- prepare_serodata(chagas2012)
 #' @export
 prepare_serodata <- function(serodata = serodata,
-                            alpha = 0.05, 
-                            add_age_mean_f = TRUE) {
-  if(add_age_mean_f){
+                            alpha = 0.05) {
+  if(!any(colnames(serodata) == "age_mean_f")){
     serodata <- serodata %>%
-      dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total)) %>%
+      dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total))
+  }  
+  if(!any(colnames(serodata) == "birth_year")){
+    serodata <- serodata %>%
       dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
   }
   serodata <- serodata %>%
@@ -74,6 +75,10 @@ prepare_serodata <- function(serodata = serodata,
 #' prepare_bin_data(serodata)
 #' @export
 prepare_bin_data <- function(serodata) {
+  if(!any(colnames(serodata) == "age_mean_f")){
+    serodata <- serodata %>%
+      dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total))
+  }
   serodata$cut_ages <-
     cut(as.numeric(serodata$age_mean_f),
         seq(1, 101, by = 5),
