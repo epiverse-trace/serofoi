@@ -18,8 +18,6 @@ knitr::opts_chunk$set(
 
 ```{r cleaning, include = FALSE, echo = TRUE}
 library(serofoi)
-rownames(serodata) <- NULL 
-
 ```
 
 The current version of ***serofoi*** supports three different models for estimating the *Force-of-Infection (FoI)*, including constant and time-varying trajectories. For fitting the model to the sero-prevalence data we use a suit of bayesian models that include prior and upper prior distributions
@@ -62,11 +60,16 @@ serodata_constant <- prepare_serodata(simdata_constant)
 model_1 <- run_seromodel(serodata = serodata_constant,
                          foi_model = "constant",
                          n_iters = 800)
-plot_seromodel(model_1, size_text = 6)
+plot_seromodel(model_1, 
+               serodata = serodata_constant, 
+               size_text = 6)
 ```
 ```{r model_1_plot, include = TRUE, echo = FALSE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
 foi_sim_constant <- rep(0.02, 50)
-model_1_plot <- plot_seromodel(model_1, foi_sim = foi_sim_constant, size_text = 6)
+model_1_plot <- plot_seromodel(model_1, 
+                               serodata = serodata_constant, 
+                               foi_sim = foi_sim_constant, 
+                               size_text = 6)
 plot(model_1_plot)
 ```
 Figure 1. Constant serofoi model plot. Simulated (red) vs modelled (blue) *FoI*.
@@ -96,13 +99,18 @@ serodata_sw_dec <- prepare_serodata(simdata_sw_dec)
 model_2 <- run_seromodel(serodata = serodata_sw_dec,
                          foi_model = "tv_normal",
                          n_iters = 1500)
-plot_seromodel(model_2, size_text = 6)
+plot_seromodel(model_2,
+               serodata = serodata_sw_dec,
+               size_text = 6)
 ```
 ```{r model_2_plot, include = TRUE, echo = FALSE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
 no_transm <- 0.0000000001
 foi_sim_sw_dec <- c(rep(0.2, 25), rep(0.1, 10), rep(no_transm, 17))
 
-model_2_plot <- plot_seromodel(model_2, foi_sim = foi_sim_sw_dec, size_text = 6)
+model_2_plot <- plot_seromodel(model_2,
+                               serodata = serodata_sw_dec,
+                               foi_sim = foi_sim_sw_dec,
+                               size_text = 6)
 plot(model_2_plot)
 ```
 Figure 2. Slow time-varying serofoi model plot.  Simulated (red) vs modelled (blue) *FoI*. 
@@ -125,7 +133,9 @@ serodata_large_epi <- prepare_serodata(simdata_large_epi)
 model_3 <- run_seromodel(serodata = serodata_large_epi,
                          foi_model = "tv_normal_log",
                          n_iters = 1500)
-model_3_plot <- plot_seromodel(model_3, size_text = 6)
+model_3_plot <- plot_seromodel(model_3,
+                               serodata = serodata_large_epi,
+                               size_text = 6)
 plot(model_3_plot)
 ```
 ```{r model_3_plot, include = TRUE, echo = FALSE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
@@ -133,7 +143,10 @@ no_transm <- 0.0000000001
 big_outbreak   <- 1.5
 foi_sim_large_epi <- c(rep(no_transm, 32), rep(big_outbreak, 3), rep(no_transm, 15))
 
-model_3_plot <- plot_seromodel(model_3, foi_sim = foi_sim_large_epi, size_text = 6)
+model_3_plot <- plot_seromodel(model_3,
+                               serodata = serodata_large_epi,
+                               foi_sim = foi_sim_large_epi,
+                               size_text = 6)
 plot(model_3_plot)
 ```
 Figure 3. *Time-varying fast epidemic serofoi model* plot. Simulated (red) vs modelled (blue) *FoI*. 
@@ -163,12 +176,16 @@ Now, we would like to know whether this model actually fits this dataset better 
 model_1 <- run_seromodel(serodata = serodata_large_epi,
                          foi_model = "constant",
                          n_iters = 800)
-model_1_plot <- plot_seromodel(model_1, size_text = 6)
+model_1_plot <- plot_seromodel(model_1,
+                               serodata = serodata_large_epi,
+                               size_text = 6)
 
 model_2 <- run_seromodel(serodata = serodata_large_epi,
                          foi_model = "tv_normal",
                          n_iters = 1500)
-model_2_plot <- plot_seromodel(model_2, size_text = 6)
+model_2_plot <- plot_seromodel(model_2,
+                               serodata = serodata_large_epi,
+                               size_text = 6)
 ```
 Using the function `cowplot::plot_grid` we can visualise the results of the three models simultaneously:
 
@@ -177,9 +194,19 @@ cowplot::plot_grid(model_1_plot, model_2_plot, model_3_plot,
                    nrow = 1, ncol = 3, labels = "AUTO")
 ```
 ```{r model_comparison_plot_, include = TRUE, echo = FALSE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center", fig.keep="all"}
-model_1_plot <- plot_seromodel(model_1, foi_sim = foi_sim_large_epi, size_text = 6)
-model_2_plot <- plot_seromodel(model_2, foi_sim = foi_sim_large_epi, size_text = 6)
-model_3_plot <- plot_seromodel(model_3, foi_sim = foi_sim_large_epi, size_text = 6)
+size_text <- 6
+model_1_plot <- plot_seromodel(model_1,
+                               serodata = serodata_large_epi,
+                               foi_sim = foi_sim_large_epi, 
+                               size_text = size_text)
+model_2_plot <- plot_seromodel(model_2,
+                               serodata = serodata_large_epi,
+                               foi_sim = foi_sim_large_epi,
+                               size_text = size_text)
+model_3_plot <- plot_seromodel(model_3,
+                               serodata = serodata_large_epi,
+                               foi_sim = foi_sim_large_epi,
+                               size_text = size_text)
 cowplot::plot_grid(model_1_plot, model_2_plot, model_3_plot,
                    nrow = 1, ncol = 3, labels = "AUTO")
 ```

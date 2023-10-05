@@ -7,15 +7,17 @@ test_that("issue 47", {
 
   # Load data
   ## This dataset is already prepared
-  data_path <- testthat::test_path("extdata", "haiti_ssa_sample.RDS")
-  data_issue <- readRDS(data_path)
+  serodata_path <- testthat::test_path("extdata", "haiti_ssa_sample.RDS")
+  serodata <- readRDS(serodata_path)
 
   # Error reproduction
-  model_test <- run_seromodel(data_issue, foi_model = "tv_normal", print_summary = FALSE)
-  foi <- rstan::extract(model_test$fit, "foi", inc_warmup = FALSE)[[1]]
-  age_max <- max(data_issue$age_mean_f)
-  prev_expanded <- get_prev_expanded(foi, serodata = data_issue)
+  model_test <- run_seromodel(serodata = serodata,
+                              foi_model = "tv_normal",
+                              print_summary = FALSE)
+  foi <- rstan::extract(model_test, "foi", inc_warmup = FALSE)[[1]]
+  prev_expanded <- get_prev_expanded(foi, serodata = serodata)
 
   # Test
+  age_max <- max(serodata$age_mean_f)
   expect_length(prev_expanded$age, n = age_max)
 })

@@ -4,10 +4,18 @@
 \alias{plot_foi}
 \title{Function that generates a Force-of-Infection plot corresponding to the specified fitted serological model}
 \usage{
-plot_foi(seromodel_object, max_lambda = NA, size_text = 25, foi_sim = NULL)
+plot_foi(
+  seromodel_object,
+  cohort_ages,
+  max_lambda = NA,
+  size_text = 25,
+  foi_sim = NULL
+)
 }
 \arguments{
-\item{seromodel_object}{Object containing the results of fitting a model by means of \link{run_seromodel}.}
+\item{seromodel_object}{Stanfit object containing the results of fitting a model by means of \link{run_seromodel}.}
+
+\item{cohort_ages}{A data.frame containing the age of each cohort corresponding to each birth year.}
 
 \item{max_lambda}{TBD}
 
@@ -24,13 +32,15 @@ This includes the corresponding binomial confidence interval.
 The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
 }
 \examples{
-\dontrun{
-   data_test <- prepare_serodata(serodata)
-   seromodel_object <- run_seromodel(
-   serodata = data_test,
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
+seromodel_object <- run_seromodel(
+   serodata = serodata,
    foi_model = "constant",
    n_iters = 1000
-)
-plot_foi(seromodel_object, size_text = 15)
-}
+ )
+cohort_ages <- get_cohort_ages(serodata)
+plot_foi(seromodel_object = seromodel_object,
+         cohort_ages = cohort_ages,
+         size_text = 15)
 }

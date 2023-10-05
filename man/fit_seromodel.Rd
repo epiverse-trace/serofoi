@@ -15,7 +15,26 @@ fit_seromodel(
 )
 }
 \arguments{
-\item{serodata}{A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.}
+\item{serodata}{A data frame containing the data from a seroprevalence survey.
+This data frame must contain the following columns:
+\tabular{ll}{
+\code{survey} \tab survey Label of the current survey \cr \tab \cr
+\code{total} \tab Number of samples for each age group\cr \tab \cr
+\code{counts} \tab Number of positive samples for each age group\cr \tab \cr
+\code{age_min} \tab age_min \cr \tab \cr
+\code{age_max} \tab age_max \cr \tab \cr
+\code{tsur} \tab Year in which the survey took place \cr \tab \cr
+\code{country} \tab The country where the survey took place \cr \tab \cr
+\code{test} \tab The type of test taken \cr \tab \cr
+\code{antibody} \tab antibody \cr \tab \cr
+\code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
+\code{sample_size} \tab The size of the sample \cr \tab \cr
+\code{birth_year} \tab The year in which the individuals of each age group were bornt \cr \tab \cr
+\code{prev_obs} \tab Observed prevalence \cr \tab \cr
+\code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
+\code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
+}
+The last six colums can be added to \code{serodata} by means of the function \code{\link{prepare_serodata}}.}
 
 \item{foi_model}{Name of the selected model. Current version provides three options:
 \describe{
@@ -37,25 +56,7 @@ For further details refer to the \code{control} parameter in \link[rstan]{sampli
 \item{decades}{Number of decades covered by the survey data.}
 }
 \value{
-\code{seromodel_object}. An object containing relevant information about the implementation of the model. It contains the following:
-\tabular{ll}{
-\code{fit} \tab \code{stanfit} object returned by the function \link[rstan]{sampling} \cr \tab \cr
-\code{serodata} \tab A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.\cr \tab \cr
-\code{stan_data} \tab List containing \code{Nobs}, \code{Npos}, \code{Ntotal}, \code{Age}, \code{Ymax}, \code{AgeExpoMatrix} and \code{NDecades}.
-This object is used as an input for the \link[rstan]{sampling} function \cr \tab \cr
-\code{exposure_years} \tab Integer atomic vector containing the actual exposure years (1946, ..., 2007 e.g.) \cr \tab \cr
-\code{exposure_ages} \tab Integer atomic vector containing the numeration of the exposure ages. \cr \tab \cr
-\code{n_iters} \tab Number of interations for eah chain including the warmup. \cr \tab \cr
-\code{n_thin} \tab Positive integer specifying the period for saving samples. \cr \tab \cr
-\code{n_warmup} \tab Number of warm up iterations. Set by default as n_iters/2. \cr \tab \cr
-\code{foi_model} \tab The name of the model\cr \tab \cr
-\code{delta} \tab Real number between 0 and 1 that represents the target average acceptance probability. \cr \tab \cr
-\code{m_treed} \tab Maximum tree depth for the binary tree used in the NUTS stan sampler. \cr \tab \cr
-\code{loo_fit} \tab Efficient approximate leave-one-out cross-validation. Refer to \link[loo]{loo} for further details. \cr \tab \cr
-\code{foi_cent_est} \tab A data fram e containing \code{year} (corresponding to \code{exposure_years}), \code{lower}, \code{upper}, and \code{medianv} \cr \tab \cr
-\code{foi_post_s} \tab Sample n rows from a table. Refer to \link[dplyr]{sample_n} for further details. \cr \tab \cr
-\code{model_summary} \tab A data fram containing the summary of the model. Refer to \link{extract_seromodel_summary} for further details. \cr \tab \cr
-}
+\code{seromodel_object}. \code{stanfit} object returned by the function \link[rstan]{sampling}
 }
 \description{
 This function fits the specified model \code{foi_model} to the serological survey data \code{serodata}
@@ -63,11 +64,9 @@ by means of the \link[rstan]{sampling} method. The function determines whether t
 object needs to be compiled by rstan.
 }
 \examples{
-\dontrun{
-data("serodata")
-serodata <- prepare_serodata(serodata)
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
 seromodel_fit <- fit_seromodel(serodata = serodata,
                                foi_model = "constant")
-}
 
 }

@@ -8,7 +8,7 @@ age group}
 prepare_bin_data(serodata)
 }
 \arguments{
-\item{serodata}{A data frame containing the data from a seroprevalence survey. For more information see the function \link{run_seromodel}.
+\item{serodata}{A data frame containing the data from a seroprevalence survey.
 This data frame must contain the following columns:
 \tabular{ll}{
 \code{survey} \tab survey Label of the current survey \cr \tab \cr
@@ -37,7 +37,7 @@ This function prepapares a given pre-processed serological dataset (see \code{\l
 of its corresponding seroprevalence grouped by age group.
 }
 \examples{
-\dontrun{
-prepare_bin_data (serodata)
-}
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
+prepare_bin_data(serodata)
 }

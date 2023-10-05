@@ -10,12 +10,11 @@ test_that("individual models", {
   set.seed(1234) # For reproducibility
 
   library(devtools)
-  library(dplyr)
   library(vdiffr)
   library(jsonlite)
 
-  data("simdata_large_epi")
-  simdata <- simdata_large_epi %>% prepare_serodata()
+  data(simdata_large_epi)
+  simdata <- prepare_serodata(simdata_large_epi)
   no_transm <- 0.0000000001
   big_outbreak <- 1.5
   foi_sim <- c(rep(no_transm, 32), rep(big_outbreak, 3), rep(no_transm, 15)) # 1 epidemics
@@ -25,28 +24,28 @@ test_that("individual models", {
   size_text <- 6
   max_lambda <- 1.55
 
-  model_constant_json <- jsonlite::fromJSON(testthat::test_path("extdata", "model_constant.json"))
-  model_constant <- jsonlite::unserializeJSON(model_constant_json)
-  constant_plot <- plot_seromodel(model_constant,
-    size_text = size_text,
-    max_lambda = max_lambda,
-    foi_sim = foi_sim
+  model_constant <- readRDS(testthat::test_path("extdata", "model_constant.RDS"))
+  constant_plot <- plot_seromodel(seromodel_object = model_constant,
+                                  serodata = simdata,
+                                  size_text = size_text,
+                                  max_lambda = max_lambda,
+                                  foi_sim = foi_sim
   )
 
-  model_tv_normal_json <- fromJSON(testthat::test_path("extdata", "model_tv_normal.json"))
-  model_tv_normal <- jsonlite::unserializeJSON(model_tv_normal_json)
-  tv_normal_plot <- plot_seromodel(model_tv_normal,
-    size_text = size_text,
-    max_lambda = max_lambda,
-    foi_sim = foi_sim
+  model_tv_normal <- readRDS(testthat::test_path("extdata", "model_tv_normal.RDS"))
+  tv_normal_plot <- plot_seromodel(seromodel_object = model_tv_normal,
+                                   serodata = simdata,
+                                   size_text = size_text,
+                                   max_lambda = max_lambda,
+                                   foi_sim = foi_sim
   )
 
-  model_tv_normal_log_json <- fromJSON(testthat::test_path("extdata", "model_tv_normal_log.json"))
-  model_tv_normal_log <- jsonlite::unserializeJSON(model_tv_normal_log_json)
-  tv_normal_log_plot <- plot_seromodel(model_tv_normal_log,
-    size_text = size_text,
-    max_lambda = max_lambda,
-    foi_sim = foi_sim
+  model_tv_normal_log <- readRDS(testthat::test_path("extdata", "model_tv_normal_log.RDS"))
+  tv_normal_log_plot <- plot_seromodel(seromodel_object = model_tv_normal_log,
+                                       serodata = simdata,
+                                       size_text = size_text,
+                                       max_lambda = max_lambda,
+                                       foi_sim = foi_sim
   )
 
   plot_arrange <- cowplot::plot_grid(constant_plot,

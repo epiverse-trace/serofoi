@@ -4,7 +4,7 @@
 \alias{prepare_serodata}
 \title{Function that prepares the data from a serological survey for modelling}
 \usage{
-prepare_serodata(serodata = serodata, alpha = 0.05, add_age_mean_f = TRUE)
+prepare_serodata(serodata = serodata, alpha = 0.05)
 }
 \arguments{
 \item{serodata}{A data frame containing the data from a serological survey.
@@ -22,8 +22,6 @@ This data frame must contain the following columns:
 }}
 
 \item{alpha}{probability of a type I error. For further details refer to \link[Hmisc]{binconf}.}
-
-\item{add_age_mean_f}{TBD}
 }
 \value{
 serodata with additional columns necessary for the analysis. These columns are:
@@ -40,8 +38,6 @@ serodata with additional columns necessary for the analysis. These columns are:
 This function adds the necessary additional variables to the given dataset \code{serodata} corresponding to a serological survey.
 }
 \examples{
-\dontrun{
-data("serodata")
-data_test <- prepare_serodata(serodata)
-}
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
 }

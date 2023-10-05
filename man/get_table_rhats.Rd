@@ -4,10 +4,12 @@
 \alias{get_table_rhats}
 \title{Method for extracting a dataframe containing the R-hat estimates for a given serological model}
 \usage{
-get_table_rhats(seromodel_object)
+get_table_rhats(seromodel_object, cohort_ages)
 }
 \arguments{
-\item{seromodel_object}{seromodel_object}
+\item{seromodel_object}{Stanfit object containing the results of fitting a model by means of \link{run_seromodel}.}
+
+\item{cohort_ages}{A data.frame containing the age of each cohort corresponding to each birth year.}
 }
 \value{
 rhats table
@@ -17,12 +19,12 @@ This method relies in the function \link[bayesplot]{rhat} to extract the R-hat e
 \code{seromodel_object} and returns a table a dataframe with the estimates for each year of birth.
 }
 \examples{
-\dontrun{
-data("serodata")
-data_test <- prepare_serodata(serodata = serodata)
-model_constant <- run_seromodel(serodata = data_test, 
-                                foi_model = "constant", 
+data(chagas2012)
+serodata <- prepare_serodata(serodata = chagas2012)
+model_constant <- run_seromodel(serodata = serodata,
+                                foi_model = "constant",
                                 n_iters = 1500)
-get_table_rhats(model_object = model_constant)
-}
+cohort_ages <- get_cohort_ages(serodata)
+get_table_rhats(seromodel_object = model_constant,
+                cohort_ages = cohort_ages)
 }

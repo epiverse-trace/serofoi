@@ -8,9 +8,28 @@ Force-of-Infection fitting}
 get_prev_expanded(foi, serodata, bin_data = FALSE)
 }
 \arguments{
-\item{foi}{Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$fit, "foi", inc_warmup = FALSE)[[1]]}.}
+\item{foi}{Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$seromodel, "foi", inc_warmup = FALSE)[[1]]}.}
 
-\item{serodata}{A data frame containing the data from a seroprevalence survey. For further details refer to \link{run_seromodel}.}
+\item{serodata}{A data frame containing the data from a seroprevalence survey.
+This data frame must contain the following columns:
+\tabular{ll}{
+\code{survey} \tab survey Label of the current survey \cr \tab \cr
+\code{total} \tab Number of samples for each age group\cr \tab \cr
+\code{counts} \tab Number of positive samples for each age group\cr \tab \cr
+\code{age_min} \tab age_min \cr \tab \cr
+\code{age_max} \tab age_max \cr \tab \cr
+\code{tsur} \tab Year in which the survey took place \cr \tab \cr
+\code{country} \tab The country where the survey took place \cr \tab \cr
+\code{test} \tab The type of test taken \cr \tab \cr
+\code{antibody} \tab antibody \cr \tab \cr
+\code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
+\code{sample_size} \tab The size of the sample \cr \tab \cr
+\code{birth_year} \tab The year in which the individuals of each age group were bornt \cr \tab \cr
+\code{prev_obs} \tab Observed prevalence \cr \tab \cr
+\code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
+\code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
+}
+The last six colums can be added to \code{serodata} by means of the function \code{\link{prepare_serodata}}.}
 
 \item{bin_data}{TBD}
 }
@@ -22,11 +41,10 @@ This function computes the corresponding binomial confidence intervals for the o
 of the Force-of-Infection \code{foi} for plotting an analysis purposes.
 }
 \examples{
-\dontrun{
-serodata <- prepare_serodata(serodata)
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
 seromodel_object <- run_seromodel(serodata = serodata,
-                          foi_model = "constant")
-foi <- rstan::extract(seromodel_object$fit, "foi")[[1]]
-get_prev_expanded <- function(foi, serodata)
-}
+                                  foi_model = "constant")
+foi <- rstan::extract(seromodel_object, "foi")[[1]]
+get_prev_expanded(foi, serodata)
 }
