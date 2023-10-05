@@ -33,14 +33,25 @@
 #' @export
 prepare_serodata <- function(serodata = serodata,
                             alpha = 0.05) {
+  checkmate::assert_numeric(alpha, lower = 0, upper = 1)
+  #Check that serodata has the right columns
+  stopifnot("serodata must contain the right columns" =
+            all(c("survey", "total", "counts", "age_min", "age_max", "tsur",
+                  "country","test","antibody"
+                  ) %in%
+                  colnames(serodata)
+                )
+            )
   if(!any(colnames(serodata) == "age_mean_f")){
     serodata <- serodata %>%
       dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total))
   }  
+
   if(!any(colnames(serodata) == "birth_year")){
     serodata <- serodata %>%
       dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
   }
+  
   serodata <- serodata %>%
     cbind(
       Hmisc::binconf(

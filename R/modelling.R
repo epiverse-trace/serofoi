@@ -48,13 +48,15 @@
 #'                foi_model = "constant")
 #' @export
 run_seromodel <- function(serodata,
-                          foi_model = "constant",
+                          foi_model = c("constant", "tv_normal_log",
+                                        "tv_normal"),
                           n_iters = 1000,
                           n_thin = 2,
                           delta = 0.90,
                           m_treed = 10,
                           decades = 0,
                           print_summary = TRUE) {
+  foi_model <- match.arg(foi_model)
   survey <- unique(serodata$survey)
   if (length(survey) > 1) warning("You have more than 1 surveys or survey codes")
   seromodel_object <- fit_seromodel(serodata = serodata,
@@ -102,13 +104,15 @@ run_seromodel <- function(serodata,
 #'
 #' @export
 fit_seromodel <- function(serodata,
-                          foi_model,
+                          foi_model = c("constant", "tv_normal_log",
+                                        "tv_normal"),
                           n_iters = 1000,
                           n_thin = 2,
                           delta = 0.90,
                           m_treed = 10,
                           decades = 0) {
   # TODO Add a warning because there are exceptions where a minimal amount of iterations is needed
+  foi_model <- match.arg(foi_model)
   model <- stanmodels[[foi_model]]
   cohort_ages <- get_cohort_ages(serodata = serodata)
   exposure_matrix <- get_exposure_matrix(serodata)
