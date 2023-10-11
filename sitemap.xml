@@ -40,10 +40,13 @@
     <loc>https://epiverse-trace.github.io/serofoi/reference/fit_seromodel.html</loc>
   </url>
   <url>
-    <loc>https://epiverse-trace.github.io/serofoi/reference/get_exposure_ages.html</loc>
+    <loc>https://epiverse-trace.github.io/serofoi/reference/get_cohort_ages.html</loc>
   </url>
   <url>
     <loc>https://epiverse-trace.github.io/serofoi/reference/get_exposure_matrix.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/serofoi/reference/get_foi_central_estimates.html</loc>
   </url>
   <url>
     <loc>https://epiverse-trace.github.io/serofoi/reference/get_prev_expanded.html</loc>
@@ -80,9 +83,6 @@
   </url>
   <url>
     <loc>https://epiverse-trace.github.io/serofoi/reference/run_seromodel.html</loc>
-  </url>
-  <url>
-    <loc>https://epiverse-trace.github.io/serofoi/reference/serodata.html</loc>
   </url>
   <url>
     <loc>https://epiverse-trace.github.io/serofoi/reference/serofoi-package.html</loc>
