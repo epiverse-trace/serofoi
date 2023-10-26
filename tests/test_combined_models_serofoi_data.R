@@ -1,7 +1,10 @@
 ### This script tests the combined models posted on issue 69
-library(tidyverse)
-library(rstan)
+
 library(serofoi)
+library(rstan)
+library(purrr)
+library(dplyr)
+
 rstan_options(auto_write = TRUE)
 options(mc.cores = 4)
 
@@ -30,14 +33,15 @@ for (i in seq_along(ages)) {
 }
 
 # Map exposure matrix indexes with 1 (exposed years) into vector
-foi_indices <- unlist(map(seq(1, nrow(exposure_matrix_sim), 1), ~ which(exposure_matrix_sim[., ] == 1)))
+foi_indices <- map(seq(1, nrow(exposure_matrix_sim), 1), ~ which(exposure_matrix_sim[., ] == 1)) %>%
+  unlist()
 fois_long <- foi[foi_indices] # Map FOI
 
 # Analytical solution to ODE
-simulate_foi_exact <- function(a, fois, mu) {
+get_exact_prob <- function(cohort_index, fois, mu) {
   I <- 0
   # solves ODE exactly within pieces
-  for (i in 1:a) {
+  for (i in 1:cohort_index) {
     lambda <- fois[i]
     I <- (1 / (lambda + mu)) * exp(- (lambda + mu)) * (lambda * (exp(lambda + mu)  - 1) + I * (lambda + mu))
   }
@@ -54,12 +58,12 @@ foi_index_start_per_obs <- c(1, 1 + cumsum(n_fois_exposed_per_obs))
 foi_index_start_per_obs <- foi_index_start_per_obs[-length(foi_index_start_per_obs)]
 
 # Calculate Prob. infected using indexes and analytical solution
-for (a in seq_along(ages)) {
-  start <- foi_index_start_per_obs[a]
-  len <- n_fois_exposed_per_obs[a]
+for (cohort_index in seq_along(ages)) {
+  start <- foi_index_start_per_obs[cohort_index]
+  len <- n_fois_exposed_per_obs[cohort_index]
   end <- start + len - 1
   fois <- fois_long[start:end] #Reconstruction of foi
-  prob_infected[a] <- simulate_foi_exact(a, fois, mu)
+  prob_infected[cohort_index] <- get_exact_prob(cohort_index = cohort_index, fois, mu)
 }
 
 # Check reconstructed foi
@@ -105,12 +109,14 @@ prob_infected <- vector(length = length(serodata_sim_p$age_mean_f))
 n_fois_exposed_per_obs <- rowSums(exposure_matrix)
 foi_index_start_per_obs <- c(1, 1 + cumsum(n_fois_exposed_per_obs))
 foi_index_start_per_obs <- foi_index_start_per_obs[-length(foi_index_start_per_obs)]
-foi_indices <- unlist(map(seq(1, nrow(exposure_matrix), 1), ~which(exposure_matrix[., ] == 1)))
+foi_indices <- map(seq(1, nrow(exposure_matrix), 1), ~which(exposure_matrix[., ] == 1)) %>%
+  unlist()
 fois_long <- foi[foi_indices]
 ####################################################################
 
 #### TODO: Create function to generate data dictionary
-chunks <- unlist(map(seq(1, 8, 1), ~rep(., 10)))
+chunks <- map(seq(1, 8, 1), ~rep(., 10)) %>%
+  unlist()
 data_stan <- list(
   n_obs = length(serodata_sim_p$counts),
   n_pos = serodata_sim_p$counts,
@@ -137,9 +143,9 @@ fit <- optimizing(model, data = data_stan, init = init_fn, as_vector = FALSE)
 # check fois are similar between true and estimated values
 foi_est <- fit$par$foi[chunks]
 tibble(estimated=foi_est,
-       true=foi) %>% 
-  mutate(age=80 - ages) %>% 
-  pivot_longer(-age) %>% 
+       true=foi) %>%
+  mutate(age=80 - ages) %>%
+  pivot_longer(-age) %>%
   ggplot(aes(x=age, y=value, colour=name)) +
   geom_line() +
   xlab("years ago")
@@ -148,6 +154,6 @@ tibble(estimated=foi_est,
 probs <- fit$par$prob_infected
 
 tibble(true=prob_infected, estimated=probs, age=ages) %>%
-  pivot_longer(-age) %>% 
+  pivot_longer(-age) %>%
   ggplot(aes(x=age, y=value, colour=name)) +
   geom_line()
