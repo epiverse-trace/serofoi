@@ -125,8 +125,8 @@ data {
      // prior choices
      int chunks[age_max];
      int<lower=1, upper=7> prior_choice;
-     real<lower=0> prior_a;
-     real<lower=0> prior_b;
+     real prior_a; #<lower=0>
+     real prior_b; #<lower=0>
 }
 
 transformed data {
@@ -167,7 +167,7 @@ model {
   if(include_seroreversion)
     seroreversion_rate ~ cauchy(0, 1);
   
-  if(prior_choice == 1) { // forward random walk
+  if(prior_choice == 1) { // forward random walk == tv normal log
     sigma ~ cauchy(0, 1);
     log_foi[1] ~ normal(prior_a, prior_b);
 
