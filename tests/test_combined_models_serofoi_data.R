@@ -139,7 +139,6 @@ init_fn <- function() {
   list(log_foi = log(rep(0.01, max(data_stan$chunks))))
 }
 fit <- optimizing(model, data = data_stan, init = init_fn, as_vector = FALSE)
-
 # check fois are similar between true and estimated values
 foi_est <- fit$par$foi[chunks]
 tibble(estimated=foi_est,
@@ -157,3 +156,31 @@ tibble(true=prob_infected, estimated=probs, age=ages) %>%
   pivot_longer(-age) %>%
   ggplot(aes(x=age, y=value, colour=name)) +
   geom_line()
+
+##### TEST SAMPLING INSTEAD OF OPTIMIZE #####
+# Similar output to optimize but non-deterministic
+# https://mc-stan.org/docs/2_25/reference-manual/optimization.html
+
+n_iters <- 1000
+n_thin <- 2
+delta <- 0.90
+m_treed <- 10
+decades <- 0
+
+n_warmup <- floor(n_iters / 2)
+
+fit_sampling <- rstan::sampling(
+  model,
+  data = data_stan,
+  iter = n_iters,
+  chains = 4,
+  init = init_fn,
+  warmup = n_warmup,
+  verbose = FALSE,
+  refresh = 0,
+  control = list(adapt_delta = delta,
+                 max_treedepth = m_treed),
+  seed = "12345",
+  thin = n_thin,
+  chain_id = 0
+)
