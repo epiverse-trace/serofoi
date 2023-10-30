@@ -39,11 +39,15 @@ prepare_serodata <- function(serodata = serodata,
   #Check that serodata has the right columns
   stopifnot("serodata must contain the right columns" =
             all(c("survey", "total", "counts", "age_min", "age_max", "tsur",
-                  "country","test","antibody"
+                  "country", "test", "antibody"
                   ) %in%
                   colnames(serodata)
+                ) |
+            all(c("survey", "total", "counts", "age_mean_f", "tsur",
+                  "country", "test", "antibody") %in%
+                  colnames(serodata)
                 )
-            )
+  )
   if(!any(colnames(serodata) == "age_mean_f")){
     serodata <- serodata %>%
       dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total))
@@ -53,7 +57,6 @@ prepare_serodata <- function(serodata = serodata,
     serodata <- serodata %>%
       dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
   }
-
   serodata <- serodata %>%
     cbind(
       Hmisc::binconf(
@@ -137,7 +140,8 @@ prepare_bin_data <- function(serodata) {
 #' }
 #' @export
 get_sim_probability <- function(sim_data, foi) {
-  exposure_ages <- get_exposure_ages(sim_data)
+  cohort_ages <- get_cohort_ages(sim_data)
+  exposure_ages <- rev(cohort_ages$age)
   exposure_matrix <- get_exposure_matrix(sim_data)
   probabilities <- purrr::map_dbl(exposure_ages, ~1-exp(-pracma::dot(exposure_matrix[., ], foi)))
 
@@ -235,7 +239,7 @@ generate_sim_data <- function(foi,
     sim_data <- sim_data %>%
         mutate(counts = sim_n_seropositive$n_seropositive,
                total = sample_size_by_age) %>%
-        prepare_serodata(add_age_mean_f = FALSE)
+        prepare_serodata()
 
     return(sim_data)
 }
