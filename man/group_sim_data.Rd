@@ -7,7 +7,7 @@
 group_sim_data(sim_data, col_age = "age_mean_f", step = 5)
 }
 \arguments{
-\item{sim_data}{Dataframe with the same structure as the output of \code{\linl{generate_sim_data}}.}
+\item{sim_data}{Dataframe with the same structure as the output of \code{\link{generate_sim_data}}.}
 
 \item{col_age}{name of the column containing the age information}
 

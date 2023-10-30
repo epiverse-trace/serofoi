@@ -21,6 +21,12 @@ generate_sim_data(
 \item{sample_size_by_age}{Size of each age group specified by either an atomic
 vector of the same size as \code{foi} or an integer.
 This corresponds to the number of trials \code{size} in \link[stats]{rbinom}.}
+
+\item{tsur}{Year in which the serosurvey was conducted.}
+
+\item{birth_year_min}{Minimum age of year in the simulated serosurvey.}
+
+\item{survey_label}{Label for the resulting simulated serosurvey.}
 }
 \value{
 Dataframe object containing the simulated data generated from \code{foi}
