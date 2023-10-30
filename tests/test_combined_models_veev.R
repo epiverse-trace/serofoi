@@ -30,9 +30,6 @@ p3_veev <- plot_seromodel(m3_veev, serodata = veev2012p, size_text = 6)
 ####################################################################
 #### RESULTS USING COMBINED MODELS STAN ####
 
-## Test of time_dependent.stan using tv log normal for veev
-foi_model <- "tv_normal_log" #this must be unified with the prior_choice (for tv lognormal use 1)
-
 ### 1: forward random walk <==> tv log normal model
 ### 2: backward random walk
 ### 3: forward random walk with Student-t
@@ -41,6 +38,10 @@ foi_model <- "tv_normal_log" #this must be unified with the prior_choice (for tv
 ### 6: weakly informative
 ### 7: Laplace (sparsity-inducing)
 ### 8: Normal <==> tv normal model
+
+####################################################################
+## 1. Test of time_dependent.stan using tv log normal for veev
+foi_model <- "tv_normal" #this must be unified with the prior_choice (for tv lognormal use 1)
 
 # Load and prepare data with serofoi functions
 serodata_p <- prepare_serodata(veev2012)
@@ -101,7 +102,7 @@ if (foi_model == "tv_normal_log") {
   }
 } else {
   f_init <- function() {
-    list(foi = rep(0.01, nrow(cohort_ages)))
+    list(log_foi = rep(log(0.01), nrow(cohort_ages)))
   }
 }
 
@@ -122,7 +123,164 @@ m3_veev_combined <- rstan::sampling(
   chain_id = 0
 )
 
-plt1 <- plot_foi(m3_veev_combined, cohort_ages)
-plt2 <- plot_foi(m3_veev, cohort_ages)
+plt1 <- plot_foi(m3_veev, cohort_ages) + ggplot2::ggtitle("Old") + ylim(0, 0.6)
+plt2 <- plot_foi(m3_veev_combined, cohort_ages) + ggplot2::ggtitle("New") + ylim(0, 0.6)
+
+plot_grid(plt1, plt2, ncol = 2)
+
+####################################################################
+## 2. Test of time_dependent.stan using tv normal for veev
+foi_model <- "tv_normal" #this must be unified with the prior_choice (for tv lognormal use 1)
+
+# Load and prepare data with serofoi functions
+serodata_p <- prepare_serodata(veev2012)
+
+cohort_ages <- get_cohort_ages(serodata_p)
+exposure_years <- cohort_ages$birth_year
+exposure_matrix <- get_exposure_matrix(serodata_p)
+
+# Indexing data
+n_fois_exposed_per_obs <- rowSums(exposure_matrix)
+foi_index_start_per_obs <- c(1, 1 + cumsum(n_fois_exposed_per_obs))
+foi_index_start_per_obs <- foi_index_start_per_obs[-length(foi_index_start_per_obs)]
+foi_indices <- map(seq(1, nrow(exposure_matrix), 1), ~which(exposure_matrix[., ] == 1)) %>%
+  unlist()
+
+# Stan data dictionary
+
+#chunks <- map(seq(1, 8, 1), ~rep(., 10)) %>%
+#  unlist()
+chunks <- map(seq(1, 55, 1), ~rep(., 1)) %>%
+  unlist()
+
+data_stan <- list(
+  n_obs = length(serodata_p$counts),
+  n_pos = serodata_p$counts,
+  n_total = serodata_p$total,
+  age_max = max(serodata_p$age_mean_f),
+  observation_exposure_matrix = exposure_matrix,
+  n_fois_exposed_per_obs = n_fois_exposed_per_obs,
+  foi_index_start_per_obs = foi_index_start_per_obs,
+  include_seroreversion = 0,
+  n_fois_exposed = sum(n_fois_exposed_per_obs),
+  foi_indices = foi_indices,
+  chunks = chunks,
+  prior_choice = 8,
+  prior_a = 0,
+  prior_b = 1
+)
+
+# Run model with sampling
+
+## Model
+model <- rstan::stan_model("inst/stan/time_dependent.stan")
+
+## Feats
+n_iters <- 1000
+n_thin <- 2
+delta <- 0.90
+m_treed <- 10
+decades <- 0
+
+n_warmup <- floor(n_iters / 2)
+
+## Sampling
+m2_veev_combined <- rstan::sampling(
+  model,
+  data = data_stan,
+  iter = n_iters,
+  chains = 4,
+  init = f_init,
+  warmup = n_warmup,
+  verbose = FALSE,
+  refresh = 0,
+  control = list(adapt_delta = delta,
+                 max_treedepth = m_treed),
+  seed = "12345",
+  thin = n_thin,
+  chain_id = 8
+)
+
+plt1 <- plot_foi(m2_veev, cohort_ages) + ggplot2::ggtitle("Old") + ylim(0, 0.15)
+plt2 <- plot_foi(m2_veev_combined, cohort_ages) + ggplot2::ggtitle("New") + ylim(0, 0.15)
+
+plot_grid(plt1, plt2, ncol = 2)
+
+
+####################################################################
+## 3. Test of time_dependent.stan using constant for veev
+foi_model <- "uniform" #this must be unified with the prior_choice (for tv lognormal use 1)
+
+# Load and prepare data with serofoi functions
+serodata_p <- prepare_serodata(veev2012)
+
+cohort_ages <- get_cohort_ages(serodata_p)
+exposure_years <- cohort_ages$birth_year
+exposure_matrix <- get_exposure_matrix(serodata_p)
+
+# Indexing data
+n_fois_exposed_per_obs <- rowSums(exposure_matrix)
+foi_index_start_per_obs <- c(1, 1 + cumsum(n_fois_exposed_per_obs))
+foi_index_start_per_obs <- foi_index_start_per_obs[-length(foi_index_start_per_obs)]
+foi_indices <- map(seq(1, nrow(exposure_matrix), 1), ~which(exposure_matrix[., ] == 1)) %>%
+  unlist()
+
+# Stan data dictionary
+
+#chunks <- map(seq(1, 8, 1), ~rep(., 10)) %>%
+#  unlist()
+chunks <- map(seq(1, 55, 1), ~rep(., 1)) %>%
+  unlist()
+
+data_stan <- list(
+  n_obs = length(serodata_p$counts),
+  n_pos = serodata_p$counts,
+  n_total = serodata_p$total,
+  age_max = max(serodata_p$age_mean_f),
+  observation_exposure_matrix = exposure_matrix,
+  n_fois_exposed_per_obs = n_fois_exposed_per_obs,
+  foi_index_start_per_obs = foi_index_start_per_obs,
+  include_seroreversion = 0,
+  n_fois_exposed = sum(n_fois_exposed_per_obs),
+  foi_indices = foi_indices,
+  chunks = chunks,
+  prior_choice = 5,
+  prior_a = 0,
+  prior_b = 2
+)
+
+# Run model with sampling
+
+## Model
+model <- rstan::stan_model("inst/stan/time_dependent.stan")
+
+## Feats
+n_iters <- 1000
+n_thin <- 2
+delta <- 0.90
+m_treed <- 10
+decades <- 0
+
+n_warmup <- floor(n_iters / 2)
+
+## Sampling
+m1_veev_combined <- rstan::sampling(
+  model,
+  data = data_stan,
+  iter = n_iters,
+  chains = 4,
+  init = f_init,
+  warmup = n_warmup,
+  verbose = FALSE,
+  refresh = 0,
+  control = list(adapt_delta = delta,
+                 max_treedepth = m_treed),
+  seed = "12345",
+  thin = n_thin,
+  chain_id = 8
+)
+
+plt1 <- plot_foi(m1_veev, cohort_ages) + ggplot2::ggtitle("Old")
+plt2 <- plot_foi(m1_veev_combined, cohort_ages) + ggplot2::ggtitle("New")
 
 plot_grid(plt1, plt2, ncol = 2)

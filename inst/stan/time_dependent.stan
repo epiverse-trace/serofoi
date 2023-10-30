@@ -124,7 +124,7 @@ data {
 
      // prior choices
      int chunks[age_max];
-     int<lower=1, upper=7> prior_choice;
+     int<lower=1, upper=8> prior_choice;
      real prior_a; #<lower=0>
      real prior_b; #<lower=0>
 }
@@ -214,6 +214,7 @@ model {
     foi[1] ~ normal(prior_a, prior_b);
     for(i in 2:n_chunks)
       foi[i] ~ normal(foi[i - 1], sigma);
+    target += sum(foi);
  }
 }
 
