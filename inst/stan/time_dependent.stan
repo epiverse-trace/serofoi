@@ -214,6 +214,7 @@ model {
     foi[1] ~ normal(prior_a, prior_b);
     for(i in 2:n_chunks)
       foi[i] ~ normal(foi[i - 1], sigma);
+    target += sum(foi);
  }
 }
 
