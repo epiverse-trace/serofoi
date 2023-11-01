@@ -3,7 +3,6 @@ test_that("simulated data", {
     library(serofoi)
 
     seed <- 1234
-    n_iters <- 1000
     sample_size_by_age <- 10^7
     tsur <- 2050
     birth_year_min <- 2000
@@ -42,9 +41,9 @@ test_that("simulated data", {
                                   tsur = tsur,
                                   birth_year_min = birth_year_min,
                                   survey_label = 'sw_dec_foi',
-                                  seed = 1234)
+                                  seed = seed)
 
-    prev_exact <- 1 - exp(-cumsum(rev(foi_sim)) )
+    prev_exact <- 1 - exp(-cumsum(rev(foi_sim)))
 
     expect_s3_class(sim_data, "data.frame")
     expect_length(sim_data$birth_year, tsur - birth_year_min)
