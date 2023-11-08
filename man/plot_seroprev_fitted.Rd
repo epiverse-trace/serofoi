@@ -37,7 +37,7 @@ A ggplot object containing the seropositivity-vs-age graph including the data, t
 }
 \description{
 This function generates a seropositivity plot of the specified serological model object. This includes the original data grouped by age
-as well as the obtained fitting from the model implementation. Age is located on the x axis and seropositivity on the y axis with its 
+as well as the obtained fitting from the model implementation. Age is located on the x axis and seropositivity on the y axis with its
 corresponding confidence interval.
 }
 \examples{

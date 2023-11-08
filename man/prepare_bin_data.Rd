@@ -33,7 +33,7 @@ The last six colums can be added to \code{serodata} by means of the function \co
 data set with the binomial confidence intervals
 }
 \description{
-This function prepapares a given pre-processed serological dataset (see \code{\link{prepare_serodata}}) to plot the binomial confidence intervals 
+This function prepapares a given pre-processed serological dataset (see \code{\link{prepare_serodata}}) to plot the binomial confidence intervals
 of its corresponding seroprevalence grouped by age group.
 }
 \examples{

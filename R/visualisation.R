@@ -27,7 +27,7 @@ plot_seroprev <- function(serodata,
 #' Function that generates a seropositivity plot corresponding to the specified fitted serological model
 #'
 #' This function generates a seropositivity plot of the specified serological model object. This includes the original data grouped by age
-#' as well as the obtained fitting from the model implementation. Age is located on the x axis and seropositivity on the y axis with its 
+#' as well as the obtained fitting from the model implementation. Age is located on the x axis and seropositivity on the y axis with its
 #' corresponding confidence interval.
 #' @inheritParams get_foi_central_estimates
 #' @inheritParams run_seromodel
@@ -108,7 +108,7 @@ plot_seroprev_fitted <- function(seromodel_object,
 #' Function that generates a Force-of-Infection plot corresponding to the specified fitted serological model
 #'
 #' This function generates a Force-of-Infection plot from the results obtained by fitting a serological model.
-#' This includes the corresponding binomial confidence interval. 
+#' This includes the corresponding binomial confidence interval.
 #' The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
 #' @inheritParams get_foi_central_estimates
 #' @param size_text Text size use in the theme of the graph returned by the function.
@@ -138,7 +138,6 @@ plot_foi <- function(seromodel_object,
       foi <- rstan::extract(seromodel_object,
                             "foi",
                             inc_warmup = FALSE)[[1]]
-
       #-------- This bit is to get the actual length of the foi data
       foi_data <- get_foi_central_estimates(seromodel_object = seromodel_object,
                                             cohort_ages = cohort_ages)
@@ -168,16 +167,23 @@ plot_foi <- function(seromodel_object,
         ggplot2::xlab("Year")
       #TODO Add warning for foi_sim of different length than exposure years
       if (!is.null(foi_sim)){
-        foi_data_length <- nrow(foi_data)
-        foi_sim_length <- length(foi_sim)
-        remove_x_values <- foi_sim_length - foi_data_length
-
-        foi_sim_data <- data.frame(year = foi_data$year, 
-                                  foi_sim = foi_sim[-c(1:remove_x_values)])    
-        foi_plot <- foi_plot + 
-          ggplot2::geom_line(data = foi_sim_data, ggplot2::aes(x = year, y = foi_sim),
-                            colour = "#b30909",
-                            size = size_text/8)
+        if (nrow(foi_data) != length(foi_sim)) {
+          remove_x_values <- length(foi_sim) - nrow(foi_data)
+          foi_sim_data <- data.frame(year = foi_data$year,
+                                    foi_sim = foi_sim[-c(1:remove_x_values)])
+          foi_plot <- foi_plot +
+            ggplot2::geom_line(data = foi_sim_data, ggplot2::aes(x = year, y = foi_sim),
+                              colour = "#b30909",
+                              size = size_text / 8)
+        }
+        else{
+          foi_sim_data <- data.frame(year = foi_data$year,
+                                    foi_sim = foi_sim)
+          foi_plot <- foi_plot +
+            ggplot2::geom_line(data = foi_sim_data, ggplot2::aes(x = year, y = foi_sim),
+                              colour = "#b30909",
+                              size = size_text / 8)
+        }
       }
     }
   } else {
@@ -208,8 +214,8 @@ plot_foi <- function(seromodel_object,
 
 #' Function that generates a plot of the R-hat estimates of the specified fitted serological model
 #'
-#' This function generates a plot of the R-hat estimates obtained for a specified fitted serological model \code{seromodel_object}. 
-#' The x axis corresponds to the decades covered by the survey and the y axis to the value of the rhats. 
+#' This function generates a plot of the R-hat estimates obtained for a specified fitted serological model \code{seromodel_object}.
+#' The x axis corresponds to the decades covered by the survey and the y axis to the value of the rhats.
 #' All rhats must be smaller than 1 to ensure convergence (for further details check \link[bayesplot]{rhat}).
 #' @inheritParams get_foi_central_estimates
 #' @param size_text Text size use in the theme of the graph returned by the function.
@@ -322,7 +328,7 @@ plot_seromodel <- function(seromodel_object,
       model_summary <- extract_seromodel_summary(seromodel_object = seromodel_object,
                                                  serodata = serodata)
       summary_table <- t(
-        dplyr::select(model_summary, 
+        dplyr::select(model_summary,
         c('foi_model', 'dataset', 'elpd', 'se', 'converged')))
       summary_plot <-
         plot_info_table(summary_table, size_text = size_text)
@@ -333,7 +339,7 @@ plot_seromodel <- function(seromodel_object,
         foi_plot,
         rhats_plot,
         ncol = 1,
-        nrow = 4, 
+        nrow = 4,
         rel_heights = c(0.5, 1, 1, 1)
       )
     }
@@ -358,7 +364,7 @@ plot_seromodel <- function(seromodel_object,
       ggplot2::ylab(" ") +
       ggplot2::xlab(" ")
     g1 <- g0
-    # TODO: This 
+    # TODO: This
     g0 <- g0 + ggplot2::labs(subtitle = seromodel_object$model_name) +
       ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
 
@@ -369,7 +375,7 @@ plot_seromodel <- function(seromodel_object,
   return(plot_arrange)
 }
 
-# TODO Improve documentation of @return. 
+# TODO Improve documentation of @return.
 # TODO Give more details about the generated plot
 #' Function that generates a plot for a given table
 #'

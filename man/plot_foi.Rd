@@ -28,7 +28,7 @@ A ggplot2 object containing the Force-of-infection-vs-time including the corresp
 }
 \description{
 This function generates a Force-of-Infection plot from the results obtained by fitting a serological model.
-This includes the corresponding binomial confidence interval. 
+This includes the corresponding binomial confidence interval.
 The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
 }
 \examples{

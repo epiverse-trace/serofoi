@@ -2,10 +2,13 @@
 
 export(extract_seromodel_summary)
 export(fit_seromodel)
+export(generate_sim_data)
 export(get_cohort_ages)
 export(get_exposure_matrix)
 export(get_foi_central_estimates)
 export(get_prev_expanded)
+export(get_sim_n_seropositive)
+export(get_sim_probability)
 export(get_table_rhats)
 export(plot_foi)
 export(plot_info_table)
