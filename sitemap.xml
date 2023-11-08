@@ -43,6 +43,12 @@
     <loc>https://epiverse-trace.github.io/serofoi/reference/fit_seromodel.html</loc>
   </url>
   <url>
+    <loc>https://epiverse-trace.github.io/serofoi/reference/generate_sim_data.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/serofoi/reference/get_age_group.html</loc>
+  </url>
+  <url>
     <loc>https://epiverse-trace.github.io/serofoi/reference/get_cohort_ages.html</loc>
   </url>
   <url>
@@ -55,7 +61,16 @@
     <loc>https://epiverse-trace.github.io/serofoi/reference/get_prev_expanded.html</loc>
   </url>
   <url>
+    <loc>https://epiverse-trace.github.io/serofoi/reference/get_sim_n_seropositive.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/serofoi/reference/get_sim_probability.html</loc>
+  </url>
+  <url>
     <loc>https://epiverse-trace.github.io/serofoi/reference/get_table_rhats.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/serofoi/reference/group_sim_data.html</loc>
   </url>
   <url>
     <loc>https://epiverse-trace.github.io/serofoi/reference/index.html</loc>
