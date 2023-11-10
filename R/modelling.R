@@ -196,7 +196,8 @@ get_cohort_ages <- function(serodata) {
 #' data(chagas2012)
 #' serodata <- prepare_serodata(serodata = chagas2012)
 #' exposure_matrix <- get_exposure_matrix(serodata = serodata)
-#' @export
+#' @keywords internal
+#' @noRd 
 get_exposure_matrix <- function(serodata) {
   age_class <- serodata$age_mean_f
   cohort_ages <- get_cohort_ages(serodata = serodata)
@@ -334,7 +335,8 @@ extract_seromodel_summary <- function(seromodel_object,
 #'                                   foi_model = "constant")
 #' foi <- rstan::extract(seromodel_object, "foi")[[1]]
 #' get_prev_expanded(foi, serodata)
-#' @export
+#' @keywords internal
+#' @noRd 
 get_prev_expanded <- function(foi,
                               serodata,
                               bin_data = FALSE) {

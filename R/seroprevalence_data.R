@@ -89,7 +89,8 @@ prepare_serodata <- function(serodata = serodata,
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
 #' prepare_bin_data(serodata)
-#' @export
+#' @keywords internal
+#' @noRd
 prepare_bin_data <- function(serodata) {
   if(!any(colnames(serodata) == "age_mean_f")){
     serodata <- serodata %>%
