@@ -1,4 +1,4 @@
-  # TODO Complete @param documentation
+# TODO Complete @param documentation
 
 
 #' Function that runs the specified stan model for the Force-of-Infection and estimates de seroprevalence based on the result of the fit
@@ -44,12 +44,15 @@
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
-#' run_seromodel (serodata,
-#'                foi_model = "constant")
+#' run_seromodel(serodata,
+#'   foi_model = "constant"
+#' )
 #' @export
 run_seromodel <- function(serodata,
-                          foi_model = c("constant", "tv_normal_log",
-                                        "tv_normal"),
+                          foi_model = c(
+                            "constant", "tv_normal_log",
+                            "tv_normal"
+                          ),
                           n_iters = 1000,
                           n_thin = 2,
                           delta = 0.90,
@@ -59,18 +62,25 @@ run_seromodel <- function(serodata,
   foi_model <- match.arg(foi_model)
   survey <- unique(serodata$survey)
   if (length(survey) > 1) warning("You have more than 1 surveys or survey codes")
-  seromodel_object <- fit_seromodel(serodata = serodata,
-                                    foi_model = foi_model,
-                                    n_iters = n_iters,
-                                    n_thin = n_thin,
-                                    delta = delta,
-                                    m_treed = m_treed,
-                                    decades = decades); print(paste0("serofoi model ",
-                                                                      foi_model,
-                                                                      " finished running ------"))
-  if (print_summary){
-    model_summary <- extract_seromodel_summary(seromodel_object = seromodel_object, 
-                                               serodata = serodata)
+  seromodel_object <- fit_seromodel(
+    serodata = serodata,
+    foi_model = foi_model,
+    n_iters = n_iters,
+    n_thin = n_thin,
+    delta = delta,
+    m_treed = m_treed,
+    decades = decades
+  )
+  print(paste0(
+    "serofoi model ",
+    foi_model,
+    " finished running ------"
+  ))
+  if (print_summary) {
+    model_summary <- extract_seromodel_summary(
+      seromodel_object = seromodel_object,
+      serodata = serodata
+    )
     print(t(model_summary))
   }
   return(seromodel_object)
@@ -99,13 +109,17 @@ run_seromodel <- function(serodata,
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
-#' seromodel_fit <- fit_seromodel(serodata = serodata,
-#'                                foi_model = "constant")
+#' seromodel_fit <- fit_seromodel(
+#'   serodata = serodata,
+#'   foi_model = "constant"
+#' )
 #'
 #' @export
 fit_seromodel <- function(serodata,
-                          foi_model = c("constant", "tv_normal_log",
-                                        "tv_normal"),
+                          foi_model = c(
+                            "constant", "tv_normal_log",
+                            "tv_normal"
+                          ),
                           n_iters = 1000,
                           n_thin = 2,
                           delta = 0.90,
@@ -132,12 +146,11 @@ fit_seromodel <- function(serodata,
   if (foi_model == "tv_normal_log") {
     f_init <- function() {
       list(log_foi = rep(-3, nrow(cohort_ages)))
-  }
-  }
-  else {
-  f_init <- function() {
-    list(foi = rep(0.01, nrow(cohort_ages)))
-  }
+    }
+  } else {
+    f_init <- function() {
+      list(foi = rep(0.01, nrow(cohort_ages)))
+    }
   }
 
   seromodel_fit <- rstan::sampling(
@@ -149,8 +162,10 @@ fit_seromodel <- function(serodata,
     warmup = n_warmup,
     verbose = FALSE,
     refresh = 0,
-    control = list(adapt_delta = delta,
-                   max_treedepth = m_treed),
+    control = list(
+      adapt_delta = delta,
+      max_treedepth = m_treed
+    ),
     seed = "12345",
     thin = n_thin,
     chain_id = 0 # https://github.com/stan-dev/rstan/issues/761#issuecomment-647029649
@@ -197,14 +212,15 @@ get_cohort_ages <- function(serodata) {
 #' serodata <- prepare_serodata(serodata = chagas2012)
 #' exposure_matrix <- get_exposure_matrix(serodata = serodata)
 #' @keywords internal
-#' @noRd 
+#' @noRd
 get_exposure_matrix <- function(serodata) {
   age_class <- serodata$age_mean_f
   cohort_ages <- get_cohort_ages(serodata = serodata)
   ly <- nrow(cohort_ages)
   exposure <- matrix(0, nrow = length(age_class), ncol = ly)
-  for (k in 1:length(age_class))
+  for (k in 1:length(age_class)) {
     exposure[k, (ly - age_class[k] + 1):ly] <- 1
+  }
   exposure_output <- exposure
   return(exposure_output)
 }
@@ -217,38 +233,38 @@ get_exposure_matrix <- function(serodata) {
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- fit_seromodel(serodata = serodata,
-#'                                   foi_model = "constant")
+#' seromodel_object <- fit_seromodel(
+#'   serodata = serodata,
+#'   foi_model = "constant"
+#' )
 #' cohort_ages <- get_cohort_ages(serodata = serodata)
-#' foi_central_estimates <- get_foi_central_estimates(seromodel_object = seromodel_object, 
-#'                                                    cohort_ages = cohort_ages)
+#' foi_central_estimates <- get_foi_central_estimates(
+#'   seromodel_object = seromodel_object,
+#'   cohort_ages = cohort_ages
+#' )
 #' @export
 get_foi_central_estimates <- function(seromodel_object,
                                       cohort_ages) {
-
   if (seromodel_object@model_name == "tv_normal_log") {
-    lower_quantile = 0.1
-    upper_quantile = 0.9
-    medianv_quantile = 0.5
+    lower_quantile <- 0.1
+    upper_quantile <- 0.9
+    medianv_quantile <- 0.5
+  } else {
+    lower_quantile <- 0.05
+    upper_quantile <- 0.95
+    medianv_quantile <- 0.5
   }
-  else {
-    lower_quantile = 0.05
-    upper_quantile = 0.95
-    medianv_quantile = 0.5
-  }
-    # extracts foi from stan fit
-    foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
+  # extracts foi from stan fit
+  foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
 
-    # generates central estimations
-    foi_central_estimates <- data.frame(
-      year = cohort_ages$birth_year,
-      lower = apply(foi, 2, function(x) quantile(x, lower_quantile)),
-
-      upper = apply(foi, 2, function(x) quantile(x, upper_quantile)),
-
-      medianv = apply(foi, 2, function(x) quantile(x, medianv_quantile))
-    )
-    return(foi_central_estimates)
+  # generates central estimations
+  foi_central_estimates <- data.frame(
+    year = cohort_ages$birth_year,
+    lower = apply(foi, 2, function(x) quantile(x, lower_quantile)),
+    upper = apply(foi, 2, function(x) quantile(x, upper_quantile)),
+    medianv = apply(foi, 2, function(x) quantile(x, medianv_quantile))
+  )
+  return(foi_central_estimates)
 }
 
 #' Method to extact a summary of the specified serological model object
@@ -277,12 +293,15 @@ get_foi_central_estimates <- function(seromodel_object,
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- run_seromodel(serodata = serodata,
-#'                                   foi_model = "constant")
+#' seromodel_object <- run_seromodel(
+#'   serodata = serodata,
+#'   foi_model = "constant"
+#' )
 #' extract_seromodel_summary(seromodel_object,
-#'                           serodata = serodata)
+#'   serodata = serodata
+#' )
 #' @export
-extract_seromodel_summary <- function(seromodel_object, 
+extract_seromodel_summary <- function(seromodel_object,
                                       serodata) {
   #------- Loo estimates
   # The argument parameter_name refers to the name given to the Log-likelihood in the stan models.
@@ -309,8 +328,10 @@ extract_seromodel_summary <- function(seromodel_object,
     converged = NA
   )
   cohort_ages <- get_cohort_ages(serodata = serodata)
-  rhats <- get_table_rhats(seromodel_object = seromodel_object,
-                           cohort_ages = cohort_ages)
+  rhats <- get_table_rhats(
+    seromodel_object = seromodel_object,
+    cohort_ages = cohort_ages
+  )
   if (any(rhats$rhat > 1.1) == FALSE) {
     model_summary$converged <- "Yes"
   }
@@ -331,12 +352,14 @@ extract_seromodel_summary <- function(seromodel_object,
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- run_seromodel(serodata = serodata,
-#'                                   foi_model = "constant")
+#' seromodel_object <- run_seromodel(
+#'   serodata = serodata,
+#'   foi_model = "constant"
+#' )
 #' foi <- rstan::extract(seromodel_object, "foi")[[1]]
 #' get_prev_expanded(foi, serodata)
 #' @keywords internal
-#' @noRd 
+#' @noRd
 get_prev_expanded <- function(foi,
                               serodata,
                               bin_data = FALSE) {
@@ -356,8 +379,9 @@ get_prev_expanded <- function(foi,
   age_class <- 1:NCOL(foi_expanded)
   ly <- NCOL(foi_expanded)
   exposure <- matrix(0, nrow = length(age_class), ncol = ly)
-  for (k in 1:length(age_class))
+  for (k in 1:length(age_class)) {
     exposure[k, (ly - age_class[k] + 1):ly] <- 1
+  }
   exposure_expanded <- exposure
 
   iterf <- NROW(foi_expanded)
@@ -381,25 +405,30 @@ get_prev_expanded <- function(foi,
   )
 
   observed_prev <- serodata %>%
-    dplyr::select(age_mean_f,
-                  prev_obs,
-                  prev_obs_lower,
-                  prev_obs_upper,
-                  total,
-                  counts) %>%
-    dplyr::rename(age = age_mean_f,
-                  sample_by_age = total,
-                  positives = counts)
+    dplyr::select(
+      age_mean_f,
+      prev_obs,
+      prev_obs_lower,
+      prev_obs_upper,
+      total,
+      counts
+    ) %>%
+    dplyr::rename(
+      age = age_mean_f,
+      sample_by_age = total,
+      positives = counts
+    )
 
   prev_expanded <-
     base::merge(predicted_prev,
-                observed_prev,
-                by = "age",
-                all.x = TRUE) %>% dplyr::mutate(survey = serodata$survey[1])
+      observed_prev,
+      by = "age",
+      all.x = TRUE
+    ) %>% dplyr::mutate(survey = serodata$survey[1])
   if (bin_data) {
     # I added this here for those cases when binned is prefered for plotting
     if (serodata$age_max[1] - serodata$age_min[1] < 3) {
-    xx <- prepare_bin_data(serodata)
+      xx <- prepare_bin_data(serodata)
       prev_expanded <-
         base::merge(prev_expanded, xx, by = "age", all.x = TRUE)
     } else {
