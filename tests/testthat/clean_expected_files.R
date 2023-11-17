@@ -9,6 +9,6 @@ library(testthat)
 paths <- c(testthat::test_path("_snaps", "*"), testthat::test_path("extdata", "dataframes", "expected", "*"))
 
 for (path in paths) {
-    cat("Deleting", path, "\n")
-    unlink(path, recursive = TRUE)
+  cat("Deleting", path, "\n")
+  unlink(path, recursive = TRUE)
 }

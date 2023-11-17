@@ -16,12 +16,12 @@ plot_seroprev <- function(serodata,
     ggplot2::geom_errorbar(ggplot2::aes(age, ymin = p_obs_bin_l, ymax = p_obs_bin_u), width = 0.1) +
     ggplot2::geom_point(ggplot2::aes(age, p_obs_bin, size = xx$bin_size), fill = "#7a0177", colour = "black", shape = 21) +
     ggplot2::theme_bw(size_text) +
-    ggplot2::coord_cartesian(xlim = c(0, 60), ylim = c(0,1)) +
+    ggplot2::coord_cartesian(xlim = c(0, 60), ylim = c(0, 1)) +
     ggplot2::theme(legend.position = "none") +
-    ggplot2::ylab("Sero-positivity") + ggplot2::xlab("Age")
+    ggplot2::ylab("Sero-positivity") +
+    ggplot2::xlab("Age")
 
   return(seroprev_plot)
-
 }
 
 #' Function that generates a seropositivity plot corresponding to the specified fitted serological model
@@ -36,20 +36,21 @@ plot_seroprev <- function(serodata,
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- run_seromodel(serodata = serodata,
-#'                                   foi_model = "constant",
-#'                                   n_iters = 1000)
+#' seromodel_object <- run_seromodel(
+#'   serodata = serodata,
+#'   foi_model = "constant",
+#'   n_iters = 1000
+#' )
 #' plot_seroprev_fitted(seromodel_object,
-#'                      serodata = serodata,
-#'                      size_text = 15)
+#'   serodata = serodata,
+#'   size_text = 15
+#' )
 #' @export
 plot_seroprev_fitted <- function(seromodel_object,
                                  serodata,
                                  size_text = 6) {
-
-  if (is.character(seromodel_object) == FALSE)  {
-    if  (class(seromodel_object@sim$samples)  != "NULL" ) {
-
+  if (is.character(seromodel_object) == FALSE) {
+    if (class(seromodel_object@sim$samples) != "NULL") {
       foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
       prev_expanded <- get_prev_expanded(foi, serodata = serodata, bin_data = TRUE)
       prev_plot <-
@@ -64,7 +65,8 @@ plot_seroprev_fitted <- function(seromodel_object,
         ) +
         ggplot2::geom_line(ggplot2::aes(x = age, y = predicted_prev), colour = "#7a0177") +
         ggplot2::geom_errorbar(ggplot2::aes(age, ymin = p_obs_bin_l, ymax = p_obs_bin_u),
-                               width = 0.1) +
+          width = 0.1
+        ) +
         ggplot2::geom_point(
           ggplot2::aes(age, p_obs_bin, size = bin_size),
           fill = "#7a0177",
@@ -87,9 +89,10 @@ plot_seroprev_fitted <- function(seromodel_object,
       ggplot2::xlim(0, 10) +
       ggplot2::ylim(0, 10) +
       ggplot2::annotate("text",
-                        x = 4,
-                        y = 5,
-                        label = print_warning) +
+        x = 4,
+        y = 5,
+        label = print_warning
+      ) +
       ggplot2::theme_bw(25) +
       ggplot2::theme(
         axis.text.x = ggplot2::element_blank(),
@@ -119,14 +122,16 @@ plot_seroprev_fitted <- function(seromodel_object,
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
 #' seromodel_object <- run_seromodel(
-#'    serodata = serodata,
-#'    foi_model = "constant",
-#'    n_iters = 1000
-#'  )
+#'   serodata = serodata,
+#'   foi_model = "constant",
+#'   n_iters = 1000
+#' )
 #' cohort_ages <- get_cohort_ages(serodata)
-#' plot_foi(seromodel_object = seromodel_object,
-#'          cohort_ages = cohort_ages,
-#'          size_text = 15)
+#' plot_foi(
+#'   seromodel_object = seromodel_object,
+#'   cohort_ages = cohort_ages,
+#'   size_text = 15
+#' )
 #' @export
 plot_foi <- function(seromodel_object,
                      cohort_ages,
@@ -136,11 +141,14 @@ plot_foi <- function(seromodel_object,
   if (is.character(seromodel_object) == FALSE) {
     if (class(seromodel_object@sim$samples) != "NULL") {
       foi <- rstan::extract(seromodel_object,
-                            "foi",
-                            inc_warmup = FALSE)[[1]]
+        "foi",
+        inc_warmup = FALSE
+      )[[1]]
       #-------- This bit is to get the actual length of the foi data
-      foi_data <- get_foi_central_estimates(seromodel_object = seromodel_object,
-                                            cohort_ages = cohort_ages)
+      foi_data <- get_foi_central_estimates(
+        seromodel_object = seromodel_object,
+        cohort_ages = cohort_ages
+      )
 
       #--------
       foi_data$medianv[1] <- NA
@@ -159,30 +167,38 @@ plot_foi <- function(seromodel_object,
           alpha = 0.5
         ) +
         ggplot2::geom_line(ggplot2::aes(x = year, y = medianv),
-                           colour = "#253494",
-                           size = size_text / 8) +
+          colour = "#253494",
+          size = size_text / 8
+        ) +
         ggplot2::theme_bw(size_text) +
         ggplot2::coord_cartesian(ylim = c(0, max_lambda)) +
         ggplot2::ylab("Force-of-Infection") +
         ggplot2::xlab("Year")
-      #TODO Add warning for foi_sim of different length than exposure years
-      if (!is.null(foi_sim)){
+      # TODO Add warning for foi_sim of different length than exposure years
+      if (!is.null(foi_sim)) {
         if (nrow(foi_data) != length(foi_sim)) {
           remove_x_values <- length(foi_sim) - nrow(foi_data)
-          foi_sim_data <- data.frame(year = foi_data$year,
-                                    foi_sim = foi_sim[-c(1:remove_x_values)])
+          foi_sim_data <- data.frame(
+            year = foi_data$year,
+            foi_sim = foi_sim[-c(1:remove_x_values)]
+          )
           foi_plot <- foi_plot +
-            ggplot2::geom_line(data = foi_sim_data, ggplot2::aes(x = year, y = foi_sim),
-                              colour = "#b30909",
-                              size = size_text / 8)
-        }
-        else{
-          foi_sim_data <- data.frame(year = foi_data$year,
-                                    foi_sim = foi_sim)
+            ggplot2::geom_line(
+              data = foi_sim_data, ggplot2::aes(x = year, y = foi_sim),
+              colour = "#b30909",
+              size = size_text / 8
+            )
+        } else {
+          foi_sim_data <- data.frame(
+            year = foi_data$year,
+            foi_sim = foi_sim
+          )
           foi_plot <- foi_plot +
-            ggplot2::geom_line(data = foi_sim_data, ggplot2::aes(x = year, y = foi_sim),
-                              colour = "#b30909",
-                              size = size_text / 8)
+            ggplot2::geom_line(
+              data = foi_sim_data, ggplot2::aes(x = year, y = foi_sim),
+              colour = "#b30909",
+              size = size_text / 8
+            )
         }
       }
     }
@@ -196,9 +212,10 @@ plot_foi <- function(seromodel_object,
       ggplot2::xlim(0, 10) +
       ggplot2::ylim(0, 10) +
       ggplot2::annotate("text",
-                        x = 4,
-                        y = 5,
-                        label = print_warning) +
+        x = 4,
+        y = 5,
+        label = print_warning
+      ) +
       ggplot2::theme_bw(25) +
       ggplot2::theme(
         axis.text.x = ggplot2::element_blank(),
@@ -224,31 +241,36 @@ plot_foi <- function(seromodel_object,
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
 #' seromodel_object <- run_seromodel(
-#'  serodata = serodata,
-#'  foi_model = "constant",
-#'  n_iters = 1000
-#'  )
+#'   serodata = serodata,
+#'   foi_model = "constant",
+#'   n_iters = 1000
+#' )
 #' cohort_ages <- get_cohort_ages(serodata = serodata)
 #' plot_rhats(seromodel_object,
-#'            cohort_ages = cohort_ages,
-#'            size_text = 15)
+#'   cohort_ages = cohort_ages,
+#'   size_text = 15
+#' )
 #' @export
 plot_rhats <- function(seromodel_object,
                        cohort_ages,
                        size_text = 25) {
   if (is.character(seromodel_object) == FALSE) {
     if (class(seromodel_object@sim$samples) != "NULL") {
-      rhats <- get_table_rhats(seromodel_object = seromodel_object,
-                               cohort_ages = cohort_ages)
+      rhats <- get_table_rhats(
+        seromodel_object = seromodel_object,
+        cohort_ages = cohort_ages
+      )
 
       rhats_plot <-
         ggplot2::ggplot(rhats, ggplot2::aes(year, rhat)) +
         ggplot2::geom_line(colour = "purple") +
         ggplot2::geom_point() +
         ggplot2::coord_cartesian(ylim = c(0.7, 2)) +
-        ggplot2::geom_hline(yintercept = 1.1,
-                            colour = "blue",
-                            size = size_text / 12) +
+        ggplot2::geom_hline(
+          yintercept = 1.1,
+          colour = "blue",
+          size = size_text / 12
+        ) +
         ggplot2::theme_bw(size_text) +
         ggplot2::ylab("Convergence (R^)")
     }
@@ -262,9 +284,10 @@ plot_rhats <- function(seromodel_object,
       ggplot2::xlim(0, 10) +
       ggplot2::ylim(0, 10) +
       ggplot2::annotate("text",
-                        x = 4,
-                        y = 5,
-                        label = print_warning) +
+        x = 4,
+        y = 5,
+        label = print_warning
+      ) +
       ggplot2::theme_bw(25) +
       ggplot2::theme(
         axis.text.x = ggplot2::element_blank(),
@@ -290,29 +313,32 @@ plot_rhats <- function(seromodel_object,
 #' @param foi_sim TBD
 #' @return A ggplot object with a vertical arrange containing the seropositivity, force of infection, and convergence plots.
 #' @examples
-#'  data(chagas2012)
-#'  serodata <- prepare_serodata(chagas2012)
-#'  seromodel_object <- run_seromodel(
-#'    serodata = serodata,
-#'    foi_model = "constant",
-#'    n_iters = 1000
-#'  )
+#' data(chagas2012)
+#' serodata <- prepare_serodata(chagas2012)
+#' seromodel_object <- run_seromodel(
+#'   serodata = serodata,
+#'   foi_model = "constant",
+#'   n_iters = 1000
+#' )
 #' plot_seromodel(seromodel_object,
-#'                serodata = serodata,
-#'                size_text = 15)
+#'   serodata = serodata,
+#'   size_text = 15
+#' )
 #' @export
 plot_seromodel <- function(seromodel_object,
-                          serodata,
-                          max_lambda = NA,
-                          size_text = 25,
-                          foi_sim = NULL) {
+                           serodata,
+                           max_lambda = NA,
+                           size_text = 25,
+                           foi_sim = NULL) {
   if (is.character(seromodel_object) == FALSE) {
     if (class(seromodel_object@sim$samples) != "NULL") {
       cohort_ages <- get_cohort_ages(serodata = serodata)
 
-      prev_plot <- plot_seroprev_fitted(seromodel_object = seromodel_object,
-                                        serodata = serodata,
-                                        size_text = size_text)
+      prev_plot <- plot_seroprev_fitted(
+        seromodel_object = seromodel_object,
+        serodata = serodata,
+        size_text = size_text
+      )
 
       foi_plot <- plot_foi(
         seromodel_object = seromodel_object,
@@ -322,14 +348,21 @@ plot_seromodel <- function(seromodel_object,
         foi_sim = foi_sim
       )
 
-      rhats_plot <- plot_rhats(seromodel_object = seromodel_object,
-                               cohort_ages = cohort_ages,
-                               size_text = size_text)
-      model_summary <- extract_seromodel_summary(seromodel_object = seromodel_object,
-                                                 serodata = serodata)
+      rhats_plot <- plot_rhats(
+        seromodel_object = seromodel_object,
+        cohort_ages = cohort_ages,
+        size_text = size_text
+      )
+      model_summary <- extract_seromodel_summary(
+        seromodel_object = seromodel_object,
+        serodata = serodata
+      )
       summary_table <- t(
-        dplyr::select(model_summary,
-        c('foi_model', 'dataset', 'elpd', 'se', 'converged')))
+        dplyr::select(
+          model_summary,
+          c("foi_model", "dataset", "elpd", "se", "converged")
+        )
+      )
       summary_plot <-
         plot_info_table(summary_table, size_text = size_text)
 
@@ -353,9 +386,10 @@ plot_seromodel <- function(seromodel_object,
       ggplot2::xlim(0, 10) +
       ggplot2::ylim(0, 10) +
       ggplot2::annotate("text",
-                        x = 4,
-                        y = 5,
-                        label = print_warning) +
+        x = 4,
+        y = 5,
+        label = print_warning
+      ) +
       ggplot2::theme_bw(25) +
       ggplot2::theme(
         axis.text.x = ggplot2::element_blank(),
@@ -389,20 +423,25 @@ plot_seromodel <- function(seromodel_object,
 #'   foi_model = "constant",
 #'   n_iters = 1000
 #' )
-#' seromodel_summary <- extract_seromodel_summary(seromodel_object = seromodel_object,
-#'                                               serodata = serodata)
-#' info = t(seromodel_summary)
-#' plot_info_table (info, size_text = 15)
+#' seromodel_summary <- extract_seromodel_summary(
+#'   seromodel_object = seromodel_object,
+#'   serodata = serodata
+#' )
+#' info <- t(seromodel_summary)
+#' plot_info_table(info, size_text = 15)
 #' @export
 plot_info_table <- function(info, size_text) {
-  dato <- data.frame(y = NROW(info):seq_len(1),
-                     text = paste0(rownames(info), ": ", info[, 1]))
+  dato <- data.frame(
+    y = NROW(info):seq_len(1),
+    text = paste0(rownames(info), ": ", info[, 1])
+  )
   p <- ggplot2::ggplot(dato, ggplot2::aes(x = 1, y = y)) +
     ggplot2::scale_y_continuous(limits = c(0, NROW(info) + 1), breaks = NULL) +
     ggplot2::theme_void() +
     ggplot2::geom_text(ggplot2::aes(label = text),
-                       size = size_text / 2.5,
-                       fontface = "bold")
+      size = size_text / 2.5,
+      fontface = "bold"
+    )
 
   return(p)
 }

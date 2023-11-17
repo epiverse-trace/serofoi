@@ -34,26 +34,28 @@
 #' serodata <- prepare_serodata(chagas2012)
 #' @export
 prepare_serodata <- function(serodata = serodata,
-                            alpha = 0.05) {
+                             alpha = 0.05) {
   checkmate::assert_numeric(alpha, lower = 0, upper = 1)
-  #Check that serodata has the right columns
-  stopifnot("serodata must contain the right columns" =
-            all(c("survey", "total", "counts", "age_min", "age_max", "tsur",
-                  "country", "test", "antibody"
-                  ) %in%
-                  colnames(serodata)
-                ) |
-            all(c("survey", "total", "counts", "age_mean_f", "tsur",
-                  "country", "test", "antibody") %in%
-                  colnames(serodata)
-                )
+  # Check that serodata has the right columns
+  stopifnot(
+    "serodata must contain the right columns" =
+      all(c(
+        "survey", "total", "counts", "age_min", "age_max", "tsur",
+        "country", "test", "antibody"
+      ) %in%
+        colnames(serodata)) |
+        all(c(
+          "survey", "total", "counts", "age_mean_f", "tsur",
+          "country", "test", "antibody"
+        ) %in%
+          colnames(serodata))
   )
-  if(!any(colnames(serodata) == "age_mean_f")){
+  if (!any(colnames(serodata) == "age_mean_f")) {
     serodata <- serodata %>%
       dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total))
   }
 
-  if(!any(colnames(serodata) == "birth_year")){
+  if (!any(colnames(serodata) == "birth_year")) {
     serodata <- serodata %>%
       dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
   }
@@ -92,18 +94,21 @@ prepare_serodata <- function(serodata = serodata,
 #' @keywords internal
 #' @noRd
 prepare_bin_data <- function(serodata) {
-  if(!any(colnames(serodata) == "age_mean_f")){
+  if (!any(colnames(serodata) == "age_mean_f")) {
     serodata <- serodata %>%
       dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total))
   }
   serodata$cut_ages <-
     cut(as.numeric(serodata$age_mean_f),
-        seq(1, 101, by = 5),
-        include.lowest = TRUE)
+      seq(1, 101, by = 5),
+      include.lowest = TRUE
+    )
   xx <- serodata %>%
     dplyr::group_by(.data$cut_ages) %>%
-    dplyr::summarise(bin_size = sum(.data$total),
-                     bin_pos = sum(.data$counts))
+    dplyr::summarise(
+      bin_size = sum(.data$total),
+      bin_pos = sum(.data$counts)
+    )
   labs <-
     read.table(
       text = gsub("[^.0-9]", " ", levels(xx$cut_ages)),
@@ -144,7 +149,7 @@ get_sim_probability <- function(sim_data, foi) {
   cohort_ages <- get_cohort_ages(sim_data)
   exposure_ages <- rev(cohort_ages$age)
   exposure_matrix <- get_exposure_matrix(sim_data)
-  probabilities <- purrr::map_dbl(exposure_ages, ~1-exp(-pracma::dot(exposure_matrix[., ], foi)))
+  probabilities <- purrr::map_dbl(exposure_ages, ~ 1 - exp(-pracma::dot(exposure_matrix[., ], foi)))
 
   sim_probability <- data.frame(
     age = exposure_ages,
@@ -163,7 +168,7 @@ get_sim_probability <- function(sim_data, foi) {
 #' according to the age group marker \code{age_mean_f}\cr \tab \cr
 #' }
 #' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection ordered from past to present
-#' @param sample_size_by_age Sample size for each age group: either a single integer indicating that the sample size is 
+#' @param sample_size_by_age Sample size for each age group: either a single integer indicating that the sample size is
 #' the same for all ages or a vector of sample sizes the same length as
 #' This corresponds to the number of trials \code{size} in \link[stats]{rbinom}.
 #' @param seed The seed for random number generation.
@@ -175,22 +180,26 @@ get_sim_probability <- function(sim_data, foi) {
 #' simulated list of counts following a binomial distribution in accordance with a given
 #' force of infection and age class sizes.
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #' foi <- rep(0.02, 50)
-#' sim_data <- generate_sim_data(foi = foi,
-#'                               sample_size_by_age = 5,
-#'                               tsur = 2050,
-#'                               birth_year_min = 2000,
-#'                               survey_label = 'foi_sim')
-#' sim_n_seropositive <- get_sim_n_seropositive(sim_data = sim_data,
-#'                                              foi = foi)
+#' sim_data <- generate_sim_data(
+#'   foi = foi,
+#'   sample_size_by_age = 5,
+#'   tsur = 2050,
+#'   birth_year_min = 2000,
+#'   survey_label = "foi_sim"
+#' )
+#' sim_n_seropositive <- get_sim_n_seropositive(
+#'   sim_data = sim_data,
+#'   foi = foi
+#' )
 #' }
 #' @export
 get_sim_n_seropositive <- function(sim_data, foi, sample_size_by_age, seed = 1234) {
   sim_probability <- get_sim_probability(sim_data = sim_data, foi = foi)
 
   set.seed(seed = seed)
-  n_seropositive <- purrr::map_int(sim_probability$probability, ~rbinom(1, sample_size_by_age, .))
+  n_seropositive <- purrr::map_int(sim_probability$probability, ~ rbinom(1, sample_size_by_age, .))
 
   sim_n_seropositive <- data.frame(
     age = sim_probability$age,
@@ -210,14 +219,16 @@ get_sim_n_seropositive <- function(sim_data, foi, sample_size_by_age, seed = 123
 #' @param survey_label Label for the resulting simulated serosurvey.
 #' @return Dataframe object containing the simulated data generated from \code{foi}
 #' @examples
-#'\dontrun{
-#' sample_size_by_age = 5
+#' \dontrun{
+#' sample_size_by_age <- 5
 #' foi <- rep(0.02, 50)
-#' sim_data <- generate_sim_data(foi = foi,
-#'                               sample_size_by_age = sample_size_by_age,
-#'                               tsur = 2050,
-#'                               birth_year_min = 2000,
-#'                               survey_label = 'sim_constant_foi')
+#' sim_data <- generate_sim_data(
+#'   foi = foi,
+#'   sample_size_by_age = sample_size_by_age,
+#'   tsur = 2050,
+#'   birth_year_min = 2000,
+#'   survey_label = "sim_constant_foi"
+#' )
 #' }
 #' @export
 generate_sim_data <- function(foi,
@@ -227,22 +238,25 @@ generate_sim_data <- function(foi,
                               survey_label,
                               test = "fake",
                               antibody = "IgG",
-                              seed = 1234
-                              ){
-    sim_data <- data.frame(birth_year = c(birth_year_min:(tsur - 1))) %>%
-        mutate(tsur = tsur,
-            country = 'None',
-            test = test,
-            antibody = antibody,
-            survey = survey_label,
-            age_mean_f = tsur - birth_year)
-    sim_n_seropositive <- get_sim_n_seropositive(sim_data, foi, sample_size_by_age, seed = seed)
-    sim_data <- sim_data %>%
-        mutate(counts = sim_n_seropositive$n_seropositive,
-               total = sample_size_by_age) %>%
-        prepare_serodata()
+                              seed = 1234) {
+  sim_data <- data.frame(birth_year = c(birth_year_min:(tsur - 1))) %>%
+    mutate(
+      tsur = tsur,
+      country = "None",
+      test = test,
+      antibody = antibody,
+      survey = survey_label,
+      age_mean_f = tsur - birth_year
+    )
+  sim_n_seropositive <- get_sim_n_seropositive(sim_data, foi, sample_size_by_age, seed = seed)
+  sim_data <- sim_data %>%
+    mutate(
+      counts = sim_n_seropositive$n_seropositive,
+      total = sample_size_by_age
+    ) %>%
+    prepare_serodata()
 
-    return(sim_data)
+  return(sim_data)
 }
 
 #' Method for constructing age-group variable from age column
@@ -259,27 +273,32 @@ generate_sim_data <- function(foi,
 #' that age_max%%(step+1) = 0.
 #' @param age vector containing age information
 #' @param  step step used to split the age interval
-#' @return age_group factor variable grouping \code{age} by the age intervals 
+#' @return age_group factor variable grouping \code{age} by the age intervals
 #' specified by \code{min(age)}, \code{max(age)}.
 get_age_group <- function(age, step) {
   age_min <- min(age)
   age_max <- max(age)
   n_steps <- as.integer((age_max - age_min) / step) + 1
   limits_low <- c(as.integer(seq(age_min,
-                                 age_max,
-                                 length.out = n_steps)))
+    age_max,
+    length.out = n_steps
+  )))
   limits_hgh <- limits_low + step
   lim_labels <- paste(as.character(limits_low), as.character(limits_hgh),
-                      sep = "-")
-  lim_labels[length(lim_labels)] <- paste0("+",
-                                           limits_low[length(limits_low)])
+    sep = "-"
+  )
+  lim_labels[length(lim_labels)] <- paste0(
+    "+",
+    limits_low[length(limits_low)]
+  )
   lim_breaks <- c(-Inf, limits_low[2:length(limits_low)] - 1, Inf)
 
   age_group <- cut(age,
-                   breaks = lim_breaks,
-                   labels = lim_labels,
-                   # this is for the intervals to be closed to the left and open to the right
-                   right = FALSE)
+    breaks = lim_breaks,
+    labels = lim_labels,
+    # this is for the intervals to be closed to the left and open to the right
+    right = FALSE
+  )
   return(age_group)
 }
 
@@ -290,21 +309,25 @@ get_age_group <- function(age, step) {
 #' @param step step used to split the age interval
 #' @return Dataframe object containing grouped simulated data generated from \code{foi}
 group_sim_data <- function(sim_data,
-                          col_age = "age_mean_f",
-                          step = 5) {
-    age <- sim_data[[col_age]]
-    sim_data$age_group <-  get_age_group(age = age, step = step)
-    sim_data_grouped <- sim_data %>%
-      group_by(age_group) %>%
+                           col_age = "age_mean_f",
+                           step = 5) {
+  age <- sim_data[[col_age]]
+  sim_data$age_group <- get_age_group(age = age, step = step)
+  sim_data_grouped <- sim_data %>%
+    group_by(age_group) %>%
     dplyr::summarise(total = sum(total), counts = sum(counts)) %>%
-      mutate(tsur = sim_data$tsur[1],
-              country = "None",
-              survey = sim_data$survey[1],
-              test = sim_data$test[1],
-              antibody = sim_data$antibody[1]) %>%
-      mutate(age_min = as.integer(sub("\\-.*", "", age_group)),
-              age_max = as.integer(sub(".*\\-", "", age_group))) %>%
-      prepare_serodata()
+    mutate(
+      tsur = sim_data$tsur[1],
+      country = "None",
+      survey = sim_data$survey[1],
+      test = sim_data$test[1],
+      antibody = sim_data$antibody[1]
+    ) %>%
+    mutate(
+      age_min = as.integer(sub("\\-.*", "", age_group)),
+      age_max = as.integer(sub(".*\\-", "", age_group))
+    ) %>%
+    prepare_serodata()
 
-    return(sim_data_grouped)
+  return(sim_data_grouped)
 }

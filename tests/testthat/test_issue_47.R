@@ -10,9 +10,11 @@ test_that("issue 47", {
   serodata <- readRDS(serodata_path)
 
   # Error reproduction
-  model_test <- run_seromodel(serodata = serodata,
-                              foi_model = "tv_normal",
-                              print_summary = FALSE)
+  model_test <- run_seromodel(
+    serodata = serodata,
+    foi_model = "tv_normal",
+    print_summary = FALSE
+  )
   foi <- rstan::extract(model_test, "foi", inc_warmup = FALSE)[[1]]
   prev_expanded <- get_prev_expanded(foi, serodata = serodata)
 
