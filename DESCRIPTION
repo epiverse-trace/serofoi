@@ -80,6 +80,7 @@ URL: https://trace-lac.github.io/serofoi/
 Additional_repositories:
     https://mc-stan.org/r-packages/
 Remotes:
-    tidyverse/purrr
+    tidyverse/purrr,
+    stan-dev/rstan/StanHeaders
 Biarch: true
 SystemRequirements: GNU make
