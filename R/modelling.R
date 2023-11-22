@@ -429,13 +429,9 @@ get_prev_expanded <- function(foi,
 
   foi_expanded <- foin
 
-  age_class <- seq_len(NCOL(foi_expanded))
   ly <- NCOL(foi_expanded)
-  exposure <- matrix(0, nrow = length(age_class), ncol = ly)
-  for (k in seq_along(age_class)) {
-    exposure[k, (ly - age_class[k] + 1):ly] <- 1
-  }
-  exposure_expanded <- exposure
+  exposure_expanded <- matrix(0, nrow = ly, ncol = ly)
+  exposure_expanded[lower.tri(exposure_expanded, diag = TRUE)] <- 1
 
   iterf <- NROW(foi_expanded)
   age_max <- NROW(exposure_expanded)
