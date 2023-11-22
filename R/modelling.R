@@ -435,18 +435,14 @@ get_prev_expanded <- function(foi,
 
   prev_pn <- t(1 - exp(-exposure_expanded %*% t(foi_expanded)))
 
-  lower <- apply(prev_pn, 2, quantile, 0.1)
-
-  upper <- apply(prev_pn, 2, quantile, 0.9)
-
-  medianv <- apply(prev_pn, 2, quantile, 0.5)
-
-  predicted_prev <- data.frame(
-    age = 1:age_max,
-    predicted_prev = medianv,
-    predicted_prev_lower = lower,
-    predicted_prev_upper = upper
+  predicted_prev <- t(apply(prev_pn, 2, function(x) quantile(x, c(0.5, 0.1, 0.9))))
+  colnames(predicted_prev) <- c(
+    "predicted_prev",
+    "predicted_prev_lower",
+    "predicted_prev_upper"
   )
+  predicted_prev <- as.data.frame(predicted_prev)
+  predicted_prev$age <- 1:ly
 
   observed_prev <- serodata %>%
     dplyr::select(
