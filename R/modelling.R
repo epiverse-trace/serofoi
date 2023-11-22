@@ -332,7 +332,7 @@ extract_seromodel_summary <- function(seromodel_object,
     seromodel_object = seromodel_object,
     cohort_ages = cohort_ages
   )
-  if (any(rhats$rhat > 1.1) == FALSE) {
+  if (!any(rhats$rhat > 1.1)) {
     model_summary$converged <- "Yes"
   }
 
