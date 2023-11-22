@@ -49,7 +49,7 @@ plot_seroprev <- function(serodata,
 plot_seroprev_fitted <- function(seromodel_object,
                                  serodata,
                                  size_text = 6) {
-  if (is.character(seromodel_object) == FALSE) {
+  if (!is.character(seromodel_object)) {
     if (class(seromodel_object@sim$samples) != "NULL") {
       foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
       prev_expanded <- get_prev_expanded(foi, serodata = serodata, bin_data = TRUE)
@@ -138,7 +138,7 @@ plot_foi <- function(seromodel_object,
                      max_lambda = NA,
                      size_text = 25,
                      foi_sim = NULL) {
-  if (is.character(seromodel_object) == FALSE) {
+  if (!is.character(seromodel_object)) {
     if (class(seromodel_object@sim$samples) != "NULL") {
       foi <- rstan::extract(seromodel_object,
         "foi",
@@ -254,7 +254,7 @@ plot_foi <- function(seromodel_object,
 plot_rhats <- function(seromodel_object,
                        cohort_ages,
                        size_text = 25) {
-  if (is.character(seromodel_object) == FALSE) {
+  if (!is.character(seromodel_object)) {
     if (class(seromodel_object@sim$samples) != "NULL") {
       rhats <- get_table_rhats(
         seromodel_object = seromodel_object,
@@ -330,7 +330,7 @@ plot_seromodel <- function(seromodel_object,
                            max_lambda = NA,
                            size_text = 25,
                            foi_sim = NULL) {
-  if (is.character(seromodel_object) == FALSE) {
+  if (!is.character(seromodel_object)) {
     if (class(seromodel_object@sim$samples) != "NULL") {
       cohort_ages <- get_cohort_ages(serodata = serodata)
 
