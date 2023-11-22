@@ -433,12 +433,7 @@ get_prev_expanded <- function(foi,
   exposure_expanded <- matrix(0, nrow = ly, ncol = ly)
   exposure_expanded[lower.tri(exposure_expanded, diag = TRUE)] <- 1
 
-  iterf <- NROW(foi_expanded)
-  age_max <- NROW(exposure_expanded)
-  prev_pn <- matrix(NA, nrow = iterf, ncol = age_max)
-  for (i in 1:iterf) {
-    prev_pn[i, ] <- 1 - exp(-exposure_expanded %*% foi_expanded[i, ])
-  }
+  prev_pn <- t(1 - exp(-exposure_expanded %*% t(foi_expanded)))
 
   lower <- apply(prev_pn, 2, quantile, 0.1)
 
