@@ -459,17 +459,17 @@ get_prev_expanded <- function(foi,
 
   observed_prev <- serodata %>%
     dplyr::select(
-      age_mean_f,
-      prev_obs,
-      prev_obs_lower,
-      prev_obs_upper,
-      total,
-      counts
+      "age_mean_f",
+      "prev_obs",
+      "prev_obs_lower",
+      "prev_obs_upper",
+      "total",
+      "counts"
     ) %>%
     dplyr::rename(
-      age = age_mean_f,
-      sample_by_age = total,
-      positives = counts
+      age = "age_mean_f",
+      sample_by_age = "total",
+      positives = "counts"
     )
 
   prev_expanded <-

@@ -57,8 +57,8 @@ prepare_serodata <- function(serodata = serodata,
   if (!any(colnames(serodata) == "age_mean_f")) {
     serodata <- serodata %>%
       dplyr::mutate(
-        age_mean_f = floor((age_min + age_max) / 2),
-        sample_size = sum(total)
+        age_mean_f = floor((.data$age_min + .data$age_max) / 2),
+        sample_size = sum(.data$total)
       )
   }
 
@@ -77,9 +77,9 @@ prepare_serodata <- function(serodata = serodata,
       )
     ) %>%
     dplyr::rename(
-      prev_obs = PointEst,
-      prev_obs_lower = Lower,
-      prev_obs_upper = Upper
+      prev_obs = "PointEst",
+      prev_obs_lower = "Lower",
+      prev_obs_upper = "Upper"
     ) %>%
     dplyr::arrange(.data$age_mean_f)
 
@@ -105,8 +105,8 @@ prepare_bin_data <- function(serodata) {
   if (!any(colnames(serodata) == "age_mean_f")) {
     serodata <- serodata %>%
       dplyr::mutate(
-        age_mean_f = floor((age_min + age_max) / 2),
-        sample_size = sum(total)
+        age_mean_f = floor((.data$age_min + .data$age_max) / 2),
+        sample_size = sum(.data$total)
       )
   }
   serodata$cut_ages <-
@@ -127,7 +127,7 @@ prepare_bin_data <- function(serodata) {
     ) %>%
     dplyr::mutate(
       lev = levels(xx$cut_ages),
-      mid_age = round((lower + upper) / 2)
+      mid_age = round((.data$lower + .data$upper) / 2)
     ) %>%
     dplyr::select(.data$mid_age, .data$lev)
   xx$mid_age <- labs$mid_age[labs$lev %in% xx$cut_ages]
@@ -279,7 +279,7 @@ generate_sim_data <- function(foi,
       test = test,
       antibody = antibody,
       survey = survey_label,
-      age_mean_f = tsur - birth_year
+      age_mean_f = tsur - .data$birth_year
     )
   sim_n_seropositive <- get_sim_n_seropositive(
     sim_data,
@@ -354,8 +354,8 @@ group_sim_data <- function(sim_data,
   age <- sim_data[[col_age]]
   sim_data$age_group <- get_age_group(age = age, step = step)
   sim_data_grouped <- sim_data %>%
-    group_by(age_group) %>%
-    dplyr::summarise(total = sum(total), counts = sum(counts)) %>%
+    group_by(.data$age_group) %>%
+    dplyr::summarise(total = sum(.data$total), counts = sum(.data$counts)) %>%
     mutate(
       tsur = sim_data$tsur[1],
       country = "None",
@@ -364,8 +364,8 @@ group_sim_data <- function(sim_data,
       antibody = sim_data$antibody[1]
     ) %>%
     mutate(
-      age_min = as.integer(sub("\\-.*", "", age_group)),
-      age_max = as.integer(sub(".*\\-", "", age_group))
+      age_min = as.integer(sub("\\-.*", "", .data$age_group)),
+      age_max = as.integer(sub(".*\\-", "", .data$age_group))
     ) %>%
     prepare_serodata()
 

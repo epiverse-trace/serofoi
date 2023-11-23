@@ -16,13 +16,13 @@ plot_seroprev <- function(serodata,
                           size_text = 6) {
   xx <- prepare_bin_data(serodata)
   seroprev_plot <-
-    ggplot2::ggplot(data = xx) +
+    ggplot2::ggplot(data = xx, ggplot2::aes(x = .data$age)) +
     ggplot2::geom_errorbar(
-      ggplot2::aes(age, ymin = p_obs_bin_l, ymax = p_obs_bin_u),
+      ggplot2::aes(ymin = .data$p_obs_bin_l, ymax = .data$p_obs_bin_u),
       width = 0.1
     ) +
     ggplot2::geom_point(
-      ggplot2::aes(age, p_obs_bin, size = xx$bin_size),
+      ggplot2::aes(y = .data$p_obs_bin, size = xx$bin_size),
       fill = "#7a0177", colour = "black", shape = 21
     ) +
     ggplot2::theme_bw(size_text) +
@@ -71,24 +71,24 @@ plot_seroprev_fitted <- function(seromodel_object,
         bin_data = TRUE
       )
       prev_plot <-
-        ggplot2::ggplot(prev_expanded, ggplot2::aes(x = age)) +
+        ggplot2::ggplot(prev_expanded, ggplot2::aes(x = .data$age)) +
         ggplot2::geom_ribbon(
           ggplot2::aes(
-            ymin = predicted_prev_lower,
-            ymax = predicted_prev_upper
+            ymin = .data$predicted_prev_lower,
+            ymax = .data$predicted_prev_upper
           ),
           fill = "#c994c7"
         ) +
         ggplot2::geom_line(
-          ggplot2::aes(y = predicted_prev),
+          ggplot2::aes(y = .data$predicted_prev),
           colour = "#7a0177"
         ) +
         ggplot2::geom_errorbar(
-          ggplot2::aes(ymin = p_obs_bin_l, ymax = p_obs_bin_u),
+          ggplot2::aes(ymin = .data$p_obs_bin_l, ymax = .data$p_obs_bin_u),
           width = 0.1
         ) +
         ggplot2::geom_point(
-          ggplot2::aes(y = p_obs_bin, size = bin_size),
+          ggplot2::aes(y = .data$p_obs_bin, size = .data$bin_size),
           fill = "#7a0177",
           colour = "black",
           shape = 21
@@ -180,17 +180,17 @@ plot_foi <- function(seromodel_object,
       foi_data$upper[1] <- NA
 
       foi_plot <-
-        ggplot2::ggplot(foi_data) +
+        ggplot2::ggplot(foi_data, ggplot2::aes(x = .data$year)) +
         ggplot2::geom_ribbon(
           ggplot2::aes(
-            x = year,
-            ymin = lower,
-            ymax = upper
+            ymin = .data$lower,
+            ymax = .data$upper
           ),
           fill = "#41b6c4",
           alpha = 0.5
         ) +
-        ggplot2::geom_line(ggplot2::aes(x = year, y = medianv),
+        ggplot2::geom_line(
+          ggplot2::aes(y = .data$medianv),
           colour = "#253494",
           size = size_text / 8
         ) +
@@ -208,7 +208,7 @@ plot_foi <- function(seromodel_object,
           )
           foi_plot <- foi_plot +
             ggplot2::geom_line(
-              data = foi_sim_data, ggplot2::aes(x = year, y = foi_sim),
+              data = foi_sim_data, ggplot2::aes(y = foi_sim),
               colour = "#b30909",
               size = size_text / 8
             )
@@ -219,7 +219,7 @@ plot_foi <- function(seromodel_object,
           )
           foi_plot <- foi_plot +
             ggplot2::geom_line(
-              data = foi_sim_data, ggplot2::aes(x = year, y = foi_sim),
+              data = foi_sim_data, ggplot2::aes(y = foi_sim),
               colour = "#b30909",
               size = size_text / 8
             )
@@ -290,7 +290,7 @@ plot_rhats <- function(seromodel_object,
       )
 
       rhats_plot <-
-        ggplot2::ggplot(rhats, ggplot2::aes(year, rhat)) +
+        ggplot2::ggplot(rhats, ggplot2::aes(.data$year, .data$rhat)) +
         ggplot2::geom_line(colour = "purple") +
         ggplot2::geom_point() +
         ggplot2::coord_cartesian(ylim = c(0.7, 2)) +
@@ -466,7 +466,7 @@ plot_info_table <- function(info, size_text) {
     y = NROW(info):seq_len(1),
     text = paste0(rownames(info), ": ", info[, 1])
   )
-  p <- ggplot2::ggplot(dato, ggplot2::aes(x = 1, y = y)) +
+  p <- ggplot2::ggplot(dato, ggplot2::aes(x = 1, y = .data$y)) +
     ggplot2::scale_y_continuous(limits = c(0, NROW(info) + 1), breaks = NULL) +
     ggplot2::theme_void() +
     ggplot2::geom_text(ggplot2::aes(label = text),
