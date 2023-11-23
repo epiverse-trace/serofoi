@@ -165,7 +165,7 @@ prepare_bin_data <- function(serodata) {
 get_sim_probability <- function(sim_data, foi) {
   cohort_ages <- get_cohort_ages(sim_data)
   exposure_ages <- rev(cohort_ages$age)
-  exposure_matrix <- get_exposure_matrix(sim_data)
+  exposure_matrix <- get_exposure_matrix(sim_data) # nolint: object_usage_linter
   probabilities <- purrr::map_dbl(
     exposure_ages,
     ~ 1 - exp(-pracma::dot(exposure_matrix[., ], foi))
