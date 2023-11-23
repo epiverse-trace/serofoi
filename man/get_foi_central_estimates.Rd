@@ -7,9 +7,11 @@
 get_foi_central_estimates(seromodel_object, cohort_ages)
 }
 \arguments{
-\item{seromodel_object}{Stanfit object containing the results of fitting a model by means of \link{run_seromodel}.}
+\item{seromodel_object}{Stanfit object containing the results of fitting a
+model by means of \link{run_seromodel}.}
 
-\item{cohort_ages}{A data.frame containing the age of each cohort corresponding to each birth year.}
+\item{cohort_ages}{A data.frame containing the age of each cohort
+corresponding to each birth year.}
 }
 \value{
 \code{foi_central_estimates}. Central estimates for the fitted forced FoI
@@ -20,9 +22,13 @@ Function that generates the central estimates for the fitted forced FoI
 \examples{
 data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
-seromodel_object <- fit_seromodel(serodata = serodata,
-                                  foi_model = "constant")
+seromodel_object <- fit_seromodel(
+  serodata = serodata,
+  foi_model = "constant"
+)
 cohort_ages <- get_cohort_ages(serodata = serodata)
-foi_central_estimates <- get_foi_central_estimates(seromodel_object = seromodel_object, 
-                                                   cohort_ages = cohort_ages)
+foi_central_estimates <- get_foi_central_estimates(
+  seromodel_object = seromodel_object,
+  cohort_ages = cohort_ages
+)
 }

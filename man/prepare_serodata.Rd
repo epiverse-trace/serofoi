@@ -9,35 +9,39 @@ prepare_serodata(serodata = serodata, alpha = 0.05)
 \arguments{
 \item{serodata}{A data frame containing the data from a serological survey.
 This data frame must contain the following columns:
-\tabular{ll}{
-\code{survey} \tab survey Label of the current survey \cr \tab \cr
-\code{total} \tab Number of samples for each age group\cr \tab \cr
-\code{counts} \tab Number of positive samples for each age group\cr \tab \cr
-\code{age_min} \tab age_min \cr \tab \cr
-\code{age_max} \tab age_max \cr \tab \cr
-\code{tsur} \tab Year in which the survey took place \cr \tab \cr
-\code{country} \tab The country where the survey took place \cr \tab \cr
-\code{test} \tab The type of test taken \cr \tab \cr
-\code{antibody} \tab antibody \cr \tab \cr
+\describe{
+\item{\code{survey}}{survey Label of the current survey}
+\item{\code{total}}{Number of samples for each age group}
+\item{\code{counts}}{Number of positive samples for each age group}
+\item{\code{age_min}}{age_min}
+\item{\code{age_max}}{age_max}
+\item{\code{tsur}}{Year in which the survey took place}
+\item{\code{country}}{The country where the survey took place}
+\item{\code{test}}{The type of test taken}
+\item{\code{antibody}}{antibody}
 }}
 
-\item{alpha}{probability of a type I error. For further details refer to \link[Hmisc]{binconf}.}
+\item{alpha}{probability of a type I error. For further details refer to
+\link[Hmisc:binconf]{binconf}.}
 }
 \value{
-serodata with additional columns necessary for the analysis. These columns are:
-\tabular{ll}{
-\code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
-\code{sample_size} \tab The size of the sample \cr \tab \cr
-\code{birth_year} \tab Years in which the subjects were borned
-according to the age group marker \code{age_mean_f}\cr \tab \cr
-according to the age group marker \code{age_mean_f}\cr \tab \cr
-\code{prev_obs} \tab Observed prevalence \cr \tab \cr
-\code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
-\code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
+serodata with additional columns necessary for the analysis. These
+columns are:
+\describe{
+\item{\code{age_mean_f}}{Floor value of the average between age_min and age_max}
+\item{\code{sample_size}}{The size of the sample}
+\item{\code{birth_year}}{Years in which the subject was born according to the
+age group marker \code{age_mean_f}}
+\item{\code{prev_obs}}{Observed prevalence}
+\item{\code{prev_obs_lower}}{Lower limit of the confidence interval for the
+observed prevalence}
+\item{\code{prev_obs_upper}}{Upper limit of the confidence interval for the
+observed prevalence}
 }
 }
 \description{
-This function adds the necessary additional variables to the given dataset \code{serodata} corresponding to a serological survey.
+This function adds the necessary additional variables to the given dataset
+\code{serodata} corresponding to a serological survey.
 }
 \examples{
 data(chagas2012)

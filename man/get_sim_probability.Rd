@@ -2,30 +2,34 @@
 % Please edit documentation in R/seroprevalence_data.R
 \name{get_sim_probability}
 \alias{get_sim_probability}
-\title{Function that generates the probabilities of being previously exposed to a pathogen.}
+\title{Function that generates the probabilities of being previously exposed to a
+pathogen.}
 \usage{
 get_sim_probability(sim_data, foi)
 }
 \arguments{
 \item{sim_data}{A dataframe object containing the following columns:
-\tabular{ll}{
-\code{tsur} \tab Year of the survey\cr \tab \cr
-\code{age_mean_f} \tab Age \cr \tab \cr
-\code{birth_year} \tab Years in which the subjects were borned
-according to the age group marker \code{age_mean_f}\cr \tab \cr
+\describe{
+\item{\code{tsur}}{Year of the survey}
+\item{\code{age_mean_f}}{Age}
+\item{\code{birth_year}}{Years in which the subjects were born according to the
+age group marker \code{age_mean_f}}
 }}
 
-\item{foi}{Numeric atomic vector corresponding to the desired Force-of-Infection ordered from past to present}
+\item{foi}{Numeric atomic vector corresponding to the desired
+Force-of-Infection ordered from past to present}
 
 \item{seed}{The seed for random number generation.}
 }
 \value{
 A dataframe containing the following columns:
-\tabular{ll}{
-\code{age} \tab Exposure ages \cr \tab \cr
-\code{probability} \tab Probability to obtain a seropositive case for each age according to the provided FoI\cr \tab \cr
+\describe
+\item{\code{age}}{Exposure ages}
+\item{\code{probability}}{Probability to obtain a seropositive case for each age
+according to the provided FoI}
 }
 }
 \description{
-Function that generates the probabilities of being previously exposed to a pathogen.
+Function that generates the probabilities of being previously exposed to a
+pathogen.
 }

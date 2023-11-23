@@ -2,35 +2,42 @@
 % Please edit documentation in R/visualisation.R
 \name{plot_rhats}
 \alias{plot_rhats}
-\title{Function that generates a plot of the R-hat estimates of the specified fitted serological model}
+\title{Function that generates a plot of the R-hat estimates of the specified fitted
+serological model}
 \usage{
 plot_rhats(seromodel_object, cohort_ages, size_text = 25)
 }
 \arguments{
-\item{seromodel_object}{Stanfit object containing the results of fitting a model by means of \link{run_seromodel}.}
+\item{seromodel_object}{Stanfit object containing the results of fitting a
+model by means of \link{run_seromodel}.}
 
-\item{cohort_ages}{A data.frame containing the age of each cohort corresponding to each birth year.}
+\item{cohort_ages}{A data.frame containing the age of each cohort
+corresponding to each birth year.}
 
-\item{size_text}{Text size use in the theme of the graph returned by the function.}
+\item{size_text}{Text size use in the theme of the graph returned by the
+function.}
 }
 \value{
 The rhats-convergence plot of the selected model.
 }
 \description{
-This function generates a plot of the R-hat estimates obtained for a specified fitted serological model \code{seromodel_object}.
-The x axis corresponds to the decades covered by the survey and the y axis to the value of the rhats.
-All rhats must be smaller than 1 to ensure convergence (for further details check \link[bayesplot]{rhat}).
+This function generates a plot of the R-hat estimates obtained for a
+specified fitted serological model \code{seromodel_object}. The x axis corresponds
+to the decades covered by the survey and the y axis to the value of the
+rhats. All rhats must be smaller than 1 to ensure convergence (for further
+details check \link[bayesplot:bayesplot-extractors]{rhat}).
 }
 \examples{
 data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
 seromodel_object <- run_seromodel(
- serodata = serodata,
- foi_model = "constant",
- n_iters = 1000
- )
+  serodata = serodata,
+  foi_model = "constant",
+  n_iters = 1000
+)
 cohort_ages <- get_cohort_ages(serodata = serodata)
 plot_rhats(seromodel_object,
-           cohort_ages = cohort_ages,
-           size_text = 15)
+  cohort_ages = cohort_ages,
+  size_text = 15
+)
 }

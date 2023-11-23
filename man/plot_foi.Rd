@@ -2,7 +2,8 @@
 % Please edit documentation in R/visualisation.R
 \name{plot_foi}
 \alias{plot_foi}
-\title{Function that generates a Force-of-Infection plot corresponding to the specified fitted serological model}
+\title{Function that generates a Force-of-Infection plot corresponding to the
+specified fitted serological model}
 \usage{
 plot_foi(
   seromodel_object,
@@ -13,34 +14,41 @@ plot_foi(
 )
 }
 \arguments{
-\item{seromodel_object}{Stanfit object containing the results of fitting a model by means of \link{run_seromodel}.}
+\item{seromodel_object}{Stanfit object containing the results of fitting a
+model by means of \link{run_seromodel}.}
 
-\item{cohort_ages}{A data.frame containing the age of each cohort corresponding to each birth year.}
+\item{cohort_ages}{A data.frame containing the age of each cohort
+corresponding to each birth year.}
 
 \item{max_lambda}{TBD}
 
-\item{size_text}{Text size use in the theme of the graph returned by the function.}
+\item{size_text}{Text size use in the theme of the graph returned by the
+function.}
 
 \item{foi_sim}{TBD}
 }
 \value{
-A ggplot2 object containing the Force-of-infection-vs-time including the corresponding confidence interval.
+A ggplot2 object containing the Force-of-infection-vs-time including
+the corresponding confidence interval.
 }
 \description{
-This function generates a Force-of-Infection plot from the results obtained by fitting a serological model.
-This includes the corresponding binomial confidence interval.
-The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
+This function generates a Force-of-Infection plot from the results obtained
+by fitting a serological model. This includes the corresponding binomial
+confidence interval. The x axis corresponds to the decades covered by the
+survey the y axis to the Force-of-Infection.
 }
 \examples{
 data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
 seromodel_object <- run_seromodel(
-   serodata = serodata,
-   foi_model = "constant",
-   n_iters = 1000
- )
+  serodata = serodata,
+  foi_model = "constant",
+  n_iters = 1000
+)
 cohort_ages <- get_cohort_ages(serodata)
-plot_foi(seromodel_object = seromodel_object,
-         cohort_ages = cohort_ages,
-         size_text = 15)
+plot_foi(
+  seromodel_object = seromodel_object,
+  cohort_ages = cohort_ages,
+  size_text = 15
+)
 }

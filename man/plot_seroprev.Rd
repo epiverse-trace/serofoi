@@ -2,32 +2,37 @@
 % Please edit documentation in R/visualisation.R
 \name{plot_seroprev}
 \alias{plot_seroprev}
-\title{Function that generates the sero-positivity plot from a raw serological survey dataset}
+\title{Function that generates the sero-positivity plot from a raw serological
+survey dataset}
 \usage{
 plot_seroprev(serodata, size_text = 6)
 }
 \arguments{
 \item{serodata}{A data frame containing the data from a serological survey.
 This data frame must contain the following columns:
-\tabular{ll}{
-\code{survey} \tab survey Label of the current survey \cr \tab \cr
-\code{total} \tab Number of samples for each age group\cr \tab \cr
-\code{counts} \tab Number of positive samples for each age group\cr \tab \cr
-\code{age_min} \tab age_min \cr \tab \cr
-\code{age_max} \tab age_max \cr \tab \cr
-\code{tsur} \tab Year in which the survey took place \cr \tab \cr
-\code{country} \tab The country where the survey took place \cr \tab \cr
-\code{test} \tab The type of test taken \cr \tab \cr
-\code{antibody} \tab antibody \cr \tab \cr
+\describe{
+\item{\code{survey}}{survey Label of the current survey}
+\item{\code{total}}{Number of samples for each age group}
+\item{\code{counts}}{Number of positive samples for each age group}
+\item{\code{age_min}}{age_min}
+\item{\code{age_max}}{age_max}
+\item{\code{tsur}}{Year in which the survey took place}
+\item{\code{country}}{The country where the survey took place}
+\item{\code{test}}{The type of test taken}
+\item{\code{antibody}}{antibody}
 }}
 
-\item{size_text}{Text size use in the theme of the graph returned by the function.}
+\item{size_text}{Text size use in the theme of the graph returned by the
+function.}
 }
 \value{
-A ggplot object containing the seropositivity-vs-age graph of the raw data of a given seroprevalence survey with its corresponging binomial confidence interval.
+A ggplot object containing the seropositivity-vs-age graph of the raw
+data of a given seroprevalence survey with its corresponging binomial
+confidence interval.
 }
 \description{
-Function that generates the sero-positivity plot from a raw serological survey dataset
+Function that generates the sero-positivity plot from a raw serological
+survey dataset
 }
 \examples{
 data(chagas2012)

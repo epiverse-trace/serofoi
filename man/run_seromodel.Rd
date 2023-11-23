@@ -2,7 +2,8 @@
 % Please edit documentation in R/modelling.R
 \name{run_seromodel}
 \alias{run_seromodel}
-\title{Function that runs the specified stan model for the Force-of-Infection and estimates de seroprevalence based on the result of the fit}
+\title{Function that runs the specified stan model for the Force-of-Infection and
+estimates de seroprevalence based on the result of the fit}
 \usage{
 run_seromodel(
   serodata,
@@ -16,58 +17,73 @@ run_seromodel(
 )
 }
 \arguments{
-\item{serodata}{A data frame containing the data from a seroprevalence survey.
-This data frame must contain the following columns:
-\tabular{ll}{
-\code{survey} \tab survey Label of the current survey \cr \tab \cr
-\code{total} \tab Number of samples for each age group\cr \tab \cr
-\code{counts} \tab Number of positive samples for each age group\cr \tab \cr
-\code{age_min} \tab age_min \cr \tab \cr
-\code{age_max} \tab age_max \cr \tab \cr
-\code{tsur} \tab Year in which the survey took place \cr \tab \cr
-\code{country} \tab The country where the survey took place \cr \tab \cr
-\code{test} \tab The type of test taken \cr \tab \cr
-\code{antibody} \tab antibody \cr \tab \cr
-\code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
-\code{sample_size} \tab The size of the sample \cr \tab \cr
-\code{birth_year} \tab The year in which the individuals of each age group were bornt \cr \tab \cr
-\code{prev_obs} \tab Observed prevalence \cr \tab \cr
-\code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
-\code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
+\item{serodata}{A data frame containing the data from a seroprevalence
+survey. This data frame must contain the following columns:
+\describe{
+\item{\code{survey}}{survey Label of the current survey}
+\item{\code{total}}{Number of samples for each age group}
+\item{\code{counts}}{Number of positive samples for each age group}
+\item{\code{age_min}}{age_min}
+\item{\code{age_max}}{age_max}
+\item{\code{tsur}}{Year in which the survey took place}
+\item{\code{country}}{The country where the survey took place}
+\item{\code{test}}{The type of test taken}
+\item{\code{antibody}}{antibody}
+\item{\code{age_mean_f}}{Floor value of the average between age_min and age_max}
+\item{\code{sample_size}}{The size of the sample}
+\item{\code{birth_year}}{The year in which the individuals of each age group
+were born}
+\item{\code{prev_obs}}{Observed prevalence}
+\item{\code{prev_obs_lower}}{Lower limit of the confidence interval for the
+observed prevalence}
+\item{\code{prev_obs_upper}}{Upper limit of the confidence interval for the
+observed prevalence}
 }
-The last six colums can be added to \code{serodata} by means of the function \code{\link{prepare_serodata}}.}
+The last six colums can be added to \code{serodata} by means of the function
+\code{\link[=prepare_serodata]{prepare_serodata()}}.}
 
-\item{foi_model}{Name of the selected model. Current version provides three options:
+\item{foi_model}{Name of the selected model. Current version provides three
+options:
 \describe{
 \item{\code{"constant"}}{Runs a constant model}
 \item{\code{"tv_normal"}}{Runs a normal model}
 \item{\code{"tv_normal_log"}}{Runs a normal logarithmic model}
 }}
 
-\item{n_iters}{Number of interations for eah chain including the warmup. \code{iter} in \link[rstan]{sampling}.}
+\item{n_iters}{Number of interations for eah chain including the warmup.
+\code{iter} in \link[rstan:stanmodel-method-sampling]{sampling}.}
 
-\item{n_thin}{Positive integer specifying the period for saving samples. \code{thin} in \link[rstan]{sampling}.}
+\item{n_thin}{Positive integer specifying the period for saving samples.
+\code{thin} in \link[rstan:stanmodel-method-sampling]{sampling}.}
 
-\item{delta}{Real number between 0 and 1 that represents the target average acceptance probability.
-Increasing the value of \code{delta} will result in a smaller step size and fewer divergences.
-For further details refer to the \code{control} parameter in \link[rstan]{sampling} or \href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.}
+\item{delta}{Real number between 0 and 1 that represents the target average
+acceptance probability. Increasing the value of \code{delta} will result in a
+smaller step size and fewer divergences. For further details refer to the
+\code{control} parameter in \link[rstan:stanmodel-method-sampling]{sampling} or
+\href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.}
 
-\item{m_treed}{Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the \code{control} parameter in \link[rstan]{sampling}.}
+\item{m_treed}{Maximum tree depth for the binary tree used in the NUTS stan
+sampler. For further details refer to the \code{control} parameter in
+\link[rstan:stanmodel-method-sampling]{sampling}.}
 
 \item{decades}{Number of decades covered by the survey data.}
 
 \item{print_summary}{TBD}
 }
 \value{
-\code{seromodel_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seromodel}.
+\code{seromodel_object}. An object containing relevant information about
+the implementation of the model. For further details refer to
+\link{fit_seromodel}.
 }
 \description{
-This function runs the specified model for the Force-of-Infection \code{foi_model} using the data froma seroprevalence survey
-\code{serodata} as the input data. See \link{fit_seromodel} for further details.
+This function runs the specified model for the Force-of-Infection \code{foi_model}
+using the data froma seroprevalence survey \code{serodata} as the input data. See
+\link{fit_seromodel} for further details.
 }
 \examples{
 data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
-run_seromodel (serodata,
-               foi_model = "constant")
+run_seromodel(serodata,
+  foi_model = "constant"
+)
 }

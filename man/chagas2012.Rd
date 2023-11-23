@@ -5,7 +5,7 @@
 \alias{chagas2012}
 \title{Seroprevalence data on serofoi}
 \format{
-An object of class \code{"cross"}; see \code{\link[qtl]{read.cross}}.
+An object of class \code{"cross"}; see \code{\link[qtl:read.cross]{qtl::read.cross()}}.
 }
 \usage{
 chagas2012

@@ -7,14 +7,16 @@
 group_sim_data(sim_data, col_age = "age_mean_f", step = 5)
 }
 \arguments{
-\item{sim_data}{Dataframe with the same structure as the output of \code{\link{generate_sim_data}}.}
+\item{sim_data}{Dataframe with the same structure as the output of
+\code{\link[=generate_sim_data]{generate_sim_data()}}.}
 
 \item{col_age}{name of the column containing the age information}
 
 \item{step}{step used to split the age interval}
 }
 \value{
-Dataframe object containing grouped simulated data generated from \code{foi}
+Dataframe object containing grouped simulated data generated from
+\code{foi}
 }
 \description{
 Function that groups a simulated serological dataset by age
