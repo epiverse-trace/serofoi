@@ -361,9 +361,7 @@ group_sim_data <- function(sim_data,
       country = "None",
       survey = sim_data$survey[1],
       test = sim_data$test[1],
-      antibody = sim_data$antibody[1]
-    ) %>%
-    mutate(
+      antibody = sim_data$antibody[1],
       age_min = as.integer(sub("\\-.*", "", .data$age_group)),
       age_max = as.integer(sub(".*\\-", "", .data$age_group))
     ) %>%
