@@ -2,8 +2,9 @@
 % Please edit documentation in R/visualisation.R
 \name{plot_seromodel}
 \alias{plot_seromodel}
-\title{Function that generates a vertical arrange of plots showing a summary of a model, the estimated seroprevalence,
-the Force-of-Infection fit and the R-hat estimates plots.}
+\title{Function that generates a vertical arrange of plots showing a summary of a
+model, the estimated seroprevalence, the Force-of-Infection fit and the R-hat
+estimates plots.}
 \usage{
 plot_seromodel(
   seromodel_object,
@@ -14,51 +15,60 @@ plot_seromodel(
 )
 }
 \arguments{
-\item{seromodel_object}{Stanfit object containing the results of fitting a model by means of \link{run_seromodel}.}
+\item{seromodel_object}{Stanfit object containing the results of fitting a
+model by means of \link{run_seromodel}.}
 
-\item{serodata}{A data frame containing the data from a seroprevalence survey.
-This data frame must contain the following columns:
-\tabular{ll}{
-\code{survey} \tab survey Label of the current survey \cr \tab \cr
-\code{total} \tab Number of samples for each age group\cr \tab \cr
-\code{counts} \tab Number of positive samples for each age group\cr \tab \cr
-\code{age_min} \tab age_min \cr \tab \cr
-\code{age_max} \tab age_max \cr \tab \cr
-\code{tsur} \tab Year in which the survey took place \cr \tab \cr
-\code{country} \tab The country where the survey took place \cr \tab \cr
-\code{test} \tab The type of test taken \cr \tab \cr
-\code{antibody} \tab antibody \cr \tab \cr
-\code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
-\code{sample_size} \tab The size of the sample \cr \tab \cr
-\code{birth_year} \tab The year in which the individuals of each age group were bornt \cr \tab \cr
-\code{prev_obs} \tab Observed prevalence \cr \tab \cr
-\code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
-\code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
+\item{serodata}{A data frame containing the data from a seroprevalence
+survey. This data frame must contain the following columns:
+\describe{
+\item{\code{survey}}{survey Label of the current survey}
+\item{\code{total}}{Number of samples for each age group}
+\item{\code{counts}}{Number of positive samples for each age group}
+\item{\code{age_min}}{age_min}
+\item{\code{age_max}}{age_max}
+\item{\code{tsur}}{Year in which the survey took place}
+\item{\code{country}}{The country where the survey took place}
+\item{\code{test}}{The type of test taken}
+\item{\code{antibody}}{antibody}
+\item{\code{age_mean_f}}{Floor value of the average between age_min and age_max}
+\item{\code{sample_size}}{The size of the sample}
+\item{\code{birth_year}}{The year in which the individuals of each age group
+were born}
+\item{\code{prev_obs}}{Observed prevalence}
+\item{\code{prev_obs_lower}}{Lower limit of the confidence interval for the
+observed prevalence}
+\item{\code{prev_obs_upper}}{Upper limit of the confidence interval for the
+observed prevalence}
 }
-The last six colums can be added to \code{serodata} by means of the function \code{\link{prepare_serodata}}.}
+The last six colums can be added to \code{serodata} by means of the function
+\code{\link[=prepare_serodata]{prepare_serodata()}}.}
 
 \item{max_lambda}{TBD}
 
-\item{size_text}{Text size use in the theme of the graph returned by the function.}
+\item{size_text}{Text size use in the theme of the graph returned by the
+function.}
 
 \item{foi_sim}{TBD}
 }
 \value{
-A ggplot object with a vertical arrange containing the seropositivity, force of infection, and convergence plots.
+A ggplot object with a vertical arrange containing the
+seropositivity, force of infection, and convergence plots.
 }
 \description{
-Function that generates a vertical arrange of plots showing a summary of a model, the estimated seroprevalence,
-the Force-of-Infection fit and the R-hat estimates plots.
+Function that generates a vertical arrange of plots showing a summary of a
+model, the estimated seroprevalence, the Force-of-Infection fit and the R-hat
+estimates plots.
 }
 \examples{
- data(chagas2012)
- serodata <- prepare_serodata(chagas2012)
- seromodel_object <- run_seromodel(
-   serodata = serodata,
-   foi_model = "constant",
-   n_iters = 1000
- )
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
+seromodel_object <- run_seromodel(
+  serodata = serodata,
+  foi_model = "constant",
+  n_iters = 1000
+)
 plot_seromodel(seromodel_object,
-               serodata = serodata,
-               size_text = 15)
+  serodata = serodata,
+  size_text = 15
+)
 }

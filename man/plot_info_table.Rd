@@ -24,8 +24,10 @@ seromodel_object <- run_seromodel(
   foi_model = "constant",
   n_iters = 1000
 )
-seromodel_summary <- extract_seromodel_summary(seromodel_object = seromodel_object,
-                                              serodata = serodata)
-info = t(seromodel_summary)
-plot_info_table (info, size_text = 15)
+seromodel_summary <- extract_seromodel_summary(
+  seromodel_object = seromodel_object,
+  serodata = serodata
+)
+info <- t(seromodel_summary)
+plot_info_table(info, size_text = 15)
 }

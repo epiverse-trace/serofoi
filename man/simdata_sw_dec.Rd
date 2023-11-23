@@ -5,7 +5,7 @@
 \alias{simdata_sw_dec}
 \title{Step-wise decreasing FoI simulated serosurvey}
 \format{
-An object of class \code{"cross"}; see \code{\link[qtl]{read.cross}}.
+An object of class \code{"cross"}; see \code{\link[qtl:read.cross]{qtl::read.cross()}}.
 }
 \usage{
 simdata_sw_dec

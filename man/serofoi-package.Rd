@@ -9,5 +9,6 @@
 A DESCRIPTION OF THE PACKAGE
 }
 \references{
-Stan Development Team (NA). RStan: the R interface to Stan. R package version 2.26.22. https://mc-stan.org
+Stan Development Team (NA). RStan: the R interface to Stan. R
+package version 2.26.22. https://mc-stan.org
 }
