@@ -300,9 +300,9 @@ get_foi_central_estimates <- function(seromodel_object,
   # generates central estimations
   foi_central_estimates <- data.frame(
     year = cohort_ages$birth_year,
-    lower = apply(foi, 2, function(x) quantile(x, lower_quantile)),
-    upper = apply(foi, 2, function(x) quantile(x, upper_quantile)),
-    medianv = apply(foi, 2, function(x) quantile(x, medianv_quantile))
+    lower = apply(foi, 2, quantile, lower_quantile),
+    upper = apply(foi, 2, quantile, upper_quantile),
+    medianv = apply(foi, 2, quantile, medianv_quantile)
   )
   return(foi_central_estimates)
 }
@@ -444,11 +444,11 @@ get_prev_expanded <- function(foi,
     prev_pn[i, ] <- 1 - exp(-exposure_expanded %*% foi_expanded[i, ])
   }
 
-  lower <- apply(prev_pn, 2, function(x) quantile(x, 0.1))
+  lower <- apply(prev_pn, 2, quantile, 0.1)
 
-  upper <- apply(prev_pn, 2, function(x) quantile(x, 0.9))
+  upper <- apply(prev_pn, 2, quantile, 0.9)
 
-  medianv <- apply(prev_pn, 2, function(x) quantile(x, 0.5))
+  medianv <- apply(prev_pn, 2, quantile, 0.5)
 
   predicted_prev <- data.frame(
     age = 1:age_max,
