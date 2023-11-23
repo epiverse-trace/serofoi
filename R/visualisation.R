@@ -1,8 +1,12 @@
-#' Function that generates the sero-positivity plot from a raw serological survey dataset
+#' Function that generates the sero-positivity plot from a raw serological
+#' survey dataset
 #'
 #' @inheritParams prepare_serodata
-#' @param size_text Text size use in the theme of the graph returned by the function.
-#' @return A ggplot object containing the seropositivity-vs-age graph of the raw data of a given seroprevalence survey with its corresponging binomial confidence interval.
+#' @param size_text Text size use in the theme of the graph returned by the
+#'   function.
+#' @return A ggplot object containing the seropositivity-vs-age graph of the raw
+#'   data of a given seroprevalence survey with its corresponging binomial
+#'   confidence interval.
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
@@ -24,15 +28,18 @@ plot_seroprev <- function(serodata,
   return(seroprev_plot)
 }
 
-#' Function that generates a seropositivity plot corresponding to the specified fitted serological model
+#' Function that generates a seropositivity plot corresponding to the specified
+#' fitted serological model
 #'
-#' This function generates a seropositivity plot of the specified serological model object. This includes the original data grouped by age
-#' as well as the obtained fitting from the model implementation. Age is located on the x axis and seropositivity on the y axis with its
-#' corresponding confidence interval.
+#' This function generates a seropositivity plot of the specified serological
+#' model object. This includes the original data grouped by age as well as the
+#' obtained fitting from the model implementation. Age is located on the x axis
+#' and seropositivity on the y axis with its corresponding confidence interval.
 #' @inheritParams get_foi_central_estimates
 #' @inheritParams run_seromodel
 #' @param size_text Text size of the graph returned by the function.
-#' @return A ggplot object containing the seropositivity-vs-age graph including the data, the fitted model and their corresponding confindence intervals.
+#' @return A ggplot object containing the seropositivity-vs-age graph including
+#'   the data, the fitted model and their corresponding confindence intervals.
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
@@ -108,16 +115,20 @@ plot_seroprev_fitted <- function(seromodel_object,
 
 # TODO Complete @param documentation
 
-#' Function that generates a Force-of-Infection plot corresponding to the specified fitted serological model
+#' Function that generates a Force-of-Infection plot corresponding to the
+#' specified fitted serological model
 #'
-#' This function generates a Force-of-Infection plot from the results obtained by fitting a serological model.
-#' This includes the corresponding binomial confidence interval.
-#' The x axis corresponds to the decades covered by the survey the y axis to the Force-of-Infection.
+#' This function generates a Force-of-Infection plot from the results obtained
+#' by fitting a serological model. This includes the corresponding binomial
+#' confidence interval. The x axis corresponds to the decades covered by the
+#' survey the y axis to the Force-of-Infection.
 #' @inheritParams get_foi_central_estimates
-#' @param size_text Text size use in the theme of the graph returned by the function.
+#' @param size_text Text size use in the theme of the graph returned by the
+#'   function.
 #' @param max_lambda TBD
 #' @param foi_sim TBD
-#' @return A ggplot2 object containing the Force-of-infection-vs-time including the corresponding confidence interval.
+#' @return A ggplot2 object containing the Force-of-infection-vs-time including
+#'   the corresponding confidence interval.
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
@@ -229,13 +240,17 @@ plot_foi <- function(seromodel_object,
   return(foi_plot)
 }
 
-#' Function that generates a plot of the R-hat estimates of the specified fitted serological model
+#' Function that generates a plot of the R-hat estimates of the specified fitted
+#' serological model
 #'
-#' This function generates a plot of the R-hat estimates obtained for a specified fitted serological model `seromodel_object`.
-#' The x axis corresponds to the decades covered by the survey and the y axis to the value of the rhats.
-#' All rhats must be smaller than 1 to ensure convergence (for further details check [rhat][bayesplot::rhat]).
+#' This function generates a plot of the R-hat estimates obtained for a
+#' specified fitted serological model `seromodel_object`. The x axis corresponds
+#' to the decades covered by the survey and the y axis to the value of the
+#' rhats. All rhats must be smaller than 1 to ensure convergence (for further
+#' details check [rhat][bayesplot::rhat]).
 #' @inheritParams get_foi_central_estimates
-#' @param size_text Text size use in the theme of the graph returned by the function.
+#' @param size_text Text size use in the theme of the graph returned by the
+#'   function.
 #' @return The rhats-convergence plot of the selected model.
 #' @examples
 #' data(chagas2012)
@@ -303,15 +318,18 @@ plot_rhats <- function(seromodel_object,
 
 # TODO Complete @param documentation
 
-#' Function that generates a vertical arrange of plots showing a summary of a model, the estimated seroprevalence,
-#' the Force-of-Infection fit and the R-hat estimates plots.
+#' Function that generates a vertical arrange of plots showing a summary of a
+#' model, the estimated seroprevalence, the Force-of-Infection fit and the R-hat
+#' estimates plots.
 #'
 #' @inheritParams get_foi_central_estimates
 #' @inheritParams run_seromodel
-#' @param size_text Text size use in the theme of the graph returned by the function.
+#' @param size_text Text size use in the theme of the graph returned by the
+#'   function.
 #' @param max_lambda TBD
 #' @param foi_sim TBD
-#' @return A ggplot object with a vertical arrange containing the seropositivity, force of infection, and convergence plots.
+#' @return A ggplot object with a vertical arrange containing the
+#'   seropositivity, force of infection, and convergence plots.
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)

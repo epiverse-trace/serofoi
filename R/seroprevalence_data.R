@@ -3,31 +3,35 @@
 
 #' Function that prepares the data from a serological survey for modelling
 #'
-#' This function adds the necessary additional variables to the given dataset `serodata` corresponding to a serological survey.
+#' This function adds the necessary additional variables to the given dataset
+#' `serodata` corresponding to a serological survey.
 #' @param serodata A data frame containing the data from a serological survey.
-#' This data frame must contain the following columns:
-#' \tabular{ll}{
-#' `survey` \tab survey Label of the current survey \cr \tab \cr
-#' `total` \tab Number of samples for each age group\cr \tab \cr
-#' `counts` \tab Number of positive samples for each age group\cr \tab \cr
-#' `age_min` \tab age_min \cr \tab \cr
-#' `age_max` \tab age_max \cr \tab \cr
-#' `tsur` \tab Year in which the survey took place \cr \tab \cr
-#' `country` \tab The country where the survey took place \cr \tab \cr
-#' `test` \tab The type of test taken \cr \tab \cr
-#' `antibody` \tab antibody \cr \tab \cr
+#'   This data frame must contain the following columns:
+#' \describe{
+#'   \item{`survey`}{survey Label of the current survey}
+#'   \item{`total`}{Number of samples for each age group}
+#'   \item{`counts`}{Number of positive samples for each age group}
+#'   \item{`age_min`}{age_min}
+#'   \item{`age_max`}{age_max}
+#'   \item{`tsur`}{Year in which the survey took place}
+#'   \item{`country`}{The country where the survey took place}
+#'   \item{`test`}{The type of test taken}
+#'   \item{`antibody`}{antibody}
 #' }
-#' @param alpha probability of a type I error. For further details refer to [binconf][Hmisc::binconf].
-#' @return serodata with additional columns necessary for the analysis. These columns are:
-#' \tabular{ll}{
-#' `age_mean_f` \tab Floor value of the average between age_min and age_max \cr \tab \cr
-#' `sample_size` \tab The size of the sample \cr \tab \cr
-#' `birth_year` \tab Years in which the subjects were borned
-#' according to the age group marker `age_mean_f`\cr \tab \cr
-#' according to the age group marker `age_mean_f`\cr \tab \cr
-#' `prev_obs` \tab Observed prevalence \cr \tab \cr
-#' `prev_obs_lower` \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
-#' `prev_obs_upper` \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
+#' @param alpha probability of a type I error. For further details refer to
+#'   [binconf][Hmisc::binconf].
+#' @return serodata with additional columns necessary for the analysis. These
+#'   columns are:
+#' \describe{
+#'   \item{`age_mean_f`}{Floor value of the average between age_min and age_max}
+#'   \item{`sample_size`}{The size of the sample}
+#'   \item{`birth_year`}{Years in which the subject was born according to the
+#'     age group marker `age_mean_f`}
+#'   \item{`prev_obs`}{Observed prevalence}
+#'   \item{`prev_obs_lower`}{Lower limit of the confidence interval for the
+#'     observed prevalence}
+#'   \item{`prev_obs_upper`}{Upper limit of the confidence interval for the
+#'     observed prevalence}
 #' }
 #' @examples
 #' data(chagas2012)
@@ -80,11 +84,12 @@ prepare_serodata <- function(serodata = serodata,
 }
 
 
-#' Function that prepares a pre-processed serological survey dataset to plot the binomial confidence intervals of the seroprevalence grouped by
-#' age group
+#' Function that prepares a pre-processed serological survey dataset to plot the
+#' binomial confidence intervals of the seroprevalence grouped by age group
 #'
-#' This function prepapares a given pre-processed serological dataset (see [prepare_serodata()]) to plot the binomial confidence intervals
-#' of its corresponding seroprevalence grouped by age group.
+#' This function prepapares a given pre-processed serological dataset (see
+#' [prepare_serodata()]) to plot the binomial confidence intervals of its
+#' corresponding seroprevalence grouped by age group.
 #' @inheritParams run_seromodel
 #' @return data set with the binomial confidence intervals
 #' @examples
@@ -128,21 +133,24 @@ prepare_bin_data <- function(serodata) {
   return(xx)
 }
 
-#' Function that generates the probabilities of being previously exposed to a pathogen.
+#' Function that generates the probabilities of being previously exposed to a
+#' pathogen.
 #'
 #' @param sim_data A dataframe object containing the following columns:
-#' \tabular{ll}{
-#' `tsur` \tab Year of the survey\cr \tab \cr
-#' `age_mean_f` \tab Age \cr \tab \cr
-#' `birth_year` \tab Years in which the subjects were borned
-#' according to the age group marker `age_mean_f`\cr \tab \cr
+#' \describe{
+#'   \item{`tsur`}{Year of the survey}
+#'   \item{`age_mean_f`}{Age}
+#'   \item{`birth_year`}{Years in which the subjects were born according to the
+#'     age group marker `age_mean_f`}
 #' }
-#' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection ordered from past to present
+#' @param foi Numeric atomic vector corresponding to the desired
+#'   Force-of-Infection ordered from past to present
 #' @param seed The seed for random number generation.
 #' @return A dataframe containing the following columns:
-#' \tabular{ll}{
-#' `age` \tab Exposure ages \cr \tab \cr
-#' `probability` \tab Probability to obtain a seropositive case for each age according to the provided FoI\cr \tab \cr
+#' \describe
+#'   \item{`age`}{Exposure ages}
+#'   \item{`probability`}{Probability to obtain a seropositive case for each age
+#'     according to the provided FoI}
 #' }
 #' @export
 get_sim_probability <- function(sim_data, foi) {
@@ -158,27 +166,31 @@ get_sim_probability <- function(sim_data, foi) {
   return(sim_probability)
 }
 
-#' Function that generates a sample of counts of seropositive individuals by sampling from a binomial distribution
+#' Function that generates a sample of counts of seropositive individuals by
+#' sampling from a binomial distribution
 #'
 #' @param sim_data A dataframe object containing the following columns:
-#' \tabular{ll}{
-#' `tsur` \tab Year of the survey\cr \tab \cr
-#' `age_mean_f` \tab Age \cr \tab \cr
-#' `birth_year` \tab Years in which the subjects were borned
-#' according to the age group marker `age_mean_f`\cr \tab \cr
+#' \describe{
+#'   \item{`tsur`}{Year of the survey}
+#'   \item{`age_mean_f`}{Age}
+#'   \item{`birth_year`}{Years in which the subjects were born according to the
+#'     age group marker `age_mean_f`}
 #' }
-#' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection ordered from past to present
-#' @param sample_size_by_age Sample size for each age group: either a single integer indicating that the sample size is
-#' the same for all ages or a vector of sample sizes the same length as
-#' This corresponds to the number of trials `size` in [rbinom][stats::rbinom].
+#' @param foi Numeric atomic vector corresponding to the desired
+#'   Force-of-Infection ordered from past to present
+#' @param sample_size_by_age Sample size for each age group: either a single
+#'   integer indicating that the sample size is the same for all ages or a
+#'   vector of sample sizes the same length as This corresponds to the number of
+#'   trials `size` in [rbinom][stats::rbinom].
 #' @param seed The seed for random number generation.
 #' @return A dataframe containing the following columns:
-#' \tabular{ll}{
-#' `age` \tab Age by the time of the survey \cr \tab \cr
-#' `n_seropositive` \tab Number of positive cases sampled according to the provided FoI \cr \tab \cr
+#' \describe{
+#'   \item{`age`}{Age by the time of the survey}
+#'   \item{`n_seropositive`}{Number of positive cases sampled according to the
+#'     provided FoI}
 #' }
-#' simulated list of counts following a binomial distribution in accordance with a given
-#' force of infection and age class sizes.
+#'   simulated list of counts following a binomial distribution in accordance
+#'   with a given force of infection and age class sizes.
 #' @examples
 #' \dontrun{
 #' foi <- rep(0.02, 50)
@@ -210,10 +222,11 @@ get_sim_n_seropositive <- function(sim_data, foi, sample_size_by_age, seed = 123
 
 #' Function that generates a simulated serosurvey according to the specified FoI
 #'
-#' @param foi Numeric atomic vector corresponding to the desired Force-of-Infection ordered from past to present
-#' @param sample_size_by_age Size of each age group specified by either an atomic
-#' vector of the same size as `foi` or an integer.
-#' This corresponds to the number of trials `size` in [rbinom][stats::rbinom].
+#' @param foi Numeric atomic vector corresponding to the desired
+#'   Force-of-Infection ordered from past to present
+#' @param sample_size_by_age Size of each age group specified by either an
+#'   atomic vector of the same size as `foi` or an integer. This corresponds to
+#'   the number of trials `size` in [rbinom][stats::rbinom].
 #' @param tsur Year in which the serosurvey was conducted.
 #' @param birth_year_min Minimum age of year in the simulated serosurvey.
 #' @param survey_label Label for the resulting simulated serosurvey.
@@ -304,10 +317,12 @@ get_age_group <- function(age, step) {
 
 #' Function that groups a simulated serological dataset by age
 #'
-#' @param sim_data Dataframe with the same structure as the output of [generate_sim_data()].
+#' @param sim_data Dataframe with the same structure as the output of
+#'   [generate_sim_data()].
 #' @param col_age name of the column containing the age information
 #' @param step step used to split the age interval
-#' @return Dataframe object containing grouped simulated data generated from `foi`
+#' @return Dataframe object containing grouped simulated data generated from
+#'   `foi`
 group_sim_data <- function(sim_data,
                            col_age = "age_mean_f",
                            step = 5) {
