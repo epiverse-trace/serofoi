@@ -63,8 +63,10 @@ prepare_serodata <- function(serodata = serodata,
   }
 
   if (!any(colnames(serodata) == "birth_year")) {
-    serodata <- serodata %>%
-      dplyr::mutate(birth_year = .data$tsur - .data$age_mean_f)
+    serodata <- dplyr::mutate(
+      serodata,
+      birth_year = .data$tsur - .data$age_mean_f
+    )
   }
   serodata <- serodata %>%
     cbind(

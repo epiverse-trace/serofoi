@@ -485,7 +485,8 @@ get_prev_expanded <- function(foi,
       prev_expanded <-
         base::merge(prev_expanded, xx, by = "age", all.x = TRUE)
     } else {
-      prev_expanded <- prev_expanded %>% dplyr::mutate(
+      prev_expanded <- dplyr::mutate(
+        prev_expanded,
         cut_ages = "original",
         bin_size = .data$sample_by_age,
         bin_pos = .data$positives,
