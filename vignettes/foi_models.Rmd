@@ -152,7 +152,11 @@ plot(model_3_plot)
 ```{r model_3_plot, include = TRUE, echo = FALSE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
 no_transm <- 0.0000000001
 big_outbreak <- 1.5
-foi_sim_large_epi <- c(rep(no_transm, 32), rep(big_outbreak, 3), rep(no_transm, 15))
+foi_sim_large_epi <- c(
+  rep(no_transm, 32),
+  rep(big_outbreak, 3),
+  rep(no_transm, 15)
+)
 
 model_3_plot <- plot_seromodel(model_3,
   serodata = serodata_large_epi,

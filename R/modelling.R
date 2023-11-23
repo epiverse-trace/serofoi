@@ -76,7 +76,9 @@ run_seromodel <- function(serodata,
                           print_summary = TRUE) {
   foi_model <- match.arg(foi_model)
   survey <- unique(serodata$survey)
-  if (length(survey) > 1) warning("You have more than 1 surveys or survey codes")
+  if (length(survey) > 1) {
+    warning("You have more than 1 surveys or survey codes")
+  }
   seromodel_object <- fit_seromodel(
     serodata = serodata,
     foi_model = foi_model,
@@ -194,7 +196,8 @@ fit_seromodel <- function(serodata,
     ),
     seed = "12345",
     thin = n_thin,
-    chain_id = 0 # https://github.com/stan-dev/rstan/issues/761#issuecomment-647029649
+    # https://github.com/stan-dev/rstan/issues/761#issuecomment-647029649
+    chain_id = 0
   )
 
   if (seromodel_fit@mode == 0) {
@@ -227,7 +230,10 @@ get_cohort_ages <- function(serodata) {
   birth_year <- (min(serodata$birth_year):serodata$tsur[1])
   age <- (seq_along(min(serodata$birth_year):(serodata$tsur[1] - 1)))
 
-  cohort_ages <- data.frame(birth_year = birth_year[-length(birth_year)], age = rev(age))
+  cohort_ages <- data.frame(
+    birth_year = birth_year[-length(birth_year)],
+    age = rev(age)
+  )
   return(cohort_ages)
 }
 
@@ -341,9 +347,14 @@ get_foi_central_estimates <- function(seromodel_object,
 extract_seromodel_summary <- function(seromodel_object,
                                       serodata) {
   #------- Loo estimates
-  # The argument parameter_name refers to the name given to the Log-likelihood in the stan models.
-  # See loo::extract_log_lik() documentation for further details
-  loo_fit <- loo::loo(seromodel_object, save_psis = FALSE, pars = c(parameter_name = "logLikelihood"))
+  # The argument parameter_name refers to the name given to the Log-likelihood
+  # in the stan models. See loo::extract_log_lik() documentation for further
+  # details
+  loo_fit <- loo::loo(
+    seromodel_object,
+    save_psis = FALSE,
+    pars = c(parameter_name = "logLikelihood")
+  )
   if (sum(is.na(loo_fit)) < 1) {
     lll <- as.numeric((round(loo_fit$estimates[1, ], 2)))
   } else {
