@@ -9,7 +9,7 @@
 #'
 #' @usage simdata_constant
 #'
-#' @format An object of class \code{"cross"}; see \code{\link[qtl]{read.cross}}.
+#' @format An object of class `"cross"`; see [qtl::read.cross()].
 #'
 #' @keywords datasets
 #'

@@ -74,3 +74,4 @@ Additional_repositories:
     https://mc-stan.org/r-packages/
 Biarch: true
 SystemRequirements: GNU make
+Roxygen: list(markdown = TRUE)
