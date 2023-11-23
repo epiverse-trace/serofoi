@@ -88,11 +88,11 @@ run_seromodel <- function(serodata,
     m_treed = m_treed,
     decades = decades
   )
-  print(paste0(
+  message(
     "serofoi model ",
     foi_model,
     " finished running ------"
-  ))
+  )
   if (print_summary) {
     model_summary <- extract_seromodel_summary(
       seromodel_object = seromodel_object,
