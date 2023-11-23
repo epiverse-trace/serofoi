@@ -231,9 +231,9 @@ plot_foi <- function(seromodel_object,
 
 #' Function that generates a plot of the R-hat estimates of the specified fitted serological model
 #'
-#' This function generates a plot of the R-hat estimates obtained for a specified fitted serological model \code{seromodel_object}.
+#' This function generates a plot of the R-hat estimates obtained for a specified fitted serological model `seromodel_object`.
 #' The x axis corresponds to the decades covered by the survey and the y axis to the value of the rhats.
-#' All rhats must be smaller than 1 to ensure convergence (for further details check \link[bayesplot]{rhat}).
+#' All rhats must be smaller than 1 to ensure convergence (for further details check [rhat][bayesplot::rhat]).
 #' @inheritParams get_foi_central_estimates
 #' @param size_text Text size use in the theme of the graph returned by the function.
 #' @return The rhats-convergence plot of the selected model.

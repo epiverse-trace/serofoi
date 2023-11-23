@@ -83,3 +83,4 @@ Remotes:
     tidyverse/purrr
 Biarch: true
 SystemRequirements: GNU make
+Roxygen: list(markdown = TRUE)

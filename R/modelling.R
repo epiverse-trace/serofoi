@@ -3,44 +3,44 @@
 
 #' Function that runs the specified stan model for the Force-of-Infection and estimates de seroprevalence based on the result of the fit
 #'
-#' This function runs the specified model for the Force-of-Infection \code{foi_model} using the data froma seroprevalence survey
-#' \code{serodata} as the input data. See \link{fit_seromodel} for further details.
+#' This function runs the specified model for the Force-of-Infection `foi_model` using the data froma seroprevalence survey
+#' `serodata` as the input data. See [fit_seromodel] for further details.
 #'
 #' @param serodata A data frame containing the data from a seroprevalence survey.
 #' This data frame must contain the following columns:
 #' \tabular{ll}{
-#' \code{survey} \tab survey Label of the current survey \cr \tab \cr
-#' \code{total} \tab Number of samples for each age group\cr \tab \cr
-#' \code{counts} \tab Number of positive samples for each age group\cr \tab \cr
-#' \code{age_min} \tab age_min \cr \tab \cr
-#' \code{age_max} \tab age_max \cr \tab \cr
-#' \code{tsur} \tab Year in which the survey took place \cr \tab \cr
-#' \code{country} \tab The country where the survey took place \cr \tab \cr
-#' \code{test} \tab The type of test taken \cr \tab \cr
-#' \code{antibody} \tab antibody \cr \tab \cr
-#' \code{age_mean_f} \tab Floor value of the average between age_min and age_max \cr \tab \cr
-#' \code{sample_size} \tab The size of the sample \cr \tab \cr
-#' \code{birth_year} \tab The year in which the individuals of each age group were bornt \cr \tab \cr
-#' \code{prev_obs} \tab Observed prevalence \cr \tab \cr
-#' \code{prev_obs_lower} \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
-#' \code{prev_obs_upper} \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
+#' `survey` \tab survey Label of the current survey \cr \tab \cr
+#' `total` \tab Number of samples for each age group\cr \tab \cr
+#' `counts` \tab Number of positive samples for each age group\cr \tab \cr
+#' `age_min` \tab age_min \cr \tab \cr
+#' `age_max` \tab age_max \cr \tab \cr
+#' `tsur` \tab Year in which the survey took place \cr \tab \cr
+#' `country` \tab The country where the survey took place \cr \tab \cr
+#' `test` \tab The type of test taken \cr \tab \cr
+#' `antibody` \tab antibody \cr \tab \cr
+#' `age_mean_f` \tab Floor value of the average between age_min and age_max \cr \tab \cr
+#' `sample_size` \tab The size of the sample \cr \tab \cr
+#' `birth_year` \tab The year in which the individuals of each age group were bornt \cr \tab \cr
+#' `prev_obs` \tab Observed prevalence \cr \tab \cr
+#' `prev_obs_lower` \tab Lower limit of the confidence interval for the observed prevalence \cr \tab \cr
+#' `prev_obs_upper` \tab Upper limit of the confidence interval for the observed prevalence \cr \tab \cr
 #' }
-#' The last six colums can be added to \code{serodata} by means of the function \code{\link{prepare_serodata}}.
+#' The last six colums can be added to `serodata` by means of the function [prepare_serodata()].
 #' @param foi_model Name of the selected model. Current version provides three options:
 #' \describe{
-#' \item{\code{"constant"}}{Runs a constant model}
-#' \item{\code{"tv_normal"}}{Runs a normal model}
-#' \item{\code{"tv_normal_log"}}{Runs a normal logarithmic model}
+#' \item{`"constant"`}{Runs a constant model}
+#' \item{`"tv_normal"`}{Runs a normal model}
+#' \item{`"tv_normal_log"`}{Runs a normal logarithmic model}
 #' }
-#' @param n_iters Number of interations for eah chain including the warmup. \code{iter} in \link[rstan]{sampling}.
-#' @param n_thin Positive integer specifying the period for saving samples. \code{thin} in \link[rstan]{sampling}.
+#' @param n_iters Number of interations for eah chain including the warmup. `iter` in [sampling][rstan::sampling].
+#' @param n_thin Positive integer specifying the period for saving samples. `thin` in [sampling][rstan::sampling].
 #' @param delta Real number between 0 and 1 that represents the target average acceptance probability.
-#' Increasing the value of \code{delta} will result in a smaller step size and fewer divergences.
-#' For further details refer to the \code{control} parameter in \link[rstan]{sampling} or \href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.
-#' @param m_treed Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the \code{control} parameter in \link[rstan]{sampling}.
+#' Increasing the value of `delta` will result in a smaller step size and fewer divergences.
+#' For further details refer to the `control` parameter in [sampling][rstan::sampling] or [here](https://mc-stan.org/rstanarm/reference/adapt_delta.html).
+#' @param m_treed Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the `control` parameter in [sampling][rstan::sampling].
 #' @param decades Number of decades covered by the survey data.
 #' @param print_summary TBD
-#' @return \code{seromodel_object}. An object containing relevant information about the implementation of the model. For further details refer to \link{fit_seromodel}.
+#' @return `seromodel_object`. An object containing relevant information about the implementation of the model. For further details refer to [fit_seromodel].
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
@@ -88,24 +88,24 @@ run_seromodel <- function(serodata,
 
 #' Function that fits the selected model to the specified seroprevalence survey data
 #'
-#' This function fits the specified model \code{foi_model} to the serological survey data \code{serodata}
-#' by means of the \link[rstan]{sampling} method. The function determines whether the corresponding stan model
+#' This function fits the specified model `foi_model` to the serological survey data `serodata`
+#' by means of the [sampling][rstan::sampling] method. The function determines whether the corresponding stan model
 #' object needs to be compiled by rstan.
 #' @inheritParams run_seromodel
 #' @param foi_model Name of the selected model. Current version provides three options:
 #' \describe{
-#' \item{\code{"constant"}}{Runs a constant model}
-#' \item{\code{"tv_normal"}}{Runs a normal model}
-#' \item{\code{"tv_normal_log"}}{Runs a normal logarithmic model}
+#' \item{`"constant"`}{Runs a constant model}
+#' \item{`"tv_normal"`}{Runs a normal model}
+#' \item{`"tv_normal_log"`}{Runs a normal logarithmic model}
 #' }
-#' @param n_iters Number of interations for eah chain including the warmup. \code{iter} in \link[rstan]{sampling}.
-#' @param n_thin Positive integer specifying the period for saving samples. \code{thin} in \link[rstan]{sampling}.
+#' @param n_iters Number of interations for eah chain including the warmup. `iter` in [sampling][rstan::sampling].
+#' @param n_thin Positive integer specifying the period for saving samples. `thin` in [sampling][rstan::sampling].
 #' @param delta Real number between 0 and 1 that represents the target average acceptance probability.
-#' Increasing the value of \code{delta} will result in a smaller step size and fewer divergences.
-#' For further details refer to the \code{control} parameter in \link[rstan]{sampling} or \href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.
-#' @param m_treed Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the \code{control} parameter in \link[rstan]{sampling}.
+#' Increasing the value of `delta` will result in a smaller step size and fewer divergences.
+#' For further details refer to the `control` parameter in [sampling][rstan::sampling] or [here](https://mc-stan.org/rstanarm/reference/adapt_delta.html).
+#' @param m_treed Maximum tree depth for the binary tree used in the NUTS stan sampler. For further details refer to the `control` parameter in [sampling][rstan::sampling].
 #' @param decades Number of decades covered by the survey data.
-#' @return \code{seromodel_object}. \code{stanfit} object returned by the function \link[rstan]{sampling}
+#' @return `seromodel_object`. `stanfit` object returned by the function [sampling][rstan::sampling]
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
@@ -184,11 +184,11 @@ fit_seromodel <- function(serodata,
 
 #' Function that generates a data.frame containing the age of each cohort corresponding to each birth year exluding the year of the survey.
 #'
-#' This function generates a data.frame containing the age of each cohort corresponding to each \code{birth_year} excluding the year of the survey,
+#' This function generates a data.frame containing the age of each cohort corresponding to each `birth_year` excluding the year of the survey,
 #' for which the cohort age is still 0.
-#' specified serological survey data \code{serodata} excluding the year of the survey.
+#' specified serological survey data `serodata` excluding the year of the survey.
 #' @inheritParams run_seromodel
-#' @return \code{cohort_ages}. A data.frame containing the age of each cohort corresponding to each birth year
+#' @return `cohort_ages`. A data.frame containing the age of each cohort corresponding to each birth year
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(serodata = chagas2012, alpha = 0.05)
@@ -206,7 +206,7 @@ get_cohort_ages <- function(serodata) {
 #' Function that generates the exposure matrix corresponding to a serological survey
 #'
 #' @inheritParams run_seromodel
-#' @return \code{exposure_output}. An atomic matrix containing the expositions for each entry of \code{serodata} by year.
+#' @return `exposure_output`. An atomic matrix containing the expositions for each entry of `serodata` by year.
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(serodata = chagas2012)
@@ -227,9 +227,9 @@ get_exposure_matrix <- function(serodata) {
 
 #' Function that generates the central estimates for the fitted forced FoI
 #'
-#' @param seromodel_object Stanfit object containing the results of fitting a model by means of \link{run_seromodel}.
+#' @param seromodel_object Stanfit object containing the results of fitting a model by means of [run_seromodel].
 #' @param cohort_ages  A data.frame containing the age of each cohort corresponding to each birth year.
-#' @return \code{foi_central_estimates}. Central estimates for the fitted forced FoI
+#' @return `foi_central_estimates`. Central estimates for the fitted forced FoI
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
@@ -271,24 +271,24 @@ get_foi_central_estimates <- function(seromodel_object,
 #'
 #' This method extracts a summary corresponding to a serological model object that contains information about the original serological
 #' survey data used to fit the model, such as the year when the survey took place, the type of test taken and the corresponding antibody,
-#' as well as information about the convergence of the model, like the expected log pointwise predictive density \code{elpd} and its
+#' as well as information about the convergence of the model, like the expected log pointwise predictive density `elpd` and its
 #' corresponding standar deviation.
 #' @inheritParams get_foi_central_estimates
 #' @inheritParams run_seromodel
-#' @return \code{model_summary}. Object with a summary of \code{seromodel_object} containing the following:
+#' @return `model_summary`. Object with a summary of `seromodel_object` containing the following:
 #' \tabular{ll}{
-#' \code{foi_model} \tab Name of the selected model. \cr \tab \cr
-#' \code{data_set} \tab Seroprevalence survey label.\cr \tab \cr
-#' \code{country} \tab Name of the country were the survey was conducted in. \cr \tab \cr
-#' \code{year} \tab Year in which the survey was conducted. \cr \tab \cr
-#' \code{test} \tab Type of test of the survey. \cr \tab \cr
-#' \code{antibody} \tab Antibody \cr \tab \cr
-#' \code{n_sample} \tab Total number of samples in the survey. \cr \tab \cr
-#' \code{n_agec} \tab Number of age groups considered. \cr \tab \cr
-#' \code{n_iter} \tab Number of interations for eah chain including the warmup. \cr \tab \cr
-#' \code{elpd} \tab elpd \cr \tab \cr
-#' \code{se} \tab se \cr \tab \cr
-#' \code{converged} \tab convergence \cr \tab \cr
+#' `foi_model` \tab Name of the selected model. \cr \tab \cr
+#' `data_set` \tab Seroprevalence survey label.\cr \tab \cr
+#' `country` \tab Name of the country were the survey was conducted in. \cr \tab \cr
+#' `year` \tab Year in which the survey was conducted. \cr \tab \cr
+#' `test` \tab Type of test of the survey. \cr \tab \cr
+#' `antibody` \tab Antibody \cr \tab \cr
+#' `n_sample` \tab Total number of samples in the survey. \cr \tab \cr
+#' `n_agec` \tab Number of age groups considered. \cr \tab \cr
+#' `n_iter` \tab Number of interations for eah chain including the warmup. \cr \tab \cr
+#' `elpd` \tab elpd \cr \tab \cr
+#' `se` \tab se \cr \tab \cr
+#' `converged` \tab convergence \cr \tab \cr
 #' }
 #' @examples
 #' data(chagas2012)
@@ -344,11 +344,11 @@ extract_seromodel_summary <- function(seromodel_object,
 #' Force-of-Infection fitting
 #'
 #' This function computes the corresponding binomial confidence intervals for the obtained prevalence based on a fitting
-#' of the Force-of-Infection \code{foi} for plotting an analysis purposes.
-#' @param foi Object containing the information of the force of infection. It is obtained from \code{rstan::extract(seromodel_object$seromodel, "foi", inc_warmup = FALSE)[[1]]}.
+#' of the Force-of-Infection `foi` for plotting an analysis purposes.
+#' @param foi Object containing the information of the force of infection. It is obtained from `rstan::extract(seromodel_object$seromodel, "foi", inc_warmup = FALSE)[[1]]`.
 #' @inheritParams run_seromodel
 #' @param bin_data TBD
-#' @return \code{prev_final}. The expanded prevalence data. This is used for plotting purposes in the \code{visualization} module.
+#' @return `prev_final`. The expanded prevalence data. This is used for plotting purposes in the `visualization` module.
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
