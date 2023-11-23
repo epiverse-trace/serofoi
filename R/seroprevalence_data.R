@@ -56,7 +56,10 @@ prepare_serodata <- function(serodata = serodata,
   )
   if (!any(colnames(serodata) == "age_mean_f")) {
     serodata <- serodata %>%
-      dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total))
+      dplyr::mutate(
+        age_mean_f = floor((age_min + age_max) / 2),
+        sample_size = sum(total)
+      )
   }
 
   if (!any(colnames(serodata) == "birth_year")) {
@@ -101,7 +104,10 @@ prepare_serodata <- function(serodata = serodata,
 prepare_bin_data <- function(serodata) {
   if (!any(colnames(serodata) == "age_mean_f")) {
     serodata <- serodata %>%
-      dplyr::mutate(age_mean_f = floor((age_min + age_max) / 2), sample_size = sum(total))
+      dplyr::mutate(
+        age_mean_f = floor((age_min + age_max) / 2),
+        sample_size = sum(total)
+      )
   }
   serodata$cut_ages <-
     cut(as.numeric(serodata$age_mean_f),
@@ -119,7 +125,10 @@ prepare_bin_data <- function(serodata) {
       text = gsub("[^.0-9]", " ", levels(xx$cut_ages)),
       col.names = c("lower", "upper")
     ) %>%
-    dplyr::mutate(lev = levels(xx$cut_ages), mid_age = round((lower + upper) / 2)) %>%
+    dplyr::mutate(
+      lev = levels(xx$cut_ages),
+      mid_age = round((lower + upper) / 2)
+    ) %>%
     dplyr::select(.data$mid_age, .data$lev)
   xx$mid_age <- labs$mid_age[labs$lev %in% xx$cut_ages]
   conf <-
@@ -157,7 +166,10 @@ get_sim_probability <- function(sim_data, foi) {
   cohort_ages <- get_cohort_ages(sim_data)
   exposure_ages <- rev(cohort_ages$age)
   exposure_matrix <- get_exposure_matrix(sim_data)
-  probabilities <- purrr::map_dbl(exposure_ages, ~ 1 - exp(-pracma::dot(exposure_matrix[., ], foi)))
+  probabilities <- purrr::map_dbl(
+    exposure_ages,
+    ~ 1 - exp(-pracma::dot(exposure_matrix[., ], foi))
+  )
 
   sim_probability <- data.frame(
     age = exposure_ages,
@@ -207,11 +219,19 @@ get_sim_probability <- function(sim_data, foi) {
 #' )
 #' }
 #' @export
-get_sim_n_seropositive <- function(sim_data, foi, sample_size_by_age, seed = 1234) {
+get_sim_n_seropositive <- function(
+    sim_data,
+    foi,
+    sample_size_by_age,
+    seed = 1234
+  ) {
   sim_probability <- get_sim_probability(sim_data = sim_data, foi = foi)
 
   set.seed(seed = seed)
-  n_seropositive <- purrr::map_int(sim_probability$probability, ~ rbinom(1, sample_size_by_age, .))
+  n_seropositive <- purrr::map_int(
+    sim_probability$probability,
+    ~ rbinom(1, sample_size_by_age, .)
+  )
 
   sim_n_seropositive <- data.frame(
     age = sim_probability$age,
@@ -261,7 +281,12 @@ generate_sim_data <- function(foi,
       survey = survey_label,
       age_mean_f = tsur - birth_year
     )
-  sim_n_seropositive <- get_sim_n_seropositive(sim_data, foi, sample_size_by_age, seed = seed)
+  sim_n_seropositive <- get_sim_n_seropositive(
+    sim_data,
+    foi,
+    sample_size_by_age,
+    seed = seed
+  )
   sim_data <- sim_data %>%
     mutate(
       counts = sim_n_seropositive$n_seropositive,

@@ -17,8 +17,14 @@ plot_seroprev <- function(serodata,
   xx <- prepare_bin_data(serodata)
   seroprev_plot <-
     ggplot2::ggplot(data = xx) +
-    ggplot2::geom_errorbar(ggplot2::aes(age, ymin = p_obs_bin_l, ymax = p_obs_bin_u), width = 0.1) +
-    ggplot2::geom_point(ggplot2::aes(age, p_obs_bin, size = xx$bin_size), fill = "#7a0177", colour = "black", shape = 21) +
+    ggplot2::geom_errorbar(
+      ggplot2::aes(age, ymin = p_obs_bin_l, ymax = p_obs_bin_u),
+      width = 0.1
+    ) +
+    ggplot2::geom_point(
+      ggplot2::aes(age, p_obs_bin, size = xx$bin_size),
+      fill = "#7a0177", colour = "black", shape = 21
+    ) +
     ggplot2::theme_bw(size_text) +
     ggplot2::coord_cartesian(xlim = c(0, 60), ylim = c(0, 1)) +
     ggplot2::theme(legend.position = "none") +
@@ -59,23 +65,30 @@ plot_seroprev_fitted <- function(seromodel_object,
   if (!is.character(seromodel_object)) {
     if (class(seromodel_object@sim$samples) != "NULL") {
       foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
-      prev_expanded <- get_prev_expanded(foi, serodata = serodata, bin_data = TRUE)
+      prev_expanded <- get_prev_expanded(
+        foi,
+        serodata = serodata,
+        bin_data = TRUE
+      )
       prev_plot <-
-        ggplot2::ggplot(prev_expanded) +
+        ggplot2::ggplot(prev_expanded, ggplot2::aes(x = age)) +
         ggplot2::geom_ribbon(
           ggplot2::aes(
-            x = age,
             ymin = predicted_prev_lower,
             ymax = predicted_prev_upper
           ),
           fill = "#c994c7"
         ) +
-        ggplot2::geom_line(ggplot2::aes(x = age, y = predicted_prev), colour = "#7a0177") +
-        ggplot2::geom_errorbar(ggplot2::aes(age, ymin = p_obs_bin_l, ymax = p_obs_bin_u),
+        ggplot2::geom_line(
+          ggplot2::aes(y = predicted_prev),
+          colour = "#7a0177"
+        ) +
+        ggplot2::geom_errorbar(
+          ggplot2::aes(ymin = p_obs_bin_l, ymax = p_obs_bin_u),
           width = 0.1
         ) +
         ggplot2::geom_point(
-          ggplot2::aes(age, p_obs_bin, size = bin_size),
+          ggplot2::aes(y = p_obs_bin, size = bin_size),
           fill = "#7a0177",
           colour = "black",
           shape = 21
