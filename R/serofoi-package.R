@@ -15,7 +15,7 @@
 #' @importFrom graphics text
 #' @importFrom utils read.table
 #' @importFrom stats quantile
-#' @references
-#' Stan Development Team (NA). RStan: the R interface to Stan. R package version 2.26.22. https://mc-stan.org
+#' @references Stan Development Team (NA). RStan: the R interface to Stan. R
+#' package version 2.26.22. https://mc-stan.org
 #'
 NULL

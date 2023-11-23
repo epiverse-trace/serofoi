@@ -1,4 +1,5 @@
-# TODO Check if we really need to have the package `qtl` installed. Otherwise remove all entries of the form `see \code{\link[qtl]...`
+# TODO Check if we really need to have the package `qtl` installed. Otherwise
+# remove all entries of the form `see \code{\link[qtl]...`
 #' Seroprevalence data on serofoi
 #'
 #' Data from a serological surveys
