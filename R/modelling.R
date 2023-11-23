@@ -256,7 +256,7 @@ get_exposure_matrix <- function(serodata) {
   cohort_ages <- get_cohort_ages(serodata = serodata)
   ly <- nrow(cohort_ages)
   exposure <- matrix(0, nrow = length(age_class), ncol = ly)
-  for (k in 1:length(age_class)) {
+  for (k in seq_along(age_class)) {
     exposure[k, (ly - age_class[k] + 1):ly] <- 1
   }
   exposure_output <- exposure
@@ -429,10 +429,10 @@ get_prev_expanded <- function(foi,
 
   foi_expanded <- foin
 
-  age_class <- 1:NCOL(foi_expanded)
+  age_class <- seq_len(NCOL(foi_expanded))
   ly <- NCOL(foi_expanded)
   exposure <- matrix(0, nrow = length(age_class), ncol = ly)
-  for (k in 1:length(age_class)) {
+  for (k in seq_along(age_class)) {
     exposure[k, (ly - age_class[k] + 1):ly] <- 1
   }
   exposure_expanded <- exposure
