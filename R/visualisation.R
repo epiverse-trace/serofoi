@@ -102,9 +102,8 @@ plot_seroprev_fitted <- function(seromodel_object,
   } else {
     message("model did not run")
     print_warning <- "errors"
-    df <- data.frame()
 
-    prev_plot <- ggplot2::ggplot(df) +
+    prev_plot <- ggplot2::ggplot(data.frame()) +
       ggplot2::geom_point() +
       ggplot2::xlim(0, 10) +
       ggplot2::ylim(0, 10) +
@@ -229,9 +228,8 @@ plot_foi <- function(seromodel_object,
   } else {
     message("model did not run")
     print_warning <- "errors"
-    df <- data.frame()
 
-    foi_plot <- ggplot2::ggplot(df) +
+    foi_plot <- ggplot2::ggplot(data.frame()) +
       ggplot2::geom_point() +
       ggplot2::xlim(0, 10) +
       ggplot2::ylim(0, 10) +
@@ -305,9 +303,8 @@ plot_rhats <- function(seromodel_object,
   } else {
     message("model did not run")
     print_warning <- "errors"
-    df <- data.frame()
 
-    rhats_plot <- ggplot2::ggplot(df) +
+    rhats_plot <- ggplot2::ggplot(data.frame()) +
       ggplot2::geom_point() +
       ggplot2::xlim(0, 10) +
       ggplot2::ylim(0, 10) +
@@ -410,9 +407,8 @@ plot_seromodel <- function(seromodel_object,
   } else {
     message("model did not run")
     print_warning <- "errors"
-    df <- data.frame()
 
-    g0 <- ggplot2::ggplot(df) +
+    g0 <- ggplot2::ggplot(data.frame()) +
       ggplot2::geom_point() +
       ggplot2::xlim(0, 10) +
       ggplot2::ylim(0, 10) +
