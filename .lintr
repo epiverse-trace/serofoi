@@ -31,5 +31,8 @@ exclusions: list(
     ),
     # RcppExports.R is auto-generated and will not pass many linters. In
     # particular, it can create very long lines.
-    "R/RcppExports.R"
+    "R/RcppExports.R",
+    # R/stanmodels.R is auto-generated and will not pass many linters. In
+    # particular, it uses `sapply()`.
+    "R/stanmodels.R"
   )
