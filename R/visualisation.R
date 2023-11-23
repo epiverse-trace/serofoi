@@ -62,7 +62,28 @@ plot_seroprev <- function(serodata,
 plot_seroprev_fitted <- function(seromodel_object,
                                  serodata,
                                  size_text = 6) {
-  if (!is.character(seromodel_object)) {
+  if (is.character(seromodel_object)) {
+    message("model did not run")
+    print_warning <- "errors"
+
+    prev_plot <- ggplot2::ggplot(data.frame()) +
+      ggplot2::geom_point() +
+      ggplot2::xlim(0, 10) +
+      ggplot2::ylim(0, 10) +
+      ggplot2::annotate("text",
+                        x = 4,
+                        y = 5,
+                        label = print_warning
+      ) +
+      ggplot2::theme_bw(25) +
+      ggplot2::theme(
+        axis.text.x = ggplot2::element_blank(),
+        axis.text.y = ggplot2::element_blank()
+      ) +
+      ggplot2::ylab(" ") +
+      ggplot2::xlab(" ")
+    ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
+  } else {
     if (!is.null(seromodel_object@sim$samples)) {
       foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
       prev_expanded <- get_prev_expanded(
@@ -99,27 +120,6 @@ plot_seroprev_fitted <- function(seromodel_object,
         ggplot2::ylab("Sero-positivity") +
         ggplot2::xlab("Age")
     }
-  } else {
-    message("model did not run")
-    print_warning <- "errors"
-
-    prev_plot <- ggplot2::ggplot(data.frame()) +
-      ggplot2::geom_point() +
-      ggplot2::xlim(0, 10) +
-      ggplot2::ylim(0, 10) +
-      ggplot2::annotate("text",
-        x = 4,
-        y = 5,
-        label = print_warning
-      ) +
-      ggplot2::theme_bw(25) +
-      ggplot2::theme(
-        axis.text.x = ggplot2::element_blank(),
-        axis.text.y = ggplot2::element_blank()
-      ) +
-      ggplot2::ylab(" ") +
-      ggplot2::xlab(" ")
-    ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
   }
 
   return(prev_plot)
@@ -161,11 +161,32 @@ plot_foi <- function(seromodel_object,
                      max_lambda = NA,
                      size_text = 25,
                      foi_sim = NULL) {
-  if (!is.character(seromodel_object)) {
+  if (is.character(seromodel_object)) {
+    message("model did not run")
+    print_warning <- "errors"
+
+    foi_plot <- ggplot2::ggplot(data.frame()) +
+      ggplot2::geom_point() +
+      ggplot2::xlim(0, 10) +
+      ggplot2::ylim(0, 10) +
+      ggplot2::annotate("text",
+                        x = 4,
+                        y = 5,
+                        label = print_warning
+      ) +
+      ggplot2::theme_bw(25) +
+      ggplot2::theme(
+        axis.text.x = ggplot2::element_blank(),
+        axis.text.y = ggplot2::element_blank()
+      ) +
+      ggplot2::ylab(" ") +
+      ggplot2::xlab(" ")
+    ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
+  } else {
     if (!is.null(seromodel_object@sim$samples)) {
       foi <- rstan::extract(seromodel_object,
-        "foi",
-        inc_warmup = FALSE
+                            "foi",
+                            inc_warmup = FALSE
       )[[1]]
       #-------- This bit is to get the actual length of the foi data
       foi_data <- get_foi_central_estimates(
@@ -225,27 +246,6 @@ plot_foi <- function(seromodel_object,
         }
       }
     }
-  } else {
-    message("model did not run")
-    print_warning <- "errors"
-
-    foi_plot <- ggplot2::ggplot(data.frame()) +
-      ggplot2::geom_point() +
-      ggplot2::xlim(0, 10) +
-      ggplot2::ylim(0, 10) +
-      ggplot2::annotate("text",
-        x = 4,
-        y = 5,
-        label = print_warning
-      ) +
-      ggplot2::theme_bw(25) +
-      ggplot2::theme(
-        axis.text.x = ggplot2::element_blank(),
-        axis.text.y = ggplot2::element_blank()
-      ) +
-      ggplot2::ylab(" ") +
-      ggplot2::xlab(" ")
-    ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
   }
 
   return(foi_plot)
@@ -280,7 +280,28 @@ plot_foi <- function(seromodel_object,
 plot_rhats <- function(seromodel_object,
                        cohort_ages,
                        size_text = 25) {
-  if (!is.character(seromodel_object)) {
+  if (is.character(seromodel_object)) {
+    message("model did not run")
+    print_warning <- "errors"
+
+    rhats_plot <- ggplot2::ggplot(data.frame()) +
+      ggplot2::geom_point() +
+      ggplot2::xlim(0, 10) +
+      ggplot2::ylim(0, 10) +
+      ggplot2::annotate("text",
+                        x = 4,
+                        y = 5,
+                        label = print_warning
+      ) +
+      ggplot2::theme_bw(25) +
+      ggplot2::theme(
+        axis.text.x = ggplot2::element_blank(),
+        axis.text.y = ggplot2::element_blank()
+      ) +
+      ggplot2::ylab(" ") +
+      ggplot2::xlab(" ")
+    ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
+  } else {
     if (!is.null(seromodel_object@sim$samples)) {
       rhats <- get_table_rhats(
         seromodel_object = seromodel_object,
@@ -300,27 +321,6 @@ plot_rhats <- function(seromodel_object,
         ggplot2::theme_bw(size_text) +
         ggplot2::ylab("Convergence (R^)")
     }
-  } else {
-    message("model did not run")
-    print_warning <- "errors"
-
-    rhats_plot <- ggplot2::ggplot(data.frame()) +
-      ggplot2::geom_point() +
-      ggplot2::xlim(0, 10) +
-      ggplot2::ylim(0, 10) +
-      ggplot2::annotate("text",
-        x = 4,
-        y = 5,
-        label = print_warning
-      ) +
-      ggplot2::theme_bw(25) +
-      ggplot2::theme(
-        axis.text.x = ggplot2::element_blank(),
-        axis.text.y = ggplot2::element_blank()
-      ) +
-      ggplot2::ylab(" ") +
-      ggplot2::xlab(" ")
-    ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
   }
 
   return(rhats_plot)
@@ -358,7 +358,34 @@ plot_seromodel <- function(seromodel_object,
                            max_lambda = NA,
                            size_text = 25,
                            foi_sim = NULL) {
-  if (!is.character(seromodel_object)) {
+  if (is.character(seromodel_object)) {
+    message("model did not run")
+    print_warning <- "errors"
+
+    g0 <- ggplot2::ggplot(data.frame()) +
+      ggplot2::geom_point() +
+      ggplot2::xlim(0, 10) +
+      ggplot2::ylim(0, 10) +
+      ggplot2::annotate("text",
+                        x = 4,
+                        y = 5,
+                        label = print_warning
+      ) +
+      ggplot2::theme_bw(25) +
+      ggplot2::theme(
+        axis.text.x = ggplot2::element_blank(),
+        axis.text.y = ggplot2::element_blank()
+      ) +
+      ggplot2::ylab(" ") +
+      ggplot2::xlab(" ")
+    g1 <- g0
+    # TODO: This
+    g0 <- g0 + ggplot2::labs(subtitle = seromodel_object$model_name) +
+      ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
+
+    plot_arrange <-
+      cowplot::plot_grid(g0, g1, g1, g1, g1, ncol = 1, nrow = 5)
+  } else {
     if (!is.null(seromodel_object@sim$samples)) {
       cohort_ages <- get_cohort_ages(serodata = serodata)
 
@@ -404,33 +431,6 @@ plot_seromodel <- function(seromodel_object,
         rel_heights = c(0.5, 1, 1, 1)
       )
     }
-  } else {
-    message("model did not run")
-    print_warning <- "errors"
-
-    g0 <- ggplot2::ggplot(data.frame()) +
-      ggplot2::geom_point() +
-      ggplot2::xlim(0, 10) +
-      ggplot2::ylim(0, 10) +
-      ggplot2::annotate("text",
-        x = 4,
-        y = 5,
-        label = print_warning
-      ) +
-      ggplot2::theme_bw(25) +
-      ggplot2::theme(
-        axis.text.x = ggplot2::element_blank(),
-        axis.text.y = ggplot2::element_blank()
-      ) +
-      ggplot2::ylab(" ") +
-      ggplot2::xlab(" ")
-    g1 <- g0
-    # TODO: This
-    g0 <- g0 + ggplot2::labs(subtitle = seromodel_object$model_name) +
-      ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
-
-    plot_arrange <-
-      cowplot::plot_grid(g0, g1, g1, g1, g1, ncol = 1, nrow = 5)
   }
 
   return(plot_arrange)
