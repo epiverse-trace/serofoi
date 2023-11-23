@@ -184,10 +184,6 @@ plot_foi <- function(seromodel_object,
     ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
   } else {
     if (!is.null(seromodel_object@sim$samples)) {
-      foi <- rstan::extract(seromodel_object,
-                            "foi",
-                            inc_warmup = FALSE
-      )[[1]]
       #-------- This bit is to get the actual length of the foi data
       foi_data <- get_foi_central_estimates(
         seromodel_object = seromodel_object,
