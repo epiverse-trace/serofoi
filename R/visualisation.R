@@ -100,7 +100,7 @@ plot_seroprev_fitted <- function(seromodel_object,
         ggplot2::xlab("Age")
     }
   } else {
-    print("model did not run")
+    message("model did not run")
     print_warning <- "errors"
     df <- data.frame()
 
@@ -227,7 +227,7 @@ plot_foi <- function(seromodel_object,
       }
     }
   } else {
-    print("model did not run")
+    message("model did not run")
     print_warning <- "errors"
     df <- data.frame()
 
@@ -303,7 +303,7 @@ plot_rhats <- function(seromodel_object,
         ggplot2::ylab("Convergence (R^)")
     }
   } else {
-    print("model did not run")
+    message("model did not run")
     print_warning <- "errors"
     df <- data.frame()
 
@@ -408,7 +408,7 @@ plot_seromodel <- function(seromodel_object,
       )
     }
   } else {
-    print("model did not run")
+    message("model did not run")
     print_warning <- "errors"
     df <- data.frame()
 
