@@ -252,7 +252,10 @@ get_sim_n_seropositive <- function(
 #' @param tsur Year in which the serosurvey was conducted.
 #' @param birth_year_min Minimum age of year in the simulated serosurvey.
 #' @param survey_label Label for the resulting simulated serosurvey.
-#' @return Dataframe object containing the simulated data generated from `foi`
+#' @param antibody Type of antibody detected by the serosurvey
+#' @param test Type of test taken
+#' @param seed The seed for random number generation.
+#' @return Dataframe object containing the simulated data generated from \code{foi}
 #' @examples
 #' \dontrun{
 #' sample_size_by_age <- 5
@@ -273,28 +276,20 @@ generate_sim_data <- function(foi,
                               survey_label,
                               test = "fake",
                               antibody = "IgG",
-                              seed = 1234) {
-  sim_data <- data.frame(birth_year = c(birth_year_min:(tsur - 1))) %>%
-    mutate(
-      tsur = tsur,
-      country = "None",
-      test = test,
-      antibody = antibody,
-      survey = survey_label,
-      age_mean_f = tsur - .data$birth_year
-    )
-  sim_n_seropositive <- get_sim_n_seropositive(
-    sim_data,
-    foi,
-    sample_size_by_age,
-    seed = seed
-  )
-  sim_data <- sim_data %>%
-    mutate(
-      counts = sim_n_seropositive$n_seropositive,
-      total = sample_size_by_age
-    ) %>%
-    prepare_serodata()
+                              seed = 1234
+                              ){
+    sim_data <- data.frame(birth_year = c(birth_year_min:(tsur - 1))) %>%
+        mutate(tsur = tsur,
+            country = 'None',
+            test = test,
+            antibody = antibody,
+            survey = survey_label,
+            age_mean_f = tsur - .data$birth_year)
+    sim_n_seropositive <- get_sim_n_seropositive(sim_data, foi, sample_size_by_age, seed = seed)
+    sim_data <- sim_data %>%
+        mutate(counts = sim_n_seropositive$n_seropositive,
+               total = sample_size_by_age) %>%
+        prepare_serodata()
 
   return(sim_data)
 }

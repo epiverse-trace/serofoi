@@ -28,6 +28,12 @@ the number of trials \code{size} in \link[stats:Binomial]{rbinom}.}
 \item{birth_year_min}{Minimum age of year in the simulated serosurvey.}
 
 \item{survey_label}{Label for the resulting simulated serosurvey.}
+
+\item{test}{Type of test taken}
+
+\item{antibody}{Type of antibody detected by the serosurvey}
+
+\item{seed}{The seed for random number generation.}
 }
 \value{
 Dataframe object containing the simulated data generated from \code{foi}
