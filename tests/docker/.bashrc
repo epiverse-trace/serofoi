@@ -1,1 +1,0 @@
-export R_LIBS=/root/.R/site-library
