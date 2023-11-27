@@ -2,7 +2,6 @@ test_that("issue 47", {
   skip_on_os(c("windows", "mac"))
   source("testing_utils.R")
 
-  library(devtools)
   library(dplyr)
 
   # Load data

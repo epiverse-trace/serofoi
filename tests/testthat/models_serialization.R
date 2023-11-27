@@ -1,4 +1,3 @@
-library(devtools)
 library(serofoi)
 library(testthat)
 

@@ -6,7 +6,6 @@ test_that("individual models", {
   source("testing_utils.R")
   set.seed(1234) # For reproducibility
 
-  library(devtools)
   library(vdiffr)
 
   #----- Read and prepare data
@@ -22,7 +21,7 @@ test_that("individual models", {
   #----- Test for get_cohort_ages
   cohort_ages <- get_cohort_ages(serodata = serodata)
   expect_equal(nrow(cohort_ages), max(unique(serodata$tsur)) - min(serodata$birth_year))
-  
+
   #----- Test for the constant model
 
   model_name <- "constant"
