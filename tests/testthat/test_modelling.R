@@ -6,7 +6,6 @@ test_that("individual models", {
   source("testing_utils.R")
   set.seed(1234) # For reproducibility
 
-  library(devtools)
   library(vdiffr)
 
   #----- Read and prepare data

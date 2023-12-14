@@ -47,20 +47,12 @@ Imports:
     rstantools (>= 2.3.1),
     dplyr,
     bayesplot,
-    config,
     cowplot,
-    devtools,
     ggplot2,
-    gsubfn,
     Hmisc,
-    jsonlite,
     loo,
     purrr,
-    pracma,
-    qtl,
-    reshape2,
-    usethis,
-    vdiffr (>= 1.0.0)    
+    pracma
 LinkingTo: 
     BH (>= 1.66.0),
     Rcpp (>= 0.12.0),
@@ -71,7 +63,8 @@ LinkingTo:
 Suggests: 
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    vdiffr
 Config/testthat/edition: 3
 Config/Needs/website:
     epiverse-trace/epiversetheme
@@ -79,8 +72,6 @@ VignetteBuilder: knitr
 URL: https://trace-lac.github.io/serofoi/
 Additional_repositories:
     https://mc-stan.org/r-packages/
-Remotes:
-    tidyverse/purrr
 Biarch: true
 SystemRequirements: GNU make
 Roxygen: list(markdown = TRUE)
