@@ -156,7 +156,6 @@ prepare_bin_data <- function(serodata) {
 #' }
 #' @param foi Numeric atomic vector corresponding to the desired
 #'   Force-of-Infection ordered from past to present
-#' @param seed The seed for random number generation.
 #' @return A dataframe containing the following columns:
 #' \describe{
 #'   \item{`age`}{Exposure ages}

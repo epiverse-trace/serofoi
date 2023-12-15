@@ -18,8 +18,6 @@ age group marker \code{age_mean_f}}
 
 \item{foi}{Numeric atomic vector corresponding to the desired
 Force-of-Infection ordered from past to present}
-
-\item{seed}{The seed for random number generation.}
 }
 \value{
 A dataframe containing the following columns:
