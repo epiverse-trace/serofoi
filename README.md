@@ -1,5 +1,5 @@
 
-## *serofoi*: force-of-infection from population based serosurveys with age-disagregated data <img src="man/figures/logo.png" align="right" width="130"/>
+## *serofoi*: force-of-infection from population based serosurveys with age-disaggregated data <img src="man/figures/logo.png" align="right" width="130"/>
 
 <!-- badges: start -->
 
@@ -22,7 +22,7 @@ visualisation.
 [`rstan`](https://mc-stan.org/users/interfaces/rstan) package, which
 provides an R interface for the Stan programming language for
 statistical Bayesian modelling. Particularly, ***serofoi*** relies on
-the use of a *Hamiltonian Monte Carlo (HCM)* algorithm implemented by
+the use of a *Hamiltonian Monte Carlo (HMC)* algorithm implemented by
 *Stan for Markov chain Monte Carlo (MCMC)* sampling. The implemented
 methods are outlined in ([Cucunubá et al. 2017](#ref-cucunubá2017)) and
 ([Carrera et al. 2020](#ref-carrera2020)) (see [FoI
@@ -79,7 +79,7 @@ Contributors to the project include:
 - [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author,
   maintainer)
 
-- [Nicolás Tórres](https://github.com/ntorresd) (author)
+- [Nicolás Torres](https://github.com/ntorresd) (author)
 
 - [Benjamin Lambert](https://ben-lambert.com/about/) (author)
 

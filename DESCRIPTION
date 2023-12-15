@@ -1,6 +1,6 @@
 Package: serofoi
 Type: Package
-Title: Estimates the Force-of-Infection of a given pathogen from population based sero-prevalence studies
+Title: Estimates the Force-of-Infection of a given pathogen from population based seroprevalence studies
 Version: 0.0.9
 Authors@R: 
     c(
@@ -31,7 +31,7 @@ Authors@R:
     )
 Contributor: Miguel Gámez, Geraldine Gómez, Jaime A. Pavlich-Mariscal
 Maintainer: Zulma M. Cucunubá <zulma.cucunuba@javeriana.edu.co>
-Description: R package to estimate time-varying Force-of-Infection of a given pathogen from population based sero-prevalence studies using a bayesian framework.
+Description: R package to estimate time-varying Force-of-Infection of a given pathogen from population based seroprevalence studies using a bayesian framework.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

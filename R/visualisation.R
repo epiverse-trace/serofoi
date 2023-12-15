@@ -1,11 +1,11 @@
-#' Function that generates the sero-positivity plot from a raw serological
+#' Function that generates the seropositivity plot from a raw serological
 #' survey dataset
 #'
 #' @inheritParams prepare_serodata
 #' @param size_text Text size use in the theme of the graph returned by the
 #'   function.
 #' @return A ggplot object containing the seropositivity-vs-age graph of the raw
-#'   data of a given seroprevalence survey with its corresponging binomial
+#'   data of a given seroprevalence survey with its corresponding binomial
 #'   confidence interval.
 #' @examples
 #' data(chagas2012)
@@ -28,7 +28,7 @@ plot_seroprev <- function(serodata,
     ggplot2::theme_bw(size_text) +
     ggplot2::coord_cartesian(xlim = c(0, 60), ylim = c(0, 1)) +
     ggplot2::theme(legend.position = "none") +
-    ggplot2::ylab("Sero-positivity") +
+    ggplot2::ylab("seropositivity") +
     ggplot2::xlab("Age")
 
   return(seroprev_plot)
@@ -45,7 +45,7 @@ plot_seroprev <- function(serodata,
 #' @inheritParams run_seromodel
 #' @param size_text Text size of the graph returned by the function.
 #' @return A ggplot object containing the seropositivity-vs-age graph including
-#'   the data, the fitted model and their corresponding confindence intervals.
+#'   the data, the fitted model and their corresponding confidence intervals.
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
@@ -117,7 +117,7 @@ plot_seroprev_fitted <- function(seromodel_object,
         ggplot2::theme_bw(size_text) +
         ggplot2::coord_cartesian(xlim = c(0, 60), ylim = c(0, 1)) +
         ggplot2::theme(legend.position = "none") +
-        ggplot2::ylab("Sero-positivity") +
+        ggplot2::ylab("seropositivity") +
         ggplot2::xlab("Age")
     }
   }

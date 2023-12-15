@@ -3,7 +3,7 @@
 \name{get_cohort_ages}
 \alias{get_cohort_ages}
 \title{Function that generates a data.frame containing the age of each cohort
-corresponding to each birth year exluding the year of the survey.}
+corresponding to each birth year excluding the year of the survey.}
 \usage{
 get_cohort_ages(serodata)
 }
@@ -30,7 +30,7 @@ observed prevalence}
 \item{\code{prev_obs_upper}}{Upper limit of the confidence interval for the
 observed prevalence}
 }
-The last six colums can be added to \code{serodata} by means of the function
+The last six columns can be added to \code{serodata} by means of the function
 \code{\link[=prepare_serodata]{prepare_serodata()}}.}
 }
 \value{

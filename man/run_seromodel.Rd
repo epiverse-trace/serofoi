@@ -3,7 +3,7 @@
 \name{run_seromodel}
 \alias{run_seromodel}
 \title{Function that runs the specified stan model for the Force-of-Infection and
-estimates de seroprevalence based on the result of the fit}
+estimates the seroprevalence based on the result of the fit}
 \usage{
 run_seromodel(
   serodata,
@@ -39,7 +39,7 @@ observed prevalence}
 \item{\code{prev_obs_upper}}{Upper limit of the confidence interval for the
 observed prevalence}
 }
-The last six colums can be added to \code{serodata} by means of the function
+The last six columns can be added to \code{serodata} by means of the function
 \code{\link[=prepare_serodata]{prepare_serodata()}}.}
 
 \item{foi_model}{Name of the selected model. Current version provides three
@@ -50,7 +50,7 @@ options:
 \item{\code{"tv_normal_log"}}{Runs a normal logarithmic model}
 }}
 
-\item{n_iters}{Number of interations for eah chain including the warmup.
+\item{n_iters}{Number of interactions for each chain including the warmup.
 \code{iter} in \link[rstan:stanmodel-method-sampling]{sampling}.}
 
 \item{n_thin}{Positive integer specifying the period for saving samples.
@@ -77,7 +77,7 @@ the implementation of the model. For further details refer to
 }
 \description{
 This function runs the specified model for the Force-of-Infection \code{foi_model}
-using the data froma seroprevalence survey \code{serodata} as the input data. See
+using the data from a seroprevalence survey \code{serodata} as the input data. See
 \link{fit_seromodel} for further details.
 }
 \examples{

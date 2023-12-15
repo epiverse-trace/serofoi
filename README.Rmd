@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## *serofoi*: force-of-infection from population based serosurveys with age-disagregated data <img src="man/figures/logo.png" align="right" width="130"/>
+## *serofoi*: force-of-infection from population based serosurveys with age-disaggregated data <img src="man/figures/logo.png" align="right" width="130"/>
 
 <!-- badges: start -->
 
@@ -30,7 +30,7 @@ coverage](https://codecov.io/gh/epiverse-trace/serofoi/branch/dev/graph/badge.sv
 
 ***serofoi*** is an R package to estimate the *Force-of-Infection (FoI)* of a given pathogen from age-disaggregated population-based cross-sectional serosurveys, using a Bayesian framework. The package provides a set of features for assessing model fitting, convergence and visualisation. 
 
-***serofoi*** relies on the [`rstan`](https://mc-stan.org/users/interfaces/rstan) package, which provides an R interface for the Stan programming language for statistical Bayesian modelling. Particularly, ***serofoi*** relies on the use of a *Hamiltonian Monte Carlo (HCM)* algorithm implemented by *Stan for Markov chain Monte Carlo (MCMC)* sampling. The implemented methods are outlined in [@cucunubá2017] and [@carrera2020] (see [FoI Models](https://epiverse-trace.github.io/serofoi/articles/foi_models.html) for further details)
+***serofoi*** relies on the [`rstan`](https://mc-stan.org/users/interfaces/rstan) package, which provides an R interface for the Stan programming language for statistical Bayesian modelling. Particularly, ***serofoi*** relies on the use of a *Hamiltonian Monte Carlo (HMC)* algorithm implemented by *Stan for Markov chain Monte Carlo (MCMC)* sampling. The implemented methods are outlined in [@cucunubá2017] and [@carrera2020] (see [FoI Models](https://epiverse-trace.github.io/serofoi/articles/foi_models.html) for further details)
 
 ***serofoi*** is part of the [Epiverse Initiative](https://data.org/initiatives/epiverse/).
 
@@ -71,7 +71,7 @@ Contributors to the project include:
 -   [Zulma M. Cucunubá](https://github.com/zmcucunuba) (author,
     maintainer)
 
--   [Nicolás Tórres](https://github.com/ntorresd) (author)
+-   [Nicolás Torres](https://github.com/ntorresd) (author)
 
 -   [Benjamin Lambert](https://ben-lambert.com/about/) (author)
 
