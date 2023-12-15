@@ -73,5 +73,8 @@ URL: https://trace-lac.github.io/serofoi/
 Additional_repositories:
     https://mc-stan.org/r-packages/
 Biarch: true
+Encoding: UTF-8
+Language: en-GB
+LazyData: true
 SystemRequirements: GNU make
 Roxygen: list(markdown = TRUE)
