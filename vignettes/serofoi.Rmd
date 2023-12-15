@@ -42,7 +42,7 @@ This package is designed to be used for serosurveys that follow these inclusion 
 
 Current version of ***serofoi*** includes the following assumptions on the underlying biological process:
 
-* There is no sero-reversion (from positive to negative). It means IgG antibodies are life-long with no waning immunity. This may not be the case for several pathogens. The inclusion of sero-reversion in the modelling process is planned for future versions of ***serofoi***.
+* There is no seroreversion (from positive to negative). It means IgG antibodies are life-long with no waning immunity. This may not be the case for several pathogens. The inclusion of seroreversion in the modelling process is planned for future versions of ***serofoi***.
 * There is no age-dependency. This may not be the case for several pathogens. This feature is planned for future versions of ***serofoi***.
 * There is no impact from migration processes in the sampled population, which means the model is not suited for a situation with high levels of migration. 
 * There are no differences in the mortality rate of infected versus susceptible individuals. This may be a limitation for situations with a high infection fatality rate, such as Ebola.

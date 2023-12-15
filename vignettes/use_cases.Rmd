@@ -39,7 +39,7 @@ Chikungunya is a viral disease that was first described during an outbreak in Ta
 
 ### The dataset:
 
-To gain insights into the transmission dynamics of Chikungunya in the Americas, we used a dataset from a population-based study conducted in Bahia, Brazil in October-December 2015. This study, conducted by Dias et al. (2018), involved household interviews and age-disaggregated srological surveys to measure IgG antibodies against the Chikungunya virus. The survey was conducted immediately after a large Chikungunya epidemic in the area.
+To gain insights into the transmission dynamics of Chikungunya in the Americas, we used a dataset from a population-based study conducted in Bahia, Brazil in October-December 2015. This study, conducted by Dias et al. (2018), involved household interviews and age-disaggregated serological surveys to measure IgG antibodies against the Chikungunya virus. The survey was conducted immediately after a large Chikungunya epidemic in the area.
 
 ### The results: 
 
