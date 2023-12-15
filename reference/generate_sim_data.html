@@ -74,13 +74,14 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>foi</dt>
-<dd><p>Numeric atomic vector corresponding to the desired Force-of-Infection ordered from past to present</p></dd>
+<dd><p>Numeric atomic vector corresponding to the desired
+Force-of-Infection ordered from past to present</p></dd>
 
 
 <dt>sample_size_by_age</dt>
-<dd><p>Size of each age group specified by either an atomic
-vector of the same size as <code>foi</code> or an integer.
-This corresponds to the number of trials <code>size</code> in <a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a>.</p></dd>
+<dd><p>Size of each age group specified by either an
+atomic vector of the same size as <code>foi</code> or an integer. This corresponds to
+the number of trials <code>size</code> in <a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a>.</p></dd>
 
 
 <dt>tsur</dt>
@@ -107,13 +108,15 @@ This corresponds to the number of trials <code>size</code> in <a href="https://r
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">sample_size_by_age</span> <span class="op">=</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span><span class="va">sample_size_by_age</span> <span class="op">&lt;-</span> <span class="fl">5</span></span></span>
 <span class="r-in"><span><span class="va">foi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.02</span>, <span class="fl">50</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">sim_data</span> <span class="op">&lt;-</span> <span class="fu">generate_sim_data</span><span class="op">(</span>foi <span class="op">=</span> <span class="va">foi</span>,</span></span>
-<span class="r-in"><span>                              sample_size_by_age <span class="op">=</span> <span class="va">sample_size_by_age</span>,</span></span>
-<span class="r-in"><span>                              tsur <span class="op">=</span> <span class="fl">2050</span>,</span></span>
-<span class="r-in"><span>                              birth_year_min <span class="op">=</span> <span class="fl">2000</span>,</span></span>
-<span class="r-in"><span>                              survey_label <span class="op">=</span> <span class="st">'sim_constant_foi'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sim_data</span> <span class="op">&lt;-</span> <span class="fu">generate_sim_data</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  foi <span class="op">=</span> <span class="va">foi</span>,</span></span>
+<span class="r-in"><span>  sample_size_by_age <span class="op">=</span> <span class="va">sample_size_by_age</span>,</span></span>
+<span class="r-in"><span>  tsur <span class="op">=</span> <span class="fl">2050</span>,</span></span>
+<span class="r-in"><span>  birth_year_min <span class="op">=</span> <span class="fl">2000</span>,</span></span>
+<span class="r-in"><span>  survey_label <span class="op">=</span> <span class="st">"sim_constant_foi"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
