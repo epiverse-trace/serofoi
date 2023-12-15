@@ -64,7 +64,8 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    vdiffr
+    vdiffr,
+    spelling
 Config/testthat/edition: 3
 Config/Needs/website:
     epiverse-trace/epiversetheme
