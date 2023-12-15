@@ -23,7 +23,7 @@ Force-of-Infection ordered from past to present}
 }
 \value{
 A dataframe containing the following columns:
-\describe
+\describe{
 \item{\code{age}}{Exposure ages}
 \item{\code{probability}}{Probability to obtain a seropositive case for each age
 according to the provided FoI}

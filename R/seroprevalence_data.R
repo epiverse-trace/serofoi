@@ -158,7 +158,7 @@ prepare_bin_data <- function(serodata) {
 #'   Force-of-Infection ordered from past to present
 #' @param seed The seed for random number generation.
 #' @return A dataframe containing the following columns:
-#' \describe
+#' \describe{
 #'   \item{`age`}{Exposure ages}
 #'   \item{`probability`}{Probability to obtain a seropositive case for each age
 #'     according to the provided FoI}
