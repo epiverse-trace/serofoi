@@ -182,7 +182,7 @@ The statistical details of the three models are described in Table 2.
 | `tv_normal_log` | $\sim binom(n(a,t), P(a,t))$            | $\lambda\sim normal(log(\lambda(t-1)),\sigma)\\
                                                               \lambda(t=1)\sim normal(-6,4)$                            | $\sigma\sim Cauchy(0,1)$|
 :::
-Table 2. Statistical characteristics of ***serofoi***’s currently supported models for the FoI ($\lambda$). Here $n$ is the size of an age group $a$ at time-step $t$ and $P$ is its corresponding seroprevalence.
+Table 2. Statistical characteristics of ***serofoi***'s currently supported models for the FoI ($\lambda$). Here $n$ is the size of an age group $a$ at time-step $t$ and $P$ is its corresponding seroprevalence.
 
 Above we showed that the fast epidemic model (`tv_normal_log`) is able to identify the large epidemic outbreak described by the `simdata_large_epi` dataset, which was simulated according to a step-wise decreasing *FoI* (red line in Fig 3). 
 

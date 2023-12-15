@@ -4,7 +4,7 @@ This outlines how to propose a change to serofoi.
 
 ## Making changes
 
-If you want to make a change, it's a good idea to first file an issue and make sure someone from the team agrees that it’s needed.
+If you want to make a change, it's a good idea to first file an issue and make sure someone from the team agrees that it's needed.
 If you’ve found a bug, please file an issue that illustrates the bug with a minimal 
 [reprex](https://www.tidyverse.org/help/#reprex) (this will also help you write a unit test, if needed). See [bug report template](../.github/ISSUE_TEMPLATE/bug_report.md). If you have a feature request see [feature request](../.github/ISSUE_TEMPLATE/feature_request.md).
 
