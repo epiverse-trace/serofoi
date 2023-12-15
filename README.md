@@ -122,7 +122,8 @@ By contributing to this project, you agree to abide by its terms.
 
 ## References
 
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
 
 <div id="ref-carrera2020" class="csl-entry">
 
