@@ -37,6 +37,7 @@ Encoding: UTF-8
 Language: en-GB
 LazyData: true
 RoxygenNote: 7.2.3
+NeedsCompilation: yes
 Depends: 
     R (>= 3.5.0)
 Imports:
