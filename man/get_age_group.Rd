@@ -18,12 +18,12 @@ specified by \code{min(age)}, \code{max(age)}.
 \description{
 This function was taken from \link[vaccineff:get_age_group]{get_age_group}.
 This method splits an age interval from age_min to age_max into
-(age_max-age_min)/step intervals.
+\code{(age_max-age_min)/step} intervals.
 By default age_min is set 0, however it can be assigned by
 convenience.
 If the method finds ages greater or equal than age_max
-it assigns the string ">{age_max}".
-To avoid errors it is necessary to set step < age_max.
+it assigns the string \code{">{age_max}"}.
+To avoid errors it is necessary to set \code{step<age_max}.
 It is also suggested to choose the step such
-that age_max\%\%(step+1) = 0.
+that \code{age_max\%\%(step+1)=0}.
 }
