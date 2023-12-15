@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualisation.R
 \name{plot_seroprev}
 \alias{plot_seroprev}
-\title{Function that generates the sero-positivity plot from a raw serological
+\title{Function that generates the seropositivity plot from a raw serological
 survey dataset}
 \usage{
 plot_seroprev(serodata, size_text = 6)
@@ -27,11 +27,11 @@ function.}
 }
 \value{
 A ggplot object containing the seropositivity-vs-age graph of the raw
-data of a given seroprevalence survey with its corresponging binomial
+data of a given seroprevalence survey with its corresponding binomial
 confidence interval.
 }
 \description{
-Function that generates the sero-positivity plot from a raw serological
+Function that generates the seropositivity plot from a raw serological
 survey dataset
 }
 \examples{

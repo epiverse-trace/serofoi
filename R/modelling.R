@@ -2,10 +2,10 @@
 
 
 #' Function that runs the specified stan model for the Force-of-Infection and
-#' estimates de seroprevalence based on the result of the fit
+#' estimates the seroprevalence based on the result of the fit
 #'
 #' This function runs the specified model for the Force-of-Infection `foi_model`
-#' using the data froma seroprevalence survey `serodata` as the input data. See
+#' using the data from a seroprevalence survey `serodata` as the input data. See
 #' [fit_seromodel] for further details.
 #'
 #' @param serodata A data frame containing the data from a seroprevalence
@@ -30,7 +30,7 @@
 #'   \item{`prev_obs_upper`}{Upper limit of the confidence interval for the
 #'     observed prevalence}
 #' }
-#'   The last six colums can be added to `serodata` by means of the function
+#'   The last six columns can be added to `serodata` by means of the function
 #'   [prepare_serodata()].
 #' @param foi_model Name of the selected model. Current version provides three
 #'   options:
@@ -39,7 +39,7 @@
 #' \item{`"tv_normal"`}{Runs a normal model}
 #' \item{`"tv_normal_log"`}{Runs a normal logarithmic model}
 #' }
-#' @param n_iters Number of interations for eah chain including the warmup.
+#' @param n_iters Number of interactions for each chain including the warmup.
 #'   `iter` in [sampling][rstan::sampling].
 #' @param n_thin Positive integer specifying the period for saving samples.
 #'   `thin` in [sampling][rstan::sampling].
@@ -118,7 +118,7 @@ run_seromodel <- function(serodata,
 #' \item{`"tv_normal"`}{Runs a normal model}
 #' \item{`"tv_normal_log"`}{Runs a normal logarithmic model}
 #' }
-#' @param n_iters Number of interations for eah chain including the warmup.
+#' @param n_iters Number of interactions for each chain including the warmup.
 #'   `iter` in [sampling][rstan::sampling].
 #' @param n_thin Positive integer specifying the period for saving samples.
 #'   `thin` in [sampling][rstan::sampling].
@@ -212,7 +212,7 @@ fit_seromodel <- function(serodata,
 
 
 #' Function that generates a data.frame containing the age of each cohort
-#' corresponding to each birth year exluding the year of the survey.
+#' corresponding to each birth year excluding the year of the survey.
 #'
 #' This function generates a data.frame containing the age of each cohort
 #' corresponding to each `birth_year` excluding the year of the survey, for
@@ -307,14 +307,14 @@ get_foi_central_estimates <- function(seromodel_object,
   return(foi_central_estimates)
 }
 
-#' Method to extact a summary of the specified serological model object
+#' Function to extract a summary of the specified serological model object
 #'
-#' This method extracts a summary corresponding to a serological model object
-#' that contains information about the original serological survey data used to
+#' This function extracts a summary corresponding to a serological model object
+#' containing information about the original serological survey data used to
 #' fit the model, such as the year when the survey took place, the type of test
 #' taken and the corresponding antibody, as well as information about the
 #' convergence of the model, like the expected log pointwise predictive density
-#' `elpd` and its corresponding standar deviation.
+#' `elpd` and its corresponding standard deviation.
 #' @inheritParams get_foi_central_estimates
 #' @inheritParams run_seromodel
 #' @return `model_summary`. Object with a summary of `seromodel_object`
@@ -328,7 +328,7 @@ get_foi_central_estimates <- function(seromodel_object,
 #'   \item{`antibody`}{Antibody}
 #'   \item{`n_sample`}{Total number of samples in the survey.}
 #'   \item{`n_agec`}{Number of age groups considered.}
-#'   \item{`n_iter`}{Number of interations for eah chain including the warmup.}
+#'   \item{`n_iter`}{Number of interactions for each chain including the warmup.}
 #'   \item{`elpd`}{elpd}
 #'   \item{`se`}{se}
 #'   \item{`converged`}{convergence}

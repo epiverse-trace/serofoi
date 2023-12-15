@@ -34,7 +34,7 @@ A serosurvey is an epidemiological study that involves the collection and analys
 This package is designed to be used for serosurveys that follow these inclusion criteria:
 
 * Are population-based cross-sectional surveys (not hospital-based).
-* Specify individuals’ age or age group.
+* Specify individuals' age or age group.
 * Indicate diagnostic test(s) used. The current version of serofoi only applies to IgG antibodies.
 * Identify the location and date (year) of sample collection.
 

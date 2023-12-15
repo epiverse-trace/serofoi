@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{extract_seromodel_summary}
 \alias{extract_seromodel_summary}
-\title{Method to extact a summary of the specified serological model object}
+\title{Function to extract a summary of the specified serological model object}
 \usage{
 extract_seromodel_summary(seromodel_object, serodata)
 }
@@ -32,7 +32,7 @@ observed prevalence}
 \item{\code{prev_obs_upper}}{Upper limit of the confidence interval for the
 observed prevalence}
 }
-The last six colums can be added to \code{serodata} by means of the function
+The last six columns can be added to \code{serodata} by means of the function
 \code{\link[=prepare_serodata]{prepare_serodata()}}.}
 }
 \value{
@@ -47,19 +47,19 @@ containing the following:
 \item{\code{antibody}}{Antibody}
 \item{\code{n_sample}}{Total number of samples in the survey.}
 \item{\code{n_agec}}{Number of age groups considered.}
-\item{\code{n_iter}}{Number of interations for eah chain including the warmup.}
+\item{\code{n_iter}}{Number of interactions for each chain including the warmup.}
 \item{\code{elpd}}{elpd}
 \item{\code{se}}{se}
 \item{\code{converged}}{convergence}
 }
 }
 \description{
-This method extracts a summary corresponding to a serological model object
-that contains information about the original serological survey data used to
+This function extracts a summary corresponding to a serological model object
+containing information about the original serological survey data used to
 fit the model, such as the year when the survey took place, the type of test
 taken and the corresponding antibody, as well as information about the
 convergence of the model, like the expected log pointwise predictive density
-\code{elpd} and its corresponding standar deviation.
+\code{elpd} and its corresponding standard deviation.
 }
 \examples{
 data(chagas2012)

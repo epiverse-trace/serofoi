@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 library(serofoi)
 ```
 
-The current version of ***serofoi*** supports three different models for estimating the *Force-of-Infection (FoI)*, including constant and time-varying trajectories. For fitting the model to the sero-prevalence data we use a suit of bayesian models that include prior and upper prior distributions
+The current version of ***serofoi*** supports three different models for estimating the *Force-of-Infection (FoI)*, including constant and time-varying trajectories. For fitting the model to the seroprevalence data we use a suit of bayesian models that include prior and upper prior distributions
 
 ## What is the Force-of-Infection
 

@@ -33,14 +33,14 @@ observed prevalence}
 \item{\code{prev_obs_upper}}{Upper limit of the confidence interval for the
 observed prevalence}
 }
-The last six colums can be added to \code{serodata} by means of the function
+The last six columns can be added to \code{serodata} by means of the function
 \code{\link[=prepare_serodata]{prepare_serodata()}}.}
 
 \item{size_text}{Text size of the graph returned by the function.}
 }
 \value{
 A ggplot object containing the seropositivity-vs-age graph including
-the data, the fitted model and their corresponding confindence intervals.
+the data, the fitted model and their corresponding confidence intervals.
 }
 \description{
 This function generates a seropositivity plot of the specified serological
