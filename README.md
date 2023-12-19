@@ -85,9 +85,12 @@ Contributors to the project include:
 
 - [Pierre Nouvellet](https://github.com/pnouvellet) (author)
 
-- [Miguel Gamez](https://github.com/megamezl) (contributor)
-
 - [Geraldine Gómez](https://github.com/megamezl) (contributor)
+
+- [Hugo Gruson](https://github.com/Bisaloo) (contributor)
+
+- [David Santiago Quevedo](https://github.com/davidsantiagoquevedo)
+  (contributor)
 
 - [Jaime A. Pavlich-Mariscal](https://github.com/jpavlich) (contributor)
 
