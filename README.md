@@ -38,8 +38,8 @@ You can install the **development version** of ***serofoi*** from
 [GitHub](https://github.com/) with:
 
 ``` r
-if(!require("remotes")) install.packages("remotes")
-remotes::install_github("epiverse-trace/serofoi")
+if(!require("pak")) install.packages("pak")
+pak::pak("epiverse-trace/serofoi")
 ```
 
 ## Quick start
