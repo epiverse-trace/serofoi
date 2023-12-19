@@ -36,7 +36,7 @@ the number of trials \code{size} in \link[stats:Binomial]{rbinom}.}
 \item{seed}{The seed for random number generation.}
 }
 \value{
-Dataframe object containing the simulated data generated from \code{foi}
+Dataframe object containing the generated simulated data.
 }
 \description{
 Function that generates a simulated serosurvey according to the specified FoI
