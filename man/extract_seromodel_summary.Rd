@@ -47,7 +47,7 @@ containing the following:
 \item{\code{antibody}}{Antibody}
 \item{\code{n_sample}}{Total number of samples in the survey.}
 \item{\code{n_agec}}{Number of age groups considered.}
-\item{\code{n_iter}}{Number of interactions for each chain including the warmup.}
+\item{\code{n_iter}}{Number of interactions for each chain including warmup.}
 \item{\code{elpd}}{elpd}
 \item{\code{se}}{se}
 \item{\code{converged}}{convergence}
