@@ -145,14 +145,12 @@ prepare_bin_data <- function(serodata) {
 }
 
 #' Function that generates the probabilities of being previously exposed to a
-#' pathogen.
+#' pathogen given a historical Force-of-Infection.
 #'
 #' @param sim_data A dataframe object containing the following columns:
 #' \describe{
+#'   \item{`age_mean_f`}{Age group markers}
 #'   \item{`tsur`}{Year of the survey}
-#'   \item{`age_mean_f`}{Age}
-#'   \item{`birth_year`}{Years in which the subjects were born according to the
-#'     age group marker `age_mean_f`}
 #' }
 #' @param foi Numeric atomic vector corresponding to the desired
 #'   Force-of-Infection ordered from past to present
@@ -162,6 +160,14 @@ prepare_bin_data <- function(serodata) {
 #'   \item{`probability`}{Probability to obtain a seropositive case for each age
 #'     according to the provided FoI}
 #' }
+#' @examples
+#' n_years <- 50
+#' sim_data <- data.frame(
+#'   age_mean_f = seq(1,n_years),
+#'   tsur = 2050
+#' )
+#' foi <- rep(0.02, n_years)
+#' sim_probability <- get_sim_probability(sim_data = sim_data, foi=foi)
 #' @export
 get_sim_probability <- function(sim_data, foi) {
   sim_data <- sim_data %>%
@@ -184,20 +190,10 @@ get_sim_probability <- function(sim_data, foi) {
 #' Function that generates a sample of counts of seropositive individuals by
 #' sampling from a binomial distribution
 #'
-#' @param sim_data A dataframe object containing the following columns:
-#' \describe{
-#'   \item{`tsur`}{Year of the survey}
-#'   \item{`age_mean_f`}{Age}
-#'   \item{`birth_year`}{Years in which the subjects were born according to the
-#'     age group marker `age_mean_f`}
-#' }
-#' @param foi Numeric atomic vector corresponding to the desired
-#'   Force-of-Infection ordered from past to present
-#' @param sample_size_by_age Sample size for each age group: either a single
-#'   integer indicating that the sample size is the same for all ages or a
-#'   vector of sample sizes the same length as This corresponds to the number of
-#'   trials `size` in [rbinom][stats::rbinom].
-#' @param seed The seed for random number generation.
+#' @inheritParams get_sim_probability
+#' @param sample_size_by_age Integer indicating the sample size by age group.
+#' This corresponds to the number of trials `size` in [rbinom][stats::rbinom].
+#' @param seed Seed for random number generation.
 #' @return A dataframe containing the following columns:
 #' \describe{
 #'   \item{`age`}{Age by the time of the survey}
@@ -205,23 +201,20 @@ get_sim_probability <- function(sim_data, foi) {
 #'     provided FoI}
 #' }
 #'   simulated list of counts following a binomial distribution in accordance
-#'   with a given force of infection and age class sizes.
+#'   with a given force of infection and age group sizes.
 #' @examples
-#' \dontrun{
-#' foi <- rep(0.02, 50)
-#' sim_data <- generate_sim_data(
-#'   foi = foi,
-#'   sample_size_by_age = 5,
-#'   tsur = 2050,
-#'   birth_year_min = 2000,
-#'   survey_label = "foi_sim"
+#' n_years <- 50
+#' sim_data <- data.frame(
+#'   age_mean_f = seq(1,n_years),
+#'   tsur = 2050
 #' )
+#' foi <- rep(0.02, n_years)
+#' sample_size_by_age <- as.integer(runif(n = n_years, 5, 10))
 #' sim_n_seropositive <- get_sim_n_seropositive(
 #'   sim_data = sim_data,
 #'   foi = foi,
 #'   sample_size_by_age = sample_size_by_age
 #' )
-#' }
 #' @export
 get_sim_n_seropositive <- function(sim_data,
                                    foi,
@@ -246,29 +239,23 @@ get_sim_n_seropositive <- function(sim_data,
 
 #' Function that generates a simulated serosurvey according to the specified FoI
 #'
-#' @param foi Numeric atomic vector corresponding to the desired
-#'   Force-of-Infection ordered from past to present
-#' @param sample_size_by_age Size of each age group specified by either an
-#'   atomic vector of the same size as `foi` or an integer. This corresponds to
-#'   the number of trials `size` in [rbinom][stats::rbinom].
-#' @param tsur Year in which the serosurvey was conducted.
-#' @param birth_year_min Minimum age of year in the simulated serosurvey.
+#' @inheritParams get_sim_n_seropositive
 #' @param survey_label Label for the resulting simulated serosurvey.
-#' @param antibody Type of antibody detected by the serosurvey
-#' @param test Type of test taken
-#' @param seed The seed for random number generation.
-#' @return Dataframe object containing the simulated data generated from \code{foi}
+#' @return Dataframe containing the simulated serosurvey.
 #' @examples
-#' \dontrun{
-#' sample_size_by_age <- 5
-#' foi <- rep(0.02, 50)
+#' n_years <- 50
+#' sim_data <- data.frame(
+#'   age_mean_f = seq(1,n_years),
+#'   tsur = 2050
+#' )
+#' foi <- rep(0.02, n_years)
+#' sample_size_by_age <- as.integer(runif(n = n_years, 5, 10))
 #' sim_data <- generate_sim_data(
 #'   sim_data = sim_data,
 #'   foi = foi,
 #'   sample_size_by_age = sample_size_by_age,
 #'   survey_label = "sim_constant_foi"
 #' )
-#' }
 #' @export
 generate_sim_data <- function(sim_data,
                               foi,
