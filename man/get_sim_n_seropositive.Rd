@@ -10,21 +10,17 @@ get_sim_n_seropositive(sim_data, foi, sample_size_by_age, seed = 1234)
 \arguments{
 \item{sim_data}{A dataframe object containing the following columns:
 \describe{
+\item{\code{age_mean_f}}{Age group markers}
 \item{\code{tsur}}{Year of the survey}
-\item{\code{age_mean_f}}{Age}
-\item{\code{birth_year}}{Years in which the subjects were born according to the
-age group marker \code{age_mean_f}}
 }}
 
 \item{foi}{Numeric atomic vector corresponding to the desired
 Force-of-Infection ordered from past to present}
 
-\item{sample_size_by_age}{Sample size for each age group: either a single
-integer indicating that the sample size is the same for all ages or a
-vector of sample sizes the same length as This corresponds to the number of
-trials \code{size} in \link[stats:Binomial]{rbinom}.}
+\item{sample_size_by_age}{Integer indicating the sample size by age group.
+This corresponds to the number of trials \code{size} in \link[stats:Binomial]{rbinom}.}
 
-\item{seed}{The seed for random number generation.}
+\item{seed}{Seed for random number generation.}
 }
 \value{
 A dataframe containing the following columns:
@@ -34,25 +30,23 @@ A dataframe containing the following columns:
 provided FoI}
 }
 simulated list of counts following a binomial distribution in accordance
-with a given force of infection and age class sizes.
+with a given force of infection and age group sizes.
 }
 \description{
 Function that generates a sample of counts of seropositive individuals by
 sampling from a binomial distribution
 }
 \examples{
-\dontrun{
-foi <- rep(0.02, 50)
-sim_data <- generate_sim_data(
-  foi = foi,
-  sample_size_by_age = 5,
-  tsur = 2050,
-  birth_year_min = 2000,
-  survey_label = "foi_sim"
+n_years <- 50
+sim_data <- data.frame(
+  age_mean_f = seq(1,n_years),
+  tsur = 2050
 )
+foi <- rep(0.02, n_years)
+sample_size_by_age <- as.integer(runif(n = n_years, 5, 10))
 sim_n_seropositive <- get_sim_n_seropositive(
   sim_data = sim_data,
-  foi = foi
+  foi = foi,
+  sample_size_by_age = sample_size_by_age
 )
-}
 }

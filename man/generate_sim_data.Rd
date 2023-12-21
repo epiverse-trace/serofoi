@@ -4,53 +4,43 @@
 \alias{generate_sim_data}
 \title{Function that generates a simulated serosurvey according to the specified FoI}
 \usage{
-generate_sim_data(
-  foi,
-  sample_size_by_age,
-  tsur,
-  birth_year_min,
-  survey_label,
-  test = "fake",
-  antibody = "IgG",
-  seed = 1234
-)
+generate_sim_data(sim_data, foi, sample_size_by_age, survey_label, seed = 1234)
 }
 \arguments{
+\item{sim_data}{A dataframe object containing the following columns:
+\describe{
+\item{\code{age_mean_f}}{Age group markers}
+\item{\code{tsur}}{Year of the survey}
+}}
+
 \item{foi}{Numeric atomic vector corresponding to the desired
 Force-of-Infection ordered from past to present}
 
-\item{sample_size_by_age}{Size of each age group specified by either an
-atomic vector of the same size as \code{foi} or an integer. This corresponds to
-the number of trials \code{size} in \link[stats:Binomial]{rbinom}.}
-
-\item{tsur}{Year in which the serosurvey was conducted.}
-
-\item{birth_year_min}{Minimum age of year in the simulated serosurvey.}
+\item{sample_size_by_age}{Integer indicating the sample size by age group.
+This corresponds to the number of trials \code{size} in \link[stats:Binomial]{rbinom}.}
 
 \item{survey_label}{Label for the resulting simulated serosurvey.}
 
-\item{test}{Type of test taken}
-
-\item{antibody}{Type of antibody detected by the serosurvey}
-
-\item{seed}{The seed for random number generation.}
+\item{seed}{Seed for random number generation.}
 }
 \value{
-Dataframe object containing the simulated data generated from \code{foi}
+Dataframe containing the simulated serosurvey.
 }
 \description{
 Function that generates a simulated serosurvey according to the specified FoI
 }
 \examples{
-\dontrun{
-sample_size_by_age <- 5
-foi <- rep(0.02, 50)
+n_years <- 50
+sim_data <- data.frame(
+  age_mean_f = seq(1,n_years),
+  tsur = 2050
+)
+foi <- rep(0.02, n_years)
+sample_size_by_age <- as.integer(runif(n = n_years, 5, 10))
 sim_data <- generate_sim_data(
+  sim_data = sim_data,
   foi = foi,
   sample_size_by_age = sample_size_by_age,
-  tsur = 2050,
-  birth_year_min = 2000,
   survey_label = "sim_constant_foi"
 )
-}
 }
