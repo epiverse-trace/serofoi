@@ -3,17 +3,15 @@
 \name{get_sim_probability}
 \alias{get_sim_probability}
 \title{Function that generates the probabilities of being previously exposed to a
-pathogen.}
+pathogen given a historical Force-of-Infection.}
 \usage{
 get_sim_probability(sim_data, foi)
 }
 \arguments{
 \item{sim_data}{A dataframe object containing the following columns:
 \describe{
+\item{\code{age_mean_f}}{Age group markers}
 \item{\code{tsur}}{Year of the survey}
-\item{\code{age_mean_f}}{Age}
-\item{\code{birth_year}}{Years in which the subjects were born according to the
-age group marker \code{age_mean_f}}
 }}
 
 \item{foi}{Numeric atomic vector corresponding to the desired
@@ -29,5 +27,14 @@ according to the provided FoI}
 }
 \description{
 Function that generates the probabilities of being previously exposed to a
-pathogen.
+pathogen given a historical Force-of-Infection.
+}
+\examples{
+n_years <- 50
+sim_data <- data.frame(
+  age_mean_f = seq(1,n_years),
+  tsur = 2050
+)
+foi <- rep(0.02, n_years)
+sim_probability <- get_sim_probability(sim_data = sim_data, foi=foi)
 }
