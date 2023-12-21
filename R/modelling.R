@@ -328,7 +328,7 @@ get_foi_central_estimates <- function(seromodel_object,
 #'   \item{`antibody`}{Antibody}
 #'   \item{`n_sample`}{Total number of samples in the survey.}
 #'   \item{`n_agec`}{Number of age groups considered.}
-#'   \item{`n_iter`}{Number of interactions for each chain including warmup.}
+#'   \item{`n_iter`}{Number of iterations by chain including warmup.}
 #'   \item{`elpd`}{elpd}
 #'   \item{`se`}{se}
 #'   \item{`converged`}{convergence}
@@ -440,7 +440,8 @@ get_prev_expanded <- function(foi,
 
   predicted_prev <- t(
     apply(
-      prev_pn, 2,
+      prev_pn,
+      2,
       function(x) quantile(x, c(0.5, 0.1, 0.9))
       )
     )
