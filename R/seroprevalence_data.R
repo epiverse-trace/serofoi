@@ -164,6 +164,8 @@ prepare_bin_data <- function(serodata) {
 #' }
 #' @export
 get_sim_probability <- function(sim_data, foi) {
+  sim_data <- sim_data %>%
+    mutate(birth_year = .data$tsur - .data$age_mean_f)
   cohort_ages <- get_cohort_ages(sim_data)
   exposure_ages <- rev(cohort_ages$age)
   exposure_matrix <- get_exposure_matrix(sim_data) # nolint: object_usage_linter
@@ -216,23 +218,24 @@ get_sim_probability <- function(sim_data, foi) {
 #' )
 #' sim_n_seropositive <- get_sim_n_seropositive(
 #'   sim_data = sim_data,
-#'   foi = foi
+#'   foi = foi,
+#'   sample_size_by_age = sample_size_by_age
 #' )
 #' }
 #' @export
-get_sim_n_seropositive <- function(
-    sim_data,
-    foi,
-    sample_size_by_age,
-    seed = 1234
-  ) {
+get_sim_n_seropositive <- function(sim_data,
+                                   foi,
+                                   sample_size_by_age,
+                                   seed = 1234) {
   sim_probability <- get_sim_probability(sim_data = sim_data, foi = foi)
 
   set.seed(seed = seed)
-  n_seropositive <- purrr::map_int(
+  n_seropositive <- purrr::map2_int(
+    sample_size_by_age,
     sim_probability$probability,
-    ~ rbinom(1, sample_size_by_age, .)
-  )
+    ~rbinom(1, size = .x, prob = .y
+            )
+    )
 
   sim_n_seropositive <- data.frame(
     age = sim_probability$age,
@@ -260,35 +263,35 @@ get_sim_n_seropositive <- function(
 #' sample_size_by_age <- 5
 #' foi <- rep(0.02, 50)
 #' sim_data <- generate_sim_data(
+#'   sim_data = sim_data,
 #'   foi = foi,
 #'   sample_size_by_age = sample_size_by_age,
-#'   tsur = 2050,
-#'   birth_year_min = 2000,
 #'   survey_label = "sim_constant_foi"
 #' )
 #' }
 #' @export
-generate_sim_data <- function(foi,
+generate_sim_data <- function(sim_data,
+                              foi,
                               sample_size_by_age,
-                              tsur,
-                              birth_year_min,
                               survey_label,
-                              test = "fake",
-                              antibody = "IgG",
                               seed = 1234
-                              ){
-    sim_data <- data.frame(birth_year = c(birth_year_min:(tsur - 1))) %>%
-        mutate(tsur = tsur,
-            country = 'None',
-            test = test,
-            antibody = antibody,
-            survey = survey_label,
-            age_mean_f = tsur - .data$birth_year)
-    sim_n_seropositive <- get_sim_n_seropositive(sim_data, foi, sample_size_by_age, seed = seed)
-    sim_data <- sim_data %>%
-        mutate(counts = sim_n_seropositive$n_seropositive,
-               total = sample_size_by_age) %>%
-        prepare_serodata()
+) {
+  sim_data <- sim_data %>%
+    mutate(
+      country = "None",
+      test = "test",
+      antibody = "antibody",
+      survey = survey_label
+      )
+  sim_n_seropositive <- get_sim_n_seropositive(
+    sim_data,
+    foi,
+    sample_size_by_age,
+    seed = seed
+    )
+  sim_data <- sim_data %>%
+    mutate(counts = sim_n_seropositive$n_seropositive,
+           total = sample_size_by_age)
 
   return(sim_data)
 }
