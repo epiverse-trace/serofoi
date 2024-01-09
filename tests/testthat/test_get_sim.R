@@ -29,7 +29,7 @@ test_that("test get_sim functionalities", {
 
   exposure_matrix <- matrix(1, n_years, n_years)
   exposure_matrix[lower.tri(exposure_matrix)] <- 0
-  probabilities <- purrr::map_dbl(1:n_years, ~ 1 - exp(-pracma::dot(exposure_matrix[., ], foi_sim)))
+  probabilities <- 1 - exp(-drop(exposure_matrix %*% foi_sim))
 
   expect_s3_class(sim_probability, "data.frame")
   expect_type(sim_probability$age, "integer")
