@@ -6,7 +6,7 @@
 #' This function adds the necessary additional variables to the given dataset
 #' `serodata` corresponding to a serological survey.
 #' @param serodata A data frame containing the data from a serological survey.
-#'   This data frame must contain the following columns:
+#'  This data frame must contain the following columns:
 #' \describe{
 #'   \item{`survey`}{survey Label of the current survey}
 #'   \item{`total`}{Number of samples for each age group}
@@ -18,12 +18,17 @@
 #'   \item{`test`}{The type of test taken}
 #'   \item{`antibody`}{antibody}
 #' }
+#' Alternatively to `age_min` and `age_max`, the dataset could already include
+#' the age group marker `age_mean_f`, representing the middle point between
+#' `age_min` and `age_max`. If `afe_mean_f` is missing, it will be generated
+#' by the function.
 #' @param alpha probability of a type I error. For further details refer to
 #'   [binconf][Hmisc::binconf].
 #' @return serodata with additional columns necessary for the analysis. These
 #'   columns are:
 #' \describe{
-#'   \item{`age_mean_f`}{Floor value of the average between age_min and age_max}
+#'   \item{`age_mean_f`}{Floor value of the average between age_min and age_max
+#'     for the age groups delimited by `age_min` and `age_max`}
 #'   \item{`sample_size`}{The size of the sample}
 #'   \item{`birth_year`}{Years in which the subject was born according to the
 #'     age group marker `age_mean_f`}
