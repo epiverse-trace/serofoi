@@ -44,15 +44,19 @@ prepare_serodata <- function(serodata = serodata,
   stopifnot(
     "serodata must contain the right columns" =
       all(c(
-        "survey", "total", "counts", "age_min", "age_max", "tsur",
-        "country", "test", "antibody"
+        "survey", "total", "counts", "tsur"
       ) %in%
+      # serodata should contain either age_min and age_max,
+      # or age_mean_f to fully identify the age groups
+        colnames(serodata)) & (
+        any(c(
+          "age_min", "age_max"
+          ) %in%
         colnames(serodata)) |
-        all(c(
-          "survey", "total", "counts", "age_mean_f", "tsur",
-          "country", "test", "antibody"
-        ) %in%
+        any(
+          "age_mean_f" %in%
           colnames(serodata))
+      )
   )
   if (!any(colnames(serodata) == "age_mean_f")) {
     serodata <- serodata %>%
