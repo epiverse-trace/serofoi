@@ -77,6 +77,38 @@ prepare_serodata <- function(serodata = serodata,
         ) %in% colnames(serodata)) |
         "age_mean_f" %in% colnames(serodata)
   )
+
+  if (!any(colnames(serodata) == "country")) {
+    warning(
+      paste0(
+        "Column 'country' is missing. ",
+        "Consider adding it as additional information."
+      )
+    )
+    serodata$country <- "None"
+  }
+
+
+  if (!any(colnames(serodata) == "test")) {
+    warning(
+      paste0(
+        "Column 'test' is missing. ",
+        "Consider adding it as additional information."
+      )
+    )
+    serodata$test <- "None"
+  }
+
+  if (!any(colnames(serodata) == "antibody")) {
+    warning(
+      paste0(
+        "Column 'antibody' is missing. ",
+        "Consider adding it as additional information."
+      )
+    )
+    serodata$antibody <- "None"
+  }
+
   if (!any(colnames(serodata) == "age_mean_f")) {
     serodata <- serodata %>%
       dplyr::mutate(
