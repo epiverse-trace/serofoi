@@ -6,7 +6,7 @@
 #' This function adds the necessary additional variables to the given dataset
 #' `serodata` corresponding to a serological survey.
 #' @param serodata A data frame containing the data from a serological survey.
-#'   This data frame must contain the following columns:
+#'  This data frame must contain the following columns:
 #' \describe{
 #'   \item{`survey`}{survey Label of the current survey}
 #'   \item{`total`}{Number of samples for each age group}
@@ -18,12 +18,17 @@
 #'   \item{`test`}{The type of test taken}
 #'   \item{`antibody`}{antibody}
 #' }
+#' Alternatively to `age_min` and `age_max`, the dataset could already include
+#' the age group marker `age_mean_f`, representing the middle point between
+#' `age_min` and `age_max`. If `afe_mean_f` is missing, it will be generated
+#' by the function.
 #' @param alpha probability of a type I error. For further details refer to
 #'   [binconf][Hmisc::binconf].
 #' @return serodata with additional columns necessary for the analysis. These
 #'   columns are:
 #' \describe{
-#'   \item{`age_mean_f`}{Floor value of the average between age_min and age_max}
+#'   \item{`age_mean_f`}{Floor value of the average between age_min and age_max
+#'     for the age groups delimited by `age_min` and `age_max`}
 #'   \item{`sample_size`}{The size of the sample}
 #'   \item{`birth_year`}{Years in which the subject was born according to the
 #'     age group marker `age_mean_f`}
@@ -41,22 +46,36 @@ prepare_serodata <- function(serodata = serodata,
                              alpha = 0.05) {
   checkmate::assert_numeric(alpha, lower = 0, upper = 1)
   # Check that serodata has the right columns
-  stopifnot(
-    "serodata must contain the right columns" =
-      all(c(
-        "survey", "total", "counts", "tsur"
-      ) %in%
-      # serodata should contain either age_min and age_max,
-      # or age_mean_f to fully identify the age groups
-        colnames(serodata)) & (
-        any(c(
-          "age_min", "age_max"
-          ) %in%
-        colnames(serodata)) |
-        any(
-          "age_mean_f" %in%
-          colnames(serodata))
+  cols_check <- c("survey", "total", "counts", "tsur")
+  if(
+    !all(
+      cols_check
+      %in% colnames(serodata)
       )
+    ) {
+      stop(
+        "serodata must contain the right columns. ",
+        sprintf(
+          "Column(s) (%s) are missing.", paste0(
+            cols_check[which(!(cols_check %in% colnames(serodata)))],
+            collapse = ", "
+          )
+        )
+      )
+  }
+
+  # Check that the serodata has the necessary columns to fully
+  # identify the age groups
+  err_message <- message(
+      "serodata must contain both 'age_min' and 'age_max, ",
+      "or 'age_mean_f' to fully identify the age groups"
+    )
+  stopifnot(
+    err_message =
+      all(c(
+        "age_min", "age_max"
+        ) %in% colnames(serodata)) |
+        "age_mean_f" %in% colnames(serodata)
   )
   if (!any(colnames(serodata) == "age_mean_f")) {
     serodata <- serodata %>%
