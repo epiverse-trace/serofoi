@@ -20,7 +20,11 @@ This data frame must contain the following columns:
 \item{\code{country}}{The country where the survey took place}
 \item{\code{test}}{The type of test taken}
 \item{\code{antibody}}{antibody}
-}}
+}
+Alternatively to \code{age_min} and \code{age_max}, the dataset could already include
+the age group marker \code{age_mean_f}, representing the middle point between
+\code{age_min} and \code{age_max}. If \code{afe_mean_f} is missing, it will be generated
+by the function.}
 
 \item{size_text}{Text size use in the theme of the graph returned by the
 function.}

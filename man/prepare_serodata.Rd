@@ -19,7 +19,11 @@ This data frame must contain the following columns:
 \item{\code{country}}{The country where the survey took place}
 \item{\code{test}}{The type of test taken}
 \item{\code{antibody}}{antibody}
-}}
+}
+Alternatively to \code{age_min} and \code{age_max}, the dataset could already include
+the age group marker \code{age_mean_f}, representing the middle point between
+\code{age_min} and \code{age_max}. If \code{afe_mean_f} is missing, it will be generated
+by the function.}
 
 \item{alpha}{probability of a type I error. For further details refer to
 \link[Hmisc:binconf]{binconf}.}
@@ -28,7 +32,8 @@ This data frame must contain the following columns:
 serodata with additional columns necessary for the analysis. These
 columns are:
 \describe{
-\item{\code{age_mean_f}}{Floor value of the average between age_min and age_max}
+\item{\code{age_mean_f}}{Floor value of the average between age_min and age_max
+for the age groups delimited by \code{age_min} and \code{age_max}}
 \item{\code{sample_size}}{The size of the sample}
 \item{\code{birth_year}}{Years in which the subject was born according to the
 age group marker \code{age_mean_f}}
