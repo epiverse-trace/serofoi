@@ -328,7 +328,7 @@ get_foi_central_estimates <- function(seromodel_object,
 #'   \item{`antibody`}{Antibody}
 #'   \item{`n_sample`}{Total number of samples in the survey.}
 #'   \item{`n_agec`}{Number of age groups considered.}
-#'   \item{`n_iter`}{Number of nteractions for each chain including warmup.}
+#'   \item{`n_iter`}{Number of interactions for each chain including warmup.}
 #'   \item{`elpd`}{elpd}
 #'   \item{`se`}{se}
 #'   \item{`converged`}{convergence}
