@@ -431,7 +431,10 @@ get_prev_expanded <- function(foi,
 
   ly <- NCOL(foi_expanded)
   exposure_expanded <- matrix(0, nrow = ly, ncol = ly)
-  exposure_expanded[lower.tri(exposure_expanded, diag = TRUE)] <- 1
+  exposure_expanded[apply(
+    lower.tri(exposure_expanded, diag = TRUE),
+    1, rev
+    )] <- 1
 
   prev_pn <- t(1 - exp(-exposure_expanded %*% t(foi_expanded)))
 
