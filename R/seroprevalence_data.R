@@ -47,7 +47,7 @@ prepare_serodata <- function(serodata = serodata,
   checkmate::assert_numeric(alpha, lower = 0, upper = 1)
   # Check that serodata has the right columns
   cols_check <- c("survey", "total", "counts", "tsur")
-  if(
+  if (
     !all(
       cols_check
       %in% colnames(serodata)
@@ -56,9 +56,8 @@ prepare_serodata <- function(serodata = serodata,
       stop(
         "serodata must contain the right columns. ",
         sprintf(
-          "Column(s) (%s) are missing.", paste0(
-            cols_check[which(!(cols_check %in% colnames(serodata)))],
-            collapse = ", "
+          "Column(s) (%s) are missing.", toString(
+            cols_check[which(!(cols_check %in% colnames(serodata)))]
           )
         )
       )
@@ -66,12 +65,9 @@ prepare_serodata <- function(serodata = serodata,
 
   # Check that the serodata has the necessary columns to fully
   # identify the age groups
-  err_message <- message(
-      "serodata must contain both 'age_min' and 'age_max, ",
-      "or 'age_mean_f' to fully identify the age groups"
-    )
   stopifnot(
-    err_message =
+    "serodata must contain both 'age_min' and 'age_max',
+    or 'age_mean_f' to fully identify the age groups" =
       all(c(
         "age_min", "age_max"
         ) %in% colnames(serodata)) |
@@ -80,10 +76,8 @@ prepare_serodata <- function(serodata = serodata,
 
   if (!any(colnames(serodata) == "country")) {
     warning(
-      paste0(
         "Column 'country' is missing. ",
         "Consider adding it as additional information."
-      )
     )
     serodata$country <- "None"
   }
@@ -91,20 +85,16 @@ prepare_serodata <- function(serodata = serodata,
 
   if (!any(colnames(serodata) == "test")) {
     warning(
-      paste0(
         "Column 'test' is missing. ",
         "Consider adding it as additional information."
-      )
     )
     serodata$test <- "None"
   }
 
   if (!any(colnames(serodata) == "antibody")) {
     warning(
-      paste0(
         "Column 'antibody' is missing. ",
         "Consider adding it as additional information."
-      )
     )
     serodata$antibody <- "None"
   }
