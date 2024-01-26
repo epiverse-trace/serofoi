@@ -130,7 +130,22 @@ fit_seromodel <- function(
   ) {
   # TODO Add a warning because there are exceptions where a minimal amount of
   # iterations is needed
-  foi_model <- match.arg(foi_model)
+    # Validate arguments
+  validate_serodata(serodata)
+  stopifnot(
+        "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`"
+              = foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
+        "n_iters must be numeric"
+              = is.numeric(n_iters),
+        "n_thin must be numeric"
+              = is.numeric(n_thin),
+        "delta must be numeric"
+              = is.numeric(delta),
+        "m_treed must be numeric"
+              = is.numeric(m_treed),
+        "decades must be numeric"
+              = is.numeric(decades)
+  )
   model <- stanmodels[[foi_model]]
   cohort_ages <- get_cohort_ages(serodata = serodata)
   exposure_matrix <- get_exposure_matrix(serodata)
