@@ -97,7 +97,10 @@ This data frame must contain the following columns:</p><dl><dt><code>survey</cod
 <dd><p>antibody</p></dd>
 
 
-</dl></dd>
+</dl><p>Alternatively to <code>age_min</code> and <code>age_max</code>, the dataset could already include
+the age group marker <code>age_mean_f</code>, representing the middle point between
+<code>age_min</code> and <code>age_max</code>. If <code>afe_mean_f</code> is missing, it will be generated
+by the function.</p></dd>
 
 
 <dt>alpha</dt>
@@ -111,7 +114,8 @@ This data frame must contain the following columns:</p><dl><dt><code>survey</cod
 
 <p>serodata with additional columns necessary for the analysis. These
 columns are:</p><dl><dt><code>age_mean_f</code></dt>
-<dd><p>Floor value of the average between age_min and age_max</p></dd>
+<dd><p>Floor value of the average between age_min and age_max
+for the age groups delimited by <code>age_min</code> and <code>age_max</code></p></dd>
 
 <dt><code>sample_size</code></dt>
 <dd><p>The size of the sample</p></dd>
