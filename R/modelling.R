@@ -411,8 +411,7 @@ extract_seromodel_summary <- function(seromodel_object,
 #' )
 #' foi <- rstan::extract(seromodel_object, "foi")[[1]]
 #' get_prev_expanded(foi, serodata)
-#' @keywords internal
-#' @noRd
+#' @export
 get_prev_expanded <- function(foi,
                               serodata,
                               predicted_prev_lower_quantile = 0.1,
