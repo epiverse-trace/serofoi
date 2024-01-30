@@ -59,75 +59,62 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generate_sim_data</span><span class="op">(</span></span>
-<span>  <span class="va">foi</span>,</span>
-<span>  <span class="va">sample_size_by_age</span>,</span>
-<span>  <span class="va">tsur</span>,</span>
-<span>  <span class="va">birth_year_min</span>,</span>
-<span>  <span class="va">survey_label</span>,</span>
-<span>  test <span class="op">=</span> <span class="st">"fake"</span>,</span>
-<span>  antibody <span class="op">=</span> <span class="st">"IgG"</span>,</span>
-<span>  seed <span class="op">=</span> <span class="fl">1234</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generate_sim_data</span><span class="op">(</span><span class="va">sim_data</span>, <span class="va">foi</span>, <span class="va">sample_size_by_age</span>, <span class="va">survey_label</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>foi</dt>
+    <dl><dt>sim_data</dt>
+<dd><p>A dataframe object containing the following columns:</p><dl><dt><code>age_mean_f</code></dt>
+<dd><p>Age group markers</p></dd>
+
+<dt><code>tsur</code></dt>
+<dd><p>Year of the survey</p></dd>
+
+
+</dl></dd>
+
+
+<dt>foi</dt>
 <dd><p>Numeric atomic vector corresponding to the desired
 Force-of-Infection ordered from past to present</p></dd>
 
 
 <dt>sample_size_by_age</dt>
-<dd><p>Size of each age group specified by either an
-atomic vector of the same size as <code>foi</code> or an integer. This corresponds to
-the number of trials <code>size</code> in <a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a>.</p></dd>
-
-
-<dt>tsur</dt>
-<dd><p>Year in which the serosurvey was conducted.</p></dd>
-
-
-<dt>birth_year_min</dt>
-<dd><p>Minimum age of year in the simulated serosurvey.</p></dd>
+<dd><p>Integer indicating the sample size by age group.
+This corresponds to the number of trials <code>size</code> in <a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a>.</p></dd>
 
 
 <dt>survey_label</dt>
 <dd><p>Label for the resulting simulated serosurvey.</p></dd>
 
 
-<dt>test</dt>
-<dd><p>Type of test taken</p></dd>
-
-
-<dt>antibody</dt>
-<dd><p>Type of antibody detected by the serosurvey</p></dd>
-
-
 <dt>seed</dt>
-<dd><p>The seed for random number generation.</p></dd>
+<dd><p>Seed for random number generation.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>Dataframe object containing the simulated data</p>
+<p>Dataframe containing the simulated serosurvey.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">sample_size_by_age</span> <span class="op">&lt;-</span> <span class="fl">5</span></span></span>
-<span class="r-in"><span><span class="va">foi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.02</span>, <span class="fl">50</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">n_years</span> <span class="op">&lt;-</span> <span class="fl">50</span></span></span>
+<span class="r-in"><span><span class="va">sim_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  age_mean_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>,<span class="va">n_years</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  tsur <span class="op">=</span> <span class="fl">2050</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">foi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.02</span>, <span class="va">n_years</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sample_size_by_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n_years</span>, <span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sim_data</span> <span class="op">&lt;-</span> <span class="fu">generate_sim_data</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  sim_data <span class="op">=</span> <span class="va">sim_data</span>,</span></span>
 <span class="r-in"><span>  foi <span class="op">=</span> <span class="va">foi</span>,</span></span>
 <span class="r-in"><span>  sample_size_by_age <span class="op">=</span> <span class="va">sample_size_by_age</span>,</span></span>
-<span class="r-in"><span>  tsur <span class="op">=</span> <span class="fl">2050</span>,</span></span>
-<span class="r-in"><span>  birth_year_min <span class="op">=</span> <span class="fl">2000</span>,</span></span>
 <span class="r-in"><span>  survey_label <span class="op">=</span> <span class="st">"sim_constant_foi"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
