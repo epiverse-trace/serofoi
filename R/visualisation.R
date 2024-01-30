@@ -61,7 +61,10 @@ plot_seroprev <- function(serodata,
 #' @export
 plot_seroprev_fitted <- function(seromodel_object,
                                  serodata,
-                                 size_text = 6) {
+                                 predicted_prev_lower_quantile = 0.1,
+                                 predicted_prev_upper_quantile = 0.9,
+                                 size_text = 6
+                                 ) {
   if (is.character(seromodel_object)) {
     message("model did not run")
     print_warning <- "errors"
@@ -89,6 +92,8 @@ plot_seroprev_fitted <- function(seromodel_object,
       prev_expanded <- get_prev_expanded(
         foi,
         serodata = serodata,
+        predicted_prev_lower_quantile,
+        predicted_prev_upper_quantile,
         bin_data = TRUE
       )
       prev_plot <-
@@ -351,6 +356,8 @@ plot_rhats <- function(seromodel_object,
 #' @export
 plot_seromodel <- function(seromodel_object,
                            serodata,
+                           predicted_prev_lower_quantile = 0.1,
+                           predicted_prev_upper_quantile = 0.9,
                            max_lambda = NA,
                            size_text = 25,
                            foi_sim = NULL) {
@@ -388,6 +395,8 @@ plot_seromodel <- function(seromodel_object,
       prev_plot <- plot_seroprev_fitted(
         seromodel_object = seromodel_object,
         serodata = serodata,
+        predicted_prev_lower_quantile,
+        predicted_prev_upper_quantile,
         size_text = size_text
       )
 
