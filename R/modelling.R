@@ -399,7 +399,12 @@ extract_seromodel_summary <- function(seromodel_object,
 #'   obtained from `rstan::extract(seromodel_object$seromodel, "foi", inc_warmup
 #'   = FALSE)[[1]]`.
 #' @inheritParams run_seromodel
-#' @param bin_data TBD
+#' @param bin_data If `TRUE`, `serodata` is binned by means of
+#'   `prepare_bin_data`. Otherwise, age groups are kept as originally input.
+#' @param predicted_prev_lower_quantile Float specifying the lower quantile
+#'   to be used in `predicted_prev` calculation
+#' @param predicted_prev_upper_quantile Float specifying the upper quantile
+#'   to be used in `predicted_prev` calculation
 #' @return `prev_final`. The expanded prevalence data. This is used for plotting
 #'   purposes in the `visualization` module.
 #' @examples
