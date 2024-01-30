@@ -308,13 +308,6 @@ generate_sim_data <- function(sim_data,
                               survey_label,
                               seed = 1234
 ) {
-  sim_data <- sim_data %>%
-    mutate(
-      country = "None",
-      test = "test",
-      antibody = "antibody",
-      survey = survey_label
-      )
   sim_n_seropositive <- get_sim_n_seropositive(
     sim_data,
     foi,
@@ -322,8 +315,11 @@ generate_sim_data <- function(sim_data,
     seed = seed
     )
   sim_data <- sim_data %>%
-    mutate(counts = sim_n_seropositive$n_seropositive,
-           total = sample_size_by_age)
+    mutate(
+      counts = sim_n_seropositive$n_seropositive,
+      total = sample_size_by_age,
+      survey = survey_label
+      )
 
   return(sim_data)
 }
