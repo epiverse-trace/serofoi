@@ -415,6 +415,8 @@ extract_seromodel_summary <- function(seromodel_object,
 #' @noRd
 get_prev_expanded <- function(foi,
                               serodata,
+                              predicted_prev_lower_quantile = 0.1,
+                              predicted_prev_upper_quantile = 0.9,
                               bin_data = FALSE) {
   dim_foi <- dim(foi)[2]
   # TODO: check whether this conditional is necessary
@@ -442,7 +444,15 @@ get_prev_expanded <- function(foi,
     apply(
       prev_pn,
       2,
-      function(x) quantile(x, c(0.5, 0.1, 0.9))
+      function(x) {
+        quantile(x,
+                 c(
+                   0.5,
+                   predicted_prev_lower_quantile,
+                   predicted_prev_upper_quantile
+                   )
+                 )
+        }
       )
     )
   colnames(predicted_prev) <- c(
