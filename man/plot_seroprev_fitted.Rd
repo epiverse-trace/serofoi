@@ -5,7 +5,13 @@
 \title{Function that generates a seropositivity plot corresponding to the specified
 fitted serological model}
 \usage{
-plot_seroprev_fitted(seromodel_object, serodata, size_text = 6)
+plot_seroprev_fitted(
+  seromodel_object,
+  serodata,
+  predicted_prev_lower_quantile = 0.1,
+  predicted_prev_upper_quantile = 0.9,
+  size_text = 6
+)
 }
 \arguments{
 \item{seromodel_object}{Stanfit object containing the results of fitting a
@@ -35,6 +41,12 @@ observed prevalence}
 }
 The last six columns can be added to \code{serodata} by means of the function
 \code{\link[=prepare_serodata]{prepare_serodata()}}.}
+
+\item{predicted_prev_lower_quantile}{Float specifying the lower quantile
+to be used in \code{predicted_prev} calculation}
+
+\item{predicted_prev_upper_quantile}{Float specifying the upper quantile
+to be used in \code{predicted_prev} calculation}
 
 \item{size_text}{Text size of the graph returned by the function.}
 }

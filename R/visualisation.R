@@ -43,6 +43,7 @@ plot_seroprev <- function(serodata,
 #' and seropositivity on the y axis with its corresponding confidence interval.
 #' @inheritParams get_foi_central_estimates
 #' @inheritParams run_seromodel
+#' @inheritParams get_prev_expanded
 #' @param size_text Text size of the graph returned by the function.
 #' @return A ggplot object containing the seropositivity-vs-age graph including
 #'   the data, the fitted model and their corresponding confidence intervals.
@@ -335,6 +336,7 @@ plot_rhats <- function(seromodel_object,
 #'
 #' @inheritParams get_foi_central_estimates
 #' @inheritParams run_seromodel
+#' @inheritParams get_prev_expanded
 #' @param size_text Text size use in the theme of the graph returned by the
 #'   function.
 #' @param max_lambda TBD
