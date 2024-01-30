@@ -68,6 +68,8 @@ test_that("Test tv_normal_log model", {
   prev_expanded <- get_prev_expanded(foi, serodata = serodata)
 
   # compares expanded prevalence with benchmark
+  # We use dplyr::near() rather than expect_equal() to allow passing a vector 
+  # of tolerances.
   expect_true(
     all(
       dplyr::near(
