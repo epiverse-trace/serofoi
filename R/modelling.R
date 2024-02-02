@@ -1,3 +1,65 @@
+# TODO Complete @param documentation
+
+stop_if_missing <- function(serodata, must_have_cols) {
+  if (
+    !all(
+      must_have_cols
+      %in% colnames(serodata)
+    )
+  ) {
+    missing <- must_have_cols[which(!(must_have_cols %in% colnames(serodata)))]
+    stop(
+      "The following mandatory columns in `serodata` are missing.",
+      toString(missing)
+    )
+  }
+}
+
+warn_missing <- function(serodata, optional_cols) {
+  if (
+    !all(
+      optional_cols
+      %in% colnames(serodata)
+    )
+  ) {
+    missing <- optional_cols[which(!(optional_cols %in% colnames(serodata)))]
+    warning(
+      "The following optional columns in `serodata` are missing.",
+      "Consider including them to get more information from this analysis",
+      toString(missing)
+    )
+    for (col in missing) {
+      serodata[[col]] <- "None" # TODO Shouln't we use `NA` instead?
+    }
+  }
+}
+
+validate_serodata <- function(serodata) {
+  stop_if_missing(serodata,
+    must_have_cols = c("survey", "total", "counts", "tsur")
+  )
+  warn_missing(serodata,
+    optional_cols = c("country", "test", "antibody")
+  )
+
+  # Check that the serodata has the necessary columns to fully
+  # identify the age groups
+  stopifnot(
+    "serodata must contain both 'age_min' and 'age_max',
+    or 'age_mean_f' to fully identify the age groups" =
+      all(c(
+        "age_min", "age_max"
+      ) %in% colnames(serodata)) |
+        "age_mean_f" %in% colnames(serodata)
+  )
+}
+
+validate_prepared_serodata <- function(serodata) {
+  stop_if_missing(serodata,
+    must_have_cols = c("total", "counts", "tsur", "age_mean_f", "birth_year")
+  )
+}
+
 #' Function that runs the specified stan model for the Force-of-Infection and
 #' estimates the seroprevalence based on the result of the fit
 #'
@@ -130,21 +192,17 @@ fit_seromodel <- function(
   ) {
   # TODO Add a warning because there are exceptions where a minimal amount of
   # iterations is needed
-    # Validate arguments
-  validate_serodata(serodata)
+  # Validate arguments
+  # validate_serodata(serodata)
+  validate_prepared_serodata(serodata)
   stopifnot(
-        "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`"
-              = foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
-        "n_iters must be numeric"
-              = is.numeric(n_iters),
-        "n_thin must be numeric"
-              = is.numeric(n_thin),
-        "delta must be numeric"
-              = is.numeric(delta),
-        "m_treed must be numeric"
-              = is.numeric(m_treed),
-        "decades must be numeric"
-              = is.numeric(decades)
+    "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`" 
+      = foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
+    "n_iters must be numeric" = is.numeric(n_iters),
+    "n_thin must be numeric" = is.numeric(n_thin),
+    "delta must be numeric" = is.numeric(delta),
+    "m_treed must be numeric" = is.numeric(m_treed),
+    "decades must be numeric" = is.numeric(decades)
   )
   model <- stanmodels[[foi_model]]
   cohort_ages <- get_cohort_ages(serodata = serodata)

@@ -45,59 +45,8 @@
 prepare_serodata <- function(serodata = serodata,
                              alpha = 0.05) {
   checkmate::assert_numeric(alpha, lower = 0, upper = 1)
-  # Check that serodata has the right columns
-  cols_check <- c("survey", "total", "counts", "tsur")
-  if (
-    !all(
-      cols_check
-      %in% colnames(serodata)
-      )
-    ) {
-      stop(
-        "serodata must contain the right columns. ",
-        sprintf(
-          "Column(s) (%s) are missing.", toString(
-            cols_check[which(!(cols_check %in% colnames(serodata)))]
-          )
-        )
-      )
-  }
+  validate_serodata(serodata)
 
-  # Check that the serodata has the necessary columns to fully
-  # identify the age groups
-  stopifnot(
-    "serodata must contain both 'age_min' and 'age_max',
-    or 'age_mean_f' to fully identify the age groups" =
-      all(c(
-        "age_min", "age_max"
-        ) %in% colnames(serodata)) |
-        "age_mean_f" %in% colnames(serodata)
-  )
-
-  if (!any(colnames(serodata) == "country")) {
-    warning(
-        "Column 'country' is missing. ",
-        "Consider adding it as additional information."
-    )
-    serodata$country <- "None"
-  }
-
-
-  if (!any(colnames(serodata) == "test")) {
-    warning(
-        "Column 'test' is missing. ",
-        "Consider adding it as additional information."
-    )
-    serodata$test <- "None"
-  }
-
-  if (!any(colnames(serodata) == "antibody")) {
-    warning(
-        "Column 'antibody' is missing. ",
-        "Consider adding it as additional information."
-    )
-    serodata$antibody <- "None"
-  }
 
   if (!any(colnames(serodata) == "age_mean_f")) {
     serodata <- serodata %>%
@@ -113,6 +62,7 @@ prepare_serodata <- function(serodata = serodata,
       birth_year = .data$tsur - .data$age_mean_f
     )
   }
+
   serodata <- serodata %>%
     cbind(
       Hmisc::binconf(
