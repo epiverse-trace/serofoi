@@ -22,7 +22,7 @@ serodata <- prepare_serodata(chagas2012)
 seromodel_object <- run_seromodel(
   serodata = serodata,
   foi_model = "constant",
-  n_iters = 1000
+  iter = 1000
 )
 seromodel_summary <- extract_seromodel_summary(
   seromodel_object = seromodel_object,

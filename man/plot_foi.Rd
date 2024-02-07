@@ -43,7 +43,7 @@ serodata <- prepare_serodata(chagas2012)
 seromodel_object <- run_seromodel(
   serodata = serodata,
   foi_model = "constant",
-  n_iters = 1000
+  iter = 1000
 )
 cohort_ages <- get_cohort_ages(serodata)
 plot_foi(

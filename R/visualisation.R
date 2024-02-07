@@ -53,7 +53,7 @@ plot_seroprev <- function(serodata,
 #' seromodel_object <- run_seromodel(
 #'   serodata = serodata,
 #'   foi_model = "constant",
-#'   n_iters = 1000
+#'   iter = 1000
 #' )
 #' plot_seroprev_fitted(seromodel_object,
 #'   serodata = serodata,
@@ -153,7 +153,7 @@ plot_seroprev_fitted <- function(seromodel_object,
 #' seromodel_object <- run_seromodel(
 #'   serodata = serodata,
 #'   foi_model = "constant",
-#'   n_iters = 1000
+#'   iter = 1000
 #' )
 #' cohort_ages <- get_cohort_ages(serodata)
 #' plot_foi(
@@ -271,7 +271,7 @@ plot_foi <- function(seromodel_object,
 #' seromodel_object <- run_seromodel(
 #'   serodata = serodata,
 #'   foi_model = "constant",
-#'   n_iters = 1000
+#'   iter = 1000
 #' )
 #' cohort_ages <- get_cohort_ages(serodata = serodata)
 #' plot_rhats(seromodel_object,
@@ -349,7 +349,7 @@ plot_rhats <- function(seromodel_object,
 #' seromodel_object <- run_seromodel(
 #'   serodata = serodata,
 #'   foi_model = "constant",
-#'   n_iters = 1000
+#'   iter = 1000
 #' )
 #' plot_seromodel(seromodel_object,
 #'   serodata = serodata,
@@ -455,7 +455,7 @@ plot_seromodel <- function(seromodel_object,
 #' seromodel_object <- run_seromodel(
 #'   serodata = serodata,
 #'   foi_model = "constant",
-#'   n_iters = 1000
+#'   iter = 1000
 #' )
 #' seromodel_summary <- extract_seromodel_summary(
 #'   seromodel_object = seromodel_object,

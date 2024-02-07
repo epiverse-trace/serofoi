@@ -21,7 +21,7 @@ models_to_run <- c(
 models_list <- lapply(models_to_run,
   run_seromodel,
   serodata = simdata,
-  n_iters = 1000
+  iter = 1000
 )
 
 saveRDS(
