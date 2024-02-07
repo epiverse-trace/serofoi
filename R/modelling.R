@@ -21,7 +21,7 @@
 #' @export
 run_seromodel <- function(
   serodata,
-  foi_model = c("constant", "tv_normal_log","tv_normal"),
+  foi_model = c("constant", "tv_normal_log", "tv_normal"),
   iter = 1000,
   thin = 2,
   adapt_delta = 0.90,
