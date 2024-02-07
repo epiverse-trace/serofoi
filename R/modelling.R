@@ -158,16 +158,14 @@ fit_seromodel <- function(serodata,
   model <- stanmodels[[foi_model]]
   cohort_ages <- get_cohort_ages(serodata = serodata)
   exposure_matrix <- get_exposure_matrix(serodata)
-  Nobs <- nrow(serodata)
+  n_obs <- nrow(serodata)
 
   stan_data <- list(
-    Nobs = Nobs,
-    Npos = serodata$counts,
-    Ntotal = serodata$total,
-    Age = serodata$age_mean_f,
-    Ymax = max(cohort_ages$age),
-    AgeExpoMatrix = exposure_matrix,
-    NDecades = decades
+    n_obs = n_obs,
+    n_pos = serodata$counts,
+    n_total = serodata$total,
+    age_max = max(cohort_ages$age),
+    observation_exposure_matrix = exposure_matrix
   )
 
   n_warmup <- floor(n_iters / 2)
