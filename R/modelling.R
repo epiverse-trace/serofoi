@@ -63,17 +63,18 @@
 #'   foi_model = "constant"
 #' )
 #' @export
-run_seromodel <- function(serodata,
-                          foi_model = c(
-                            "constant", "tv_normal_log",
-                            "tv_normal"
-                          ),
-                          n_iters = 1000,
-                          n_thin = 2,
-                          delta = 0.90,
-                          m_treed = 10,
-                          decades = 0,
-                          print_summary = TRUE) {
+run_seromodel <- function(
+  serodata,
+  foi_model = c("constant", "tv_normal_log","tv_normal"),
+  iter = 1000,
+  thin = 2,
+  adapt_delta = 0.90,
+  max_treedepth = 10,
+  chains = 4,
+  seed = "12345",
+  print_summary = TRUE,
+  ...
+  ) {
   foi_model <- match.arg(foi_model)
   survey <- unique(serodata$survey)
   if (length(survey) > 1) {
@@ -82,11 +83,13 @@ run_seromodel <- function(serodata,
   seromodel_object <- fit_seromodel(
     serodata = serodata,
     foi_model = foi_model,
-    n_iters = n_iters,
-    n_thin = n_thin,
-    delta = delta,
-    m_treed = m_treed,
-    decades = decades
+    iter = iter,
+    thin = thin,
+    adapt_delta = adapt_delta,
+    max_treedepth = max_treedepth,
+    chains = chains,
+    seed = seed,
+    ...
   )
   message(
     "serofoi model ",
@@ -142,16 +145,17 @@ run_seromodel <- function(serodata,
 #' )
 #'
 #' @export
-fit_seromodel <- function(serodata,
-                          foi_model = c(
-                            "constant", "tv_normal_log",
-                            "tv_normal"
-                          ),
-                          n_iters = 1000,
-                          n_thin = 2,
-                          delta = 0.90,
-                          m_treed = 10,
-                          decades = 0) {
+fit_seromodel <- function(
+  serodata,
+  foi_model = c("constant", "tv_normal_log", "tv_normal"),
+  iter = 1000,
+  thin = 2,
+  adapt_delta = 0.90,
+  max_treedepth = 10,
+  chains = 4,
+  seed = "12345",
+  ...
+  ) {
   # TODO Add a warning because there are exceptions where a minimal amount of
   # iterations is needed
   foi_model <- match.arg(foi_model)
@@ -168,7 +172,7 @@ fit_seromodel <- function(serodata,
     observation_exposure_matrix = exposure_matrix
   )
 
-  n_warmup <- floor(n_iters / 2)
+  warmup <- floor(iter / 2)
   if (foi_model == "tv_normal_log") {
     f_init <- function() {
       list(log_foi = rep(-3, nrow(cohort_ages)))
@@ -182,20 +186,21 @@ fit_seromodel <- function(serodata,
   seromodel_fit <- rstan::sampling(
     model,
     data = stan_data,
-    iter = n_iters,
-    chains = 4,
+    iter = iter,
     init = f_init,
-    warmup = n_warmup,
+    warmup = warmup,
+    control = list(
+      adapt_delta = adapt_delta,
+      max_treedepth = max_treedepth
+    ),
+    thin = thin,
+    chains = chains,
+    seed = seed,
+    # https://github.com/stan-dev/rstan/issues/761#issuecomment-647029649
+    chain_id = 0,
     verbose = FALSE,
     refresh = 0,
-    control = list(
-      adapt_delta = delta,
-      max_treedepth = m_treed
-    ),
-    seed = "12345",
-    thin = n_thin,
-    # https://github.com/stan-dev/rstan/issues/761#issuecomment-647029649
-    chain_id = 0
+    ...
   )
 
   if (seromodel_fit@mode == 0) {

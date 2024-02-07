@@ -24,7 +24,7 @@ test_that("Test constant model", {
   model_object <- run_seromodel(
     serodata = serodata,
     foi_model = model_name,
-    n_iters = 1000,
+    iter = 1000,
     print_summary = FALSE
   )
 
