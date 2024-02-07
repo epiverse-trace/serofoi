@@ -54,22 +54,22 @@ chik2015p <- prepare_serodata(chik2015)
 m1_chik <- run_seromodel(
   serodata = chik2015p,
   foi_model = "constant",
-  n_iters = 1000,
-  n_thin = 2
+  iter = 1000,
+  thin = 2
 )
 
 m2_chik <- run_seromodel(
   serodata = chik2015p,
   foi_model = "tv_normal",
-  n_iters = 1500,
-  n_thin = 2
+  iter = 1500,
+  thin = 2
 )
 
 m3_chik <- run_seromodel(
   serodata = chik2015p,
   foi_model = "tv_normal_log",
-  n_iters = 1500,
-  n_thin = 2
+  iter = 1500,
+  thin = 2
 )
 
 # Visualisation of the results
@@ -115,22 +115,22 @@ veev2012p <- prepare_serodata(veev2012)
 m1_veev <- run_seromodel(
   serodata = veev2012p,
   foi_model = "constant",
-  n_iters = 500,
-  n_thin = 2
+  iter = 500,
+  thin = 2
 )
 
 m2_veev <- run_seromodel(
   serodata = veev2012p,
   foi_model = "tv_normal",
-  n_iters = 500,
-  n_thin = 2
+  iter = 500,
+  thin = 2
 )
 
 m3_veev <- run_seromodel(
   serodata = veev2012p,
   foi_model = "tv_normal_log",
-  n_iters = 500,
-  n_thin = 2
+  iter = 500,
+  thin = 2
 )
 
 # Visualisation of the results
@@ -175,20 +175,22 @@ chagas2012p <- prepare_serodata(chagas2012)
 m1_cha <- run_seromodel(
   serodata = chagas2012p,
   foi_model = "constant",
-  n_iters = 800
+  iter = 800
 )
 m2_cha <- run_seromodel(
   serodata = chagas2012p,
   foi_model = "tv_normal",
-  n_iters = 800
+  iter = 800
 )
 
 # Visualisation of the results
-p1_cha <- plot_seromodel(m1_cha,
+p1_cha <- plot_seromodel(
+  m1_cha,
   serodata = chagas2012p,
   size_text = 6
 )
-p2_cha <- plot_seromodel(m2_cha,
+p2_cha <- plot_seromodel(
+  m2_cha,
   serodata = chagas2012p,
   size_text = 6
 )

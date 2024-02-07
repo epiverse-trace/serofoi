@@ -60,16 +60,18 @@ serodata_constant <- prepare_serodata(simdata_constant)
 model_1 <- run_seromodel(
   serodata = serodata_constant,
   foi_model = "constant",
-  n_iters = 800
+  iter = 800
 )
-plot_seromodel(model_1,
+plot_seromodel(
+  model_1,
   serodata = serodata_constant,
   size_text = 6
 )
 ```
 ```{r model_1_plot, include = TRUE, echo = FALSE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
 foi_sim_constant <- rep(0.02, 50)
-model_1_plot <- plot_seromodel(model_1,
+model_1_plot <- plot_seromodel(
+  model_1,
   serodata = serodata_constant,
   foi_sim = foi_sim_constant,
   size_text = 6
@@ -103,7 +105,7 @@ serodata_sw_dec <- prepare_serodata(simdata_sw_dec)
 model_2 <- run_seromodel(
   serodata = serodata_sw_dec,
   foi_model = "tv_normal",
-  n_iters = 1500
+  iter = 1500
 )
 plot_seromodel(model_2,
   serodata = serodata_sw_dec,
@@ -141,7 +143,7 @@ serodata_large_epi <- prepare_serodata(simdata_large_epi)
 model_3 <- run_seromodel(
   serodata = serodata_large_epi,
   foi_model = "tv_normal_log",
-  n_iters = 1500
+  iter = 1500
 )
 model_3_plot <- plot_seromodel(model_3,
   serodata = serodata_large_epi,
@@ -192,7 +194,7 @@ Now, we would like to know whether this model actually fits this dataset better 
 model_1 <- run_seromodel(
   serodata = serodata_large_epi,
   foi_model = "constant",
-  n_iters = 800
+  iter = 800
 )
 model_1_plot <- plot_seromodel(model_1,
   serodata = serodata_large_epi,
@@ -202,7 +204,7 @@ model_1_plot <- plot_seromodel(model_1,
 model_2 <- run_seromodel(
   serodata = serodata_large_epi,
   foi_model = "tv_normal",
-  n_iters = 1500
+  iter = 1500
 )
 model_2_plot <- plot_seromodel(model_2,
   serodata = serodata_large_epi,
@@ -218,17 +220,20 @@ cowplot::plot_grid(model_1_plot, model_2_plot, model_3_plot,
 ```
 ```{r model_comparison_plot_, include = TRUE, echo = FALSE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center", fig.keep="all"}
 size_text <- 6
-model_1_plot <- plot_seromodel(model_1,
+model_1_plot <- plot_seromodel(
+  model_1,
   serodata = serodata_large_epi,
   foi_sim = foi_sim_large_epi,
   size_text = size_text
 )
-model_2_plot <- plot_seromodel(model_2,
+model_2_plot <- plot_seromodel(
+  model_2,
   serodata = serodata_large_epi,
   foi_sim = foi_sim_large_epi,
   size_text = size_text
 )
-model_3_plot <- plot_seromodel(model_3,
+model_3_plot <- plot_seromodel(
+  model_3,
   serodata = serodata_large_epi,
   foi_sim = foi_sim_large_epi,
   size_text = size_text
