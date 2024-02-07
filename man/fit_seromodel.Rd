@@ -13,7 +13,7 @@ fit_seromodel(
   adapt_delta = 0.9,
   max_treedepth = 10,
   chains = 4,
-  seed = "12345",
+  seed = 12345,
   ...
 )
 }
