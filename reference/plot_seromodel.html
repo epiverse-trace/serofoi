@@ -91,32 +91,14 @@ model by means of <a href="run_seromodel.html">run_seromodel</a>.</p></dd>
 
 <dt>serodata</dt>
 <dd><p>A data frame containing the data from a seroprevalence
-survey. This data frame must contain the following columns:</p><dl><dt><code>survey</code></dt>
-<dd><p>survey Label of the current survey</p></dd>
-
-<dt><code>total</code></dt>
+survey. This data frame must contain at least the following columns:</p><dl><dt><code>total</code></dt>
 <dd><p>Number of samples for each age group</p></dd>
 
 <dt><code>counts</code></dt>
 <dd><p>Number of positive samples for each age group</p></dd>
 
-<dt><code>age_min</code></dt>
-<dd><p>age_min</p></dd>
-
-<dt><code>age_max</code></dt>
-<dd><p>age_max</p></dd>
-
 <dt><code>tsur</code></dt>
 <dd><p>Year in which the survey took place</p></dd>
-
-<dt><code>country</code></dt>
-<dd><p>The country where the survey took place</p></dd>
-
-<dt><code>test</code></dt>
-<dd><p>The type of test taken</p></dd>
-
-<dt><code>antibody</code></dt>
-<dd><p>antibody</p></dd>
 
 <dt><code>age_mean_f</code></dt>
 <dd><p>Floor value of the average between age_min and age_max</p></dd>
@@ -127,17 +109,6 @@ survey. This data frame must contain the following columns:</p><dl><dt><code>sur
 <dt><code>birth_year</code></dt>
 <dd><p>The year in which the individuals of each age group
 were born</p></dd>
-
-<dt><code>prev_obs</code></dt>
-<dd><p>Observed prevalence</p></dd>
-
-<dt><code>prev_obs_lower</code></dt>
-<dd><p>Lower limit of the confidence interval for the
-observed prevalence</p></dd>
-
-<dt><code>prev_obs_upper</code></dt>
-<dd><p>Upper limit of the confidence interval for the
-observed prevalence</p></dd>
 
 
 </dl><p>The last six columns can be added to <code>serodata</code> by means of the function
@@ -182,7 +153,7 @@ seropositivity, force of infection, and convergence plots.</p>
 <span class="r-in"><span><span class="va">seromodel_object</span> <span class="op">&lt;-</span> <span class="fu"><a href="run_seromodel.html">run_seromodel</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  serodata <span class="op">=</span> <span class="va">serodata</span>,</span></span>
 <span class="r-in"><span>  foi_model <span class="op">=</span> <span class="st">"constant"</span>,</span></span>
-<span class="r-in"><span>  n_iters <span class="op">=</span> <span class="fl">1000</span></span></span>
+<span class="r-in"><span>  iter <span class="op">=</span> <span class="fl">1000</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> serofoi model constant finished running ------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]              </span>

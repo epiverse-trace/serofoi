@@ -74,11 +74,13 @@ compiled by rstan.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fit_seromodel</span><span class="op">(</span></span>
 <span>  <span class="va">serodata</span>,</span>
 <span>  foi_model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"constant"</span>, <span class="st">"tv_normal_log"</span>, <span class="st">"tv_normal"</span><span class="op">)</span>,</span>
-<span>  n_iters <span class="op">=</span> <span class="fl">1000</span>,</span>
-<span>  n_thin <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  delta <span class="op">=</span> <span class="fl">0.9</span>,</span>
-<span>  m_treed <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>  decades <span class="op">=</span> <span class="fl">0</span></span>
+<span>  iter <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  thin <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  adapt_delta <span class="op">=</span> <span class="fl">0.9</span>,</span>
+<span>  max_treedepth <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  chains <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  seed <span class="op">=</span> <span class="st">"12345"</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -86,32 +88,14 @@ compiled by rstan.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>serodata</dt>
 <dd><p>A data frame containing the data from a seroprevalence
-survey. This data frame must contain the following columns:</p><dl><dt><code>survey</code></dt>
-<dd><p>survey Label of the current survey</p></dd>
-
-<dt><code>total</code></dt>
+survey. This data frame must contain at least the following columns:</p><dl><dt><code>total</code></dt>
 <dd><p>Number of samples for each age group</p></dd>
 
 <dt><code>counts</code></dt>
 <dd><p>Number of positive samples for each age group</p></dd>
 
-<dt><code>age_min</code></dt>
-<dd><p>age_min</p></dd>
-
-<dt><code>age_max</code></dt>
-<dd><p>age_max</p></dd>
-
 <dt><code>tsur</code></dt>
 <dd><p>Year in which the survey took place</p></dd>
-
-<dt><code>country</code></dt>
-<dd><p>The country where the survey took place</p></dd>
-
-<dt><code>test</code></dt>
-<dd><p>The type of test taken</p></dd>
-
-<dt><code>antibody</code></dt>
-<dd><p>antibody</p></dd>
 
 <dt><code>age_mean_f</code></dt>
 <dd><p>Floor value of the average between age_min and age_max</p></dd>
@@ -122,17 +106,6 @@ survey. This data frame must contain the following columns:</p><dl><dt><code>sur
 <dt><code>birth_year</code></dt>
 <dd><p>The year in which the individuals of each age group
 were born</p></dd>
-
-<dt><code>prev_obs</code></dt>
-<dd><p>Observed prevalence</p></dd>
-
-<dt><code>prev_obs_lower</code></dt>
-<dd><p>Lower limit of the confidence interval for the
-observed prevalence</p></dd>
-
-<dt><code>prev_obs_upper</code></dt>
-<dd><p>Upper limit of the confidence interval for the
-observed prevalence</p></dd>
 
 
 </dl><p>The last six columns can be added to <code>serodata</code> by means of the function
@@ -154,32 +127,42 @@ options:</p><dl><dt><code>"constant"</code></dt>
 </dl></dd>
 
 
-<dt>n_iters</dt>
+<dt>iter</dt>
 <dd><p>Number of interactions for each chain including the warmup.
 <code>iter</code> in sampling.</p></dd>
 
 
-<dt>n_thin</dt>
+<dt>thin</dt>
 <dd><p>Positive integer specifying the period for saving samples.
 <code>thin</code> in sampling.</p></dd>
 
 
-<dt>delta</dt>
-<dd><p>Real number between 0 and 1 that represents the target average
-acceptance probability. Increasing the value of <code>delta</code> will result in a
-smaller step size and fewer divergences. For further details refer to the
-<code>control</code> parameter in sampling or
+<dt>adapt_delta</dt>
+<dd><p>Real number between 0 and 1 that represents the target
+average acceptance probability. Increasing the value of <code>adapt_delta</code> will
+result in a smaller step size and fewer divergences. For further details
+refer to the <code>control</code> parameter in sampling or
 <a href="https://mc-stan.org/rstanarm/reference/adapt_delta.html" class="external-link">here</a>.</p></dd>
 
 
-<dt>m_treed</dt>
-<dd><p>Maximum tree depth for the binary tree used in the NUTS stan
-sampler. For further details refer to the <code>control</code> parameter in
+<dt>max_treedepth</dt>
+<dd><p>Maximum tree depth for the binary tree used in the NUTS
+stan sampler. For further details refer to the <code>control</code> parameter in
 sampling.</p></dd>
 
 
-<dt>decades</dt>
-<dd><p>Number of decades covered by the survey data.</p></dd>
+<dt>chains</dt>
+<dd><p>Number of Markov chains for sampling. For further details refer
+to the <code>chains</code> parameter in sampling.</p></dd>
+
+
+<dt>seed</dt>
+<dd><p>For further details refer to the <code>seed</code> parameter in
+sampling.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Additional parameters for sampling.</p></dd>
 
 </dl></div>
     <div class="section level2">
