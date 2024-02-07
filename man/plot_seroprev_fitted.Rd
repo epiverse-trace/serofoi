@@ -18,26 +18,15 @@ plot_seroprev_fitted(
 model by means of \link{run_seromodel}.}
 
 \item{serodata}{A data frame containing the data from a seroprevalence
-survey. This data frame must contain the following columns:
+survey. This data frame must contain at least the following columns:
 \describe{
-\item{\code{survey}}{survey Label of the current survey}
 \item{\code{total}}{Number of samples for each age group}
 \item{\code{counts}}{Number of positive samples for each age group}
-\item{\code{age_min}}{age_min}
-\item{\code{age_max}}{age_max}
 \item{\code{tsur}}{Year in which the survey took place}
-\item{\code{country}}{The country where the survey took place}
-\item{\code{test}}{The type of test taken}
-\item{\code{antibody}}{antibody}
 \item{\code{age_mean_f}}{Floor value of the average between age_min and age_max}
 \item{\code{sample_size}}{The size of the sample}
 \item{\code{birth_year}}{The year in which the individuals of each age group
 were born}
-\item{\code{prev_obs}}{Observed prevalence}
-\item{\code{prev_obs_lower}}{Lower limit of the confidence interval for the
-observed prevalence}
-\item{\code{prev_obs_upper}}{Upper limit of the confidence interval for the
-observed prevalence}
 }
 The last six columns can be added to \code{serodata} by means of the function
 \code{\link[=prepare_serodata]{prepare_serodata()}}.}
@@ -66,7 +55,7 @@ serodata <- prepare_serodata(chagas2012)
 seromodel_object <- run_seromodel(
   serodata = serodata,
   foi_model = "constant",
-  n_iters = 1000
+  iter = 1000
 )
 plot_seroprev_fitted(seromodel_object,
   serodata = serodata,

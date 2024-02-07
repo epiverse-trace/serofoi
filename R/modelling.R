@@ -1,6 +1,3 @@
-# TODO Complete @param documentation
-
-
 #' Function that runs the specified stan model for the Force-of-Infection and
 #' estimates the seroprevalence based on the result of the fit
 #'
@@ -8,59 +5,18 @@
 #' using the data from a seroprevalence survey `serodata` as the input data. See
 #' [fit_seromodel] for further details.
 #'
-#' @param serodata A data frame containing the data from a seroprevalence
-#'   survey. This data frame must contain the following columns:
-#' \describe{
-#'   \item{`survey`}{survey Label of the current survey}
-#'   \item{`total`}{Number of samples for each age group}
-#'   \item{`counts`}{Number of positive samples for each age group}
-#'   \item{`age_min`}{age_min}
-#'   \item{`age_max`}{age_max}
-#'   \item{`tsur`}{Year in which the survey took place}
-#'   \item{`country`}{The country where the survey took place}
-#'   \item{`test`}{The type of test taken}
-#'   \item{`antibody`}{antibody}
-#'   \item{`age_mean_f`}{Floor value of the average between age_min and age_max}
-#'   \item{`sample_size`}{The size of the sample}
-#'   \item{`birth_year`}{The year in which the individuals of each age group
-#'     were born}
-#'   \item{`prev_obs`}{Observed prevalence}
-#'   \item{`prev_obs_lower`}{Lower limit of the confidence interval for the
-#'     observed prevalence}
-#'   \item{`prev_obs_upper`}{Upper limit of the confidence interval for the
-#'     observed prevalence}
-#' }
-#'   The last six columns can be added to `serodata` by means of the function
-#'   [prepare_serodata()].
-#' @param foi_model Name of the selected model. Current version provides three
-#'   options:
-#' \describe{
-#' \item{`"constant"`}{Runs a constant model}
-#' \item{`"tv_normal"`}{Runs a normal model}
-#' \item{`"tv_normal_log"`}{Runs a normal logarithmic model}
-#' }
-#' @param n_iters Number of interactions for each chain including the warmup.
-#'   `iter` in [sampling][rstan::sampling].
-#' @param n_thin Positive integer specifying the period for saving samples.
-#'   `thin` in [sampling][rstan::sampling].
-#' @param delta Real number between 0 and 1 that represents the target average
-#'   acceptance probability. Increasing the value of `delta` will result in a
-#'   smaller step size and fewer divergences. For further details refer to the
-#'   `control` parameter in [sampling][rstan::sampling] or
-#'   [here](https://mc-stan.org/rstanarm/reference/adapt_delta.html).
-#' @param m_treed Maximum tree depth for the binary tree used in the NUTS stan
-#'   sampler. For further details refer to the `control` parameter in
-#'   [sampling][rstan::sampling].
-#' @param decades Number of decades covered by the survey data.
-#' @param print_summary TBD
+#' @inheritParams fit_seromodel
+#' @param print_summary Boolean. If `TRUE`, a table summarizing modelling
+#' results is printed.
 #' @return `seromodel_object`. An object containing relevant information about
 #'   the implementation of the model. For further details refer to
 #'   [fit_seromodel].
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
-#' run_seromodel(serodata,
-#'   foi_model = "constant"
+#' run_seromodel(
+#'  serodata,
+#'  foi_model = "constant"
 #' )
 #' @export
 run_seromodel <- function(
@@ -113,7 +69,19 @@ run_seromodel <- function(
 #' data `serodata` by means of the [sampling][rstan::sampling] method. The
 #' function determines whether the corresponding stan model object needs to be
 #' compiled by rstan.
-#' @inheritParams run_seromodel
+#' @param serodata A data frame containing the data from a seroprevalence
+#'   survey. This data frame must contain at least the following columns:
+#' \describe{
+#'   \item{`total`}{Number of samples for each age group}
+#'   \item{`counts`}{Number of positive samples for each age group}
+#'   \item{`tsur`}{Year in which the survey took place}
+#'   \item{`age_mean_f`}{Floor value of the average between age_min and age_max}
+#'   \item{`sample_size`}{The size of the sample}
+#'   \item{`birth_year`}{The year in which the individuals of each age group
+#'     were born}
+#' }
+#'   The last six columns can be added to `serodata` by means of the function
+#'   [prepare_serodata()].
 #' @param foi_model Name of the selected model. Current version provides three
 #'   options:
 #' \describe{
@@ -121,19 +89,23 @@ run_seromodel <- function(
 #' \item{`"tv_normal"`}{Runs a normal model}
 #' \item{`"tv_normal_log"`}{Runs a normal logarithmic model}
 #' }
-#' @param n_iters Number of interactions for each chain including the warmup.
+#' @param iter Number of interactions for each chain including the warmup.
 #'   `iter` in [sampling][rstan::sampling].
-#' @param n_thin Positive integer specifying the period for saving samples.
+#' @param thin Positive integer specifying the period for saving samples.
 #'   `thin` in [sampling][rstan::sampling].
-#' @param delta Real number between 0 and 1 that represents the target average
-#'   acceptance probability. Increasing the value of `delta` will result in a
-#'   smaller step size and fewer divergences. For further details refer to the
-#'   `control` parameter in [sampling][rstan::sampling] or
-#'   [here](https://mc-stan.org/rstanarm/reference/adapt_delta.html).
-#' @param m_treed Maximum tree depth for the binary tree used in the NUTS stan
-#'   sampler. For further details refer to the `control` parameter in
+#' @param adapt_delta Real number between 0 and 1 that represents the target
+#' average acceptance probability. Increasing the value of `adapt_delta` will
+#' result in a smaller step size and fewer divergences. For further details
+#' refer to the `control` parameter in [sampling][rstan::sampling] or
+#' [here](https://mc-stan.org/rstanarm/reference/adapt_delta.html).
+#' @param max_treedepth Maximum tree depth for the binary tree used in the NUTS
+#' stan sampler. For further details refer to the `control` parameter in
+#' [sampling][rstan::sampling].
+#' @param chains Number of Markov chains for sampling. For further details refer
+#' to the `chains` parameter in [sampling][rstan::sampling].
+#' @param seed For further details refer to the `seed` parameter in
 #'   [sampling][rstan::sampling].
-#' @param decades Number of decades covered by the survey data.
+#' @param ... Additional parameters for [sampling][rstan::sampling].
 #' @return `seromodel_object`. `stanfit` object returned by the function
 #'   [sampling][rstan::sampling]
 #' @examples

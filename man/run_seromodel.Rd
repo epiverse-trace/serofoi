@@ -8,36 +8,27 @@ estimates the seroprevalence based on the result of the fit}
 run_seromodel(
   serodata,
   foi_model = c("constant", "tv_normal_log", "tv_normal"),
-  n_iters = 1000,
-  n_thin = 2,
-  delta = 0.9,
-  m_treed = 10,
-  decades = 0,
-  print_summary = TRUE
+  iter = 1000,
+  thin = 2,
+  adapt_delta = 0.9,
+  max_treedepth = 10,
+  chains = 4,
+  seed = "12345",
+  print_summary = TRUE,
+  ...
 )
 }
 \arguments{
 \item{serodata}{A data frame containing the data from a seroprevalence
-survey. This data frame must contain the following columns:
+survey. This data frame must contain at least the following columns:
 \describe{
-\item{\code{survey}}{survey Label of the current survey}
 \item{\code{total}}{Number of samples for each age group}
 \item{\code{counts}}{Number of positive samples for each age group}
-\item{\code{age_min}}{age_min}
-\item{\code{age_max}}{age_max}
 \item{\code{tsur}}{Year in which the survey took place}
-\item{\code{country}}{The country where the survey took place}
-\item{\code{test}}{The type of test taken}
-\item{\code{antibody}}{antibody}
 \item{\code{age_mean_f}}{Floor value of the average between age_min and age_max}
 \item{\code{sample_size}}{The size of the sample}
 \item{\code{birth_year}}{The year in which the individuals of each age group
 were born}
-\item{\code{prev_obs}}{Observed prevalence}
-\item{\code{prev_obs_lower}}{Lower limit of the confidence interval for the
-observed prevalence}
-\item{\code{prev_obs_upper}}{Upper limit of the confidence interval for the
-observed prevalence}
 }
 The last six columns can be added to \code{serodata} by means of the function
 \code{\link[=prepare_serodata]{prepare_serodata()}}.}
@@ -50,25 +41,32 @@ options:
 \item{\code{"tv_normal_log"}}{Runs a normal logarithmic model}
 }}
 
-\item{n_iters}{Number of interactions for each chain including the warmup.
+\item{iter}{Number of interactions for each chain including the warmup.
 \code{iter} in \link[rstan:stanmodel-method-sampling]{sampling}.}
 
-\item{n_thin}{Positive integer specifying the period for saving samples.
+\item{thin}{Positive integer specifying the period for saving samples.
 \code{thin} in \link[rstan:stanmodel-method-sampling]{sampling}.}
 
-\item{delta}{Real number between 0 and 1 that represents the target average
-acceptance probability. Increasing the value of \code{delta} will result in a
-smaller step size and fewer divergences. For further details refer to the
-\code{control} parameter in \link[rstan:stanmodel-method-sampling]{sampling} or
+\item{adapt_delta}{Real number between 0 and 1 that represents the target
+average acceptance probability. Increasing the value of \code{adapt_delta} will
+result in a smaller step size and fewer divergences. For further details
+refer to the \code{control} parameter in \link[rstan:stanmodel-method-sampling]{sampling} or
 \href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.}
 
-\item{m_treed}{Maximum tree depth for the binary tree used in the NUTS stan
-sampler. For further details refer to the \code{control} parameter in
+\item{max_treedepth}{Maximum tree depth for the binary tree used in the NUTS
+stan sampler. For further details refer to the \code{control} parameter in
 \link[rstan:stanmodel-method-sampling]{sampling}.}
 
-\item{decades}{Number of decades covered by the survey data.}
+\item{chains}{Number of Markov chains for sampling. For further details refer
+to the \code{chains} parameter in \link[rstan:stanmodel-method-sampling]{sampling}.}
 
-\item{print_summary}{TBD}
+\item{seed}{For further details refer to the \code{seed} parameter in
+\link[rstan:stanmodel-method-sampling]{sampling}.}
+
+\item{print_summary}{Boolean. If \code{TRUE}, a table summarizing modelling
+results is printed.}
+
+\item{...}{Additional parameters for \link[rstan:stanmodel-method-sampling]{sampling}.}
 }
 \value{
 \code{seromodel_object}. An object containing relevant information about
@@ -83,7 +81,8 @@ using the data from a seroprevalence survey \code{serodata} as the input data. S
 \examples{
 data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
-run_seromodel(serodata,
-  foi_model = "constant"
+run_seromodel(
+ serodata,
+ foi_model = "constant"
 )
 }
