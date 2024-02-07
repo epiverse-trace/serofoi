@@ -110,7 +110,7 @@ validate_prepared_serodata <- function(serodata) {
     age_mean_f = "numeric",
     birth_year = "numeric"
   )
-
+  validate_serodata(serodata)
   stop_if_missing(serodata, must_have_cols = names(col_types))
 
   stop_if_wrong_type(serodata, col_types)
@@ -145,7 +145,7 @@ run_seromodel <- function(
   adapt_delta = 0.90,
   max_treedepth = 10,
   chains = 4,
-  seed = "12345",
+  seed = 12345,
   print_summary = TRUE,
   ...
   ) {
@@ -243,7 +243,7 @@ fit_seromodel <- function(
   adapt_delta = 0.90,
   max_treedepth = 10,
   chains = 4,
-  seed = "12345",
+  seed = 12345,
   ...
   ) {
   # TODO Add a warning because there are exceptions where a minimal amount of
@@ -251,12 +251,14 @@ fit_seromodel <- function(
   # Validate arguments
   validate_prepared_serodata(serodata)
   stopifnot(
-    "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`" = foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
-    "n_iters must be numeric" = is.numeric(n_iters),
-    "n_thin must be numeric" = is.numeric(n_thin),
-    "delta must be numeric" = is.numeric(delta),
-    "m_treed must be numeric" = is.numeric(m_treed),
-    "decades must be numeric" = is.numeric(decades)
+    "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`" 
+      = foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
+    "iter must be numeric" = is.numeric(iter),
+    "thin must be numeric" = is.numeric(thin),
+    "adapt_delta must be numeric" = is.numeric(adapt_delta),
+    "max_treedepth must be numeric" = is.numeric(max_treedepth),
+    "chains must be numeric" = is.numeric(chains),
+    "seed must be numeric" = is.numeric(seed)
   )
   model <- stanmodels[[foi_model]]
   cohort_ages <- get_cohort_ages(serodata = serodata)
