@@ -7,7 +7,7 @@ stop_if_missing <- function(serodata, must_have_cols) {
   ) {
     missing <- must_have_cols[which(!(must_have_cols %in% colnames(serodata)))]
     stop(
-      "The following mandatory columns in `serodata` are missing.",
+      "The following mandatory columns in `serodata` are missing.\n",
       toString(missing)
     )
   }
@@ -37,7 +37,7 @@ stop_if_wrong_type <- function(serodata, col_types) {
   }
   if (length(error_messages) > 0) {
     stop(
-      "The following columns in `serodata` have wrong types: ",
+      "The following columns in `serodata` have wrong types:\n",
       toString(error_messages)
     )
   }
@@ -53,7 +53,7 @@ warn_missing <- function(serodata, optional_cols) {
     missing <- optional_cols[which(!(optional_cols %in% colnames(serodata)))]
     warning(
       "The following optional columns in `serodata` are missing.",
-      "Consider including them to get more information from this analysis",
+      "Consider including them to get more information from this analysis:\n",
       toString(missing)
     )
     for (col in missing) {
@@ -68,7 +68,9 @@ validate_serodata <- function(serodata) {
     survey = c("character", "factor"),
     total = "numeric",
     counts = "numeric",
-    tsur = "numeric"
+    tsur = "numeric",
+    age_min = "numeric",
+    age_max = "numeric"
   )
 
   stop_if_missing(serodata,
@@ -89,17 +91,6 @@ validate_serodata <- function(serodata) {
 
   # If any optional column is present, validates that is has the correct type
   stop_if_wrong_type(serodata, optional_col_types)
-
-  # Check that the serodata has the necessary columns to fully
-  # identify the age groups
-  stopifnot(
-    "serodata must contain both 'age_min' and 'age_max',
-    or 'age_mean_f' to fully identify the age groups" =
-      all(c(
-        "age_min", "age_max"
-      ) %in% colnames(serodata)) |
-        "age_mean_f" %in% colnames(serodata)
-  )
 }
 
 validate_prepared_serodata <- function(serodata) {
@@ -108,7 +99,10 @@ validate_prepared_serodata <- function(serodata) {
     counts = "numeric",
     tsur = "numeric",
     age_mean_f = "numeric",
-    birth_year = "numeric"
+    birth_year = "numeric",
+    prev_obs = "numeric",
+    prev_obs_lower = "numeric",
+    prev_obs_upper = "numeric"
   )
   validate_serodata(serodata)
   stop_if_missing(serodata, must_have_cols = names(col_types))
@@ -133,22 +127,21 @@ validate_prepared_serodata <- function(serodata) {
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
 #' run_seromodel(
-#'  serodata,
-#'  foi_model = "constant"
+#'   serodata,
+#'   foi_model = "constant"
 #' )
 #' @export
 run_seromodel <- function(
-  serodata,
-  foi_model = c("constant", "tv_normal_log", "tv_normal"),
-  iter = 1000,
-  thin = 2,
-  adapt_delta = 0.90,
-  max_treedepth = 10,
-  chains = 4,
-  seed = 12345,
-  print_summary = TRUE,
-  ...
-  ) {
+    serodata,
+    foi_model = c("constant", "tv_normal_log", "tv_normal"),
+    iter = 1000,
+    thin = 2,
+    adapt_delta = 0.90,
+    max_treedepth = 10,
+    chains = 4,
+    seed = 12345,
+    print_summary = TRUE,
+    ...) {
   foi_model <- match.arg(foi_model)
   survey <- unique(serodata$survey)
   if (length(survey) > 1) {
@@ -236,23 +229,21 @@ run_seromodel <- function(
 #'
 #' @export
 fit_seromodel <- function(
-  serodata,
-  foi_model = c("constant", "tv_normal_log", "tv_normal"),
-  iter = 1000,
-  thin = 2,
-  adapt_delta = 0.90,
-  max_treedepth = 10,
-  chains = 4,
-  seed = 12345,
-  ...
-  ) {
+    serodata,
+    foi_model = c("constant", "tv_normal_log", "tv_normal"),
+    iter = 1000,
+    thin = 2,
+    adapt_delta = 0.90,
+    max_treedepth = 10,
+    chains = 4,
+    seed = 12345,
+    ...) {
   # TODO Add a warning because there are exceptions where a minimal amount of
   # iterations is needed
   # Validate arguments
   validate_prepared_serodata(serodata)
   stopifnot(
-    "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`" 
-      = foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
+    "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`" = foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
     "iter must be numeric" = is.numeric(iter),
     "thin must be numeric" = is.numeric(thin),
     "adapt_delta must be numeric" = is.numeric(adapt_delta),
