@@ -35,7 +35,6 @@ test_that("simulated data", {
     expect_equal(sim_data$prev_obs, prev_exact, tolerance = TRUE)
 
     #----- Test function group_sim_data
-    sim_data <- sim_data %>% mutate(age_min = age_mean_f, age_max = age_mean_f)
     sim_data_grouped <- group_sim_data(sim_data = sim_data)
     expect_s3_class(sim_data_grouped, "data.frame")
     expect_s3_class(sim_data_grouped$age_group, "factor")
