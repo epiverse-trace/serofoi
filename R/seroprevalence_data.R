@@ -264,8 +264,12 @@ generate_sim_data <- function(sim_data,
     sample_size_by_age,
     seed = seed
     )
+
+  # TODO Improve simulation of age_min and age_max
   sim_data <- sim_data %>%
     mutate(
+      age_min = age_mean_f,
+      age_max = age_mean_f,
       counts = sim_n_seropositive$n_seropositive,
       total = sample_size_by_age,
       survey = survey_label
