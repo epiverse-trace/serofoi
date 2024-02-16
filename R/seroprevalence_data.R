@@ -198,8 +198,10 @@ get_probability_exact_av <- function(
 #' sim_probability <- get_sim_probability(sim_data = sim_data, foi=foi)
 #' @export
 get_sim_probability <- function(sim_data, foi) {
-  sim_data <- sim_data %>%
-    mutate(birth_year = .data$tsur - .data$age_mean_f)
+  sim_data <- mutate(
+    sim_data,
+    birth_year = .data$tsur - .data$age_mean_f
+  )
   cohort_ages <- get_cohort_ages(sim_data)
   exposure_ages <- rev(cohort_ages$age)
   exposure_matrix <- get_exposure_matrix(sim_data) # nolint: object_usage_linter
