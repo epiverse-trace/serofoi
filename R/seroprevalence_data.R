@@ -147,6 +147,31 @@ prepare_bin_data <- function(serodata,
   return(serodata_bin)
 }
 
+#' Computes the probability of being seropositive for age-varying
+#' FoI including seroreversion
+#'
+#' @param exposure_age Integer corresponding to the age of the exposed cohort
+#' @param foi Numeric atomic vector corresponding to the age-varying FoI to
+#' simulate from
+#' @param mu Seroreversion rate
+#' @return probability of being seropositive for age-varying FoI
+#' including seroreversion
+get_probability_exact_av <- function(
+    exposure_age,
+    foi,
+    mu = 0
+) {
+  probability <- 0
+  # solves ODE exactly within pieces
+  for (i in 1:exposure_age) {
+    probability <-
+      (1 / (foi[i] + mu)) * exp(- (foi[i] + mu)) *
+      (foi[i] * (exp(foi[i] + mu)  - 1) + probability * (foi[i] + mu)
+      )
+  }
+  return(probability)
+}
+
 #' Generate probabilities of being previously exposed to a
 #' pathogen given a historical force-of-infection.
 #'
@@ -285,16 +310,12 @@ generate_sim_data <- function(sim_data,
 
 #' Construct age-group variable from age column
 #'
-#' Function taken from [get_age_group][vaccineff::get_age_group].
-#' This function splits an age interval from age_min to age_max into
-#' `(age_max-age_min)/step` intervals.
-#' By default age_min is set 0, however it can be assigned by
-#' convenience.
-#' If the function finds ages greater or equal than age_max
-#' it assigns the string `">{age_max}"`.
-#' To avoid errors it is necessary to set `step<age_max`.
-#' It is also suggested to choose the step such
-#' that `age_max%%(step+1)=0`.
+#' Simplified version of [get_age_group][vaccineff::get_age_group].
+#' This function splits an age interval from age_min to age_max by
+#' steps of length `step`.
+#' `age_min` and `age_max` are calculated from `age`.
+#' In cases that `age_max%%(step+1)!=0`, the last age interval is
+#' truncated and will have a different length than the others.
 #' @param age vector containing age information
 #' @param  step step used to split the age interval
 #' @return age_group factor variable grouping `age` by the age intervals
@@ -306,7 +327,7 @@ get_age_group <- function(age, step) {
   checkmate::assert_int(age_min, lower = 0)
   checkmate::assert_int(age_max, lower = age_min)
   checkmate::assert_int(step, lower = 2, upper = age_max)
-  
+
   limits_low <- as.integer(
     seq(
       age_min, age_max,
