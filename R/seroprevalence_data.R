@@ -204,6 +204,23 @@ get_sim_probability <- function(
   is_time_varying = TRUE,
   is_age_varying = FALSE
   ) {
+
+  # Checks valid model specification
+  if (is_time_varying && is_age_varying) {
+    warning(
+      "Time and age varying data simulation is not supported ",
+      "Setting `is_time_varying = FALSE`."
+    )
+    is_time_varying <- FALSE
+  }
+  if (!any(is_time_varying, is_age_varying)) {
+      warning(
+        "Type of model not specified. ",
+        "Setting `is_time_varying = TRUE`."
+        )
+      is_time_varying <- TRUE
+    }
+
   sim_data <- mutate(
     sim_data,
     birth_year = .data$tsur - .data$age_mean_f
