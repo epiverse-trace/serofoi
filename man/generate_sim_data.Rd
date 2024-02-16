@@ -4,7 +4,16 @@
 \alias{generate_sim_data}
 \title{Generate simulated serosurvey according to the specified FoI}
 \usage{
-generate_sim_data(sim_data, foi, sample_size_by_age, survey_label, seed = 1234)
+generate_sim_data(
+  sim_data,
+  foi,
+  sample_size_by_age,
+  mu = 0,
+  is_time_varying = TRUE,
+  is_age_varying = FALSE,
+  survey_label = "sim_data",
+  seed = 1234
+)
 }
 \arguments{
 \item{sim_data}{A dataframe object containing the following columns:

@@ -29,12 +29,14 @@ The last six columns can be added to \code{serodata} by means of the function
 the binomial confidence interval, and the lower and upper quantiles of the
 estimated prevalence.}
 
-\item{bin_data}{Boolean. Use \code{TRUE} when age binning is preferred for plotting.
-If \code{TRUE}, \code{serodata} is binned by means of \code{prepare_bin_data};
-Otherwise, age groups are kept as originally input.}
+\item{bin_data}{If \code{TRUE}, \code{serodata} is binned by means of
+\code{prepare_bin_data}. Otherwise, age groups are kept as originally input.}
 
-\item{bin_step}{Integer specifying the age groups bin size to be used when
-\code{bin_data} is set to \code{TRUE}.}
+\item{predicted_prev_lower_quantile}{Float specifying the lower quantile
+to be used in \code{predicted_prev} calculation}
+
+\item{predicted_prev_upper_quantile}{Float specifying the upper quantile
+to be used in \code{predicted_prev} calculation}
 }
 \value{
 \code{prev_final}. The expanded prevalence data. This is used for plotting

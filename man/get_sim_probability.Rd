@@ -5,7 +5,13 @@
 \title{Generate probabilities of being previously exposed to a
 pathogen given a historical force-of-infection.}
 \usage{
-get_sim_probability(sim_data, foi)
+get_sim_probability(
+  sim_data,
+  foi,
+  mu = 0,
+  is_time_varying = TRUE,
+  is_age_varying = FALSE
+)
 }
 \arguments{
 \item{sim_data}{A dataframe object containing the following columns:
