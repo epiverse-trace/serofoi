@@ -5,7 +5,15 @@
 \title{Generate sample of counts of seropositive individuals by
 sampling from a binomial distribution}
 \usage{
-get_sim_n_seropositive(sim_data, foi, sample_size_by_age, seed = 1234)
+get_sim_n_seropositive(
+  sim_data,
+  foi,
+  sample_size_by_age,
+  mu = 0,
+  is_time_varying = TRUE,
+  is_age_varying = FALSE,
+  seed = 1234
+)
 }
 \arguments{
 \item{sim_data}{A dataframe object containing the following columns:

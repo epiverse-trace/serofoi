@@ -181,7 +181,7 @@ get_probability_exact_av <- function(
 #'   \item{`tsur`}{Year of the survey}
 #' }
 #' @param foi Numeric atomic vector corresponding to the desired
-#'   force-of-infection ordered from past to present
+#' force-of-infection ordered from past to present
 #' @return A dataframe containing the following columns:
 #' \describe{
 #'   \item{`age`}{Exposure ages}

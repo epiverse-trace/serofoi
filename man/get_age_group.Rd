@@ -16,14 +16,10 @@ age_group factor variable grouping \code{age} by the age intervals
 specified by \code{min(age)}, \code{max(age)}.
 }
 \description{
-Function taken from \link[vaccineff:get_age_group]{get_age_group}.
-This function splits an age interval from age_min to age_max into
-\code{(age_max-age_min)/step} intervals.
-By default age_min is set 0, however it can be assigned by
-convenience.
-If the function finds ages greater or equal than age_max
-it assigns the string \code{">{age_max}"}.
-To avoid errors it is necessary to set \code{step<age_max}.
-It is also suggested to choose the step such
-that \code{age_max\%\%(step+1)=0}.
+Simplified version of \link[vaccineff:get_age_group]{get_age_group}.
+This function splits an age interval from age_min to age_max by
+steps of length \code{step}.
+\code{age_min} and \code{age_max} are calculated from \code{age}.
+In cases that \code{age_max\%\%(step+1)!=0}, the last age interval is
+truncated and will have a different length than the others.
 }
