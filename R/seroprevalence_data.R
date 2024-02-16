@@ -197,15 +197,31 @@ get_probability_exact_av <- function(
 #' foi <- rep(0.02, n_years)
 #' sim_probability <- get_sim_probability(sim_data = sim_data, foi=foi)
 #' @export
-get_sim_probability <- function(sim_data, foi) {
+get_sim_probability <- function(
+  sim_data,
+  foi,
+  mu = 0,
+  is_time_varying = TRUE,
+  is_age_varying = FALSE
+  ) {
   sim_data <- mutate(
     sim_data,
     birth_year = .data$tsur - .data$age_mean_f
   )
   cohort_ages <- get_cohort_ages(sim_data)
   exposure_ages <- rev(cohort_ages$age)
-  exposure_matrix <- get_exposure_matrix(sim_data) # nolint: object_usage_linter
-  probabilities <- 1 - exp(-drop(exposure_matrix %*% foi))
+
+  if (is_time_varying) {
+    exposure_matrix <- get_exposure_matrix(sim_data) # nolint: object_usage_linter
+    probabilities <-
+    (foi / (foi + mu)) * (1 - exp(-drop(exposure_matrix %*% (foi + mu))))
+  }
+  if (is_age_varying) {
+    probabilities <- purrr::map_dbl(
+      exposure_ages,
+      ~get_probability_exact_av(., foi, mu) # nolint: object_usage_linter
+      )
+  }
 
   sim_probability <- data.frame(
     age = exposure_ages,
@@ -246,8 +262,17 @@ get_sim_probability <- function(sim_data, foi) {
 get_sim_n_seropositive <- function(sim_data,
                                    foi,
                                    sample_size_by_age,
+                                   mu = 0,
+                                   is_time_varying = TRUE,
+                                   is_age_varying = FALSE,
                                    seed = 1234) {
-  sim_probability <- get_sim_probability(sim_data = sim_data, foi = foi)
+  sim_probability <- get_sim_probability(
+    sim_data = sim_data,
+    foi = foi,
+    mu = mu,
+    is_time_varying = is_time_varying,
+    is_age_varying = is_age_varying
+    )
 
   set.seed(seed = seed)
   n_seropositive <- purrr::map2_int(
@@ -287,13 +312,19 @@ get_sim_n_seropositive <- function(sim_data,
 generate_sim_data <- function(sim_data,
                               foi,
                               sample_size_by_age,
-                              survey_label,
+                              mu = 0,
+                              is_time_varying = TRUE,
+                              is_age_varying = FALSE,
+                              survey_label = "sim_data",
                               seed = 1234
 ) {
   sim_n_seropositive <- get_sim_n_seropositive(
-    sim_data,
-    foi,
-    sample_size_by_age,
+    sim_data = sim_data,
+    foi = foi,
+    sample_size_by_age = sample_size_by_age,
+    mu = mu,
+    is_time_varying = is_time_varying,
+    is_age_varying = is_age_varying,
     seed = seed
     )
 
