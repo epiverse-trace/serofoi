@@ -220,6 +220,13 @@ get_sim_probability <- function(
         )
       is_time_varying <- TRUE
     }
+    # Warns the user about untested feature
+    if (mu != 0) {
+      warning(
+        "Data simulation including seroreversion is still ",
+        "undergoing testing. Results may not be reliable."
+        )
+    }
 
   sim_data <- mutate(
     sim_data,
