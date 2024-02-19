@@ -9,14 +9,14 @@ Authors@R:
             family = "Cucunubá",
             role = c("aut", "cre"),
             email = "zulma.cucunuba@javeriana.edu.co",
-            comment = c(ORCID = "https://orcid.org/0000-0002-8165-3198")
+            comment = c(ORCID = "0000-0002-8165-3198")
         ),
         person(
             given = "Nicolás",
             family = "T. Domínguez",
             role = c("aut"),
             email = "ex-ntorres@javeriana.edu.co",
-            comment = c(ORCID = "https://orcid.org/0009-0002-8484-1298")
+            comment = c(ORCID = "0009-0002-8484-1298")
         ),
         person(
             given = "Ben",
