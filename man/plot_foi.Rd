@@ -38,14 +38,17 @@ confidence interval. The x axis corresponds to the decades covered by the
 survey the y axis to the Force-of-Infection.
 }
 \examples{
-\dontrun{
- data(chagas2012)
- serodata <- prepare_serodata(chagas2012)
- seromodel_object <- run_seromodel(
-   serodata = serodata,
-   foi_model = "constant",
-   n_iters = 1000
- )
-plot_foi(seromodel_object, size_text = 15)
-}
+data(chagas2012)
+serodata <- prepare_serodata(chagas2012)
+seromodel_object <- run_seromodel(
+  serodata = serodata,
+  foi_model = "constant",
+  iter = 1000
+)
+cohort_ages <- get_cohort_ages(serodata)
+plot_foi(
+  seromodel_object = seromodel_object,
+  cohort_ages = cohort_ages,
+  size_text = 15
+)
 }

@@ -51,11 +51,13 @@ convergence of the model, like the expected log pointwise predictive density
 \code{elpd} and its corresponding standard deviation.
 }
 \examples{
-\dontrun{
 data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
-seromodel_object <- run_seromodel(serodata = serodata,
-                                  foi_model = "constant")
-extract_seromodel_summary(seromodel_object)
-}
+seromodel_object <- run_seromodel(
+  serodata = serodata,
+  foi_model = "constant"
+)
+extract_seromodel_summary(seromodel_object,
+  serodata = serodata
+)
 }

@@ -7,22 +7,28 @@
 #' @inheritParams get_foi_central_estimates
 #' @return rhats table
 #' @examples
-#' \dontrun{
 #' data(chagas2012)
-#' data_test <- prepare_serodata(serodata = chagas2012)
-#' model_constant <- run_seromodel(serodata = data_test,
-#'                                 foi_model = "constant",
-#'                                 n_iters = 1500)
-#' get_table_rhats(model_object = model_constant)
-#' }
+#' serodata <- prepare_serodata(serodata = chagas2012)
+#' model_constant <- run_seromodel(
+#'   serodata = serodata,
+#'   foi_model = "constant",
+#'   iter = 1500
+#' )
+#' cohort_ages <- get_cohort_ages(serodata)
+#' get_table_rhats(
+#'   seromodel_object = model_constant,
+#'   cohort_ages = cohort_ages
+#' )
 #' @export
 get_table_rhats <- function(seromodel_object,
                             cohort_ages) {
   rhats <- bayesplot::rhat(seromodel_object, "foi")
 
   if (any(is.nan(rhats))) {
-    rhats[which(is.nan(rhats))] <- NA
+    rhats[which(is.nan(rhats))] <- 0
   }
-  model_rhats <- data.frame(year = seromodel_object$exposure_years, rhat = rhats)
+  model_rhats <- data.frame(year = cohort_ages$birth_year, rhat = rhats)
+  model_rhats$rhat[model_rhats$rhat == 0] <- NA
+
   return(model_rhats)
 }

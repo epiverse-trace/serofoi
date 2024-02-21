@@ -18,14 +18,16 @@ p the plot for the given table
 Function that generates a plot for a given table
 }
 \examples{
-\dontrun{
- serodata <- prepare_serodata(chagas2012)
- seromodel_object <- run_seromodel(
-   serodata = serodata,
-   foi_model = "constant",
-   n_iters = 1000
- )
-info = t(seromodel_object$model_summary)
-plot_info_table (info, size_text = 15)
-}
+serodata <- prepare_serodata(chagas2012)
+seromodel_object <- run_seromodel(
+  serodata = serodata,
+  foi_model = "constant",
+  iter = 1000
+)
+seromodel_summary <- extract_seromodel_summary(
+  seromodel_object = seromodel_object,
+  serodata = serodata
+)
+info <- t(seromodel_summary)
+plot_info_table(info, size_text = 15)
 }
