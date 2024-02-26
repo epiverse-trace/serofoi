@@ -482,8 +482,6 @@ extract_seromodel_summary <- function(seromodel_object,
   return(model_summary)
 }
 
-# TODO Complete @param documentation
-
 #' Function that generates an object containing the confidence interval based on
 #' a Force-of-Infection fitting
 #'
@@ -493,13 +491,15 @@ extract_seromodel_summary <- function(seromodel_object,
 #' @param foi Object containing the information of the force of infection. It is
 #'   obtained from `rstan::extract(seromodel_object$seromodel, "foi", inc_warmup
 #'   = FALSE)[[1]]`.
+#' @param alpha Probability threshold for statistical significance used for both
+#' the binomial confidence interval, and the lower and upper quantiles of the
+#' estimated prevalence.
 #' @inheritParams run_seromodel
-#' @param bin_data If `TRUE`, `serodata` is binned by means of
-#'   `prepare_bin_data`. Otherwise, age groups are kept as originally input.
-#' @param predicted_prev_lower_quantile Float specifying the lower quantile
-#'   to be used in `predicted_prev` calculation
-#' @param predicted_prev_upper_quantile Float specifying the upper quantile
-#'   to be used in `predicted_prev` calculation
+#' @param bin_data Boolean. Use `TRUE` when age binning is preferred for
+#' plotting. If `TRUE`, `serodata` is binned by means of
+#' `prepare_bin_data`; Otherwise, age groups are kept as originally input.
+#' @param bin_step Integer specifying the age groups bin size to be used when
+#' `bin_data` is set to `TRUE`.
 #' @return `prev_final`. The expanded prevalence data. This is used for plotting
 #'   purposes in the `visualization` module.
 #' @examples
