@@ -9,10 +9,11 @@ estimates plots.}
 plot_seromodel(
   seromodel_object,
   serodata,
-  predicted_prev_lower_quantile = 0.1,
-  predicted_prev_upper_quantile = 0.9,
+  alpha = 0.05,
   max_lambda = NA,
   size_text = 25,
+  bin_data = TRUE,
+  bin_step = 5,
   foi_sim = NULL
 )
 }
@@ -34,16 +35,21 @@ were born}
 The last six columns can be added to \code{serodata} by means of the function
 \code{\link[=prepare_serodata]{prepare_serodata()}}.}
 
-\item{predicted_prev_lower_quantile}{Float specifying the lower quantile
-to be used in \code{predicted_prev} calculation}
-
-\item{predicted_prev_upper_quantile}{Float specifying the upper quantile
-to be used in \code{predicted_prev} calculation}
+\item{alpha}{Probability threshold for statistical significance used for both
+the binomial confidence interval, and the lower and upper quantiles of the
+estimated prevalence.}
 
 \item{max_lambda}{TBD}
 
 \item{size_text}{Text size use in the theme of the graph returned by the
 function.}
+
+\item{bin_data}{Boolean. Use \code{TRUE} when age binning is preferred for plotting.
+If \code{TRUE}, \code{serodata} is binned by means of \code{prepare_bin_data};
+Otherwise, age groups are kept as originally input.}
+
+\item{bin_step}{Integer specifying the age groups bin size to be used when
+\code{bin_data} is set to \code{TRUE}.}
 
 \item{foi_sim}{TBD}
 }

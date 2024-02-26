@@ -5,7 +5,7 @@
 \title{Function that generates the seropositivity plot from a raw serological
 survey dataset}
 \usage{
-plot_seroprev(serodata, size_text = 6)
+plot_seroprev(serodata, size_text = 6, bin_data = TRUE, bin_step = 5)
 }
 \arguments{
 \item{serodata}{A data frame containing the data from a serological survey.
@@ -28,6 +28,13 @@ by the function.}
 
 \item{size_text}{Text size use in the theme of the graph returned by the
 function.}
+
+\item{bin_data}{Boolean. Use \code{TRUE} when age binning is preferred for plotting.
+If \code{TRUE}, \code{serodata} is binned by means of \code{prepare_bin_data};
+Otherwise, age groups are kept as originally input.}
+
+\item{bin_step}{Integer specifying the age groups bin size to be used when
+\code{bin_data} is set to \code{TRUE}.}
 }
 \value{
 A ggplot object containing the seropositivity-vs-age graph of the raw
