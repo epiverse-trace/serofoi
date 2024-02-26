@@ -13,23 +13,62 @@
 #' plot_seroprev(serodata, size_text = 15)
 #' @export
 plot_seroprev <- function(serodata,
-                          size_text = 6) {
-  xx <- prepare_bin_data(serodata)
-  seroprev_plot <-
-    ggplot2::ggplot(data = xx, ggplot2::aes(x = .data$age)) +
+                          size_text = 6,
+                          bin_data = TRUE,
+                          bin_step = 5) {
+  validate_prepared_serodata(serodata = serodata)
+  if (bin_data) {
+    if (any(serodata$age_max - serodata$age_min > 2)) {
+      warn_msg <- paste0(
+        "Make sure `serodata` is already grouped by age. ",
+        "Skipping binning in seroprevalence plotting."
+      )
+      warning(warn_msg)
+      bin_data <- FALSE
+      } else {
+        checkmate::assert_int(bin_step, lower = 2)
+      }
+    }
+
+  if (bin_data) {
+    serodata_bin <- prepare_bin_data(
+      serodata,
+      bin_step = bin_step
+      )
+
+    seroprev_plot <- ggplot2::ggplot(
+      data = serodata_bin,
+      ggplot2::aes(x = .data$age_mean_f)
+      )
+    } else {
+    seroprev_plot <- ggplot2::ggplot(
+      data = serodata,
+      ggplot2::aes(x = .data$age_mean_f)
+    )
+  }
+   seroprev_plot <- seroprev_plot +
     ggplot2::geom_errorbar(
-      ggplot2::aes(ymin = .data$p_obs_bin_l, ymax = .data$p_obs_bin_u),
-      width = 0.1
-    ) +
-    ggplot2::geom_point(
-      ggplot2::aes(y = .data$p_obs_bin, size = xx$bin_size),
-      fill = "#7a0177", colour = "black", shape = 21
-    ) +
-    ggplot2::theme_bw(size_text) +
-    ggplot2::coord_cartesian(xlim = c(0, 60), ylim = c(0, 1)) +
+    ggplot2::aes(
+      ymin = .data$prev_obs_lower,
+      ymax = .data$prev_obs_upper
+      ),
+    width = 0.1
+  ) +
+  ggplot2::geom_point(
+    ggplot2::aes(
+      y = .data$prev_obs,
+      size = .data$total
+      ),
+    fill = "#7a0177", colour = "black", shape = 21
+  ) +
+    ggplot2::coord_cartesian(
+      xlim = c(min(serodata$age_min), max(serodata$age_max)),
+      ylim = c(min(serodata$prev_obs_lower), max(serodata$prev_obs_upper))
+      ) +
+    ggplot2::theme_bw(size_text)  +
     ggplot2::theme(legend.position = "none") +
     ggplot2::ylab("seropositivity") +
-    ggplot2::xlab("Age")
+    ggplot2::xlab("age")
 
   return(seroprev_plot)
 }
