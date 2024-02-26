@@ -2,6 +2,7 @@
 #' survey dataset
 #'
 #' @inheritParams prepare_serodata
+#' @inheritParams get_prev_expanded
 #' @param size_text Text size use in the theme of the graph returned by the
 #'   function.
 #' @return A ggplot object containing the seropositivity-vs-age graph of the raw
@@ -359,88 +360,61 @@ plot_rhats <- function(seromodel_object,
 #' @export
 plot_seromodel <- function(seromodel_object,
                            serodata,
-                           predicted_prev_lower_quantile = 0.1,
-                           predicted_prev_upper_quantile = 0.9,
+                           alpha = 0.05,
                            max_lambda = NA,
                            size_text = 25,
+                           bin_data = TRUE,
+                           bin_step = 5,
                            foi_sim = NULL) {
-  if (is.character(seromodel_object)) {
-    message("model did not run")
-    print_warning <- "errors"
+  checkmate::assert_class(seromodel_object, "stanfit", null.ok = TRUE)
+  validate_serodata(serodata)
 
-    g0 <- ggplot2::ggplot(data.frame()) +
-      ggplot2::geom_point() +
-      ggplot2::xlim(0, 10) +
-      ggplot2::ylim(0, 10) +
-      ggplot2::annotate("text",
-                        x = 4,
-                        y = 5,
-                        label = print_warning
-      ) +
-      ggplot2::theme_bw(25) +
-      ggplot2::theme(
-        axis.text.x = ggplot2::element_blank(),
-        axis.text.y = ggplot2::element_blank()
-      ) +
-      ggplot2::ylab(" ") +
-      ggplot2::xlab(" ")
-    g1 <- g0
-    # TODO: This
-    g0 <- g0 + ggplot2::labs(subtitle = seromodel_object$model_name) +
-      ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
+  cohort_ages <- get_cohort_ages(serodata = serodata)
 
-    plot_arrange <-
-      cowplot::plot_grid(g0, g1, g1, g1, g1, ncol = 1, nrow = 5)
-  } else {
-    if (!is.null(seromodel_object@sim$samples)) {
-      cohort_ages <- get_cohort_ages(serodata = serodata)
+  prev_plot <- plot_seroprev_fitted(
+    seromodel_object = seromodel_object,
+    serodata = serodata,
+    alpha = alpha,
+    size_text = size_text,
+    bin_data = bin_data,
+    bin_step = bin_step
+  )
 
-      prev_plot <- plot_seroprev_fitted(
-        seromodel_object = seromodel_object,
-        serodata = serodata,
-        predicted_prev_lower_quantile,
-        predicted_prev_upper_quantile,
-        size_text = size_text
-      )
+  foi_plot <- plot_foi(
+    seromodel_object = seromodel_object,
+    cohort_ages = cohort_ages,
+    max_lambda = max_lambda,
+    size_text = size_text,
+    foi_sim = foi_sim
+  )
 
-      foi_plot <- plot_foi(
-        seromodel_object = seromodel_object,
-        cohort_ages = cohort_ages,
-        max_lambda = max_lambda,
-        size_text = size_text,
-        foi_sim = foi_sim
-      )
+  rhats_plot <- plot_rhats(
+    seromodel_object = seromodel_object,
+    cohort_ages = cohort_ages,
+    size_text = size_text
+  )
+  model_summary <- extract_seromodel_summary(
+    seromodel_object = seromodel_object,
+    serodata = serodata
+  )
+  summary_table <- t(
+    dplyr::select(
+      model_summary,
+      c("foi_model", "dataset", "elpd", "se", "converged")
+    )
+  )
+  summary_plot <-
+    plot_info_table(summary_table, size_text = size_text)
 
-      rhats_plot <- plot_rhats(
-        seromodel_object = seromodel_object,
-        cohort_ages = cohort_ages,
-        size_text = size_text
-      )
-      model_summary <- extract_seromodel_summary(
-        seromodel_object = seromodel_object,
-        serodata = serodata
-      )
-      summary_table <- t(
-        dplyr::select(
-          model_summary,
-          c("foi_model", "dataset", "elpd", "se", "converged")
-        )
-      )
-      summary_plot <-
-        plot_info_table(summary_table, size_text = size_text)
-
-      plot_arrange <- cowplot::plot_grid(
-        summary_plot,
-        prev_plot,
-        foi_plot,
-        rhats_plot,
-        ncol = 1,
-        nrow = 4,
-        rel_heights = c(0.5, 1, 1, 1)
-      )
-    }
-  }
-
+  plot_arrange <- cowplot::plot_grid(
+    summary_plot,
+    prev_plot,
+    foi_plot,
+    rhats_plot,
+    ncol = 1,
+    nrow = 4,
+    rel_heights = c(0.5, 1, 1, 1)
+  )
   return(plot_arrange)
 }
 
