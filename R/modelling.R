@@ -514,21 +514,19 @@ extract_seromodel_summary <- function(seromodel_object,
 #' @export
 get_prev_expanded <- function(foi,
                               serodata,
-                              predicted_prev_lower_quantile = 0.1,
-                              predicted_prev_upper_quantile = 0.9,
-                              bin_data = FALSE) {
-  dim_foi <- dim(foi)[2]
-  # TODO: check whether this conditional is necessary
-  if (dim_foi < 80) {
-    oldest_year <- 80 - dim_foi + 1
-    foin <- matrix(NA, nrow = dim(foi)[1], 80)
-    foin[, oldest_year:80] <- foi
-    foin[, 1:(oldest_year - 1)] <- rowMeans(foi[, 1:5])
-  } else {
-    foin <- foi
+                              alpha = 0.05,
+                              bin_data = FALSE,
+                              bin_step = 5
+                              ) {
+
+  if (bin_data && any(serodata$age_max - serodata$age_min > 2)) {
+    warning("Make sure `serodata` is already grouped by age")
+    bin_data <- FALSE
   }
 
-  foi_expanded <- foin
+
+  dim_foi <- dim(foi)[2]
+  foi_expanded <- foi
 
   ly <- NCOL(foi_expanded)
   exposure_expanded <- matrix(0, nrow = ly, ncol = ly)
@@ -548,8 +546,8 @@ get_prev_expanded <- function(foi,
           x,
           c(
             0.5,
-            predicted_prev_lower_quantile,
-            predicted_prev_upper_quantile
+            alpha,
+            1 - alpha
           )
         )
       }
@@ -563,7 +561,17 @@ get_prev_expanded <- function(foi,
   predicted_prev <- as.data.frame(predicted_prev)
   predicted_prev$age <- 1:ly
 
-  observed_prev <- serodata %>%
+  if (bin_data) {
+      observed_prev <- prepare_bin_data(
+        serodata = serodata,
+        bin_step = bin_step,
+        alpha = alpha
+      )
+      } else {
+        observed_prev <- serodata
+        }
+
+  observed_prev <- observed_prev %>%
     dplyr::select(
       "age_mean_f",
       "prev_obs",
@@ -572,36 +580,18 @@ get_prev_expanded <- function(foi,
       "total",
       "counts"
     ) %>%
-    dplyr::rename(
-      age = "age_mean_f",
-      sample_by_age = "total",
-      positives = "counts"
+    rename(
+      age = "age_mean_f"
     )
 
   prev_expanded <-
-    base::merge(predicted_prev,
+    base::merge(
+      predicted_prev,
       observed_prev,
       by = "age",
       all.x = TRUE
-    ) %>% dplyr::mutate(survey = serodata$survey[1])
-  if (bin_data) {
-    # I added this here for those cases when binned is prefered for plotting
-    if (serodata$age_max[1] - serodata$age_min[1] < 3) {
-      xx <- prepare_bin_data(serodata)
-      prev_expanded <-
-        base::merge(prev_expanded, xx, by = "age", all.x = TRUE)
-    } else {
-      prev_expanded <- dplyr::mutate(
-        prev_expanded,
-        cut_ages = "original",
-        bin_size = .data$sample_by_age,
-        bin_pos = .data$positives,
-        p_obs_bin = .data$prev_obs,
-        p_obs_bin_l = .data$prev_obs_lower,
-        p_obs_bin_u = .data$prev_obs_upper
-      )
-    }
-  }
+    ) %>%
+    dplyr::mutate(survey = unique(serodata$survey))
 
   return(prev_expanded)
 }
