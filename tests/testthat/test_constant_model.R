@@ -30,6 +30,9 @@ test_that("Test constant model", {
 
   foi <- rstan::extract(model_object, "foi", inc_warmup = FALSE)[[1]]
   prev_expanded <- get_prev_expanded(foi, serodata = serodata)
+  # corrects benchmark length
+  prev_expanded_compare <- prev_expanded_compare[1:nrow(prev_expanded), ]
+
 
   # compares expanded prevalence with benchmark
   expect_true(
