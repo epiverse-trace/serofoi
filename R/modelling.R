@@ -243,7 +243,8 @@ fit_seromodel <- function(
   # Validate arguments
   validate_prepared_serodata(serodata)
   stopifnot(
-    "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`" = foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
+    "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`" =
+      foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
     "iter must be numeric" = is.numeric(iter),
     "thin must be numeric" = is.numeric(thin),
     "adapt_delta must be numeric" = is.numeric(adapt_delta),
