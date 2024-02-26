@@ -294,27 +294,36 @@ generate_sim_data <- function(sim_data,
 get_age_group <- function(age, step) {
   age_min <- min(age)
   age_max <- max(age)
-  n_steps <- as.integer((age_max - age_min) / step) + 1
-  limits_low <- c(as.integer(seq(age_min,
-    age_max,
-    length.out = n_steps
-  )))
-  limits_hgh <- limits_low + step
-  lim_labels <- paste(as.character(limits_low), as.character(limits_hgh),
-    sep = "-"
-  )
-  lim_labels[length(lim_labels)] <- paste0(
-    "+",
-    limits_low[length(limits_low)]
-  )
-  lim_breaks <- c(-Inf, limits_low[2:length(limits_low)] - 1, Inf)
 
-  age_group <- cut(age,
-    breaks = lim_breaks,
-    labels = lim_labels,
-    # this is for the intervals to be closed to the left and open to the right
-    right = FALSE
-  )
+  checkmate::assert_int(age_min, lower = 0)
+  checkmate::assert_int(age_max, lower = age_min)
+  checkmate::assert_int(step, lower = 2, upper = age_max)
+  
+  limits_low <- as.integer(
+    seq(
+      age_min, age_max,
+      by = step
+      )
+    ) - 1
+
+  if ((age_max - age_min) %% step != 0) {
+    warn_msg <- "(age_min - age_max) is not an integer multiple of step.
+    The last age interval will be truncated to "
+    warn_msg <- paste0(
+      warn_msg, "(", limits_low[length(limits_low)], ",", age_max, "]"
+      )
+    warning(warn_msg)
+  }
+
+  # prepare breaks
+  lim_breaks <- c(limits_low, age_max)
+
+  # define age groups open to the left and closed to the right
+  age_group <- cut(
+    x = age,
+    breaks = lim_breaks
+    )
+
   return(age_group)
 }
 
@@ -340,8 +349,8 @@ group_sim_data <- function(sim_data,
       survey = sim_data$survey[1],
       test = sim_data$test[1],
       antibody = sim_data$antibody[1],
-      age_min = as.integer(sub("\\-.*", "", .data$age_group)),
-      age_max = as.integer(sub(".*\\-", "", .data$age_group))
+      age_min = as.integer(gsub("[(]|\\,.*", "\\1", .data$age_group)) + 1,
+      age_max = as.integer(gsub(".*\\,|[]]", "\\1", .data$age_group))
     ) %>%
     prepare_serodata()
 
