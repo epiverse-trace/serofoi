@@ -98,7 +98,9 @@ prepare_serodata <- function(serodata = serodata,
 #' prepare_bin_data(serodata)
 #' @keywords internal
 #' @noRd
-prepare_bin_data <- function(serodata) {
+prepare_bin_data <- function(serodata,
+                             bin_step = 5,
+                             alpha = 0.05) {
   if (!any(colnames(serodata) == "age_mean_f")) {
     serodata <- serodata %>%
       dplyr::mutate(
@@ -106,37 +108,43 @@ prepare_bin_data <- function(serodata) {
         sample_size = sum(.data$total)
       )
   }
-  serodata$cut_ages <-
-    cut(as.numeric(serodata$age_mean_f),
-      seq(1, 101, by = 5),
-      include.lowest = TRUE
-    )
-  xx <- serodata %>%
-    dplyr::group_by(.data$cut_ages) %>%
+  serodata$age_group <- get_age_group(
+    age = serodata$age_mean_f,
+    step = bin_step
+  )
+
+  serodata_bin <- serodata %>%
+    dplyr::group_by(.data$age_group) %>%
     dplyr::summarise(
-      bin_size = sum(.data$total),
-      bin_pos = sum(.data$counts)
-    )
-  labs <-
-    read.table(
-      text = gsub("[^.0-9]", " ", levels(xx$cut_ages)),
-      col.names = c("lower", "upper")
+      total = sum(.data$total),
+      counts = sum(.data$counts)
     ) %>%
     dplyr::mutate(
-      lev = levels(xx$cut_ages),
-      mid_age = round((.data$lower + .data$upper) / 2)
+      survey = unique(serodata$survey),
+      tsur = unique(serodata$tsur),
+      age_min = as.integer(gsub("[(]|\\,.*", "\\1", .data$age_group)) + 1,
+      age_max = as.integer(gsub(".*\\,|[]]", "\\1", .data$age_group)),
+      age_mean_f = floor((.data$age_min + .data$age_max) / 2)
+    )
+
+    serodata_bin <- cbind(
+      serodata_bin,
+      Hmisc::binconf(
+        serodata_bin$counts,
+        serodata_bin$total,
+        alpha = alpha,
+        method = "exact",
+        return.df = TRUE
+      )
     ) %>%
-    dplyr::select(.data$mid_age, .data$lev)
-  xx$mid_age <- labs$mid_age[labs$lev %in% xx$cut_ages]
-  conf <-
-    data.frame(Hmisc::binconf(xx$bin_pos, xx$bin_size, method = "exact"))
-  xx <- cbind(xx, conf) %>% dplyr::rename(
-    age = .data$mid_age,
-    p_obs_bin = .data$PointEst,
-    p_obs_bin_l = .data$Lower,
-    p_obs_bin_u = .data$Upper
-  )
-  return(xx)
+    dplyr::rename(
+      prev_obs = "PointEst",
+      prev_obs_lower = "Lower",
+      prev_obs_upper = "Upper"
+    ) %>%
+    dplyr::arrange(.data$age_mean_f)
+
+  return(serodata_bin)
 }
 
 #' Function that generates the probabilities of being previously exposed to a
