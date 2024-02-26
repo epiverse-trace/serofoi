@@ -5,13 +5,7 @@
 \title{Function that generates an object containing the confidence interval based on
 a Force-of-Infection fitting}
 \usage{
-get_prev_expanded(
-  foi,
-  serodata,
-  predicted_prev_lower_quantile = 0.1,
-  predicted_prev_upper_quantile = 0.9,
-  bin_data = FALSE
-)
+get_prev_expanded(foi, serodata, alpha = 0.05, bin_data = FALSE, bin_step = 5)
 }
 \arguments{
 \item{foi}{Object containing the information of the force of infection. It is
@@ -31,14 +25,16 @@ were born}
 The last six columns can be added to \code{serodata} by means of the function
 \code{\link[=prepare_serodata]{prepare_serodata()}}.}
 
-\item{predicted_prev_lower_quantile}{Float specifying the lower quantile
-to be used in \code{predicted_prev} calculation}
+\item{alpha}{Probability threshold for statistical significance used for both
+the binomial confidence interval, and the lower and upper quantiles of the
+estimated prevalence.}
 
-\item{predicted_prev_upper_quantile}{Float specifying the upper quantile
-to be used in \code{predicted_prev} calculation}
+\item{bin_data}{Boolean. Use \code{TRUE} when age binning is preferred for plotting.
+If \code{TRUE}, \code{serodata} is binned by means of \code{prepare_bin_data};
+Otherwise, age groups are kept as originally input.}
 
-\item{bin_data}{If \code{TRUE}, \code{serodata} is binned by means of
-\code{prepare_bin_data}. Otherwise, age groups are kept as originally input.}
+\item{bin_step}{Integer specifying the age groups bin size to be used when
+\code{bin_data} is set to \code{TRUE}.}
 }
 \value{
 \code{prev_final}. The expanded prevalence data. This is used for plotting
