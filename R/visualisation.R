@@ -101,71 +101,57 @@ plot_seroprev <- function(serodata,
 #' @export
 plot_seroprev_fitted <- function(seromodel_object,
                                  serodata,
-                                 predicted_prev_lower_quantile = 0.1,
-                                 predicted_prev_upper_quantile = 0.9,
-                                 size_text = 6
+                                 size_text = 6,
+                                 bin_data = TRUE,
+                                 bin_step = 5,
+                                 alpha = 0.05
                                  ) {
-  if (is.character(seromodel_object)) {
-    message("model did not run")
-    print_warning <- "errors"
+  checkmate::assert_class(seromodel_object, "stanfit", null.ok = TRUE)
+  validate_prepared_serodata(serodata)
 
-    prev_plot <- ggplot2::ggplot(data.frame()) +
-      ggplot2::geom_point() +
-      ggplot2::xlim(0, 10) +
-      ggplot2::ylim(0, 10) +
-      ggplot2::annotate("text",
-                        x = 4,
-                        y = 5,
-                        label = print_warning
-      ) +
-      ggplot2::theme_bw(25) +
-      ggplot2::theme(
-        axis.text.x = ggplot2::element_blank(),
-        axis.text.y = ggplot2::element_blank()
-      ) +
-      ggplot2::ylab(" ") +
-      ggplot2::xlab(" ")
-    ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
-  } else {
-    if (!is.null(seromodel_object@sim$samples)) {
-      foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
-      prev_expanded <- get_prev_expanded(
-        foi,
-        serodata = serodata,
-        predicted_prev_lower_quantile,
-        predicted_prev_upper_quantile,
-        bin_data = TRUE
-      )
-      prev_plot <-
-        ggplot2::ggplot(prev_expanded, ggplot2::aes(x = .data$age)) +
-        ggplot2::geom_ribbon(
-          ggplot2::aes(
-            ymin = .data$predicted_prev_lower,
-            ymax = .data$predicted_prev_upper
-          ),
-          fill = "#c994c7"
-        ) +
-        ggplot2::geom_line(
-          ggplot2::aes(y = .data$predicted_prev),
-          colour = "#7a0177"
-        ) +
-        ggplot2::geom_errorbar(
-          ggplot2::aes(ymin = .data$p_obs_bin_l, ymax = .data$p_obs_bin_u),
-          width = 0.1
-        ) +
-        ggplot2::geom_point(
-          ggplot2::aes(y = .data$p_obs_bin, size = .data$bin_size),
-          fill = "#7a0177",
-          colour = "black",
-          shape = 21
-        ) +
-        ggplot2::theme_bw(size_text) +
-        ggplot2::coord_cartesian(xlim = c(0, 60), ylim = c(0, 1)) +
-        ggplot2::theme(legend.position = "none") +
-        ggplot2::ylab("seropositivity") +
-        ggplot2::xlab("Age")
-    }
-  }
+  foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
+
+  prev_expanded <- get_prev_expanded(
+    foi,
+    serodata = serodata,
+    alpha = alpha,
+    bin_data = bin_data,
+    bin_step = bin_step
+  )
+  prev_plot <-
+    ggplot2::ggplot(prev_expanded, ggplot2::aes(x = .data$age)) +
+    ggplot2::geom_ribbon(
+      ggplot2::aes(
+        ymin = .data$predicted_prev_lower,
+        ymax = .data$predicted_prev_upper
+      ),
+      fill = "#c994c7"
+    ) +
+    ggplot2::geom_line(
+      ggplot2::aes(y = .data$predicted_prev),
+      colour = "#7a0177"
+    ) +
+    ggplot2::geom_errorbar(
+      ggplot2::aes(ymin = .data$prev_obs_lower, ymax = .data$prev_obs_upper),
+      width = 0.1
+    ) +
+    ggplot2::geom_point(
+      ggplot2::aes(y = .data$prev_obs, size = .data$total),
+      fill = "#7a0177",
+      colour = "black",
+      shape = 21
+    ) +
+    ggplot2::theme_bw(size_text) +
+    ggplot2::coord_cartesian(
+      xlim = c(min(serodata$age_min), max(serodata$age_max)),
+      ylim = c(
+        min(prev_expanded$prev_obs_lower, prev_expanded$predicted_prev_lower),
+        max(prev_expanded$prev_obs_upper, prev_expanded$predicted_prev_upper)
+        )
+    ) +
+    ggplot2::theme(legend.position = "none") +
+    ggplot2::ylab("seropositivity") +
+    ggplot2::xlab("age")
 
   return(prev_plot)
 }
