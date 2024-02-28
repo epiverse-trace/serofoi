@@ -36,12 +36,17 @@ plot_seroprev <- function(serodata,
       serodata,
       bin_step = bin_step
       )
+    min_prev <- min(serodata_bin$prev_obs_lower)
+    max_prev <- max(serodata_bin$prev_obs_upper)
 
     seroprev_plot <- ggplot2::ggplot(
       data = serodata_bin,
       ggplot2::aes(x = .data$age_mean_f)
       )
     } else {
+    min_prev <- min(serodata$prev_obs_lower)
+    max_prev <- max(serodata$prev_obs_upper)
+    
     seroprev_plot <- ggplot2::ggplot(
       data = serodata,
       ggplot2::aes(x = .data$age_mean_f)
@@ -64,7 +69,7 @@ plot_seroprev <- function(serodata,
   ) +
     ggplot2::coord_cartesian(
       xlim = c(min(serodata$age_min), max(serodata$age_max)),
-      ylim = c(min(serodata$prev_obs_lower), max(serodata$prev_obs_upper))
+      ylim = c(min_prev, max_prev)
       ) +
     ggplot2::theme_bw(size_text)  +
     ggplot2::theme(legend.position = "none") +
