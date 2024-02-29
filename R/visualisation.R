@@ -415,9 +415,9 @@ plot_seromodel <- function(seromodel_object,
 
 #' Generate plot summarizing a given table
 #'
-#' @param info the information that will be contained in the table
+#' @param info_table Table with the information to be summarised
 #' @param size_text Text size of the graph returned by the function
-#' @return p the plot for the given table
+#' @return ggplot object summarizing the information in `info_table`
 #' @examples
 #' serodata <- prepare_serodata(chagas2012)
 #' seromodel_object <- run_seromodel(
@@ -429,16 +429,19 @@ plot_seromodel <- function(seromodel_object,
 #'   seromodel_object = seromodel_object,
 #'   serodata = serodata
 #' )
-#' info <- t(seromodel_summary)
-#' plot_info_table(info, size_text = 15)
+#' info_table <- t(seromodel_summary)
+#' plot_info_table(info_table, size_text = 15)
 #' @export
-plot_info_table <- function(info, size_text) {
+plot_info_table <- function(info_table, size_text) {
   dato <- data.frame(
-    y = NROW(info):seq_len(1),
-    text = paste0(rownames(info), ": ", info[, 1])
+    y = NROW(info_table):seq_len(1),
+    text = paste0(rownames(info_table), ": ", info_table[, 1])
   )
   p <- ggplot2::ggplot(dato, ggplot2::aes(x = 1, y = .data$y)) +
-    ggplot2::scale_y_continuous(limits = c(0, NROW(info) + 1), breaks = NULL) +
+    ggplot2::scale_y_continuous(
+      limits = c(0, NROW(info_table) + 1),
+      breaks = NULL
+      ) +
     ggplot2::theme_void() +
     ggplot2::geom_text(ggplot2::aes(label = text),
       size = size_text / 2.5,
