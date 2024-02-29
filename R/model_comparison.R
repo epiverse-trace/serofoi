@@ -1,4 +1,4 @@
-#' Method for extracting a dataframe containing the R-hat estimates for a given
+#' Build dataframe containing the R-hat estimates for a given
 #' serological model
 #'
 #' This method relies in the function [rhat][bayesplot::rhat] to extract the

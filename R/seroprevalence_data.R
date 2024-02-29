@@ -1,7 +1,7 @@
 # TODO Complete @param documentation
 
 
-#' Function that prepares the data from a serological survey for modelling
+#' Prepare data from a serological survey for modelling
 #'
 #' This function adds the necessary additional variables to the given dataset
 #' `serodata` corresponding to a serological survey.
@@ -84,8 +84,8 @@ prepare_serodata <- function(serodata = serodata,
 }
 
 
-#' Function that prepares a pre-processed serological survey dataset to plot the
-#' binomial confidence intervals of the seroprevalence grouped by age group
+#' Prepare pre-processed serological survey dataset to plot the
+#' binomial confidence intervals of the seroprevalence by age group
 #'
 #' This function prepapares a given pre-processed serological dataset (see
 #' [prepare_serodata()]) to plot the binomial confidence intervals of its
@@ -147,8 +147,8 @@ prepare_bin_data <- function(serodata,
   return(serodata_bin)
 }
 
-#' Function that generates the probabilities of being previously exposed to a
-#' pathogen given a historical Force-of-Infection.
+#' Generate probabilities of being previously exposed to a
+#' pathogen given a historical force-of-infection.
 #'
 #' @param sim_data A dataframe object containing the following columns:
 #' \describe{
@@ -187,7 +187,7 @@ get_sim_probability <- function(sim_data, foi) {
   return(sim_probability)
 }
 
-#' Function that generates a sample of counts of seropositive individuals by
+#' Generate sample of counts of seropositive individuals by
 #' sampling from a binomial distribution
 #'
 #' @inheritParams get_sim_probability
@@ -237,7 +237,7 @@ get_sim_n_seropositive <- function(sim_data,
   return(sim_n_seropositive)
 }
 
-#' Function that generates a simulated serosurvey according to the specified FoI
+#' Generate simulated serosurvey according to the specified FoI
 #'
 #' @inheritParams get_sim_n_seropositive
 #' @param survey_label Label for the resulting simulated serosurvey.
@@ -283,7 +283,7 @@ generate_sim_data <- function(sim_data,
   return(sim_data)
 }
 
-#' Method for constructing age-group variable from age column
+#' Construct age-group variable from age column
 #'
 #' This function was taken from [get_age_group][vaccineff::get_age_group].
 #' This method splits an age interval from age_min to age_max into
@@ -335,7 +335,7 @@ get_age_group <- function(age, step) {
   return(age_group)
 }
 
-#' Function that groups a simulated serological dataset by age
+#' Group simulated serological dataset by age
 #'
 #' @param sim_data Dataframe with the same structure as the output of
 #'   [generate_sim_data()].
