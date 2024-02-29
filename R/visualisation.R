@@ -159,16 +159,16 @@ plot_seroprev_fitted <- function(seromodel_object,
 #' Generate force-of-infection plot corresponding to the
 #' specified fitted serological model
 #'
-#' This function generates a Force-of-Infection plot from the results obtained
+#' This function generates a force-of-infection plot from the results obtained
 #' by fitting a serological model. This includes the corresponding binomial
 #' confidence interval. The x axis corresponds to the decades covered by the
-#' survey the y axis to the Force-of-Infection.
+#' survey the y axis to the force-of-infection.
 #' @inheritParams get_foi_central_estimates
 #' @param size_text Text size use in the theme of the graph returned by the
 #'   function.
 #' @param max_lambda TBD
 #' @param foi_sim TBD
-#' @return A ggplot2 object containing the Force-of-infection-vs-time including
+#' @return A ggplot2 object containing the force-of-infection vs time including
 #'   the corresponding confidence interval.
 #' @examples
 #' data(chagas2012)
