@@ -173,7 +173,7 @@ run_seromodel <- function(
   return(seromodel_object)
 }
 
-#' Function that fits the selected model to the specified seroprevalence survey
+#' Fit selected model to the specified seroprevalence survey
 #' data
 #'
 #' This function fits the specified model `foi_model` to the serological survey
