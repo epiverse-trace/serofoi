@@ -110,7 +110,7 @@ validate_prepared_serodata <- function(serodata) {
   stop_if_wrong_type(serodata, col_types)
 }
 
-#' Function that runs the specified stan model for the Force-of-Infection and
+#' Run specified stan model for the force-of-infection and
 #' estimates the seroprevalence based on the result of the fit
 #'
 #' This function runs the specified model for the Force-of-Infection `foi_model`
@@ -307,7 +307,7 @@ fit_seromodel <- function(
 }
 
 
-#' Function that generates a data.frame containing the age of each cohort
+#' Generate data.frame containing the age of each cohort
 #' corresponding to each birth year excluding the year of the survey.
 #'
 #' This function generates a data.frame containing the age of each cohort
@@ -335,7 +335,7 @@ get_cohort_ages <- function(serodata) {
 
 # TODO Is necessary to explain better what we mean by the exposure matrix.
 
-#' Function that generates the exposure matrix corresponding to a serological
+#' Generate exposure matrix corresponding to a serological
 #' survey
 #'
 #' @inheritParams run_seromodel
@@ -359,7 +359,7 @@ get_exposure_matrix <- function(serodata) {
   return(exposure_output)
 }
 
-#' Function that generates the central estimates for the fitted forced FoI
+#' Extract central estimates for the fitted forced FoI
 #'
 #' @param seromodel_object Stanfit object containing the results of fitting a
 #'   model by means of [run_seromodel].

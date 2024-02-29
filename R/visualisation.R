@@ -1,4 +1,4 @@
-#' Function that generates the seropositivity plot from a raw serological
+#' Generate seropositivity plot from a raw serological
 #' survey dataset
 #'
 #' @inheritParams prepare_serodata
@@ -71,7 +71,7 @@ plot_seroprev <- function(serodata,
   return(seroprev_plot)
 }
 
-#' Function that generates a seropositivity plot corresponding to the specified
+#' Generate seropositivity plot corresponding to the specified
 #' fitted serological model
 #'
 #' This function generates a seropositivity plot of the specified serological
@@ -156,7 +156,7 @@ plot_seroprev_fitted <- function(seromodel_object,
 
 # TODO Complete @param documentation
 
-#' Function that generates a Force-of-Infection plot corresponding to the
+#' Generate force-of-infection plot corresponding to the
 #' specified fitted serological model
 #'
 #' This function generates a Force-of-Infection plot from the results obtained
@@ -252,7 +252,7 @@ plot_foi <- function(seromodel_object,
   return(foi_plot)
 }
 
-#' Function that generates a plot of the R-hat estimates of the specified fitted
+#' Generate plot of the R-hat estimates for the specified fitted
 #' serological model
 #'
 #' This function generates a plot of the R-hat estimates obtained for a
@@ -327,10 +327,8 @@ plot_rhats <- function(seromodel_object,
   return(rhats_plot)
 }
 
-# TODO Complete @param documentation
-
-#' Function that generates a vertical arrange of plots showing a summary of a
-#' model, the estimated seroprevalence, the Force-of-Infection fit and the R-hat
+#' Generate vertical arrange of plots showing a summary of a
+#' model, the estimated seroprevalence, the force-of-infection fit and the R-hat
 #' estimates plots.
 #'
 #' @inheritParams get_foi_central_estimates
@@ -415,9 +413,7 @@ plot_seromodel <- function(seromodel_object,
   return(plot_arrange)
 }
 
-# TODO Improve documentation of @return.
-# TODO Give more details about the generated plot
-#' Function that generates a plot for a given table
+#' Generate plot summarizing a given table
 #'
 #' @param info the information that will be contained in the table
 #' @param size_text Text size of the graph returned by the function
