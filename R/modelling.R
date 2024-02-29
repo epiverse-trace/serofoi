@@ -177,7 +177,7 @@ run_seromodel <- function(
 #' data
 #'
 #' This function fits the specified model `foi_model` to the serological survey
-#' data `serodata` by means of the [sampling][rstan::sampling] method. The
+#' data `serodata` by means of [sampling][rstan::sampling]. The
 #' function determines whether the corresponding stan model object needs to be
 #' compiled by rstan.
 #' @param serodata A data frame containing the data from a seroprevalence

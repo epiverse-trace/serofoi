@@ -1,7 +1,7 @@
 #' Build dataframe containing the R-hat estimates for a given
 #' serological model
 #'
-#' This method relies in the function [rhat][bayesplot::rhat] to extract the
+#' This function relies on [rhat][bayesplot::rhat] to extract the
 #' R-hat estimates of the serological model object `seromodel_object` and
 #' returns a table a dataframe with the estimates for each year of birth.
 #' @inheritParams get_foi_central_estimates
