@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{fit_seromodel}
 \alias{fit_seromodel}
-\title{Function that fits the selected model to the specified seroprevalence survey
+\title{Fit selected model to the specified seroprevalence survey
 data}
 \usage{
 fit_seromodel(
@@ -70,7 +70,7 @@ to the \code{chains} parameter in \link[rstan:stanmodel-method-sampling]{samplin
 }
 \description{
 This function fits the specified model \code{foi_model} to the serological survey
-data \code{serodata} by means of the \link[rstan:stanmodel-method-sampling]{sampling} method. The
+data \code{serodata} by means of \link[rstan:stanmodel-method-sampling]{sampling}. The
 function determines whether the corresponding stan model object needs to be
 compiled by rstan.
 }

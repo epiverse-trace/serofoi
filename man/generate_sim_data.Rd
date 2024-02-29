@@ -2,7 +2,7 @@
 % Please edit documentation in R/seroprevalence_data.R
 \name{generate_sim_data}
 \alias{generate_sim_data}
-\title{Function that generates a simulated serosurvey according to the specified FoI}
+\title{Generate simulated serosurvey according to the specified FoI}
 \usage{
 generate_sim_data(sim_data, foi, sample_size_by_age, survey_label, seed = 1234)
 }
@@ -14,7 +14,7 @@ generate_sim_data(sim_data, foi, sample_size_by_age, survey_label, seed = 1234)
 }}
 
 \item{foi}{Numeric atomic vector corresponding to the desired
-Force-of-Infection ordered from past to present}
+force-of-infection ordered from past to present}
 
 \item{sample_size_by_age}{Integer indicating the sample size by age group.
 This corresponds to the number of trials \code{size} in \link[stats:Binomial]{rbinom}.}
@@ -27,7 +27,7 @@ This corresponds to the number of trials \code{size} in \link[stats:Binomial]{rb
 Dataframe containing the simulated serosurvey.
 }
 \description{
-Function that generates a simulated serosurvey according to the specified FoI
+Generate simulated serosurvey according to the specified FoI
 }
 \examples{
 n_years <- 50

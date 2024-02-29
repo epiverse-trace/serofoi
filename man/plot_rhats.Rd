@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualisation.R
 \name{plot_rhats}
 \alias{plot_rhats}
-\title{Function that generates a plot of the R-hat estimates of the specified fitted
+\title{Generate plot of the R-hat estimates for the specified fitted
 serological model}
 \usage{
 plot_rhats(seromodel_object, cohort_ages, size_text = 25)

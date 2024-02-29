@@ -2,7 +2,7 @@
 % Please edit documentation in R/seroprevalence_data.R
 \name{prepare_serodata}
 \alias{prepare_serodata}
-\title{Function that prepares the data from a serological survey for modelling}
+\title{Prepare data from a serological survey for modelling}
 \usage{
 prepare_serodata(serodata = serodata, alpha = 0.05)
 }

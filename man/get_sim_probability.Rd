@@ -2,8 +2,8 @@
 % Please edit documentation in R/seroprevalence_data.R
 \name{get_sim_probability}
 \alias{get_sim_probability}
-\title{Function that generates the probabilities of being previously exposed to a
-pathogen given a historical Force-of-Infection.}
+\title{Generate probabilities of being previously exposed to a
+pathogen given a historical force-of-infection.}
 \usage{
 get_sim_probability(sim_data, foi)
 }
@@ -15,7 +15,7 @@ get_sim_probability(sim_data, foi)
 }}
 
 \item{foi}{Numeric atomic vector corresponding to the desired
-Force-of-Infection ordered from past to present}
+force-of-infection ordered from past to present}
 }
 \value{
 A dataframe containing the following columns:
@@ -26,8 +26,8 @@ according to the provided FoI}
 }
 }
 \description{
-Function that generates the probabilities of being previously exposed to a
-pathogen given a historical Force-of-Infection.
+Generate probabilities of being previously exposed to a
+pathogen given a historical force-of-infection.
 }
 \examples{
 n_years <- 50
