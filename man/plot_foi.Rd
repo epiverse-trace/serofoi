@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualisation.R
 \name{plot_foi}
 \alias{plot_foi}
-\title{Function that generates a Force-of-Infection plot corresponding to the
+\title{Generate force-of-infection plot corresponding to the
 specified fitted serological model}
 \usage{
 plot_foi(
@@ -28,14 +28,14 @@ function.}
 \item{foi_sim}{TBD}
 }
 \value{
-A ggplot2 object containing the Force-of-infection-vs-time including
+A ggplot2 object containing the force-of-infection vs time including
 the corresponding confidence interval.
 }
 \description{
-This function generates a Force-of-Infection plot from the results obtained
+This function generates a force-of-infection plot from the results obtained
 by fitting a serological model. This includes the corresponding binomial
 confidence interval. The x axis corresponds to the decades covered by the
-survey the y axis to the Force-of-Infection.
+survey the y axis to the force-of-infection.
 }
 \examples{
 data(chagas2012)

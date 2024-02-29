@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{get_cohort_ages}
 \alias{get_cohort_ages}
-\title{Function that generates a data.frame containing the age of each cohort
+\title{Generate data.frame containing the age of each cohort
 corresponding to each birth year excluding the year of the survey.}
 \usage{
 get_cohort_ages(serodata)

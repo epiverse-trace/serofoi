@@ -2,7 +2,7 @@
 % Please edit documentation in R/seroprevalence_data.R
 \name{get_age_group}
 \alias{get_age_group}
-\title{Method for constructing age-group variable from age column}
+\title{Construct age-group variable from age column}
 \usage{
 get_age_group(age, step)
 }
@@ -16,12 +16,12 @@ age_group factor variable grouping \code{age} by the age intervals
 specified by \code{min(age)}, \code{max(age)}.
 }
 \description{
-This function was taken from \link[vaccineff:get_age_group]{get_age_group}.
-This method splits an age interval from age_min to age_max into
+Function taken from \link[vaccineff:get_age_group]{get_age_group}.
+This function splits an age interval from age_min to age_max into
 \code{(age_max-age_min)/step} intervals.
 By default age_min is set 0, however it can be assigned by
 convenience.
-If the method finds ages greater or equal than age_max
+If the function finds ages greater or equal than age_max
 it assigns the string \code{">{age_max}"}.
 To avoid errors it is necessary to set \code{step<age_max}.
 It is also suggested to choose the step such

@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualisation.R
 \name{plot_seroprev}
 \alias{plot_seroprev}
-\title{Function that generates the seropositivity plot from a raw serological
+\title{Generate seropositivity plot from a raw serological
 survey dataset}
 \usage{
 plot_seroprev(serodata, size_text = 6, bin_data = TRUE, bin_step = 5)
@@ -42,7 +42,7 @@ data of a given seroprevalence survey with its corresponding binomial
 confidence interval.
 }
 \description{
-Function that generates the seropositivity plot from a raw serological
+Generate seropositivity plot from a raw serological
 survey dataset
 }
 \examples{

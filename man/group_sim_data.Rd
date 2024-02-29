@@ -2,7 +2,7 @@
 % Please edit documentation in R/seroprevalence_data.R
 \name{group_sim_data}
 \alias{group_sim_data}
-\title{Function that groups a simulated serological dataset by age}
+\title{Group simulated serological dataset by age}
 \usage{
 group_sim_data(sim_data, col_age = "age_mean_f", step = 5)
 }
@@ -19,5 +19,5 @@ Dataframe object containing grouped simulated data generated from
 \code{foi}
 }
 \description{
-Function that groups a simulated serological dataset by age
+Group simulated serological dataset by age
 }

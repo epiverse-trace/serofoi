@@ -2,20 +2,20 @@
 % Please edit documentation in R/visualisation.R
 \name{plot_info_table}
 \alias{plot_info_table}
-\title{Function that generates a plot for a given table}
+\title{Generate plot summarizing a given table}
 \usage{
-plot_info_table(info, size_text)
+plot_info_table(info_table, size_text)
 }
 \arguments{
-\item{info}{the information that will be contained in the table}
+\item{info_table}{Table with the information to be summarised}
 
 \item{size_text}{Text size of the graph returned by the function}
 }
 \value{
-p the plot for the given table
+ggplot object summarizing the information in \code{info_table}
 }
 \description{
-Function that generates a plot for a given table
+Generate plot summarizing a given table
 }
 \examples{
 serodata <- prepare_serodata(chagas2012)
@@ -28,6 +28,6 @@ seromodel_summary <- extract_seromodel_summary(
   seromodel_object = seromodel_object,
   serodata = serodata
 )
-info <- t(seromodel_summary)
-plot_info_table(info, size_text = 15)
+info_table <- t(seromodel_summary)
+plot_info_table(info_table, size_text = 15)
 }

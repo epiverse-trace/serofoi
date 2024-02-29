@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_comparison.R
 \name{get_table_rhats}
 \alias{get_table_rhats}
-\title{Method for extracting a dataframe containing the R-hat estimates for a given
+\title{Build dataframe containing the R-hat estimates for a given
 serological model}
 \usage{
 get_table_rhats(seromodel_object, cohort_ages)
@@ -18,7 +18,7 @@ corresponding to each birth year.}
 rhats table
 }
 \description{
-This method relies in the function \link[bayesplot:bayesplot-extractors]{rhat} to extract the
+This function relies on \link[bayesplot:bayesplot-extractors]{rhat} to extract the
 R-hat estimates of the serological model object \code{seromodel_object} and
 returns a table a dataframe with the estimates for each year of birth.
 }

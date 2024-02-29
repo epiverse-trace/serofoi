@@ -2,13 +2,13 @@
 % Please edit documentation in R/modelling.R
 \name{get_prev_expanded}
 \alias{get_prev_expanded}
-\title{Function that generates an object containing the confidence interval based on
-a Force-of-Infection fitting}
+\title{Generate object containing the confidence interval based on
+a force-of-infection fitting}
 \usage{
 get_prev_expanded(foi, serodata, alpha = 0.05, bin_data = FALSE, bin_step = 5)
 }
 \arguments{
-\item{foi}{Object containing the information of the force of infection. It is
+\item{foi}{Object containing the information of the force-of-infection. It is
 obtained from \code{rstan::extract(seromodel_object$seromodel, "foi", inc_warmup = FALSE)[[1]]}.}
 
 \item{serodata}{A data frame containing the data from a seroprevalence
@@ -42,7 +42,7 @@ purposes in the \code{visualization} module.
 }
 \description{
 This function computes the corresponding binomial confidence intervals for
-the obtained prevalence based on a fitting of the Force-of-Infection \code{foi}
+the obtained prevalence based on a fitting of the force-of-infection \code{foi}
 for plotting an analysis purposes.
 }
 \examples{

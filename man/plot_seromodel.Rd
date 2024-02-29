@@ -2,8 +2,8 @@
 % Please edit documentation in R/visualisation.R
 \name{plot_seromodel}
 \alias{plot_seromodel}
-\title{Function that generates a vertical arrange of plots showing a summary of a
-model, the estimated seroprevalence, the Force-of-Infection fit and the R-hat
+\title{Generate vertical arrange of plots showing a summary of a
+model, the estimated seroprevalence, the force-of-infection fit and the R-hat
 estimates plots.}
 \usage{
 plot_seromodel(
@@ -58,8 +58,8 @@ A ggplot object with a vertical arrange containing the
 seropositivity, force of infection, and convergence plots.
 }
 \description{
-Function that generates a vertical arrange of plots showing a summary of a
-model, the estimated seroprevalence, the Force-of-Infection fit and the R-hat
+Generate vertical arrange of plots showing a summary of a
+model, the estimated seroprevalence, the force-of-infection fit and the R-hat
 estimates plots.
 }
 \examples{

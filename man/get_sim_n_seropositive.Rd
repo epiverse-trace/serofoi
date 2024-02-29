@@ -2,7 +2,7 @@
 % Please edit documentation in R/seroprevalence_data.R
 \name{get_sim_n_seropositive}
 \alias{get_sim_n_seropositive}
-\title{Function that generates a sample of counts of seropositive individuals by
+\title{Generate sample of counts of seropositive individuals by
 sampling from a binomial distribution}
 \usage{
 get_sim_n_seropositive(sim_data, foi, sample_size_by_age, seed = 1234)
@@ -15,7 +15,7 @@ get_sim_n_seropositive(sim_data, foi, sample_size_by_age, seed = 1234)
 }}
 
 \item{foi}{Numeric atomic vector corresponding to the desired
-Force-of-Infection ordered from past to present}
+force-of-infection ordered from past to present}
 
 \item{sample_size_by_age}{Integer indicating the sample size by age group.
 This corresponds to the number of trials \code{size} in \link[stats:Binomial]{rbinom}.}
@@ -33,7 +33,7 @@ simulated list of counts following a binomial distribution in accordance
 with a given force of infection and age group sizes.
 }
 \description{
-Function that generates a sample of counts of seropositive individuals by
+Generate sample of counts of seropositive individuals by
 sampling from a binomial distribution
 }
 \examples{

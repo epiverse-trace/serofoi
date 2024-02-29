@@ -3,7 +3,7 @@
 \docType{data}
 \name{simdata_sw_dec}
 \alias{simdata_sw_dec}
-\title{Step-wise decreasing FoI simulated serosurvey}
+\title{Step-wise decreasing force-of-infection simulated serosurvey}
 \format{
 An object of class \code{"cross"}; see \code{\link[qtl:read.cross]{qtl::read.cross()}}.
 }
@@ -11,7 +11,7 @@ An object of class \code{"cross"}; see \code{\link[qtl:read.cross]{qtl::read.cro
 simdata_sw_dec
 }
 \description{
-Simulated dataset describing a situation where the Force-of-Infection
+Simulated dataset describing a situation where the force-of-infection
 follows a step-wise decreasing tendency over a period of 50 years (2000-2050)
 The hypothetical serosurvey is conducted in year 2050 for 250 individuals
 that are up to 50 years old.

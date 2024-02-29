@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{get_foi_central_estimates}
 \alias{get_foi_central_estimates}
-\title{Function that generates the central estimates for the fitted forced FoI}
+\title{Extract central estimates for the fitted forced FoI}
 \usage{
 get_foi_central_estimates(seromodel_object, cohort_ages)
 }
@@ -17,7 +17,7 @@ corresponding to each birth year.}
 \code{foi_central_estimates}. Central estimates for the fitted forced FoI
 }
 \description{
-Function that generates the central estimates for the fitted forced FoI
+Extract central estimates for the fitted forced FoI
 }
 \examples{
 data(chagas2012)
