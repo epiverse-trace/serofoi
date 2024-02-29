@@ -113,7 +113,7 @@ validate_prepared_serodata <- function(serodata) {
 #' Run specified stan model for the force-of-infection and
 #' estimates the seroprevalence based on the result of the fit
 #'
-#' This function runs the specified model for the Force-of-Infection `foi_model`
+#' This function runs the specified model for the force-of-infection `foi_model`
 #' using the data from a seroprevalence survey `serodata` as the input data. See
 #' [fit_seromodel] for further details.
 #'
@@ -390,7 +390,7 @@ get_foi_central_estimates <- function(seromodel_object,
     upper_quantile <- 0.95
     medianv_quantile <- 0.5
   }
-  # extracts foi from stan fit
+  # extracts force-of-infection from stan fit
   foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
 
   # generates central estimations
@@ -487,9 +487,9 @@ extract_seromodel_summary <- function(seromodel_object,
 #' a Force-of-Infection fitting
 #'
 #' This function computes the corresponding binomial confidence intervals for
-#' the obtained prevalence based on a fitting of the Force-of-Infection `foi`
+#' the obtained prevalence based on a fitting of the force-of-infection `foi`
 #' for plotting an analysis purposes.
-#' @param foi Object containing the information of the force of infection. It is
+#' @param foi Object containing the information of the force-of-infection. It is
 #'   obtained from `rstan::extract(seromodel_object$seromodel, "foi", inc_warmup
 #'   = FALSE)[[1]]`.
 #' @param alpha Probability threshold for statistical significance used for both
