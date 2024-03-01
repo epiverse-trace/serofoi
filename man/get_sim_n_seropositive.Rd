@@ -10,8 +10,7 @@ get_sim_n_seropositive(
   foi,
   sample_size_by_age,
   mu = 0,
-  is_time_varying = TRUE,
-  is_age_varying = FALSE,
+  model_type = "time-varying",
   seed = 1234
 )
 }
@@ -23,10 +22,15 @@ get_sim_n_seropositive(
 }}
 
 \item{foi}{Numeric atomic vector corresponding to the desired
-force-of-infection ordered from past to present}
+time-varying or age-varying Force-of-Infection to simulate from}
 
 \item{sample_size_by_age}{Integer indicating the sample size by age group.
 This corresponds to the number of trials \code{size} in \link[stats:Binomial]{rbinom}.}
+
+\item{mu}{Seroreversion rate}
+
+\item{model_type}{String specifying the type of model to be used.
+Current valid options are 'time-varying' and 'age-varying'}
 
 \item{seed}{Seed for random number generation.}
 }
