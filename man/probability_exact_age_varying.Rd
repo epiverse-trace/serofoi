@@ -5,10 +5,10 @@
 \title{Computes the probability of being seropositive for age-varying
 FoI including seroreversion}
 \usage{
-probability_exact_age_varying(exposure_age, foi, mu = 0)
+probability_exact_age_varying(age, foi, mu = 0)
 }
 \arguments{
-\item{exposure_age}{Integer corresponding to the age of the exposed cohort}
+\item{age}{Integer corresponding to the age of the exposed cohort}
 
 \item{foi}{Numeric atomic vector corresponding to the age-varying FoI to
 simulate from}
