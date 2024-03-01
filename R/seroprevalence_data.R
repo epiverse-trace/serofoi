@@ -156,7 +156,7 @@ prepare_bin_data <- function(serodata,
 #' @param mu Seroreversion rate
 #' @return probability of being seropositive for age-varying FoI
 #' including seroreversion
-get_probability_exact_av <- function(
+probability_exact_age_varying <- function(
     exposure_age,
     foi,
     mu = 0
@@ -227,7 +227,7 @@ stopifnot(
   if (model_type == "age-varying") {
     probabilities <- purrr::map_dbl(
       exposure_ages,
-      ~get_probability_exact_av(., foi, mu) # nolint: object_usage_linter
+      ~probability_exact_age_varying(., foi, mu) # nolint: object_usage_linter
       )
   }
 
