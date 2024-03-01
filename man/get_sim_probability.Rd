@@ -5,13 +5,7 @@
 \title{Generate probabilities of being previously exposed to a
 pathogen given a historical force-of-infection.}
 \usage{
-get_sim_probability(
-  sim_data,
-  foi,
-  mu = 0,
-  is_time_varying = TRUE,
-  is_age_varying = FALSE
-)
+get_sim_probability(sim_data, foi, mu = 0, model_type = "time-varying")
 }
 \arguments{
 \item{sim_data}{A dataframe object containing the following columns:
@@ -21,7 +15,12 @@ get_sim_probability(
 }}
 
 \item{foi}{Numeric atomic vector corresponding to the desired
-force-of-infection ordered from past to present}
+time-varying or age-varying Force-of-Infection to simulate from}
+
+\item{mu}{Seroreversion rate}
+
+\item{model_type}{String specifying the type of model to be used.
+Current valid options are 'time-varying' and 'age-varying'}
 }
 \value{
 A dataframe containing the following columns:

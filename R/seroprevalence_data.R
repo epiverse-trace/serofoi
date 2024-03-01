@@ -181,7 +181,10 @@ get_probability_exact_av <- function(
 #'   \item{`tsur`}{Year of the survey}
 #' }
 #' @param foi Numeric atomic vector corresponding to the desired
-#' force-of-infection ordered from past to present
+#' time-varying or age-varying Force-of-Infection to simulate from
+#' @param mu Seroreversion rate
+#' @param model_type String specifying the type of model to be used.
+#' Current valid options are 'time-varying' and 'age-varying'
 #' @return A dataframe containing the following columns:
 #' \describe{
 #'   \item{`age`}{Exposure ages}
@@ -201,32 +204,13 @@ get_sim_probability <- function(
   sim_data,
   foi,
   mu = 0,
-  is_time_varying = TRUE,
-  is_age_varying = FALSE
+  model_type = "time-varying"
   ) {
-
   # Checks valid model specification
-  if (is_time_varying && is_age_varying) {
-    warning(
-      "Time and age varying data simulation is not supported ",
-      "Setting `is_time_varying = FALSE`."
-    )
-    is_time_varying <- FALSE
-  }
-  if (!any(is_time_varying, is_age_varying)) {
-      warning(
-        "Type of model not specified. ",
-        "Setting `is_time_varying = TRUE`."
-        )
-      is_time_varying <- TRUE
-    }
-    # Warns the user about untested feature
-    if (mu != 0) {
-      warning(
-        "Data simulation including seroreversion is still ",
-        "undergoing testing. Results may not be reliable."
-        )
-    }
+stopifnot(
+  "model_type must be either 'time-varying' or 'age-varying'" =
+  model_type %in% c("time-varying", "age-varying")
+)
 
   sim_data <- mutate(
     sim_data,
@@ -235,12 +219,12 @@ get_sim_probability <- function(
   cohort_ages <- get_cohort_ages(sim_data)
   exposure_ages <- rev(cohort_ages$age)
 
-  if (is_time_varying) {
+  if (model_type == "time-varying") {
     exposure_matrix <- get_exposure_matrix(sim_data) # nolint: object_usage_linter
     probabilities <-
     (foi / (foi + mu)) * (1 - exp(-drop(exposure_matrix %*% (foi + mu))))
   }
-  if (is_age_varying) {
+  if (model_type == "age-varying") {
     probabilities <- purrr::map_dbl(
       exposure_ages,
       ~get_probability_exact_av(., foi, mu) # nolint: object_usage_linter
@@ -287,15 +271,13 @@ get_sim_n_seropositive <- function(sim_data,
                                    foi,
                                    sample_size_by_age,
                                    mu = 0,
-                                   is_time_varying = TRUE,
-                                   is_age_varying = FALSE,
+                                   model_type = "time-varying",
                                    seed = 1234) {
   sim_probability <- get_sim_probability(
     sim_data = sim_data,
     foi = foi,
     mu = mu,
-    is_time_varying = is_time_varying,
-    is_age_varying = is_age_varying
+    model_type = model_type
     )
 
   set.seed(seed = seed)
@@ -337,8 +319,7 @@ generate_sim_data <- function(sim_data,
                               foi,
                               sample_size_by_age,
                               mu = 0,
-                              is_time_varying = TRUE,
-                              is_age_varying = FALSE,
+                              model_type = "time-varying",
                               survey_label = "sim_data",
                               seed = 1234
 ) {
@@ -347,8 +328,7 @@ generate_sim_data <- function(sim_data,
     foi = foi,
     sample_size_by_age = sample_size_by_age,
     mu = mu,
-    is_time_varying = is_time_varying,
-    is_age_varying = is_age_varying,
+    model_type = model_type,
     seed = seed
     )
 
