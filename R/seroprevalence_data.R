@@ -150,20 +150,20 @@ prepare_bin_data <- function(serodata,
 #' Computes the probability of being seropositive for age-varying
 #' FoI including seroreversion
 #'
-#' @param exposure_age Integer corresponding to the age of the exposed cohort
+#' @param age Integer corresponding to the age of the exposed cohort
 #' @param foi Numeric atomic vector corresponding to the age-varying FoI to
 #' simulate from
 #' @param mu Seroreversion rate
 #' @return probability of being seropositive for age-varying FoI
 #' including seroreversion
 probability_exact_age_varying <- function(
-    exposure_age,
+    age,
     foi,
     mu = 0
 ) {
   probability <- 0
   # solves ODE exactly within pieces
-  for (i in 1:exposure_age) {
+  for (i in 1:age) {
     probability <-
       (1 / (foi[i] + mu)) * exp(- (foi[i] + mu)) *
       (foi[i] * (exp(foi[i] + mu)  - 1) + probability * (foi[i] + mu)
@@ -217,7 +217,7 @@ stopifnot(
     birth_year = .data$tsur - .data$age_mean_f
   )
   cohort_ages <- get_cohort_ages(sim_data)
-  exposure_ages <- rev(cohort_ages$age)
+  ages <- rev(cohort_ages$age)
 
   if (model_type == "time-varying") {
     exposure_matrix <- get_exposure_matrix(sim_data) # nolint: object_usage_linter
@@ -226,13 +226,13 @@ stopifnot(
   }
   if (model_type == "age-varying") {
     probabilities <- purrr::map_dbl(
-      exposure_ages,
+      ages,
       ~probability_exact_age_varying(., foi, mu) # nolint: object_usage_linter
       )
   }
 
   sim_probability <- data.frame(
-    age = exposure_ages,
+    age = ages,
     probability = probabilities
   )
   return(sim_probability)
