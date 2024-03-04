@@ -111,7 +111,7 @@ validate_prepared_serodata <- function(serodata) {
 }
 
 #' Run specified stan model for the force-of-infection and
-#' estimates the seroprevalence based on the result of the fit
+#' estimate the seroprevalence based on the result of the fit
 #'
 #' This function runs the specified model for the force-of-infection `foi_model`
 #' using the data from a seroprevalence survey `serodata` as the input data. See
@@ -307,15 +307,15 @@ fit_seromodel <- function(
 }
 
 
-#' Generate data.frame containing the age of each cohort
+#' Generate data frame containing the age of each cohort
 #' corresponding to each birth year excluding the year of the survey.
 #'
-#' This function generates a data.frame containing the age of each cohort
+#' This function generates a data frame containing the age of each cohort
 #' corresponding to each `birth_year` excluding the year of the survey, for
 #' which the cohort age is still 0. specified serological survey data `serodata`
 #' excluding the year of the survey.
 #' @inheritParams run_seromodel
-#' @return `cohort_ages`. A data.frame containing the age of each cohort
+#' @return `cohort_ages`. A data frame containing the age of each cohort
 #'   corresponding to each birth year
 #' @examples
 #' data(chagas2012)
@@ -363,7 +363,7 @@ get_exposure_matrix <- function(serodata) {
 #'
 #' @param seromodel_object Stanfit object containing the results of fitting a
 #'   model by means of [run_seromodel].
-#' @param cohort_ages  A data.frame containing the age of each cohort
+#' @param cohort_ages  A data frame containing the age of each cohort
 #'   corresponding to each birth year.
 #' @return `foi_central_estimates`. Central estimates for the fitted forced FoI
 #' @examples
@@ -483,8 +483,9 @@ extract_seromodel_summary <- function(seromodel_object,
   return(model_summary)
 }
 
-#' Function that generates an object containing the confidence interval based on
-#' a Force-of-Infection fitting
+
+#' Generate data frame containing the confidence interval based on
+#' a force-of-infection fitting
 #'
 #' This function computes the corresponding binomial confidence intervals for
 #' the obtained prevalence based on a fitting of the force-of-infection `foi`
@@ -496,11 +497,12 @@ extract_seromodel_summary <- function(seromodel_object,
 #' the binomial confidence interval, and the lower and upper quantiles of the
 #' estimated prevalence.
 #' @inheritParams run_seromodel
-#' @param bin_data Boolean. Use `TRUE` when age binning is preferred for
-#' plotting. If `TRUE`, `serodata` is binned by means of
-#' `prepare_bin_data`; Otherwise, age groups are kept as originally input.
-#' @param bin_step Integer specifying the age groups bin size to be used when
-#' `bin_data` is set to `TRUE`.
+#' @param predicted_prev_lower_quantile Float specifying the lower quantile
+#'   to be used in `predicted_prev` calculation
+#' @param predicted_prev_upper_quantile Float specifying the upper quantile
+#'   to be used in `predicted_prev` calculation
+#' @param bin_data If `TRUE`, `serodata` is binned by means of
+#'   `prepare_bin_data`. Otherwise, age groups are kept as originally input.
 #' @return `prev_final`. The expanded prevalence data. This is used for plotting
 #'   purposes in the `visualization` module.
 #' @examples

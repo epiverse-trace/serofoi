@@ -327,7 +327,7 @@ plot_rhats <- function(seromodel_object,
   return(rhats_plot)
 }
 
-#' Generate vertical arrange of plots showing a summary of a
+#' Generate vertical arrangement of plots showing a summary of a
 #' model, the estimated seroprevalence, the force-of-infection fit and the R-hat
 #' estimates plots.
 #'
