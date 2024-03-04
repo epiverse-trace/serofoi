@@ -66,7 +66,10 @@ test_that("Test simulated data from time-varying force-of-infection", {
   ) %>%
   prepare_serodata()
 
-  prev_exact <- 1 - exp(-cumsum(rev(foi_sim)))
+  prev_exact <- probability_exact_time_varying(
+    ages = seq(1,n_years),
+    foi = foi_sim
+    )
 
   expect_s3_class(sim_data, "data.frame")
   expect_length(sim_data$birth_year, tsur - birth_year_min)
