@@ -165,9 +165,8 @@ probability_exact_age_varying <- function(
   # solves ODE exactly within pieces
   for (i in 1:age) {
     probability <-
-      (1 / (foi[i] + mu)) * exp(- (foi[i] + mu)) *
-      (foi[i] * (exp(foi[i] + mu)  - 1) + probability * (foi[i] + mu)
-      )
+    (1 / (foi[i] + mu)) *
+    (foi[i] + exp(-(foi[i] + mu)) * (probability * (foi[i] + mu) - foi[i]))
   }
   return(probability)
 }
