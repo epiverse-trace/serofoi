@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{get_prev_expanded}
 \alias{get_prev_expanded}
-\title{Generate object containing the confidence interval based on
+\title{Generate data frame containing the confidence interval based on
 a force-of-infection fitting}
 \usage{
 get_prev_expanded(foi, serodata, alpha = 0.05, bin_data = FALSE, bin_step = 5)

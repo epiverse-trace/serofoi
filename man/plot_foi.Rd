@@ -17,7 +17,7 @@ plot_foi(
 \item{seromodel_object}{Stanfit object containing the results of fitting a
 model by means of \link{run_seromodel}.}
 
-\item{cohort_ages}{A data.frame containing the age of each cohort
+\item{cohort_ages}{A data frame containing the age of each cohort
 corresponding to each birth year.}
 
 \item{max_lambda}{TBD}

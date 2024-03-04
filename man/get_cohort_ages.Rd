@@ -2,7 +2,7 @@
 % Please edit documentation in R/modelling.R
 \name{get_cohort_ages}
 \alias{get_cohort_ages}
-\title{Generate data.frame containing the age of each cohort
+\title{Generate data frame containing the age of each cohort
 corresponding to each birth year excluding the year of the survey.}
 \usage{
 get_cohort_ages(serodata)
@@ -23,11 +23,11 @@ The last six columns can be added to \code{serodata} by means of the function
 \code{\link[=prepare_serodata]{prepare_serodata()}}.}
 }
 \value{
-\code{cohort_ages}. A data.frame containing the age of each cohort
+\code{cohort_ages}. A data frame containing the age of each cohort
 corresponding to each birth year
 }
 \description{
-This function generates a data.frame containing the age of each cohort
+This function generates a data frame containing the age of each cohort
 corresponding to each \code{birth_year} excluding the year of the survey, for
 which the cohort age is still 0. specified serological survey data \code{serodata}
 excluding the year of the survey.

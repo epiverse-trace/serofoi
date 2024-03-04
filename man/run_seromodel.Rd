@@ -3,7 +3,7 @@
 \name{run_seromodel}
 \alias{run_seromodel}
 \title{Run specified stan model for the force-of-infection and
-estimates the seroprevalence based on the result of the fit}
+estimate the seroprevalence based on the result of the fit}
 \usage{
 run_seromodel(
   serodata,
