@@ -32,40 +32,32 @@ plot_seroprev <- function(serodata,
     }
 
   if (bin_data) {
-    serodata_bin <- prepare_bin_data(
+    serodata <- prepare_bin_data(
       serodata,
       bin_step = bin_step
       )
-    min_prev <- min(serodata_bin$prev_obs_lower)
-    max_prev <- max(serodata_bin$prev_obs_upper)
+    }
 
-    seroprev_plot <- ggplot2::ggplot(
-      data = serodata_bin,
-      ggplot2::aes(x = .data$age_mean_f)
-      )
-    } else {
-    min_prev <- min(serodata$prev_obs_lower)
-    max_prev <- max(serodata$prev_obs_upper)
-    
-    seroprev_plot <- ggplot2::ggplot(
-      data = serodata,
-      ggplot2::aes(x = .data$age_mean_f)
-    )
-  }
-   seroprev_plot <- seroprev_plot +
-    ggplot2::geom_errorbar(
-    ggplot2::aes(
-      ymin = .data$prev_obs_lower,
-      ymax = .data$prev_obs_upper
-      ),
-    width = 0.1
+  min_prev <- min(serodata$prev_obs_lower)
+  max_prev <- max(serodata$prev_obs_upper)
+
+  seroprev_plot <- ggplot2::ggplot(
+    data = serodata,
+    ggplot2::aes(x = .data$age_mean_f)
   ) +
-  ggplot2::geom_point(
-    ggplot2::aes(
-      y = .data$prev_obs,
-      size = .data$total
-      ),
-    fill = "#7a0177", colour = "black", shape = 21
+    ggplot2::geom_errorbar(
+      ggplot2::aes(
+        ymin = .data$prev_obs_lower,
+        ymax = .data$prev_obs_upper
+        ),
+        width = 0.1
+      ) +
+    ggplot2::geom_point(
+      ggplot2::aes(
+        y = .data$prev_obs,
+        size = .data$total
+        ),
+      fill = "#7a0177", colour = "black", shape = 21
   ) +
     ggplot2::coord_cartesian(
       xlim = c(min(serodata$age_min), max(serodata$age_max)),
