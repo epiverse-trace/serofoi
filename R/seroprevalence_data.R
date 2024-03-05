@@ -9,8 +9,8 @@
 #'  This data frame must contain the following columns:
 #' \describe{
 #'   \item{`survey`}{survey Label of the current survey}
-#'   \item{`total`}{Number of samples for each age group}
-#'   \item{`counts`}{Number of positive samples for each age group}
+#'   \item{`n_tested`}{Number of samples for each age group}
+#'   \item{`n_seropositive`}{Number of positive samples for each age group}
 #'   \item{`age_min`}{age_min}
 #'   \item{`age_max`}{age_max}
 #'   \item{`tsur`}{Year in which the survey took place}
@@ -52,7 +52,7 @@ prepare_serodata <- function(serodata = serodata,
     serodata <- serodata %>%
       dplyr::mutate(
         age_mean_f = floor((.data$age_min + .data$age_max) / 2),
-        sample_size = sum(.data$total)
+        sample_size = sum(.data$n_tested)
       )
   }
 
@@ -66,8 +66,8 @@ prepare_serodata <- function(serodata = serodata,
   serodata <- serodata %>%
     cbind(
       Hmisc::binconf(
-        serodata$counts,
-        serodata$total,
+        serodata$n_seropositive,
+        serodata$n_tested,
         alpha = alpha,
         method = "exact",
         return.df = TRUE
@@ -103,7 +103,7 @@ prepare_bin_data <- function(serodata) {
     serodata <- serodata %>%
       dplyr::mutate(
         age_mean_f = floor((.data$age_min + .data$age_max) / 2),
-        sample_size = sum(.data$total)
+        sample_size = sum(.data$n_tested)
       )
   }
   serodata$cut_ages <-
@@ -114,8 +114,8 @@ prepare_bin_data <- function(serodata) {
   xx <- serodata %>%
     dplyr::group_by(.data$cut_ages) %>%
     dplyr::summarise(
-      bin_size = sum(.data$total),
-      bin_pos = sum(.data$counts)
+      bin_size = sum(.data$n_tested),
+      bin_pos = sum(.data$n_seropositive)
     )
   labs <-
     read.table(
@@ -192,7 +192,7 @@ get_sim_probability <- function(sim_data, foi) {
 #'   \item{`n_seropositive`}{Number of positive cases sampled according to the
 #'     provided FoI}
 #' }
-#'   simulated list of counts following a binomial distribution in accordance
+#'   simulated list of n_seropositive following a binomial distribution in accordance
 #'   with a given force of infection and age group sizes.
 #' @examples
 #' n_years <- 50
@@ -267,8 +267,8 @@ generate_sim_data <- function(sim_data,
     mutate(
       age_min = .data$age_mean_f,
       age_max = .data$age_mean_f,
-      counts = sim_n_seropositive$n_seropositive,
-      total = sample_size_by_age,
+      n_seropositive = sim_n_seropositive$n_seropositive,
+      n_tested = sample_size_by_age,
       survey = survey_label
       )
 
@@ -333,7 +333,7 @@ group_sim_data <- function(sim_data,
   sim_data$age_group <- get_age_group(age = age, step = step)
   sim_data_grouped <- sim_data %>%
     group_by(.data$age_group) %>%
-    dplyr::summarise(total = sum(.data$total), counts = sum(.data$counts)) %>%
+    dplyr::summarise(n_tested = sum(.data$n_tested), n_seropositive = sum(.data$n_seropositive)) %>%
     mutate(
       tsur = sim_data$tsur[1],
       country = "None",

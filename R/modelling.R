@@ -66,8 +66,8 @@ warn_missing <- function(serodata, optional_cols) {
 validate_serodata <- function(serodata) {
   col_types <- list(
     survey = c("character", "factor"),
-    total = "numeric",
-    counts = "numeric",
+    n_tested = "numeric",
+    n_seropositive = "numeric",
     tsur = "numeric",
     age_min = "numeric",
     age_max = "numeric"
@@ -95,8 +95,8 @@ validate_serodata <- function(serodata) {
 
 validate_prepared_serodata <- function(serodata) {
   col_types <- list(
-    total = "numeric",
-    counts = "numeric",
+    n_tested = "numeric",
+    n_seropositive = "numeric",
     tsur = "numeric",
     age_mean_f = "numeric",
     birth_year = "numeric",
@@ -183,8 +183,8 @@ run_seromodel <- function(
 #' @param serodata A data frame containing the data from a seroprevalence
 #'   survey. This data frame must contain at least the following columns:
 #' \describe{
-#'   \item{`total`}{Number of samples for each age group}
-#'   \item{`counts`}{Number of positive samples for each age group}
+#'   \item{`n_tested`}{Number of samples for each age group}
+#'   \item{`n_seropositive`}{Number of positive samples for each age group}
 #'   \item{`tsur`}{Year in which the survey took place}
 #'   \item{`age_mean_f`}{Floor value of the average between age_min and age_max}
 #'   \item{`sample_size`}{The size of the sample}
@@ -258,8 +258,8 @@ fit_seromodel <- function(
 
   stan_data <- list(
     n_obs = n_obs,
-    n_pos = serodata$counts,
-    n_total = serodata$total,
+    n_pos = serodata$n_seropositive,
+    n_total = serodata$n_tested,
     age_max = max(cohort_ages$age),
     observation_exposure_matrix = exposure_matrix
   )
@@ -463,7 +463,7 @@ extract_seromodel_summary <- function(seromodel_object,
     year = unique(serodata$tsur),
     test = unique(serodata$test),
     antibody = unique(serodata$antibody),
-    n_sample = sum(serodata$total),
+    n_sample = sum(serodata$n_tested),
     n_agec = length(serodata$age_mean_f),
     n_iter = seromodel_object@sim$iter,
     elpd = lll[1],
@@ -569,13 +569,13 @@ get_prev_expanded <- function(foi,
       "prev_obs",
       "prev_obs_lower",
       "prev_obs_upper",
-      "total",
-      "counts"
+      "n_tested",
+      "n_seropositive"
     ) %>%
     dplyr::rename(
       age = "age_mean_f",
-      sample_by_age = "total",
-      positives = "counts"
+      sample_by_age = "n_tested",
+      positives = "n_seropositive"
     )
 
   prev_expanded <-
