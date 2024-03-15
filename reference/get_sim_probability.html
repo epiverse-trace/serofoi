@@ -65,7 +65,7 @@ pathogen given a historical force-of-infection.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_sim_probability</span><span class="op">(</span><span class="va">sim_data</span>, <span class="va">foi</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_sim_probability</span><span class="op">(</span><span class="va">sim_data</span>, <span class="va">foi</span>, mu <span class="op">=</span> <span class="fl">0</span>, model_type <span class="op">=</span> <span class="st">"time-varying"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -83,7 +83,16 @@ pathogen given a historical force-of-infection.</p>
 
 <dt>foi</dt>
 <dd><p>Numeric atomic vector corresponding to the desired
-force-of-infection ordered from past to present</p></dd>
+time-varying or age-varying Force-of-Infection to simulate from</p></dd>
+
+
+<dt>mu</dt>
+<dd><p>Seroreversion rate</p></dd>
+
+
+<dt>model_type</dt>
+<dd><p>String specifying the type of model to be used.
+Current valid options are 'time-varying' and 'age-varying'</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -94,6 +94,12 @@
     <loc>https://epiverse-trace.github.io/serofoi/reference/prepare_serodata.html</loc>
   </url>
   <url>
+    <loc>https://epiverse-trace.github.io/serofoi/reference/probability_exact_age_varying.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/serofoi/reference/probability_exact_time_varying.html</loc>
+  </url>
+  <url>
     <loc>https://epiverse-trace.github.io/serofoi/reference/run_seromodel.html</loc>
   </url>
   <url>

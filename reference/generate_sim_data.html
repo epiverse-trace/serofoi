@@ -59,7 +59,15 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generate_sim_data</span><span class="op">(</span><span class="va">sim_data</span>, <span class="va">foi</span>, <span class="va">sample_size_by_age</span>, <span class="va">survey_label</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generate_sim_data</span><span class="op">(</span></span>
+<span>  <span class="va">sim_data</span>,</span>
+<span>  <span class="va">foi</span>,</span>
+<span>  <span class="va">sample_size_by_age</span>,</span>
+<span>  mu <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  model_type <span class="op">=</span> <span class="st">"time-varying"</span>,</span>
+<span>  survey_label <span class="op">=</span> <span class="st">"sim_data"</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">1234</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -77,12 +85,21 @@
 
 <dt>foi</dt>
 <dd><p>Numeric atomic vector corresponding to the desired
-force-of-infection ordered from past to present</p></dd>
+time-varying or age-varying Force-of-Infection to simulate from</p></dd>
 
 
 <dt>sample_size_by_age</dt>
 <dd><p>Integer indicating the sample size by age group.
 This corresponds to the number of trials <code>size</code> in <a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a>.</p></dd>
+
+
+<dt>mu</dt>
+<dd><p>Seroreversion rate</p></dd>
+
+
+<dt>model_type</dt>
+<dd><p>String specifying the type of model to be used.
+Current valid options are 'time-varying' and 'age-varying'</p></dd>
 
 
 <dt>survey_label</dt>
