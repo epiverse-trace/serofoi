@@ -2,8 +2,8 @@
 % Please edit documentation in R/seroprevalence_data.R
 \name{probability_exact_age_varying}
 \alias{probability_exact_age_varying}
-\title{Computes the probability of being seropositive for age-varying
-FoI including seroreversion}
+\title{Returns the probability of being seropositive for age-varying
+force-of-infection including seroreversion}
 \usage{
 probability_exact_age_varying(age, foi, mu = 0)
 }
@@ -20,6 +20,6 @@ probability of being seropositive for age-varying FoI
 including seroreversion
 }
 \description{
-Computes the probability of being seropositive for age-varying
-FoI including seroreversion
+Returns the probability of being seropositive for age-varying
+force-of-infection including seroreversion
 }

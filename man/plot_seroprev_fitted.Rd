@@ -37,6 +37,9 @@ The last six columns can be added to \code{serodata} by means of the function
 \item{bin_data}{If \code{TRUE}, \code{serodata} is binned by means of
 \code{prepare_bin_data}. Otherwise, age groups are kept as originally input.}
 
+\item{bin_step}{Integer specifying the age groups bin size to be used when
+\code{bin_data} is set to \code{TRUE}.}
+
 \item{alpha}{Probability threshold for statistical significance used for both
 the binomial confidence interval, and the lower and upper quantiles of the
 estimated prevalence.}
