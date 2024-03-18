@@ -18,7 +18,7 @@ sim_data <- data.frame(birth_year = c(birth_year_min:(tsur - 1))) %>%
     test = test,
     antibody = antibody,
     survey = survey_label,
-    age_mean_f = tsur - birth_year
+    age = tsur - birth_year
   )
 
 #----- Test function generate_sim_probability

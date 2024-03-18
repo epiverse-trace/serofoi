@@ -13,7 +13,7 @@ test_that("Test simulated data from constant force-of-infection", {
   foi_values <- c(0.001, 0.01, 0.1, 0.3, 0.4)
   for (foi_value in foi_values) {
     sim_data <- data.frame(
-      age_mean_f = seq(1,n_years),
+      age = seq(1,n_years),
       tsur = tsur
     )
     foi_sim <- rep(foi_value, tsur - birth_year_min)
@@ -27,7 +27,7 @@ test_that("Test simulated data from constant force-of-infection", {
     ) %>%
     prepare_serodata()
 
-    prev_exact <- 1 - exp(-foi_value * sim_data$age_mean_f)
+    prev_exact <- 1 - exp(-foi_value * sim_data$age)
 
     expect_s3_class(sim_data, "data.frame")
     expect_length(sim_data$birth_year, tsur - birth_year_min)
@@ -50,7 +50,7 @@ test_that("Test simulated data from constant force-of-infection", {
 
 test_that("Test simulated data from time-varying force-of-infection", {
   sim_data <- data.frame(
-    age_mean_f = seq(1,n_years),
+    age = seq(1,n_years),
     tsur = tsur
   )
 
@@ -92,7 +92,7 @@ test_that("Test simulated data from age-varying force-of-infection", {
   foi_sim <- rep(0.01, n_years)
 
   sim_data <- data.frame(
-    age_mean_f = seq(1,n_years),
+    age = seq(1,n_years),
     tsur = tsur
   )
 
@@ -127,7 +127,7 @@ test_that("Test simulated data from age-varying force-of-infection", {
   foi_sim <- unlist(lapply(fois, function(x) rep(x, n_years / length(fois))))
 
   sim_data <- data.frame(
-    age_mean_f = seq(1,n_years),
+    age = seq(1,n_years),
     tsur = tsur
   )
 
