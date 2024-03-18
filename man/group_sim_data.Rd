@@ -4,7 +4,7 @@
 \alias{group_sim_data}
 \title{Group simulated serological dataset by age}
 \usage{
-group_sim_data(sim_data, col_age = "age_mean_f", step = 5)
+group_sim_data(sim_data, col_age = "age", step = 5)
 }
 \arguments{
 \item{sim_data}{Dataframe with the same structure as the output of

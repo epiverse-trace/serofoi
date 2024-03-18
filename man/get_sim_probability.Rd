@@ -10,7 +10,7 @@ get_sim_probability(sim_data, foi, mu = 0, model_type = "time-varying")
 \arguments{
 \item{sim_data}{A dataframe object containing the following columns:
 \describe{
-\item{\code{age_mean_f}}{Age group markers}
+\item{\code{age}}{Age group markers}
 \item{\code{tsur}}{Year of the survey}
 }}
 
@@ -37,7 +37,7 @@ pathogen given a historical force-of-infection.
 \examples{
 n_years <- 50
 sim_data <- data.frame(
-  age_mean_f = seq(1,n_years),
+  age = seq(1,n_years),
   tsur = 2050
 )
 foi <- rep(0.02, n_years)

@@ -200,7 +200,7 @@ probability_exact_age_varying <- function(
 #'
 #' @param sim_data A dataframe object containing the following columns:
 #' \describe{
-#'   \item{`age_mean_f`}{Age group markers}
+#'   \item{`age`}{Age group markers}
 #'   \item{`tsur`}{Year of the survey}
 #' }
 #' @param foi Numeric atomic vector corresponding to the desired
@@ -217,7 +217,7 @@ probability_exact_age_varying <- function(
 #' @examples
 #' n_years <- 50
 #' sim_data <- data.frame(
-#'   age_mean_f = seq(1,n_years),
+#'   age = seq(1,n_years),
 #'   tsur = 2050
 #' )
 #' foi <- rep(0.02, n_years)
@@ -237,7 +237,7 @@ stopifnot(
 
   sim_data <- mutate(
     sim_data,
-    birth_year = .data$tsur - .data$age_mean_f
+    birth_year = .data$tsur - .data$age
   )
   cohort_ages <- get_cohort_ages(sim_data)
   ages <- rev(cohort_ages$age)
@@ -281,7 +281,7 @@ stopifnot(
 #' @examples
 #' n_years <- 50
 #' sim_data <- data.frame(
-#'   age_mean_f = seq(1,n_years),
+#'   age = seq(1,n_years),
 #'   tsur = 2050
 #' )
 #' foi <- rep(0.02, n_years)
@@ -328,7 +328,7 @@ get_sim_n_seropositive <- function(sim_data,
 #' @examples
 #' n_years <- 50
 #' sim_data <- data.frame(
-#'   age_mean_f = seq(1,n_years),
+#'   age = seq(1,n_years),
 #'   tsur = 2050
 #' )
 #' foi <- rep(0.02, n_years)
@@ -360,8 +360,8 @@ generate_sim_data <- function(sim_data,
   # TODO Improve simulation of age_min and age_max
   sim_data <- sim_data %>%
     mutate(
-      age_min = .data$age_mean_f,
-      age_max = .data$age_mean_f,
+      age_min = .data$age,
+      age_max = .data$age,
       counts = sim_n_seropositive$n_seropositive,
       total = sample_size_by_age,
       survey = survey_label
@@ -427,7 +427,7 @@ get_age_group <- function(age, step) {
 #' @return Dataframe object containing grouped simulated data generated from
 #'   `foi`
 group_sim_data <- function(sim_data,
-                           col_age = "age_mean_f",
+                           col_age = "age",
                            step = 5) {
   age <- sim_data[[col_age]]
   sim_data$age_group <- get_age_group(age = age, step = step)
