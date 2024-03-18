@@ -298,6 +298,12 @@ get_sim_n_seropositive <- function(sim_data,
                                    mu = 0,
                                    model_type = "time-varying",
                                    seed = 1234) {
+  stopifnot(
+    "`foi` and `sample_size_by_age` must have the same number of rows" =
+      nrow(foi) == nrow(sample_size_by_age)
+  )
+
+
   sim_probability <- get_sim_probability(
     sim_data = sim_data,
     foi = foi,
