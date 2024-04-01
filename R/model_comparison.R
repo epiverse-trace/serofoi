@@ -25,7 +25,14 @@ get_table_rhats <- function(seromodel_object,
   rhats <- bayesplot::rhat(seromodel_object, "foi")
 
   if (any(is.nan(rhats))) {
-    rhats[which(is.nan(rhats))] <- 0
+    warn_msg <- paste0(
+      length(which(is.nan(rhats))),
+      " rhat values are `nan`, ",
+      "indicating the model may not have run correctly for those times.\n",
+      "Setting those rhat values to `NA`."
+    )
+    warning(warn_msg)
+    rhats[which(is.nan(rhats))] <- NA
   }
 
   if(
