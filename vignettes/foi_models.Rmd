@@ -80,7 +80,7 @@ plot(model_1_plot)
 ```
 Figure 1. Constant serofoi model plot. Simulated (red) vs modelled (blue) *FoI*.
 
-In this case, 800 iterations are enough to ensure convergence. The `plot_seromodel` method provides a visualisation of the results, including a summary where the expected log pointwise predictive density (`elpd`) and its standard error (`se`) are shown. We say that a model converges if all the R-hat estimates are below 1.1.
+In this case, 800 iterations are enough to ensure convergence. The `plot_seromodel` method provides a visualisation of the results, including a summary where the expected log pointwise predictive density (`elpd`) and its standard error (`se`) are shown. We say that a model converges if all the R-hat estimates are below 1.01.
 
 ## Time-varying FoI models
 

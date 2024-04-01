@@ -616,8 +616,17 @@ extract_seromodel_summary <- function(seromodel_object,
     seromodel_object = seromodel_object,
     cohort_ages = cohort_ages
   )
-  if (!any(rhats$rhat > 1.1)) {
+  if (!any(rhats$rhat > 1.01)) {
     model_summary$converged <- "Yes"
+  }
+  else {
+    model_summary$converged <- "No"
+    warn_msg <- paste0(
+      length(which(rhats$rhat > 1.01)),
+      " rhat values are above 1.01. ",
+      "Running the chains for more iterations is recommended."
+    )
+    warning(warn_msg)
   }
 
   return(model_summary)
