@@ -216,6 +216,8 @@ run_seromodel <- function(
 #' to the `chains` parameter in [sampling][rstan::sampling].
 #' @param seed For further details refer to the `seed` parameter in
 #'   [sampling][rstan::sampling].
+#' @param init_value optional list, each element of which is a named list 
+#' containing initial values of the parameters for that MCMC chain.
 #' @param ... Additional parameters for [sampling][rstan::sampling].
 #' @return `seromodel_object`. `stanfit` object returned by the function
 #'   [sampling][rstan::sampling]
@@ -237,6 +239,7 @@ fit_seromodel <- function(
     max_treedepth = 10,
     chains = 4,
     seed = 12345,
+    init_value = NULL,
     ...) {
   # TODO Add a warning because there are exceptions where a minimal amount of
   # iterations is needed
@@ -266,14 +269,18 @@ fit_seromodel <- function(
   )
 
   warmup <- floor(iter / 2)
-  if (foi_model == "tv_normal_log") {
-    f_init <- function() {
-      list(log_foi = rep(-3, nrow(cohort_ages)))
+  if (is.null(init_value)) {
+    if (foi_model == "tv_normal_log") {
+      f_init <- function() {
+        list(log_foi = rep(-3, nrow(cohort_ages)))
+      }
+    } else {
+      f_init <- function() {
+        list(foi = rep(0.01, nrow(cohort_ages)))
+      }
     }
   } else {
-    f_init <- function() {
-      list(foi = rep(0.01, nrow(cohort_ages)))
-    }
+    f_init <- init_value
   }
 
   seromodel_fit <- rstan::sampling(
@@ -596,3 +603,65 @@ get_prev_expanded <- function(foi,
 
   return(prev_expanded)
 }
+
+
+#' Fit model to seroprevalence survey using optimization
+#' Returns a single best fit parameter vector, rather than
+#' samples from the posterior (which is what `fit_seromodel` does)
+#' @inheritParams fit_seromodel
+#' @param n_iters_max highest number of iterations for optimizer to run
+#' @return `seromodel_optimization`. List of best fit optimized parameter value
+#' @export
+fit_seromodel_optimization <- function(
+    serodata,
+    foi_model = c("constant", "tv_normal_log", "tv_normal"),
+    n_iters_max = 1000,
+    seed = 12345,
+    ...) {
+  
+  # Data processing is the same as for fit_seromodel
+  # Validate data
+  validate_prepared_serodata(serodata)
+  stopifnot(
+    "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`" =
+      foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
+    "seed must be numeric" = is.numeric(seed),
+    "n_iters_max must be numeric" = is.numeric(n_iters_max)
+  )
+  model <- stanmodels[[foi_model]]
+  cohort_ages <- get_cohort_ages(serodata = serodata)
+  exposure_matrix <- get_exposure_matrix(serodata)
+  n_obs <- nrow(serodata)
+  
+  stan_data <- list(
+    n_obs = n_obs,
+    n_pos = serodata$counts,
+    n_total = serodata$total,
+    age_max = max(cohort_ages$age),
+    observation_exposure_matrix = exposure_matrix
+  )
+  
+  if (foi_model == "tv_normal_log") {
+    f_init <- function() {
+      list(log_foi = rep(-3, nrow(cohort_ages)))
+    }
+  } else {
+    f_init <- function() {
+      list(foi = rep(0.01, nrow(cohort_ages)))
+    }
+  }
+  
+  seromodel_optimization <- rstan::optimizing(
+    model,
+    data = stan_data,
+    iter = n_iters,
+    init = f_init,
+    verbose = FALSE,
+    refresh = 0,
+    seed = seed,
+    as_vector = FALSE
+  )
+  
+  return(seromodel_optimization)
+}
+
