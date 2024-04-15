@@ -315,6 +315,50 @@ fit_seromodel <- function(
 }
 
 
+#' Generate list containing the chunk structure to be used in the retrospective
+#' estimation of the force of infection.
+#'
+#' This function generates a numeric list specifying the chunk structure of the
+#' time interval spanning from the year of birth of the oldest age cohort up to
+#' the time when the serosurvey was conducted.
+#' @inheritParams fit_seromodel
+#' @examples
+#' data(chagas2012)
+#' serodata <- prepare_serodata(serodata = chagas2012, alpha = 0.05)
+#' cohort_ages <- get_cohort_ages(serodata = serodata)
+#' @export
+get_chunk_structure <- function(
+  serodata,
+  chunk_size
+  ) {
+    checkmate::assert_int(
+      chunk_size,
+      lower = 1,
+      upper = max(serodata$age_mean_f)
+      )
+
+    chunks <- unlist(
+      purrr::map(
+        seq(
+          1,
+          max(serodata$age_mean_f) / chunk_size,
+          1),
+        rep,
+        times = chunk_size
+      )
+    )
+
+    chunks <- append(
+      chunks,
+      rep(
+        max(chunks),
+        max(serodata$age_mean_f) - length(chunks)
+      )
+    )
+
+  return(chunks)
+}
+
 #' Generate data frame containing the age of each cohort
 #' corresponding to each birth year excluding the year of the survey.
 #'
