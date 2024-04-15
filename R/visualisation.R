@@ -17,7 +17,7 @@ plot_seroprev <- function(serodata,
                           size_text = 6,
                           bin_data = TRUE,
                           bin_step = 5) {
-  validate_prepared_serodata(serodata = serodata)
+  serodata <- validate_prepared_serodata(serodata = serodata)
   if (bin_data) {
     if (any(serodata$age_max - serodata$age_min > 2)) {
       warn_msg <- paste0(
@@ -362,7 +362,7 @@ plot_seromodel <- function(seromodel_object,
                            bin_step = 5,
                            foi_sim = NULL) {
   checkmate::assert_class(seromodel_object, "stanfit", null.ok = TRUE)
-  validate_serodata(serodata)
+  serodata <- validate_serodata(serodata)
 
   cohort_ages <- get_cohort_ages(serodata = serodata)
 
@@ -388,6 +388,7 @@ plot_seromodel <- function(seromodel_object,
     cohort_ages = cohort_ages,
     size_text = size_text
   )
+
   model_summary <- extract_seromodel_summary(
     seromodel_object = seromodel_object,
     serodata = serodata

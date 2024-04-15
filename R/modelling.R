@@ -43,7 +43,10 @@ stop_if_wrong_type <- function(serodata, col_types) {
   }
 }
 
-warn_missing <- function(serodata, optional_cols) {
+warn_missing <- function(
+    serodata,
+    optional_cols
+    ) {
   if (
     !all(
       optional_cols
@@ -52,7 +55,7 @@ warn_missing <- function(serodata, optional_cols) {
   ) {
     missing <- optional_cols[which(!(optional_cols %in% colnames(serodata)))]
     warning(
-      "The following optional columns in `serodata` are missing.",
+      "The following optional columns in `serodata` are missing. ",
       "Consider including them to get more information from this analysis:\n",
       toString(missing)
     )
@@ -60,6 +63,8 @@ warn_missing <- function(serodata, optional_cols) {
       serodata[[col]] <- "None" # TODO Shouln't we use `NA` instead?
     }
   }
+
+  return(serodata)
 }
 
 
@@ -85,12 +90,16 @@ validate_serodata <- function(serodata) {
     antibody = c("character", "factor")
   )
 
-  warn_missing(serodata,
+  # Add missing columns
+  serodata <- warn_missing(
+    serodata,
     optional_cols = names(optional_col_types)
   )
 
   # If any optional column is present, validates that is has the correct type
   stop_if_wrong_type(serodata, optional_col_types)
+
+  return(serodata)
 }
 
 validate_prepared_serodata <- function(serodata) {
@@ -104,10 +113,12 @@ validate_prepared_serodata <- function(serodata) {
     prev_obs_lower = "numeric",
     prev_obs_upper = "numeric"
   )
-  validate_serodata(serodata)
-  stop_if_missing(serodata, must_have_cols = names(col_types))
+  serodata <- validate_serodata(serodata)
 
+  stop_if_missing(serodata, must_have_cols = names(col_types))
   stop_if_wrong_type(serodata, col_types)
+
+  return(serodata)
 }
 
 #' Run specified stan model for the force-of-infection and
@@ -238,10 +249,7 @@ fit_seromodel <- function(
     chains = 4,
     seed = 12345,
     ...) {
-  # TODO Add a warning because there are exceptions where a minimal amount of
-  # iterations is needed
-  # Validate arguments
-  validate_prepared_serodata(serodata)
+  serodata <- validate_prepared_serodata(serodata)
   stopifnot(
     "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`" =
       foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
@@ -442,6 +450,7 @@ get_foi_central_estimates <- function(seromodel_object,
 #' @export
 extract_seromodel_summary <- function(seromodel_object,
                                       serodata) {
+  serodata <- validate_prepared_serodata(serodata)
   #------- Loo estimates
   # The argument parameter_name refers to the name given to the Log-likelihood
   # in the stan models. See loo::extract_log_lik() documentation for further
@@ -456,7 +465,7 @@ extract_seromodel_summary <- function(seromodel_object,
   } else {
     lll <- c(-1e10, 0)
   }
-  #-------
+
   model_summary <- data.frame(
     foi_model = seromodel_object@model_name,
     dataset = unique(serodata$survey),

@@ -45,8 +45,7 @@
 prepare_serodata <- function(serodata = serodata,
                              alpha = 0.05) {
   checkmate::assert_numeric(alpha, lower = 0, upper = 1)
-  validate_serodata(serodata)
-
+  serodata <- validate_serodata(serodata)
 
   if (!any(colnames(serodata) == "age_mean_f")) {
     serodata <- serodata %>%
