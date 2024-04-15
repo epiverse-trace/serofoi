@@ -3,15 +3,15 @@
 \name{probability_exact_time_varying}
 \alias{probability_exact_time_varying}
 \title{Computes the probability of being seropositive for age-varying
-FoI including seroreversion}
+force-of-infection including seroreversion}
 \usage{
 probability_exact_time_varying(ages, foi, mu = 0)
 }
 \arguments{
 \item{ages}{Integer indicating the ages of the exposed cohorts}
 
-\item{foi}{Numeric atomic vector corresponding to the age-varying FoI to
-simulate from}
+\item{foi}{Numeric atomic vector corresponding to the age-varying
+force-of-infection to simulate from}
 
 \item{mu}{Seroreversion rate}
 }
@@ -21,5 +21,5 @@ including seroreversion
 }
 \description{
 Computes the probability of being seropositive for age-varying
-FoI including seroreversion
+force-of-infection including seroreversion
 }
