@@ -145,6 +145,10 @@ validate_prepared_serodata <- function(serodata) {
 run_seromodel <- function(
     serodata,
     foi_model = c("constant", "tv_normal_log", "tv_normal"),
+    foi_location,
+    foi_scale,
+    chunk_size = 1,
+    chunks = NULL,
     iter = 1000,
     thin = 2,
     adapt_delta = 0.90,
@@ -161,6 +165,10 @@ run_seromodel <- function(
   seromodel_object <- fit_seromodel(
     serodata = serodata,
     foi_model = foi_model,
+    foi_location = foi_location,
+    foi_scale = foi_scale,
+    chunk_size = chunk_size,
+    chunks = chunks,
     iter = iter,
     thin = thin,
     adapt_delta = adapt_delta,
@@ -211,6 +219,21 @@ run_seromodel <- function(
 #' \item{`"tv_normal"`}{Runs a normal model}
 #' \item{`"tv_normal_log"`}{Runs a normal logarithmic model}
 #' }
+#' @param foi_location Location parameter of the force-of-infection distribution
+#' of the selected model. Depending on `foi_model`, the meaning may vary.
+#' @param foi_scale Scale parameter of the force-of-infection distribution
+#' of the selected model. Depending on `foi_model`, the meaning may vary.
+#' @param chunks Numeric list specifying the chunk structure of the time
+#' interval from the birth year of the oldest age cohort
+#' `min(serodata$age_mean_f)` to the time when the serosurvey was conducted
+#' `t_sur`. If `NULL`, the time interval is divided in chunks of size
+#' `chunk_size`.
+#' @param chunk_size Size of the chunks to be used in case that the chunk
+#' structure `chunks` is not specified in [fit_seromodel].
+#' Default is 1, meaning that one force of infection value is to be estimated
+#' for every year in the time interval spanned by the serosurvey.
+#' If the length of the time interval is not exactly divisible by `chunk_size`,
+#' the remainder years are included in the last chunk.
 #' @param iter Number of interactions for each chain including the warmup.
 #'   `iter` in [sampling][rstan::sampling].
 #' @param thin Positive integer specifying the period for saving samples.
@@ -242,6 +265,10 @@ run_seromodel <- function(
 fit_seromodel <- function(
     serodata,
     foi_model = c("constant", "tv_normal_log", "tv_normal"),
+    foi_location = 0,
+    foi_scale = 1,
+    chunks = NULL,
+    chunk_size = 1,
     iter = 1000,
     thin = 2,
     adapt_delta = 0.90,
@@ -254,33 +281,42 @@ fit_seromodel <- function(
     "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`" =
       foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
     "iter must be numeric" = is.numeric(iter),
-    "thin must be numeric" = is.numeric(thin),
-    "adapt_delta must be numeric" = is.numeric(adapt_delta),
-    "max_treedepth must be numeric" = is.numeric(max_treedepth),
-    "chains must be numeric" = is.numeric(chains),
     "seed must be numeric" = is.numeric(seed)
   )
   model <- stanmodels[[foi_model]]
-  cohort_ages <- get_cohort_ages(serodata = serodata)
   exposure_matrix <- get_exposure_matrix(serodata)
   n_obs <- nrow(serodata)
+
+  if (is.null(chunks)) {
+    chunks <- get_chunk_structure(
+      serodata = serodata,
+      chunk_size = chunk_size
+    )
+  }
+  checkmate::assert_class(chunks, "numeric")
+  stopifnot(
+    "`chunks` length must be equal to `max(serodata$age_mean_f)`" =
+      length(chunks) == max(serodata$age_mean_f)
+  )
 
   stan_data <- list(
     n_obs = n_obs,
     n_pos = serodata$counts,
     n_total = serodata$total,
-    age_max = max(cohort_ages$age),
-    observation_exposure_matrix = exposure_matrix
+    age_max = max(serodata$age_mean_f),
+    observation_exposure_matrix = exposure_matrix,
+    chunks = chunks,
+    foi_location = foi_location,
+    foi_scale = foi_scale
   )
 
-  warmup <- floor(iter / 2)
   if (foi_model == "tv_normal_log") {
     f_init <- function() {
-      list(log_foi = rep(-3, nrow(cohort_ages)))
+      list(log_fois = rep(-3, max(chunks)))
     }
   } else {
     f_init <- function() {
-      list(foi = rep(0.01, nrow(cohort_ages)))
+      list(fois = rep(0.01, max(chunks)))
     }
   }
 
@@ -299,9 +335,11 @@ fit_seromodel <- function(
     seed = seed,
     # https://github.com/stan-dev/rstan/issues/761#issuecomment-647029649
     chain_id = 0,
+    include = FALSE,
+    pars = "fois_vector",
     verbose = FALSE,
     refresh = 0,
-    ...
+   ...
   )
 
   if (seromodel_fit@mode == 0) {
