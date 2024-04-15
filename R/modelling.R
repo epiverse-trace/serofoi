@@ -150,10 +150,8 @@ run_seromodel <- function(
     chunk_size = 1,
     chunks = NULL,
     iter = 1000,
-    thin = 2,
     adapt_delta = 0.90,
     max_treedepth = 10,
-    chains = 4,
     seed = 12345,
     print_summary = TRUE,
     ...) {
@@ -170,10 +168,8 @@ run_seromodel <- function(
     chunk_size = chunk_size,
     chunks = chunks,
     iter = iter,
-    thin = thin,
     adapt_delta = adapt_delta,
     max_treedepth = max_treedepth,
-    chains = chains,
     seed = seed,
     ...
   )
@@ -236,8 +232,6 @@ run_seromodel <- function(
 #' the remainder years are included in the last chunk.
 #' @param iter Number of interactions for each chain including the warmup.
 #'   `iter` in [sampling][rstan::sampling].
-#' @param thin Positive integer specifying the period for saving samples.
-#'   `thin` in [sampling][rstan::sampling].
 #' @param adapt_delta Real number between 0 and 1 that represents the target
 #' average acceptance probability. Increasing the value of `adapt_delta` will
 #' result in a smaller step size and fewer divergences. For further details
@@ -246,8 +240,6 @@ run_seromodel <- function(
 #' @param max_treedepth Maximum tree depth for the binary tree used in the NUTS
 #' stan sampler. For further details refer to the `control` parameter in
 #' [sampling][rstan::sampling].
-#' @param chains Number of Markov chains for sampling. For further details refer
-#' to the `chains` parameter in [sampling][rstan::sampling].
 #' @param seed For further details refer to the `seed` parameter in
 #'   [sampling][rstan::sampling].
 #' @param ... Additional parameters for [sampling][rstan::sampling].
@@ -270,10 +262,8 @@ fit_seromodel <- function(
     chunks = NULL,
     chunk_size = 1,
     iter = 1000,
-    thin = 2,
-    adapt_delta = 0.90,
-    max_treedepth = 10,
-    chains = 4,
+    adapt_delta,
+    max_treedepth,
     seed = 12345,
     ...) {
   serodata <- validate_prepared_serodata(serodata)
@@ -325,13 +315,10 @@ fit_seromodel <- function(
     data = stan_data,
     iter = iter,
     init = f_init,
-    warmup = warmup,
     control = list(
       adapt_delta = adapt_delta,
       max_treedepth = max_treedepth
     ),
-    thin = thin,
-    chains = chains,
     seed = seed,
     # https://github.com/stan-dev/rstan/issues/761#issuecomment-647029649
     chain_id = 0,
