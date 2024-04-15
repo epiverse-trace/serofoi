@@ -13,8 +13,8 @@ fit_seromodel(
   chunks = NULL,
   chunk_size = 1,
   iter = 1000,
-  adapt_delta,
-  max_treedepth,
+  adapt_delta = 0.9,
+  max_treedepth = 10,
   seed = 12345,
   ...
 )

@@ -262,8 +262,8 @@ fit_seromodel <- function(
     chunks = NULL,
     chunk_size = 1,
     iter = 1000,
-    adapt_delta,
-    max_treedepth,
+    adapt_delta = 0.90,
+    max_treedepth = 10,
     seed = 12345,
     ...) {
   serodata <- validate_prepared_serodata(serodata)
