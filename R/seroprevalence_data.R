@@ -147,11 +147,11 @@ prepare_bin_data <- function(serodata,
 }
 
 #' Computes the probability of being seropositive for age-varying
-#' FoI including seroreversion
+#' force-of-infection including seroreversion
 #'
 #' @param ages Integer indicating the ages of the exposed cohorts
-#' @param foi Numeric atomic vector corresponding to the age-varying FoI to
-#' simulate from
+#' @param foi Numeric atomic vector corresponding to the age-varying
+#' force-of-infection to simulate from
 #' @param mu Seroreversion rate
 #' @return probability of being seropositive for age-varying FoI
 #' including seroreversion
