@@ -603,8 +603,6 @@ get_prev_expanded <- function(foi,
     bin_data <- FALSE
   }
 
-
-  dim_foi <- dim(foi)[2]
   foi_expanded <- foi
 
   ly <- NCOL(foi_expanded)
