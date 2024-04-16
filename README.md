@@ -29,7 +29,8 @@ methods are outlined in ([Cucunubá et al. 2017](#ref-cucunubá2017)) and
 Models](https://epiverse-trace.github.io/serofoi/articles/foi_models.html)
 for further details)
 
-***serofoi*** is part of the [Epiverse
+***serofoi*** is developed at [Pontificia Universidad
+Javeriana](https://www.javeriana.edu.co/inicio) as part of the [Epiverse
 Initiative](https://data.org/initiatives/epiverse/).
 
 ## Installation
