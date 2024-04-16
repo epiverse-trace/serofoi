@@ -145,8 +145,8 @@ validate_prepared_serodata <- function(serodata) {
 run_seromodel <- function(
     serodata,
     foi_model = c("constant", "tv_normal_log", "tv_normal"),
-    foi_location,
-    foi_scale,
+    foi_location = 0,
+    foi_scale = 1,
     chunk_size = 1,
     chunks = NULL,
     iter = 1000,
