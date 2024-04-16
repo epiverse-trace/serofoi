@@ -1,3 +1,4 @@
 url: https://epiverse-trace.github.io/serofoi/
 template:
+  bootstrap: 5
   package: epiversetheme
