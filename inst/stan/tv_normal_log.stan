@@ -43,7 +43,7 @@ transformed parameters {
 }
 
 model {
-  n_pos ~ binomial(n_total, prob_infected) ;
+  n_pos ~ binomial(n_total, prob_infected);
   sigma ~ cauchy(0, 1);
 
   log_fois[1] ~ normal(foi_location, foi_scale);
