@@ -27,7 +27,7 @@ transformed parameters {
 
 model {
   for (i in 1:n_obs)
-   n_pos[i] ~ binomial(n_total[i], prob_infected[i]) ;
+   n_pos[i] ~ binomial(n_total[i], prob_infected[i]);
   
    lambda0 ~ uniform (0, 2);
 }
