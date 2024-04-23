@@ -4,9 +4,9 @@ functions {
 
 data {
   int<lower=0> n_obs;
+  int<lower=1> age_max;
   int n_pos[n_obs];
   int n_total[n_obs];
-  int <lower=1>age_max;
   matrix[n_obs, age_max] observation_exposure_matrix;
 
   // prior choices
