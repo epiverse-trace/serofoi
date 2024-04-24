@@ -1,5 +1,5 @@
 functions {
-  #include functions/prob_infected.stan
+  #include functions/prob_infected_tv.stan
 }
 
 data {
@@ -32,10 +32,10 @@ transformed parameters {
 
   prob_infected = prob_infected_calculate(
     fois_vector,
+    chunks,
     observation_exposure_matrix,
     n_obs,
-    age_max,
-    chunks
+    age_max
   );
 }
 
