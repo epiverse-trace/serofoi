@@ -144,10 +144,12 @@ validate_prepared_serodata <- function(serodata) {
 #' @export
 run_seromodel <- function(
     serodata,
-    foi_model = c("constant", "tv_normal_log", "tv_normal"),
+    foi_model = "constant",
     foi_location = 0,
-    foi_scale = 1,
-    chunk_size = 1,
+    foi_parameters = list(
+      foi_a = 0,
+      foi_b = 2
+    ),
     chunks = NULL,
     iter = 1000,
     adapt_delta = 0.90,
@@ -163,8 +165,7 @@ run_seromodel <- function(
   seromodel_object <- fit_seromodel(
     serodata = serodata,
     foi_model = foi_model,
-    foi_location = foi_location,
-    foi_scale = foi_scale,
+    foi_parameters = foi_parameters,
     chunk_size = chunk_size,
     chunks = chunks,
     iter = iter,
@@ -215,10 +216,13 @@ run_seromodel <- function(
 #' \item{`"tv_normal"`}{Runs a normal model}
 #' \item{`"tv_normal_log"`}{Runs a normal logarithmic model}
 #' }
-#' @param foi_location Location parameter of the force-of-infection distribution
-#' of the selected model. Depending on `foi_model`, the meaning may vary.
-#' @param foi_scale Scale parameter of the force-of-infection distribution
-#' of the selected model. Depending on `foi_model`, the meaning may vary.
+#' @param foi_parameters List specifying the initial prior parameters of the
+#' model `foi_model` to be specified as (e.g.):
+#' \describe{
+#' \item{`"constant"`}{`list(foi_a = 0, foi_b = 2)`}
+#' \item{`"tv_normal"`}{`list(foi_location = 0, foi_scale = 1)`}
+#' \item{`"tv_normal_log"`}{`list(foi_location = -6, foi_scale = 4)`}
+#' }
 #' @param chunks Numeric list specifying the chunk structure of the time
 #' interval from the birth year of the oldest age cohort
 #' `min(serodata$age_mean_f)` to the time when the serosurvey was conducted
@@ -256,9 +260,11 @@ run_seromodel <- function(
 #' @export
 fit_seromodel <- function(
     serodata,
-    foi_model = c("constant", "tv_normal_log", "tv_normal"),
-    foi_location = 0,
-    foi_scale = 1,
+    foi_model = "constant",
+    foi_parameters = list(
+      foi_a = 0,
+      foi_b = 2
+    ),
     chunks = NULL,
     chunk_size = 1,
     iter = 1000,
@@ -267,15 +273,22 @@ fit_seromodel <- function(
     seed = 12345,
     ...) {
   serodata <- validate_prepared_serodata(serodata)
+  err_msg <- paste0(
+    "constant, ",
+    "tv_normal, tv_normal_log, or ",
+    "av_normal, av_normal_log"
+  )
   stopifnot(
-    "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`" =
-      foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
+    err_msg =
+      foi_model %in% c(
+        "constant",
+        "tv_normal_log", "tv_normal",
+        "av_normal_log", "av_normal"
+        ),
     "iter must be numeric" = is.numeric(iter),
     "seed must be numeric" = is.numeric(seed)
   )
   model <- stanmodels[[foi_model]]
-  exposure_matrix <- get_exposure_matrix(serodata)
-  n_obs <- nrow(serodata)
 
   if (is.null(chunks)) {
     chunks <- get_chunk_structure(
@@ -290,15 +303,47 @@ fit_seromodel <- function(
   )
 
   stan_data <- list(
-    n_obs = n_obs,
+    n_obs = nrow(serodata),
     n_pos = serodata$counts,
     n_total = serodata$total,
     age_max = max(serodata$age_mean_f),
-    observation_exposure_matrix = exposure_matrix,
-    chunks = chunks,
-    foi_location = foi_location,
-    foi_scale = foi_scale
+    chunks = chunks
   )
+
+  if (foi_model %in% c("constant", "tv_normal", "tv_normal_log")) {
+    exposure_matrix <- get_exposure_matrix(serodata)
+    stan_data <- append(
+      stan_data,
+      list(
+        observation_exposure_matrix = exposure_matrix
+        )
+      )
+  }
+  else if (foi_model %in% c("av_normal", "av_normal_log")) {
+    stan_data <- append(
+      stan_data,
+      list(ages = serodata$age_mean_f)
+      )
+  }
+
+  if (foi_model == "constant") {
+    stan_data <- append(
+      stan_data,
+      list(
+        foi_a = foi_parameters$foi_a,
+        foi_b = foi_parameters$foi_b
+      )
+    )
+  }
+  else {
+    stan_data <- append(
+      stan_data,
+      list(
+        foi_location = foi_parameters$foi_location,
+        foi_scale = foi_parameters$foi_scale
+      )
+    )
+  }
 
   if (foi_model == "tv_normal_log") {
     f_init <- function() {
@@ -442,6 +487,9 @@ get_exposure_matrix <- function(serodata) {
 #'   model by means of [run_seromodel].
 #' @param cohort_ages  A data frame containing the age of each cohort
 #'   corresponding to each birth year.
+#' @param lower_quantile TBD.
+#' @param upper_quantile TBD.
+#' @param medianv_quantile TBD.
 #' @return `foi_central_estimates`. Central estimates for the fitted forced FoI
 #' @examples
 #' data(chagas2012)
@@ -456,27 +504,42 @@ get_exposure_matrix <- function(serodata) {
 #'   cohort_ages = cohort_ages
 #' )
 #' @export
-get_foi_central_estimates <- function(seromodel_object,
-                                      cohort_ages) {
-  if (seromodel_object@model_name == "tv_normal_log") {
-    lower_quantile <- 0.1
-    upper_quantile <- 0.9
-    medianv_quantile <- 0.5
-  } else {
-    lower_quantile <- 0.05
-    upper_quantile <- 0.95
-    medianv_quantile <- 0.5
-  }
+get_foi_central_estimates <- function(
+    seromodel_object,
+    cohort_ages,
+    lower_quantile = 0.05,
+    upper_quantile = 0.95,
+    medianv_quantile = 0.5
+    ) {
   # extracts force-of-infection from stan fit
   foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
 
+  # defines time scale depending on the type of the model
+  if(
+    seromodel_object@model_name %in%
+    c("constant", "tv_normal", "tv_normal_log")
+  ) {
+    foi_central_estimates <- data.frame(
+      year = cohort_ages$birth_year
+    )
+  }
+  else if (
+    seromodel_object@model_name %in%
+    c("av_normal", "av_normal_log")
+  ) {
+    foi_central_estimates <- data.frame(
+      age = rev(cohort_ages$age)
+    )
+  }
+
   # generates central estimations
-  foi_central_estimates <- data.frame(
-    year = cohort_ages$birth_year,
-    lower = apply(foi, 2, quantile, lower_quantile),
-    upper = apply(foi, 2, quantile, upper_quantile),
-    medianv = apply(foi, 2, quantile, medianv_quantile)
-  )
+  foi_central_estimates <- foi_central_estimates %>%
+    mutate(
+      lower = apply(foi, 2, quantile, lower_quantile),
+      upper = apply(foi, 2, quantile, upper_quantile),
+      medianv = apply(foi, 2, quantile, medianv_quantile)
+    )
+
   return(foi_central_estimates)
 }
 

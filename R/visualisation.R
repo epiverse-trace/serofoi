@@ -191,14 +191,47 @@ plot_foi <- function(seromodel_object,
                      size_text = 25,
                      foi_sim = NULL) {
   checkmate::assert_class(seromodel_object, "stanfit", null.ok = TRUE)
+
   #-------- This bit is to get the actual length of the foi data
   foi_data <- get_foi_central_estimates(
     seromodel_object = seromodel_object,
     cohort_ages = cohort_ages
   )
 
-  foi_plot <-
-    ggplot2::ggplot(foi_data, ggplot2::aes(x = .data$year)) +
+  if(
+    seromodel_object@model_name %in%
+    c("constant", "tv_normal", "tv_normal_log")
+    ) {
+    xlab <- "year"
+    foi_plot <-
+      ggplot2::ggplot(foi_data, ggplot2::aes(x = .data$year))
+
+    if (!is.null(foi_sim)) {
+      foi_sim_data <- data.frame(
+        year = foi_data$year,
+        foi_sim = foi_sim[-(1:remove_x_values)]
+      )
+    }
+  }
+  else if (
+    seromodel_object@model_name %in%
+    c("av_normal", "av_normal_log")
+  ) {
+    xlab <- "age"
+    foi_plot <-
+      ggplot2::ggplot(foi_data, ggplot2::aes(x = .data$age))
+
+    if (!is.null(foi_sim)) {
+      foi_sim_data <- data.frame(
+        age = foi_data$age,
+        foi_sim = foi_sim[-(1:remove_x_values)]
+      )
+    }
+  }
+
+
+  foi_plot <- foi_plot +
+    # ggplot2::ggplot(foi_data, ggplot2::aes(x = .data$year)) +
     ggplot2::geom_ribbon(
       ggplot2::aes(
         ymin = .data$lower,
@@ -215,7 +248,7 @@ plot_foi <- function(seromodel_object,
     ggplot2::theme_bw(size_text) +
     ggplot2::coord_cartesian(ylim = c(0, max_lambda)) +
     ggplot2::ylab("Force-of-Infection") +
-    ggplot2::xlab("year")
+    ggplot2::xlab(xlab)
 
   if (!is.null(foi_sim)) {
     if (nrow(foi_data) != length(foi_sim)) {
@@ -225,28 +258,14 @@ plot_foi <- function(seromodel_object,
       )
       warning(warn_msg)
       remove_x_values <- length(foi_sim) - nrow(foi_data)
-      foi_sim_data <- data.frame(
-        year = foi_data$year,
-        foi_sim = foi_sim[-(1:remove_x_values)]
-      )
-      foi_plot <- foi_plot +
-        ggplot2::geom_line(
-          data = foi_sim_data, ggplot2::aes(y = foi_sim),
-          colour = "#b30909",
-          size = size_text / 8
-        )
-    } else {
-      foi_sim_data <- data.frame(
-        year = foi_data$year,
-        foi_sim = foi_sim
-      )
-      foi_plot <- foi_plot +
-        ggplot2::geom_line(
-          data = foi_sim_data, ggplot2::aes(y = foi_sim),
-          colour = "#b30909",
-          size = size_text / 8
-        )
     }
+
+    foi_plot <- foi_plot +
+      ggplot2::geom_line(
+        data = foi_sim_data, ggplot2::aes(y = foi_sim),
+        colour = "#b30909",
+        size = size_text / 8
+      )
   }
 
   return(foi_plot)
@@ -281,48 +300,41 @@ plot_foi <- function(seromodel_object,
 plot_rhats <- function(seromodel_object,
                        cohort_ages,
                        size_text = 25) {
-  if (is.character(seromodel_object)) {
-    message("model did not run")
-    print_warning <- "errors"
 
-    rhats_plot <- ggplot2::ggplot(data.frame()) +
-      ggplot2::geom_point() +
-      ggplot2::xlim(0, 10) +
-      ggplot2::ylim(0, 10) +
-      ggplot2::annotate("text",
-                        x = 4,
-                        y = 5,
-                        label = print_warning
-      ) +
-      ggplot2::theme_bw(25) +
-      ggplot2::theme(
-        axis.text.x = ggplot2::element_blank(),
-        axis.text.y = ggplot2::element_blank()
-      ) +
-      ggplot2::ylab(" ") +
-      ggplot2::xlab(" ")
-    ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
-  } else {
-    if (!is.null(seromodel_object@sim$samples)) {
-      rhats <- get_table_rhats(
-        seromodel_object = seromodel_object,
-        cohort_ages = cohort_ages
-      )
+  checkmate::assert_class(seromodel_object, "stanfit", null.ok = TRUE)
 
-      rhats_plot <-
-        ggplot2::ggplot(rhats, ggplot2::aes(.data$year, .data$rhat)) +
-        ggplot2::geom_line(colour = "purple") +
-        ggplot2::geom_point() +
-        ggplot2::coord_cartesian(ylim = c(0.7, 2)) +
-        ggplot2::geom_hline(
-          yintercept = 1.1,
-          colour = "blue",
-          size = size_text / 12
-        ) +
-        ggplot2::theme_bw(size_text) +
-        ggplot2::ylab("Convergence (R^)")
-    }
+  rhats <- get_table_rhats(
+    seromodel_object = seromodel_object,
+    cohort_ages = cohort_ages
+  )
+
+  if(
+    seromodel_object@model_name %in%
+    c("constant", "tv_normal", "tv_normal_log")
+  ) {
+    rhats_plot <-
+      ggplot2::ggplot(rhats, ggplot2::aes(.data$year, .data$rhat))
   }
+  else if (
+    seromodel_object@model_name %in%
+    c("av_normal", "av_normal_log")
+  ) {
+    rhats_plot <-
+      ggplot2::ggplot(rhats, ggplot2::aes(.data$age, .data$rhat))
+  }
+
+  rhats_plot <- rhats_plot +
+    ggplot2::geom_line(colour = "purple") +
+    ggplot2::geom_point() +
+    ggplot2::coord_cartesian(ylim = c(0.7, 2)) +
+    ggplot2::geom_hline(
+      yintercept = 1.1,
+      colour = "blue",
+      size = size_text / 12
+    ) +
+    ggplot2::theme_bw(size_text) +
+    ggplot2::ylab("Convergence (R^)")
+
 
   return(rhats_plot)
 }
