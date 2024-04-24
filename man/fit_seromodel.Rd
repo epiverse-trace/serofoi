@@ -7,9 +7,8 @@ data}
 \usage{
 fit_seromodel(
   serodata,
-  foi_model = c("constant", "tv_normal_log", "tv_normal"),
-  foi_location = 0,
-  foi_scale = 1,
+  foi_model = "constant",
+  foi_parameters = list(foi_a = 0, foi_b = 2),
   chunks = NULL,
   chunk_size = 1,
   iter = 1000,
@@ -42,11 +41,13 @@ options:
 \item{\code{"tv_normal_log"}}{Runs a normal logarithmic model}
 }}
 
-\item{foi_location}{Location parameter of the force-of-infection distribution
-of the selected model. Depending on \code{foi_model}, the meaning may vary.}
-
-\item{foi_scale}{Scale parameter of the force-of-infection distribution
-of the selected model. Depending on \code{foi_model}, the meaning may vary.}
+\item{foi_parameters}{List specifying the initial prior parameters of the
+model \code{foi_model} to be specified as (e.g.):
+\describe{
+\item{\code{"constant"}}{\code{list(foi_a = 0, foi_b = 2)}}
+\item{\code{"tv_normal"}}{\code{list(foi_location = 0, foi_scale = 1)}}
+\item{\code{"tv_normal_log"}}{\code{list(foi_location = -6, foi_scale = 4)}}
+}}
 
 \item{chunks}{Numeric list specifying the chunk structure of the time
 interval from the birth year of the oldest age cohort
