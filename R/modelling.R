@@ -145,7 +145,6 @@ validate_prepared_serodata <- function(serodata) {
 run_seromodel <- function(
     serodata,
     foi_model = "constant",
-    foi_location = 0,
     foi_parameters = list(
       foi_a = 0,
       foi_b = 2
