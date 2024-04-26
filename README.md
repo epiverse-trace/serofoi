@@ -29,8 +29,7 @@ methods are outlined in ([Cucunubá et al. 2017](#ref-cucunubá2017)) and
 Models](https://epiverse-trace.github.io/serofoi/articles/foi_models.html)
 for further details)
 
-***serofoi*** is developed at [Pontificia Universidad
-Javeriana](https://www.javeriana.edu.co/inicio) as part of the [Epiverse
+***serofoi*** is part of the [Epiverse
 Initiative](https://data.org/initiatives/epiverse/).
 
 ## Installation
@@ -82,18 +81,26 @@ Contributors to the project include:
 
 - [Nicolás Torres](https://github.com/ntorresd) (author)
 
-- [Benjamin Lambert](https://ben-lambert.com/about/) (author)
+- [Ben Lambert](https://ben-lambert.com/about/) (author)
 
 - [Pierre Nouvellet](https://github.com/pnouvellet) (author)
 
 - [Geraldine Gómez](https://github.com/megamezl) (contributor)
+
+- [Jaime A. Pavlich-Mariscal](https://github.com/jpavlich) (contributor)
+
+- [Miguel Gamez](https://github.com/megamezl) (contributor)
 
 - [Hugo Gruson](https://github.com/Bisaloo) (contributor)
 
 - [David Santiago Quevedo](https://github.com/davidsantiagoquevedo)
   (contributor)
 
-- [Jaime A. Pavlich-Mariscal](https://github.com/jpavlich) (contributor)
+- [Everlyn Kamau](https://github.com/ekamau) (contributor)
+
+- [Richard Creswell](https://github.com/rccreswell) (contributor)
+
+- [Sumali Bajaj](https://github.com/sumalibajaj) (contributor)
 
 ## Package vignettes
 
