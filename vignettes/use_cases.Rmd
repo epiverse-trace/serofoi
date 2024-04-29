@@ -51,44 +51,53 @@ data("chik2015")
 chik2015p <- prepare_serodata(chik2015)
 
 # Implementation of the models
-m1_chik <- run_seromodel(
+m1_chik <- fit_seromodel(
   serodata = chik2015p,
   foi_model = "constant",
   iter = 1000,
   thin = 2
 )
 
-m2_chik <- run_seromodel(
+m2_chik <- fit_seromodel(
   serodata = chik2015p,
   foi_model = "tv_normal",
-  iter = 1500,
+  chunk_size = 5,
+  iter = 2000,
   thin = 2
 )
 
-m3_chik <- run_seromodel(
+m3_chik <- fit_seromodel(
   serodata = chik2015p,
   foi_model = "tv_normal_log",
-  iter = 1500,
+  chunk_size = 5,
+  iter = 2000,
   thin = 2
 )
 
 # Visualisation of the results
 p1_chik <- plot_seromodel(m1_chik,
   serodata = chik2015p,
+  max_lambda = 0.07,
   size_text = 6
 )
 p2_chik <- plot_seromodel(m2_chik,
   serodata = chik2015p,
+  max_lambda = 0.07,
   size_text = 6
 )
 p3_chik <- plot_seromodel(m3_chik,
   serodata = chik2015p,
+  max_lambda = 0.07,
   size_text = 6
 )
 
 cowplot::plot_grid(p1_chik, p2_chik, p3_chik, ncol = 3)
 ```
-Figure 1. Serofoi models for FoI estimates of Chikungunya virus transmission in an urban remote area of Brazil.
+Figure 1. ***serofoi*** models for FoI estimates of Chikungunya virus transmission in an urban remote area of Brazil.
+
+```{r clean env chik, include = FALSE, echo = TRUE, message=FALSE}
+rm(list = ls(pattern = "chik"))
+```
 
 ## Case study 2. Hidden Alphaviruses epidemics in Panama
 
@@ -112,44 +121,56 @@ data("veev2012")
 veev2012p <- prepare_serodata(veev2012)
 
 # Implementation of the models
-m1_veev <- run_seromodel(
+m1_veev <- fit_seromodel(
   serodata = veev2012p,
   foi_model = "constant",
   iter = 500,
   thin = 2
 )
 
-m2_veev <- run_seromodel(
+m2_veev <- fit_seromodel(
   serodata = veev2012p,
   foi_model = "tv_normal",
-  iter = 500,
+  chunk_size = 5,
+  iter = 2000,
   thin = 2
 )
 
-m3_veev <- run_seromodel(
+m3_veev <- fit_seromodel(
   serodata = veev2012p,
   foi_model = "tv_normal_log",
-  iter = 500,
+  chunk_size = 5,
+  iter = 2000,
   thin = 2
 )
 
 # Visualisation of the results
-p1_veev <- plot_seromodel(m1_veev,
+p1_veev <- plot_seromodel(
+  m1_veev,
   serodata = veev2012p,
+  max_lambda = 0.35,
   size_text = 6
 )
-p2_veev <- plot_seromodel(m2_veev,
+p2_veev <- plot_seromodel(
+  m2_veev,
   serodata = veev2012p,
+  max_lambda = 0.35,
   size_text = 6
 )
-p3_veev <- plot_seromodel(m3_veev,
+p3_veev <- plot_seromodel(
+  m3_veev,
   serodata = veev2012p,
+  max_lambda = 0.35,
   size_text = 6
 )
 
 cowplot::plot_grid(p1_veev, p2_veev, p3_veev, ncol = 3)
 ```
 Figure 2. ***serofoi*** models for *FoI* estimates of *Venezuelan Equine Encephalitis Virus (VEEV)* transmission in a rural remote area of Panama.
+
+```{r clean env veev, include = FALSE, echo = TRUE, message=FALSE}
+rm(list = ls(pattern = "veev"))
+```
 
 ## Case study 3. Chagas disease (endemic disease)
 
@@ -172,15 +193,16 @@ data("chagas2012")
 chagas2012p <- prepare_serodata(chagas2012)
 
 # Implementation of the models
-m1_cha <- run_seromodel(
+m1_cha <- fit_seromodel(
   serodata = chagas2012p,
   foi_model = "constant",
   iter = 800
 )
-m2_cha <- run_seromodel(
+m2_cha <- fit_seromodel(
   serodata = chagas2012p,
   foi_model = "tv_normal",
-  iter = 800
+  chunk_size = 5,
+  iter = 1000
 )
 
 # Visualisation of the results
@@ -197,4 +219,8 @@ p2_cha <- plot_seromodel(
 cowplot::plot_grid(p1_cha, p2_cha, ncol = 2)
 ```
 Figure 3. ***serofoi*** endemic models for *FoI* estimates of *Trypanosoma cruzi* in a rural area of Colombia.
+
+```{r clean env cha, include = FALSE, echo = TRUE, message=FALSE}
+rm(list = ls(pattern = "cha"))
+```
 ## References

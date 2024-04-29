@@ -50,33 +50,38 @@ The number of positive cases follows a binomial distribution, where $n$ is the n
 $$
 p(a,t) \sim binom(n(a,t), P(a,t))
 $$
-In ***serofoi***, for the constant model, the *FoI* ($\lambda$) is modelled within a Bayesian framework using a uniform prior distribution $\sim U(0,2)$. Future versions of the package may allow to choose different default distributions. This model can be implemented for the previously prepared dataset `data_test` by means of the `run_seromodel` function specifying  `run_seromodel="constant"`.
+In ***serofoi***, for the constant model, the *FoI* ($\lambda$) is modelled within a Bayesian framework using a uniform prior distribution $\sim U(0,2)$. Future versions of the package may allow to choose different default distributions. This model can be implemented for the previously prepared dataset `data_test` by means of the `fit_seromodel` function specifying  `fit_seromodel="constant"`.
 
-The object `simdata_constant` contains a minimal simulated dataset that emulates an hypothetical endemic situation where the *FoI* is constant with value 0.2 and includes data for 250 samples of individuals between 2 and 47 years old with a number of trials $n=5$. The following code shows how to implement the constant model to this simulated serosurvey:
+To test the `constant` model we simulate a serosurvey following a stepwise decreasing *FoI* (red line in Fig. 1) using the data simulation functions of ***serofoi***:
 
-```{r model_1, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="none"}
-data("simdata_constant")
-serodata_constant <- prepare_serodata(simdata_constant)
-model_1 <- run_seromodel(
+```{r constant simdata, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE}
+foi_sim_constant <- rep(0.02, 50)
+
+serodata_constant <- generate_sim_data(
+  sim_data = data.frame(
+    age=seq(1,50),
+    tsur=2050),
+  foi=foi_sim_constant,
+  sample_size_by_age = 5
+) |> 
+  group_sim_data(step = 5)
+
+```
+
+The simulated dataset `serodata_constant` contains information about 250 samples of individuals between 1 and 50 years old (5 samples per age) with age groups of 5 years length. The following code shows how to implement the constant model to this simulated serosurvey:
+
+```{r constant model, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
+seromodel_constant <- fit_seromodel(
   serodata = serodata_constant,
   foi_model = "constant",
   iter = 800
 )
 plot_seromodel(
-  model_1,
-  serodata = serodata_constant,
-  size_text = 6
-)
-```
-```{r model_1_plot, include = TRUE, echo = FALSE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
-foi_sim_constant <- rep(0.02, 50)
-model_1_plot <- plot_seromodel(
-  model_1,
+  seromodel_constant,
   serodata = serodata_constant,
   foi_sim = foi_sim_constant,
   size_text = 6
 )
-plot(model_1_plot)
 ```
 Figure 1. Constant serofoi model plot. Simulated (red) vs modelled (blue) *FoI*.
 
@@ -97,31 +102,39 @@ $$
 \lambda(t)\sim normal(\lambda(t-1), \sigma) \\
 \lambda(t=1) \sim normal(0, 1)
 $$
-The object `simdata_sw_dec` contains a minimal simulated dataset that emulates a situation where the *FoI* follows a stepwise decreasing tendency (*FoI* panel in Fig. 2). The simulated  dataset contains information about 250 samples of individuals between 2 and 47 years old with a number of trials $n=5$. The following code shows how to implement the slow time-varying normal model to this simulated serosurvey:
+To test the `tv_normal` model we simulate a serosurvey following a stepwise decreasing *FoI* (red line in Fig. 2) using the data simulation functions of ***serofoi***:
 
-```{r model_2, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="none"}
-data("simdata_sw_dec")
-serodata_sw_dec <- prepare_serodata(simdata_sw_dec)
-model_2 <- run_seromodel(
+```{r tv_normal simdata, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE}
+no_transm <- 0.0000000001
+foi_sim_sw_dec <- c(rep(0.2, 25), rep(0.1, 10), rep(no_transm, 15))
+
+serodata_sw_dec <- generate_sim_data(
+  sim_data = data.frame(
+    age=seq(1,50),
+    tsur=2050),
+  foi=foi_sim_sw_dec,
+  sample_size_by_age = 5
+) |> 
+  group_sim_data(step = 5)
+
+```
+
+The simulated  dataset `foi_sim_sw_dec` contains information about 250 samples of individuals between 1 and 50 years old (5 samples per age) with age groups of 5 years length. The following code shows how to implement the slow time-varying normal model to this simulated serosurvey:
+
+```{r tv_normal model, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
+
+seromodel_tv_normal <- fit_seromodel(
   serodata = serodata_sw_dec,
   foi_model = "tv_normal",
+  chunks = rep(c(1, 2, 3), c(23, 10, 15)),
   iter = 1500
 )
-plot_seromodel(model_2,
-  serodata = serodata_sw_dec,
-  size_text = 6
-)
-```
-```{r model_2_plot, include = TRUE, echo = FALSE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
-no_transm <- 0.0000000001
-foi_sim_sw_dec <- c(rep(0.2, 25), rep(0.1, 10), rep(no_transm, 17))
-
-model_2_plot <- plot_seromodel(model_2,
+plot_seromodel(
+  seromodel_tv_normal,
   serodata = serodata_sw_dec,
   foi_sim = foi_sim_sw_dec,
   size_text = 6
 )
-plot(model_2_plot)
 ```
 Figure 2. Slow time-varying serofoi model plot.  Simulated (red) vs modelled (blue) *FoI*. 
 
@@ -135,37 +148,46 @@ $$
 $$
 This is done in order to capture fast changes in the *FoI* trend.  Importantly, the standard deviation parameter of this normal distribution of the *FoI* $\lambda(t)$ is set using an upper prior that follows a Cauchy distribution. 
 
-In order to test this model we use the minimal simulated dataset contained in the `simdata_large_epi` object. This dataset emulates a hypothetical situation where a three-year epidemic occurs between 2032 and 2035. The simulated serosurvey tests 250 individuals from 0 to 50 years of age in the year 2050. The implementation of the fast epidemic model can be obtained running the following lines of code:
+To test the `tv_normal_log` model we siumulate a serosurvey conducted in 2050 emulating a hypothetical situation where a three-year epidemic occured between 2030 and 2035:
 
-```{r model_3, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="none"}
-data("simdata_large_epi")
-serodata_large_epi <- prepare_serodata(simdata_large_epi)
-model_3 <- run_seromodel(
-  serodata = serodata_large_epi,
-  foi_model = "tv_normal_log",
-  iter = 1500
-)
-model_3_plot <- plot_seromodel(model_3,
-  serodata = serodata_large_epi,
-  size_text = 6
-)
-plot(model_3_plot)
-```
-```{r model_3_plot, include = TRUE, echo = FALSE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
+```{r tv_normal_log simdata, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE}
 no_transm <- 0.0000000001
-big_outbreak <- 1.5
+big_outbreak <- 0.6
 foi_sim_large_epi <- c(
-  rep(no_transm, 32),
-  rep(big_outbreak, 3),
+  rep(no_transm, 30),
+  rep(big_outbreak, 5),
   rep(no_transm, 15)
 )
 
-model_3_plot <- plot_seromodel(model_3,
+serodata_large_epi <- generate_sim_data(
+  sim_data = data.frame(
+    age=seq(1,50),
+    tsur=2050),
+  foi=foi_sim_large_epi,
+  sample_size_by_age = 25
+) |> 
+  group_sim_data(step = 5)
+
+```
+
+The simulated serosurvey tests 250 individuals between 1 and 50 years old by the year 2050. The implementation of the fast epidemic model can be obtained running the following lines of code:
+
+```{r tv_normal_log model, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
+seromodel_tv_normal_log <- fit_seromodel(
+  serodata = serodata_large_epi,
+  foi_model = "tv_normal_log",
+  # chunk_size = 5,
+  chunks = rep(c(1, 2, 3), c(28, 5, 15)),
+  iter = 2000
+)
+
+plot_tv_normal_log <- plot_seromodel(
+  seromodel_tv_normal_log,
   serodata = serodata_large_epi,
   foi_sim = foi_sim_large_epi,
   size_text = 6
 )
-plot(model_3_plot)
+plot(plot_tv_normal_log)
 ```
 Figure 3. *Time-varying fast epidemic serofoi model* plot. Simulated (red) vs modelled (blue) *FoI*. 
 
@@ -191,54 +213,36 @@ Above we showed that the fast epidemic model (`tv_normal_log`) is able to identi
 Now, we would like to know whether this model actually fits this dataset better than the other available models in ***serofoi***. For this, we also implement both the endemic model (`constant`)   and the slow time-varying normal model (`tv_normal`):
 
 ```{r model_comparison, include = FALSE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE }
-model_1 <- run_seromodel(
+seromodel_constant <- fit_seromodel(
   serodata = serodata_large_epi,
   foi_model = "constant",
   iter = 800
 )
-model_1_plot <- plot_seromodel(model_1,
+plot_constant <- plot_seromodel(
+  seromodel_constant,
   serodata = serodata_large_epi,
+  foi_sim = foi_sim_large_epi,
   size_text = 6
 )
 
-model_2 <- run_seromodel(
+seromodel_tv_normal <- fit_seromodel(
   serodata = serodata_large_epi,
   foi_model = "tv_normal",
-  iter = 1500
+  chunks = rep(c(1, 2, 3), c(28, 5, 15)),
+  iter = 2000
 )
-model_2_plot <- plot_seromodel(model_2,
+plot_tv_normal <- plot_seromodel(
+  seromodel_tv_normal,
   serodata = serodata_large_epi,
+  foi_sim = foi_sim_large_epi,
   size_text = 6
 )
 ```
 Using the function `cowplot::plot_grid` we can visualise the results of the three models simultaneously:
 
 ```{r model_comparison_plot, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center", fig.keep="none"}
-cowplot::plot_grid(model_1_plot, model_2_plot, model_3_plot,
-  nrow = 1, ncol = 3, labels = "AUTO"
-)
-```
-```{r model_comparison_plot_, include = TRUE, echo = FALSE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center", fig.keep="all"}
-size_text <- 6
-model_1_plot <- plot_seromodel(
-  model_1,
-  serodata = serodata_large_epi,
-  foi_sim = foi_sim_large_epi,
-  size_text = size_text
-)
-model_2_plot <- plot_seromodel(
-  model_2,
-  serodata = serodata_large_epi,
-  foi_sim = foi_sim_large_epi,
-  size_text = size_text
-)
-model_3_plot <- plot_seromodel(
-  model_3,
-  serodata = serodata_large_epi,
-  foi_sim = foi_sim_large_epi,
-  size_text = size_text
-)
-cowplot::plot_grid(model_1_plot, model_2_plot, model_3_plot,
+cowplot::plot_grid(
+  plot_constant, plot_tv_normal, plot_tv_normal_log,
   nrow = 1, ncol = 3, labels = "AUTO"
 )
 ```
