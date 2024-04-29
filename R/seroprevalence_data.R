@@ -430,7 +430,8 @@ get_age_group <- function(age, step) {
 #' @param col_age name of the column containing the age information
 #' @param step step used to split the age interval
 #' @return Dataframe object containing grouped simulated data generated from
-#'   `foi`
+#' `foi`
+#' @export
 group_sim_data <- function(sim_data,
                            col_age = "age",
                            step = 5) {
