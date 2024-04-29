@@ -8,7 +8,6 @@ estimate the seroprevalence based on the result of the fit}
 run_seromodel(
   serodata,
   foi_model = "constant",
-  foi_location = 0,
   foi_parameters = list(foi_a = 0, foi_b = 2),
   chunks = NULL,
   iter = 1000,

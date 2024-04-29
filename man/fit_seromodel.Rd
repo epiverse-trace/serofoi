@@ -8,7 +8,7 @@ data}
 fit_seromodel(
   serodata,
   foi_model = "constant",
-  foi_parameters = list(foi_a = 0, foi_b = 2),
+  foi_parameters = NULL,
   chunks = NULL,
   chunk_size = 1,
   iter = 1000,
