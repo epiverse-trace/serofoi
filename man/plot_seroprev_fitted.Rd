@@ -11,7 +11,8 @@ plot_seroprev_fitted(
   size_text = 6,
   bin_data = TRUE,
   bin_step = 5,
-  alpha = 0.05
+  alpha = 0.05,
+  ylim_prev = NULL
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ The last six columns can be added to \code{serodata} by means of the function
 \item{alpha}{Probability threshold for statistical significance used for both
 the binomial confidence interval, and the lower and upper quantiles of the
 estimated prevalence.}
+
+\item{ylim_prev}{\code{ylim} aesthetics for plotting}
 }
 \value{
 A ggplot object containing the seropositivity-vs-age graph including

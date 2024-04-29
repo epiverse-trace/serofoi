@@ -82,6 +82,7 @@ plot_seroprev <- function(serodata,
 #' @inheritParams run_seromodel
 #' @inheritParams get_prev_expanded
 #' @param size_text Text size of the graph returned by the function.
+#' @param ylim_prev `ylim` aesthetics for plotting
 #' @return A ggplot object containing the seropositivity-vs-age graph including
 #'   the data, the fitted model and their corresponding confidence intervals.
 #' @examples
@@ -102,7 +103,8 @@ plot_seroprev_fitted <- function(seromodel_object,
                                  size_text = 6,
                                  bin_data = TRUE,
                                  bin_step = 5,
-                                 alpha = 0.05
+                                 alpha = 0.05,
+                                 ylim_prev = NULL
                                  ) {
   checkmate::assert_class(seromodel_object, "stanfit", null.ok = TRUE)
   validate_prepared_serodata(serodata)
@@ -116,6 +118,14 @@ plot_seroprev_fitted <- function(seromodel_object,
     bin_data = bin_data,
     bin_step = bin_step
   )
+
+  if(is.null(ylim_prev)) {
+    ylim_prev <- c(
+      min(prev_expanded$prev_obs_lower, prev_expanded$predicted_prev_lower),
+      max(prev_expanded$prev_obs_upper, prev_expanded$predicted_prev_upper)
+    )
+  }
+
   prev_plot <-
     ggplot2::ggplot(prev_expanded, ggplot2::aes(x = .data$age)) +
     ggplot2::geom_ribbon(
@@ -142,10 +152,7 @@ plot_seroprev_fitted <- function(seromodel_object,
     ggplot2::theme_bw(size_text) +
     ggplot2::coord_cartesian(
       xlim = c(min(serodata$age_min), max(serodata$age_max)),
-      ylim = c(
-        min(prev_expanded$prev_obs_lower, prev_expanded$predicted_prev_lower),
-        max(prev_expanded$prev_obs_upper, prev_expanded$predicted_prev_upper)
-        )
+      ylim = ylim_prev
     ) +
     ggplot2::theme(legend.position = "none") +
     ggplot2::ylab("seropositivity") +
@@ -229,7 +236,6 @@ plot_foi <- function(seromodel_object,
 
 
   foi_plot <- foi_plot +
-    # ggplot2::ggplot(foi_data, ggplot2::aes(x = .data$year)) +
     ggplot2::geom_ribbon(
       ggplot2::aes(
         ymin = .data$lower,
@@ -328,8 +334,8 @@ plot_rhats <- function(seromodel_object,
     ggplot2::geom_point() +
     ggplot2::coord_cartesian(
       ylim = c(
-        min(1, min(rhats$rhat)),
-        max(1.1, max(rhats$rhat))
+        min(1-0.025, min(rhats$rhat)),
+        max(1+0.025, max(rhats$rhat))
         )
       ) +
     ggplot2::geom_hline(
@@ -377,6 +383,7 @@ plot_seromodel <- function(seromodel_object,
                            size_text = 25,
                            bin_data = TRUE,
                            bin_step = 5,
+                           ylim_prev = NULL,
                            foi_sim = NULL) {
   checkmate::assert_class(seromodel_object, "stanfit", null.ok = TRUE)
   serodata <- validate_serodata(serodata)
@@ -389,7 +396,8 @@ plot_seromodel <- function(seromodel_object,
     alpha = alpha,
     size_text = size_text,
     bin_data = bin_data,
-    bin_step = bin_step
+    bin_step = bin_step,
+    ylim_prev
   )
 
   foi_plot <- plot_foi(

@@ -14,6 +14,7 @@ plot_seromodel(
   size_text = 25,
   bin_data = TRUE,
   bin_step = 5,
+  ylim_prev = NULL,
   foi_sim = NULL
 )
 }
