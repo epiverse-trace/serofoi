@@ -10,7 +10,7 @@ test_that("issue 47", {
   serodata <- readRDS(serodata_path)
 
   # Error reproduction
-  model_test <- run_seromodel(
+  model_test <- fit_seromodel(
     serodata = serodata,
     foi_model = "tv_normal",
     print_summary = FALSE
