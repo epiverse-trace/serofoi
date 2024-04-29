@@ -208,8 +208,7 @@ plot_foi <- function(seromodel_object,
 
     if (!is.null(foi_sim)) {
       foi_sim_data <- data.frame(
-        year = foi_data$year,
-        foi_sim = foi_sim[-(1:remove_x_values)]
+        year = foi_data$year
       )
     }
   }
@@ -223,8 +222,7 @@ plot_foi <- function(seromodel_object,
 
     if (!is.null(foi_sim)) {
       foi_sim_data <- data.frame(
-        age = foi_data$age,
-        foi_sim = foi_sim[-(1:remove_x_values)]
+        age = foi_data$age
       )
     }
   }
@@ -258,7 +256,9 @@ plot_foi <- function(seromodel_object,
       )
       warning(warn_msg)
       remove_x_values <- length(foi_sim) - nrow(foi_data)
+      foi_sim <- foi_sim[-(1:remove_x_values)]
     }
+    foi_sim_data$foi_sim <- foi_sim
 
     foi_plot <- foi_plot +
       ggplot2::geom_line(
@@ -326,7 +326,12 @@ plot_rhats <- function(seromodel_object,
   rhats_plot <- rhats_plot +
     ggplot2::geom_line(colour = "purple") +
     ggplot2::geom_point() +
-    ggplot2::coord_cartesian(ylim = c(0.7, 2)) +
+    ggplot2::coord_cartesian(
+      ylim = c(
+        min(1, min(rhats$rhat)),
+        max(1.1, max(rhats$rhat))
+        )
+      ) +
     ggplot2::geom_hline(
       yintercept = 1.01,
       colour = "blue",
