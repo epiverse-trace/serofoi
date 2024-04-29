@@ -260,10 +260,7 @@ run_seromodel <- function(
 fit_seromodel <- function(
     serodata,
     foi_model = "constant",
-    foi_parameters = list(
-      foi_a = 0,
-      foi_b = 2
-    ),
+    foi_parameters = NULL,
     chunks = NULL,
     chunk_size = 1,
     iter = 1000,
@@ -281,14 +278,34 @@ fit_seromodel <- function(
     err_msg =
       foi_model %in% c(
         "constant",
-        "tv_normal_log", "tv_normal",
-        "av_normal_log", "av_normal"
+        "tv_normal", "tv_normal_log",
+        "av_normal", "av_normal_log"
         ),
     "iter must be numeric" = is.numeric(iter),
     "seed must be numeric" = is.numeric(seed)
   )
   model <- stanmodels[[foi_model]]
-
+  # Set default foi parameters 
+  if (is.null(foi_parameters)) {
+     if (foi_model == "constant") {
+      foi_parameters = list(
+        foi_a = 0,
+        foi_b = 2
+      )
+     }
+     else if (foi_model %in% c("tv_normal", "av_normal")) {
+      foi_parameters = list(
+        foi_location = 0,
+        foi_scale = 1
+      )
+     }
+     else if (foi_model %in% c("tv_normal_log", "av_normal_log")) {
+      foi_parameters = list(
+        foi_location = -6,
+        foi_scale = 4
+      )
+     }
+  }
   if (is.null(chunks)) {
     chunks <- get_chunk_structure(
       serodata = serodata,
@@ -370,7 +387,7 @@ fit_seromodel <- function(
     pars = "fois_vector",
     verbose = FALSE,
     refresh = 0,
-   ...
+    ...
   )
 
   if (seromodel_fit@mode == 0) {
