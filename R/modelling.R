@@ -124,6 +124,8 @@ validate_prepared_serodata <- function(serodata) {
 #' Run specified stan model for the force-of-infection and
 #' estimate the seroprevalence based on the result of the fit
 #'
+#' Starting on v.0.1.0, this function will be DEPRECATED. Use `fit_seromodel`
+#' instead.
 #' This function runs the specified model for the force-of-infection `foi_model`
 #' using the data from a seroprevalence survey `serodata` as the input data. See
 #' [fit_seromodel] for further details.
@@ -155,6 +157,7 @@ run_seromodel <- function(
     seed = 12345,
     print_summary = TRUE,
     ...) {
+  .Deprecated("fit_seromodel")
   foi_model <- match.arg(foi_model)
   survey <- unique(serodata$survey)
   if (length(survey) > 1) {

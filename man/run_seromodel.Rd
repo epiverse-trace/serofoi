@@ -89,6 +89,8 @@ the implementation of the model. For further details refer to
 \link{fit_seromodel}.
 }
 \description{
+Starting on v.0.1.0, this function will be DEPRECATED. Use \code{fit_seromodel}
+instead.
 This function runs the specified model for the force-of-infection \code{foi_model}
 using the data from a seroprevalence survey \code{serodata} as the input data. See
 \link{fit_seromodel} for further details.
