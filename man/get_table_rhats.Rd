@@ -25,7 +25,7 @@ returns a table a dataframe with the estimates for each year of birth.
 \examples{
 data(chagas2012)
 serodata <- prepare_serodata(serodata = chagas2012)
-model_constant <- run_seromodel(
+model_constant <- fit_seromodel(
   serodata = serodata,
   foi_model = "constant",
   iter = 1500

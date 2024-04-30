@@ -50,14 +50,14 @@ The number of positive cases follows a binomial distribution, where $n$ is the n
 $$
 p(a,t) \sim binom(n(a,t), P(a,t))
 $$
-In ***serofoi***, for the constant model, the *FoI* ($\lambda$) is modelled within a Bayesian framework using a uniform prior distribution $\sim U(0,2)$. Future versions of the package may allow to choose different default distributions. This model can be implemented for the previously prepared dataset `data_test` by means of the `run_seromodel` function specifying  `run_seromodel="constant"`.
+In ***serofoi***, for the constant model, the *FoI* ($\lambda$) is modelled within a Bayesian framework using a uniform prior distribution $\sim U(0,2)$. Future versions of the package may allow to choose different default distributions. This model can be implemented for the previously prepared dataset `data_test` by means of the `fit_seromodel` function specifying  `fit_seromodel="constant"`.
 
 The object `simdata_constant` contains a minimal simulated dataset that emulates an hypothetical endemic situation where the *FoI* is constant with value 0.2 and includes data for 250 samples of individuals between 2 and 47 years old with a number of trials $n=5$. The following code shows how to implement the constant model to this simulated serosurvey:
 
 ```{r model_1, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="none"}
 data("simdata_constant")
 serodata_constant <- prepare_serodata(simdata_constant)
-model_1 <- run_seromodel(
+model_1 <- fit_seromodel(
   serodata = serodata_constant,
   foi_model = "constant",
   iter = 800
@@ -102,7 +102,7 @@ The object `simdata_sw_dec` contains a minimal simulated dataset that emulates a
 ```{r model_2, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="none"}
 data("simdata_sw_dec")
 serodata_sw_dec <- prepare_serodata(simdata_sw_dec)
-model_2 <- run_seromodel(
+model_2 <- fit_seromodel(
   serodata = serodata_sw_dec,
   foi_model = "tv_normal",
   iter = 1500
@@ -140,7 +140,7 @@ In order to test this model we use the minimal simulated dataset contained in th
 ```{r model_3, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="none"}
 data("simdata_large_epi")
 serodata_large_epi <- prepare_serodata(simdata_large_epi)
-model_3 <- run_seromodel(
+model_3 <- fit_seromodel(
   serodata = serodata_large_epi,
   foi_model = "tv_normal_log",
   iter = 1500
@@ -191,7 +191,7 @@ Above we showed that the fast epidemic model (`tv_normal_log`) is able to identi
 Now, we would like to know whether this model actually fits this dataset better than the other available models in ***serofoi***. For this, we also implement both the endemic model (`constant`)   and the slow time-varying normal model (`tv_normal`):
 
 ```{r model_comparison, include = FALSE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE }
-model_1 <- run_seromodel(
+model_1 <- fit_seromodel(
   serodata = serodata_large_epi,
   foi_model = "constant",
   iter = 800
@@ -201,7 +201,7 @@ model_1_plot <- plot_seromodel(model_1,
   size_text = 6
 )
 
-model_2 <- run_seromodel(
+model_2 <- fit_seromodel(
   serodata = serodata_large_epi,
   foi_model = "tv_normal",
   iter = 1500

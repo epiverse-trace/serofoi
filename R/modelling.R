@@ -137,12 +137,14 @@ validate_prepared_serodata <- function(serodata) {
 #'   the implementation of the model. For further details refer to
 #'   [fit_seromodel].
 #' @examples
+#' \dontrun{
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
 #' run_seromodel(
 #'   serodata,
 #'   foi_model = "constant"
 #' )
+#' }
 #' @export
 run_seromodel <- function(
     serodata,
@@ -512,7 +514,7 @@ get_foi_central_estimates <- function(seromodel_object,
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- run_seromodel(
+#' seromodel_object <- fit_seromodel(
 #'   serodata = serodata,
 #'   foi_model = "constant"
 #' )
@@ -587,7 +589,7 @@ extract_seromodel_summary <- function(seromodel_object,
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- run_seromodel(
+#' seromodel_object <- fit_seromodel(
 #'   serodata = serodata,
 #'   foi_model = "constant"
 #' )
