@@ -148,7 +148,7 @@ $$
 $$
 This is done in order to capture fast changes in the *FoI* trend.  Importantly, the standard deviation parameter of this normal distribution of the *FoI* $\lambda(t)$ is set using an upper prior that follows a Cauchy distribution. 
 
-To test the `tv_normal_log` model we siumulate a serosurvey conducted in 2050 emulating a hypothetical situation where a three-year epidemic occured between 2030 and 2035:
+To test the `tv_normal_log` model we simulate a serosurvey conducted in 2050 emulating a hypothetical situation where a three-year epidemic occured between 2030 and 2035:
 
 ```{r tv_normal_log simdata, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE}
 no_transm <- 0.0000000001

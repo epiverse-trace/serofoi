@@ -60,7 +60,7 @@ and seropositivity on the y axis with its corresponding confidence interval.
 \examples{
 data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
-seromodel_object <- run_seromodel(
+seromodel_object <- fit_seromodel(
   serodata = serodata,
   foi_model = "constant",
   iter = 1000
