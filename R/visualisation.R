@@ -87,7 +87,7 @@ plot_seroprev <- function(serodata,
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- run_seromodel(
+#' seromodel_object <- fit_seromodel(
 #'   serodata = serodata,
 #'   foi_model = "constant",
 #'   iter = 1000
@@ -173,7 +173,7 @@ plot_seroprev_fitted <- function(seromodel_object,
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- run_seromodel(
+#' seromodel_object <- fit_seromodel(
 #'   serodata = serodata,
 #'   foi_model = "constant",
 #'   iter = 1000
@@ -267,7 +267,7 @@ plot_foi <- function(seromodel_object,
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- run_seromodel(
+#' seromodel_object <- fit_seromodel(
 #'   serodata = serodata,
 #'   foi_model = "constant",
 #'   iter = 1000
@@ -343,7 +343,7 @@ plot_rhats <- function(seromodel_object,
 #' @examples
 #' data(chagas2012)
 #' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- run_seromodel(
+#' seromodel_object <- fit_seromodel(
 #'   serodata = serodata,
 #'   foi_model = "constant",
 #'   iter = 1000
@@ -421,7 +421,7 @@ plot_seromodel <- function(seromodel_object,
 #' @return ggplot object summarizing the information in `info_table`
 #' @examples
 #' serodata <- prepare_serodata(chagas2012)
-#' seromodel_object <- run_seromodel(
+#' seromodel_object <- fit_seromodel(
 #'   serodata = serodata,
 #'   foi_model = "constant",
 #'   iter = 1000
