@@ -40,7 +40,7 @@
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="../logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.9.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -193,7 +193,7 @@ constant model:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">chagas2012</span><span class="op">)</span></span>
 <span><span class="va">serodata_test</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_serodata.html">prepare_serodata</a></span><span class="op">(</span><span class="va">chagas2012</span><span class="op">)</span></span>
 <span><span class="co"># Model implementation</span></span>
-<span><span class="va">model_constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_seromodel.html">run_seromodel</a></span><span class="op">(</span></span>
+<span><span class="va">model_constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
 <span>  serodata <span class="op">=</span> <span class="va">serodata_test</span>,</span>
 <span>  foi_model <span class="op">=</span> <span class="st">"constant"</span></span>
 <span><span class="op">)</span></span>

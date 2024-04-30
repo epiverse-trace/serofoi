@@ -21,7 +21,7 @@ the time when the serosurvey was conducted."><meta property="og:image" content="
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="../logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.9.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,7 @@ the time when the serosurvey was conducted.</p>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>serodata</dt>
+    <dl><dt id="arg-serodata">serodata<a class="anchor" aria-label="anchor" href="#arg-serodata"></a></dt>
 <dd><p>A data frame containing the data from a seroprevalence
 survey. This data frame must contain at least the following columns:</p><dl><dt><code>total</code></dt>
 <dd><p>Number of samples for each age group</p></dd>
@@ -95,7 +95,7 @@ were born</p></dd>
 <code><a href="prepare_serodata.html">prepare_serodata()</a></code>.</p></dd>
 
 
-<dt>chunk_size</dt>
+<dt id="arg-chunk-size">chunk_size<a class="anchor" aria-label="anchor" href="#arg-chunk-size"></a></dt>
 <dd><p>Size of the chunks to be used in case that the chunk
 structure <code>chunks</code> is not specified in <a href="fit_seromodel.html">fit_seromodel</a>.
 Default is 1, meaning that one force of infection value is to be estimated

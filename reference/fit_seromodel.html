@@ -23,7 +23,7 @@ compiled by rstan."><meta property="og:image" content="https://epiverse-trace.gi
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="../logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.9.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,7 +84,7 @@ compiled by rstan.</p>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>serodata</dt>
+    <dl><dt id="arg-serodata">serodata<a class="anchor" aria-label="anchor" href="#arg-serodata"></a></dt>
 <dd><p>A data frame containing the data from a seroprevalence
 survey. This data frame must contain at least the following columns:</p><dl><dt><code>total</code></dt>
 <dd><p>Number of samples for each age group</p></dd>
@@ -110,7 +110,7 @@ were born</p></dd>
 <code><a href="prepare_serodata.html">prepare_serodata()</a></code>.</p></dd>
 
 
-<dt>foi_model</dt>
+<dt id="arg-foi-model">foi_model<a class="anchor" aria-label="anchor" href="#arg-foi-model"></a></dt>
 <dd><p>Name of the selected model. Current version provides three
 options:</p><dl><dt><code>"constant"</code></dt>
 <dd><p>Runs a constant model</p></dd>
@@ -125,17 +125,17 @@ options:</p><dl><dt><code>"constant"</code></dt>
 </dl></dd>
 
 
-<dt>foi_location</dt>
+<dt id="arg-foi-location">foi_location<a class="anchor" aria-label="anchor" href="#arg-foi-location"></a></dt>
 <dd><p>Location parameter of the force-of-infection distribution
 of the selected model. Depending on <code>foi_model</code>, the meaning may vary.</p></dd>
 
 
-<dt>foi_scale</dt>
+<dt id="arg-foi-scale">foi_scale<a class="anchor" aria-label="anchor" href="#arg-foi-scale"></a></dt>
 <dd><p>Scale parameter of the force-of-infection distribution
 of the selected model. Depending on <code>foi_model</code>, the meaning may vary.</p></dd>
 
 
-<dt>chunks</dt>
+<dt id="arg-chunks">chunks<a class="anchor" aria-label="anchor" href="#arg-chunks"></a></dt>
 <dd><p>Numeric list specifying the chunk structure of the time
 interval from the birth year of the oldest age cohort
 <code>min(serodata$age_mean_f)</code> to the time when the serosurvey was conducted
@@ -143,7 +143,7 @@ interval from the birth year of the oldest age cohort
 <code>chunk_size</code>.</p></dd>
 
 
-<dt>chunk_size</dt>
+<dt id="arg-chunk-size">chunk_size<a class="anchor" aria-label="anchor" href="#arg-chunk-size"></a></dt>
 <dd><p>Size of the chunks to be used in case that the chunk
 structure <code>chunks</code> is not specified in fit_seromodel.
 Default is 1, meaning that one force of infection value is to be estimated
@@ -152,12 +152,12 @@ If the length of the time interval is not exactly divisible by <code>chunk_size<
 the remainder years are included in the last chunk.</p></dd>
 
 
-<dt>iter</dt>
+<dt id="arg-iter">iter<a class="anchor" aria-label="anchor" href="#arg-iter"></a></dt>
 <dd><p>Number of interactions for each chain including the warmup.
 <code>iter</code> in sampling.</p></dd>
 
 
-<dt>adapt_delta</dt>
+<dt id="arg-adapt-delta">adapt_delta<a class="anchor" aria-label="anchor" href="#arg-adapt-delta"></a></dt>
 <dd><p>Real number between 0 and 1 that represents the target
 average acceptance probability. Increasing the value of <code>adapt_delta</code> will
 result in a smaller step size and fewer divergences. For further details
@@ -165,18 +165,18 @@ refer to the <code>control</code> parameter in sampling or
 <a href="https://mc-stan.org/rstanarm/reference/adapt_delta.html" class="external-link">here</a>.</p></dd>
 
 
-<dt>max_treedepth</dt>
+<dt id="arg-max-treedepth">max_treedepth<a class="anchor" aria-label="anchor" href="#arg-max-treedepth"></a></dt>
 <dd><p>Maximum tree depth for the binary tree used in the NUTS
 stan sampler. For further details refer to the <code>control</code> parameter in
 sampling.</p></dd>
 
 
-<dt>seed</dt>
+<dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
 <dd><p>For further details refer to the <code>seed</code> parameter in
 sampling.</p></dd>
 
 
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional parameters for sampling.</p></dd>
 
 </dl></div>

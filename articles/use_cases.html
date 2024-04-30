@@ -40,7 +40,7 @@
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="../logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.9.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -163,21 +163,21 @@ transmission during this period.</p>
 <span><span class="va">chik2015p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_serodata.html">prepare_serodata</a></span><span class="op">(</span><span class="va">chik2015</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Implementation of the models</span></span>
-<span><span class="va">m1_chik</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_seromodel.html">run_seromodel</a></span><span class="op">(</span></span>
+<span><span class="va">m1_chik</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
 <span>  serodata <span class="op">=</span> <span class="va">chik2015p</span>,</span>
 <span>  foi_model <span class="op">=</span> <span class="st">"constant"</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  thin <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">m2_chik</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_seromodel.html">run_seromodel</a></span><span class="op">(</span></span>
+<span><span class="va">m2_chik</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
 <span>  serodata <span class="op">=</span> <span class="va">chik2015p</span>,</span>
 <span>  foi_model <span class="op">=</span> <span class="st">"tv_normal"</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">1500</span>,</span>
 <span>  thin <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">m3_chik</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_seromodel.html">run_seromodel</a></span><span class="op">(</span></span>
+<span><span class="va">m3_chik</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
 <span>  serodata <span class="op">=</span> <span class="va">chik2015p</span>,</span>
 <span>  foi_model <span class="op">=</span> <span class="st">"tv_normal_log"</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">1500</span>,</span>
@@ -261,21 +261,21 @@ in the study area.</p>
 <span><span class="va">veev2012p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_serodata.html">prepare_serodata</a></span><span class="op">(</span><span class="va">veev2012</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Implementation of the models</span></span>
-<span><span class="va">m1_veev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_seromodel.html">run_seromodel</a></span><span class="op">(</span></span>
+<span><span class="va">m1_veev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
 <span>  serodata <span class="op">=</span> <span class="va">veev2012p</span>,</span>
 <span>  foi_model <span class="op">=</span> <span class="st">"constant"</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>  thin <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">m2_veev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_seromodel.html">run_seromodel</a></span><span class="op">(</span></span>
+<span><span class="va">m2_veev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
 <span>  serodata <span class="op">=</span> <span class="va">veev2012p</span>,</span>
 <span>  foi_model <span class="op">=</span> <span class="st">"tv_normal"</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">500</span>,</span>
 <span>  thin <span class="op">=</span> <span class="fl">2</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">m3_veev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_seromodel.html">run_seromodel</a></span><span class="op">(</span></span>
+<span><span class="va">m3_veev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
 <span>  serodata <span class="op">=</span> <span class="va">veev2012p</span>,</span>
 <span>  foi_model <span class="op">=</span> <span class="st">"tv_normal_log"</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">500</span>,</span>
@@ -358,12 +358,12 @@ was conducted.</p>
 <span><span class="va">chagas2012p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_serodata.html">prepare_serodata</a></span><span class="op">(</span><span class="va">chagas2012</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Implementation of the models</span></span>
-<span><span class="va">m1_cha</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_seromodel.html">run_seromodel</a></span><span class="op">(</span></span>
+<span><span class="va">m1_cha</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
 <span>  serodata <span class="op">=</span> <span class="va">chagas2012p</span>,</span>
 <span>  foi_model <span class="op">=</span> <span class="st">"constant"</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">800</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">m2_cha</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_seromodel.html">run_seromodel</a></span><span class="op">(</span></span>
+<span><span class="va">m2_cha</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
 <span>  serodata <span class="op">=</span> <span class="va">chagas2012p</span>,</span>
 <span>  foi_model <span class="op">=</span> <span class="st">"tv_normal"</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">800</span></span>

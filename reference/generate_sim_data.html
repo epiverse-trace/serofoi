@@ -17,7 +17,7 @@
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="../logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.9.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,7 +71,7 @@
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>sim_data</dt>
+    <dl><dt id="arg-sim-data">sim_data<a class="anchor" aria-label="anchor" href="#arg-sim-data"></a></dt>
 <dd><p>A dataframe object containing the following columns:</p><dl><dt><code>age</code></dt>
 <dd><p>Age group markers</p></dd>
 
@@ -82,30 +82,30 @@
 </dl></dd>
 
 
-<dt>foi</dt>
+<dt id="arg-foi">foi<a class="anchor" aria-label="anchor" href="#arg-foi"></a></dt>
 <dd><p>Numeric atomic vector corresponding to the desired
 time-varying or age-varying Force-of-Infection to simulate from</p></dd>
 
 
-<dt>sample_size_by_age</dt>
+<dt id="arg-sample-size-by-age">sample_size_by_age<a class="anchor" aria-label="anchor" href="#arg-sample-size-by-age"></a></dt>
 <dd><p>Integer indicating the sample size by age group.
 This corresponds to the number of trials <code>size</code> in <a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a>.</p></dd>
 
 
-<dt>mu</dt>
+<dt id="arg-mu">mu<a class="anchor" aria-label="anchor" href="#arg-mu"></a></dt>
 <dd><p>Seroreversion rate</p></dd>
 
 
-<dt>model_type</dt>
+<dt id="arg-model-type">model_type<a class="anchor" aria-label="anchor" href="#arg-model-type"></a></dt>
 <dd><p>String specifying the type of model to be used.
 Current valid options are 'time-varying' and 'age-varying'</p></dd>
 
 
-<dt>survey_label</dt>
+<dt id="arg-survey-label">survey_label<a class="anchor" aria-label="anchor" href="#arg-survey-label"></a></dt>
 <dd><p>Label for the resulting simulated serosurvey.</p></dd>
 
 
-<dt>seed</dt>
+<dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
 <dd><p>Seed for random number generation.</p></dd>
 
 </dl></div>
