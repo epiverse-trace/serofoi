@@ -654,7 +654,7 @@ fit_seromodel_optimization <- function(
   seromodel_optimization <- rstan::optimizing(
     model,
     data = stan_data,
-    iter = n_iters,
+    iter = n_iters_max,
     init = f_init,
     verbose = FALSE,
     refresh = 0,
