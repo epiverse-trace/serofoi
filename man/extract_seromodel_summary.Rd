@@ -53,7 +53,7 @@ convergence of the model, like the expected log pointwise predictive density
 \examples{
 data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
-seromodel_object <- run_seromodel(
+seromodel_object <- fit_seromodel(
   serodata = serodata,
   foi_model = "constant"
 )

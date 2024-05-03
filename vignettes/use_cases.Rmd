@@ -51,21 +51,21 @@ data("chik2015")
 chik2015p <- prepare_serodata(chik2015)
 
 # Implementation of the models
-m1_chik <- run_seromodel(
+m1_chik <- fit_seromodel(
   serodata = chik2015p,
   foi_model = "constant",
   iter = 1000,
   thin = 2
 )
 
-m2_chik <- run_seromodel(
+m2_chik <- fit_seromodel(
   serodata = chik2015p,
   foi_model = "tv_normal",
   iter = 1500,
   thin = 2
 )
 
-m3_chik <- run_seromodel(
+m3_chik <- fit_seromodel(
   serodata = chik2015p,
   foi_model = "tv_normal_log",
   iter = 1500,
@@ -112,21 +112,21 @@ data("veev2012")
 veev2012p <- prepare_serodata(veev2012)
 
 # Implementation of the models
-m1_veev <- run_seromodel(
+m1_veev <- fit_seromodel(
   serodata = veev2012p,
   foi_model = "constant",
   iter = 500,
   thin = 2
 )
 
-m2_veev <- run_seromodel(
+m2_veev <- fit_seromodel(
   serodata = veev2012p,
   foi_model = "tv_normal",
   iter = 500,
   thin = 2
 )
 
-m3_veev <- run_seromodel(
+m3_veev <- fit_seromodel(
   serodata = veev2012p,
   foi_model = "tv_normal_log",
   iter = 500,
@@ -172,12 +172,12 @@ data("chagas2012")
 chagas2012p <- prepare_serodata(chagas2012)
 
 # Implementation of the models
-m1_cha <- run_seromodel(
+m1_cha <- fit_seromodel(
   serodata = chagas2012p,
   foi_model = "constant",
   iter = 800
 )
-m2_cha <- run_seromodel(
+m2_cha <- fit_seromodel(
   serodata = chagas2012p,
   foi_model = "tv_normal",
   iter = 800

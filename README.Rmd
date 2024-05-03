@@ -59,7 +59,7 @@ head(chagas2012, 5)
 
 The function `prepare_serodata` will prepare the entry data for the use of the modelling module; this function computes the sample size, the years of birth and the binomial confidence interval for each age group in the provided dataset. A visualisation of the prepared seroprevalence data can be obtained using the function plot_seroprev:
 
-```{r data_test, include = TRUE, out.fig.height="30%", out.width="50%", fig.align="center", message=FALSE}
+```{r data_test, include = TRUE, out.fig.height="30%", out.width="50%", fig.align="center", message=FALSE, warning=FALSE}
 serodata_test <- prepare_serodata(chagas2012)
 plot_seroprev(serodata_test, size_text = 15)
 ```
@@ -73,17 +73,25 @@ Contributors to the project include:
 
 -   [Nicolás Torres](https://github.com/ntorresd) (author)
 
--   [Benjamin Lambert](https://ben-lambert.com/about/) (author)
+-   [Ben Lambert](https://ben-lambert.com/about/) (author)
 
 -   [Pierre Nouvellet](https://github.com/pnouvellet) (author)
 
 -   [Geraldine Gómez](https://github.com/megamezl) (contributor)
 
+-   [Jaime A. Pavlich-Mariscal](https://github.com/jpavlich) (contributor)
+
+-   [Miguel Gamez](https://github.com/megamezl) (contributor)
+
 -   [Hugo Gruson](https://github.com/Bisaloo) (contributor)
 
 -   [David Santiago Quevedo](https://github.com/davidsantiagoquevedo) (contributor)
 
--   [Jaime A. Pavlich-Mariscal](https://github.com/jpavlich) (contributor)
+-   [Everlyn Kamau](https://github.com/ekamau) (contributor)
+
+-   [Richard Creswell](https://github.com/rccreswell) (contributor)
+
+-   [Sumali Bajaj](https://github.com/sumalibajaj) (contributor)
 
 ## Package vignettes
 

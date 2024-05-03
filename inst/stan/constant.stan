@@ -1,8 +1,8 @@
 data {
      int<lower=0> n_obs;
+     int<lower=1> age_max;
      int n_pos[n_obs];
      int n_total[n_obs];
-     int <lower=1>age_max;
      matrix[n_obs, age_max] observation_exposure_matrix;
 }
 
@@ -27,8 +27,7 @@ transformed parameters {
 
 model {
   for (i in 1:n_obs)
-   n_pos[i] ~ binomial(n_total[i], prob_infected[i]) ;
-  
+   n_pos[i] ~ binomial(n_total[i], prob_infected[i]);
    lambda0 ~ uniform (0, 2);
 }
 
@@ -42,6 +41,3 @@ generated quantities{
     logLikelihood[i] = binomial_lpmf(n_pos[i] | n_total[i], prob_infected[i]);
   }
 }
-
-
-

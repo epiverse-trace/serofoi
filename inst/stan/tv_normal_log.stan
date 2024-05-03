@@ -1,47 +1,66 @@
+functions {
+  #include functions/prob_infected.stan
+}
+
 data {
-     int<lower=0> n_obs;
-     int n_pos[n_obs];
-     int n_total[n_obs];
-     int <lower=1>age_max;
-     matrix[n_obs, age_max] observation_exposure_matrix;
+  int<lower=0> n_obs;
+  int<lower=1> age_max;
+  int n_pos[n_obs];
+  int n_total[n_obs];
+  matrix[n_obs, age_max] observation_exposure_matrix;
+
+  // prior choices
+  int chunks[age_max];
+  real foi_location;
+  real<lower=0> foi_scale;
+}
+
+transformed data {
+  int n_chunks = max(chunks);
 }
 
 parameters {
-   row_vector[age_max] log_foi;
+   row_vector[n_chunks] log_fois;
    real<lower=0> sigma;
 }
 
 transformed parameters {
-  real prob_infected[n_obs];
-  real scalar_dot_product[n_obs];
-  row_vector<lower=0>[age_max] foi;
- for(i in 1:age_max)
-  foi[i] = exp(log_foi[i]);
-  
- for (i in 1:n_obs){
-   scalar_dot_product[i] = dot_product(observation_exposure_matrix[i,], foi);
-   prob_infected[i] = 1 - exp(-scalar_dot_product[i]);
- }
- 
+  row_vector<lower=0>[n_chunks] fois;
+  vector[n_chunks] fois_vector;
+  vector[n_obs] prob_infected;
+
+  for(i in 1:n_chunks)
+    fois[i] = exp(log_fois[i]);
+  fois_vector = to_vector(fois);  
+    
+  prob_infected = prob_infected_calculate(
+    fois_vector,
+    observation_exposure_matrix,
+    n_obs,
+    age_max,
+    chunks
+  );
 }
 
-
 model {
-  for (i in 1:n_obs)
-    n_pos[i] ~ binomial(n_total[i], prob_infected[i]) ;
-    sigma ~ cauchy(0, 1);
-  
-  for(i in 2:age_max)
-    log_foi[i] ~ normal(log_foi[i - 1], sigma);
-  log_foi[1] ~ normal(-6, 4);
-  
- }
+  n_pos ~ binomial(n_total, prob_infected);
+  sigma ~ cauchy(0, 1);
 
+  log_fois[1] ~ normal(foi_location, foi_scale);
+  for(i in 2:n_chunks)
+    log_fois[i] ~ normal(log_fois[i - 1], sigma);
+ }
 
 generated quantities{
   vector[n_obs] n_pos_sim;
   vector[n_obs] P_sim;
   vector[n_obs] logLikelihood;
+  vector[age_max] foi;
+
+  for(i in 1:age_max) {
+    foi[i] = fois_vector[chunks[i]];
+  }
+
   for(i in 1:n_obs){
     n_pos_sim[i] = binomial_rng(n_total[i], prob_infected[i]);
     P_sim[i] = n_pos_sim[i] / n_total[i];

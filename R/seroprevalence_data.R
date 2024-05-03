@@ -45,8 +45,7 @@
 prepare_serodata <- function(serodata = serodata,
                              alpha = 0.05) {
   checkmate::assert_numeric(alpha, lower = 0, upper = 1)
-  validate_serodata(serodata)
-
+  serodata <- validate_serodata(serodata)
 
   if (!any(colnames(serodata) == "age_mean_f")) {
     serodata <- serodata %>%
@@ -148,11 +147,11 @@ prepare_bin_data <- function(serodata,
 }
 
 #' Computes the probability of being seropositive for age-varying
-#' FoI including seroreversion
+#' force-of-infection including seroreversion
 #'
 #' @param ages Integer indicating the ages of the exposed cohorts
-#' @param foi Numeric atomic vector corresponding to the age-varying FoI to
-#' simulate from
+#' @param foi Numeric atomic vector corresponding to the age-varying
+#' force-of-infection to simulate from
 #' @param mu Seroreversion rate
 #' @return probability of being seropositive for age-varying FoI
 #' including seroreversion
