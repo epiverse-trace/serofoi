@@ -8,11 +8,13 @@ estimate the seroprevalence based on the result of the fit}
 run_seromodel(
   serodata,
   foi_model = c("constant", "tv_normal_log", "tv_normal"),
+  foi_location = 0,
+  foi_scale = 1,
+  chunk_size = 1,
+  chunks = NULL,
   iter = 1000,
-  thin = 2,
   adapt_delta = 0.9,
   max_treedepth = 10,
-  chains = 4,
   seed = 12345,
   print_summary = TRUE,
   ...
@@ -41,11 +43,27 @@ options:
 \item{\code{"tv_normal_log"}}{Runs a normal logarithmic model}
 }}
 
+\item{foi_location}{Location parameter of the force-of-infection distribution
+of the selected model. Depending on \code{foi_model}, the meaning may vary.}
+
+\item{foi_scale}{Scale parameter of the force-of-infection distribution
+of the selected model. Depending on \code{foi_model}, the meaning may vary.}
+
+\item{chunk_size}{Size of the chunks to be used in case that the chunk
+structure \code{chunks} is not specified in \link{fit_seromodel}.
+Default is 1, meaning that one force of infection value is to be estimated
+for every year in the time interval spanned by the serosurvey.
+If the length of the time interval is not exactly divisible by \code{chunk_size},
+the remainder years are included in the last chunk.}
+
+\item{chunks}{Numeric list specifying the chunk structure of the time
+interval from the birth year of the oldest age cohort
+\code{min(serodata$age_mean_f)} to the time when the serosurvey was conducted
+\code{t_sur}. If \code{NULL}, the time interval is divided in chunks of size
+\code{chunk_size}.}
+
 \item{iter}{Number of interactions for each chain including the warmup.
 \code{iter} in \link[rstan:stanmodel-method-sampling]{sampling}.}
-
-\item{thin}{Positive integer specifying the period for saving samples.
-\code{thin} in \link[rstan:stanmodel-method-sampling]{sampling}.}
 
 \item{adapt_delta}{Real number between 0 and 1 that represents the target
 average acceptance probability. Increasing the value of \code{adapt_delta} will
@@ -56,9 +74,6 @@ refer to the \code{control} parameter in \link[rstan:stanmodel-method-sampling]{
 \item{max_treedepth}{Maximum tree depth for the binary tree used in the NUTS
 stan sampler. For further details refer to the \code{control} parameter in
 \link[rstan:stanmodel-method-sampling]{sampling}.}
-
-\item{chains}{Number of Markov chains for sampling. For further details refer
-to the \code{chains} parameter in \link[rstan:stanmodel-method-sampling]{sampling}.}
 
 \item{seed}{For further details refer to the \code{seed} parameter in
 \link[rstan:stanmodel-method-sampling]{sampling}.}
@@ -74,15 +89,19 @@ the implementation of the model. For further details refer to
 \link{fit_seromodel}.
 }
 \description{
+Starting on v.0.1.0, this function will be DEPRECATED. Use \code{fit_seromodel}
+instead.
 This function runs the specified model for the force-of-infection \code{foi_model}
 using the data from a seroprevalence survey \code{serodata} as the input data. See
 \link{fit_seromodel} for further details.
 }
 \examples{
+\dontrun{
 data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
 run_seromodel(
   serodata,
   foi_model = "constant"
 )
+}
 }

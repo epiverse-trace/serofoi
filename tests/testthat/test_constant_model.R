@@ -1,46 +1,45 @@
-# load and prepare data
-data(chagas2012)
-serodata <- prepare_serodata(chagas2012, alpha = 0.05)
-
-test_that("Check cohort ages", {
-  cohort_ages <- get_cohort_ages(serodata = serodata)
-  testthat::expect_equal(nrow(cohort_ages), max(unique(serodata$tsur)) - min(serodata$birth_year))
-})
-
 test_that("Test constant model", {
   model_name <- "constant"
-  # read benchmark data
-  data_compare_path <- testthat::test_path(
-    "extdata",
-    paste0("prev_expanded_", model_name, ".RDS")
-    )
-  prev_expanded_compare <- readRDS(data_compare_path) %>%
-    mutate(
-      # calculates tolerance as half the confidence interval size
-      tol = (predicted_prev_upper - predicted_prev_lower)/2
-    )
 
-  # run constant model
-  model_object <- run_seromodel(
-    serodata = serodata,
+  tsur <- 2023
+  n_years <- 80
+  birth_years <- seq(tsur - n_years, tsur - 1)
+  sample_size_by_age <- 100
+
+  foi <- rep(0.03, n_years)
+
+  simdata <- generate_sim_data(
+    sim_data = data.frame(
+      age = seq(1:n_years),
+      tsur = tsur
+    ),
+    foi = foi,
+    sample_size_by_age = sample_size_by_age
+  ) %>%
+    prepare_serodata()
+
+  model_object <- fit_seromodel(
+    serodata = simdata,
     foi_model = model_name,
-    iter = 1000,
-    print_summary = FALSE
+    iter = 1000
   )
 
-  foi <- rstan::extract(model_object, "foi", inc_warmup = FALSE)[[1]]
-  prev_expanded <- get_prev_expanded(foi, serodata = serodata)
-  # corrects benchmark length
-  prev_expanded_compare <- prev_expanded_compare[1:nrow(prev_expanded), ]
+  cohort_ages <- get_cohort_ages(simdata)
+  foi_central_estimates <- get_foi_central_estimates(
+    seromodel_object = model_object,
+    cohort_ages = cohort_ages
+  ) %>%
+    mutate(
+      # calculates tolerance as half the confidence interval size
+      tol = (upper - lower)/2
+    )
 
-
-  # compares expanded prevalence with benchmark
   expect_true(
     all(
       dplyr::near(
-        prev_expanded$predicted_prev,
-        prev_expanded_compare$predicted_prev,
-        tol = prev_expanded_compare$tol
+        foi_central_estimates$medianv,
+        foi,
+        tol = foi_central_estimates$tol
       )
     )
   )
