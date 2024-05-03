@@ -2,6 +2,7 @@
 
 export(extract_seromodel_summary)
 export(fit_seromodel)
+export(fit_seromodel_optimization)
 export(generate_sim_data)
 export(get_cohort_ages)
 export(get_foi_central_estimates)

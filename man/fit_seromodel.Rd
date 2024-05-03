@@ -14,6 +14,7 @@ fit_seromodel(
   max_treedepth = 10,
   chains = 4,
   seed = 12345,
+  init_value = NULL,
   ...
 )
 }
@@ -61,6 +62,9 @@ to the \code{chains} parameter in \link[rstan:stanmodel-method-sampling]{samplin
 
 \item{seed}{For further details refer to the \code{seed} parameter in
 \link[rstan:stanmodel-method-sampling]{sampling}.}
+
+\item{init_value}{optional list, each element of which is a named list
+containing initial values of the parameters for that MCMC chain.}
 
 \item{...}{Additional parameters for \link[rstan:stanmodel-method-sampling]{sampling}.}
 }
