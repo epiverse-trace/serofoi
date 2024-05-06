@@ -109,15 +109,39 @@ plot_seroprev_fitted <- function(seromodel_object,
   checkmate::assert_class(seromodel_object, "stanfit", null.ok = TRUE)
   validate_prepared_serodata(serodata)
 
-  foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
+  # foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
+  # prev_expanded <- get_prev_expanded(
+  #   foi,
+  #   serodata = serodata,
+  #   alpha = alpha,
+  #   bin_data = bin_data,
+  #   bin_step = bin_step
+  # )
 
-  prev_expanded <- get_prev_expanded(
-    foi,
-    serodata = serodata,
-    alpha = alpha,
-    bin_data = bin_data,
-    bin_step = bin_step
-  )
+  prev_expanded <- left_join(
+    serodata %>% rename(age = age_mean_f),
+    as.data.frame(
+      rstan::summary(
+        seromodel_object,
+        probs = c(alpha, 1 - alpha))$summary
+    ) %>%
+      tibble::rownames_to_column("parameter") %>%
+      filter(grepl("P_sim", parameter)) %>%
+      mutate(
+        age = serodata$age_mean_f
+      ) %>%
+      rename(
+        predicted_prev = mean,
+        predicted_prev_lower = paste0(alpha * 100, "%"),
+        predicted_prev_upper = paste0((1 - alpha) * 100, "%")
+      ),
+    by = "age"
+  ) %>%
+    select(
+      age, age_min, age_max, total,
+      prev_obs, prev_obs_lower, prev_obs_upper,
+      predicted_prev, predicted_prev_lower, predicted_prev_upper
+    )
 
   if(is.null(ylim_prev)) {
     ylim_prev <- c(
@@ -221,7 +245,7 @@ plot_foi <- function(seromodel_object,
   }
   else if (
     seromodel_object@model_name %in%
-    c("av_normal", "av_normal_log")
+    c("av_normal", "av_normal_serorev")
   ) {
     xlab <- "age"
     foi_plot <-
@@ -323,7 +347,7 @@ plot_rhats <- function(seromodel_object,
   }
   else if (
     seromodel_object@model_name %in%
-    c("av_normal", "av_normal_log")
+    c("av_normal", "av_normal_serorev")
   ) {
     rhats_plot <-
       ggplot2::ggplot(rhats, ggplot2::aes(.data$age, .data$rhat))
