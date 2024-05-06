@@ -6,17 +6,17 @@
 ```
 foi_sim_constant <- rep(0.02, 50)
 
-serodata_constant <- generate_sim_data(
-  sim_data = data.frame(
-    age=seq(1,50),
-    tsur=2050),
-  foi=foi_sim_constant,
-  sample_size_by_age = 5
-)
+serodata_constant <- generate_sim_data(  
+  sim_data = data.frame(  
+    age = seq(1, 50),  
+    tsur = 2050),  
+  foi = foi_sim_constant,  
+  sample_size_by_age = 5  
+)  
 ```
 To generate grouped serosurveys the function `group_sim_data` can be used:
 ```
-serodata_constant <- group_sim_data(serodata_constant , step = 5) 
+serodata_constant <- group_sim_data(serodata_constant, step = 5)
 ```
 
 ## Breaking changes
