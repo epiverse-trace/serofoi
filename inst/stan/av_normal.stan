@@ -34,7 +34,8 @@ transformed parameters {
     fois_vector,
 		chunks,
     ages,
-    n_obs
+    n_obs,
+    0
   );
 }
 

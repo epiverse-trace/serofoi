@@ -263,6 +263,9 @@ fit_seromodel <- function(
     serodata,
     foi_model = "constant",
     foi_parameters = NULL,
+    include_seroreversion = FALSE,
+    serorev_prior = "uniform",
+    serorev_parameters = NULL,
     chunks = NULL,
     chunk_size = 1,
     iter = 1000,
@@ -274,40 +277,64 @@ fit_seromodel <- function(
   err_msg <- paste0(
     "constant, ",
     "tv_normal, tv_normal_log, or ",
-    "av_normal, av_normal_log"
+    "av_normal"
   )
   stopifnot(
     err_msg =
       foi_model %in% c(
         "constant",
         "tv_normal", "tv_normal_log",
-        "av_normal", "av_normal_log"
+        "av_normal", "av_normal_serorev"
         ),
     "iter must be numeric" = is.numeric(iter),
     "seed must be numeric" = is.numeric(seed)
   )
-  model <- stanmodels[[foi_model]]
-  # Set default foi parameters 
+
+  if (include_seroreversion) {
+    # Select model with seroversion
+    foi_model <- paste0(foi_model, "_serorev")
+    # Set default serorev parameters
+    if (is.null(serorev_parameters)) {
+      if (serorev_prior == "uniform") {
+        serorev_parameters = list(
+          serorev_a = 0,
+          serorev_b = 1
+        )
+      }
+      else if (serorev_prior == "normal") {
+        serorev_parameters = list(
+          serorev_a = 0.5,
+          serorev_b = 0.3
+        )
+      }
+    }
+  }
+
+  # Set default foi parameters
   if (is.null(foi_parameters)) {
-     if (foi_model == "constant") {
+    if (foi_model == "constant") {
       foi_parameters = list(
         foi_a = 0,
         foi_b = 2
       )
-     }
-     else if (foi_model %in% c("tv_normal", "av_normal")) {
+    }
+    else if (foi_model %in% c("tv_normal", "av_normal", "av_normal_serorev")) {
       foi_parameters = list(
         foi_location = 0,
         foi_scale = 1
       )
-     }
-     else if (foi_model %in% c("tv_normal_log", "av_normal_log")) {
+    }
+    else if (foi_model %in% c("tv_normal_log")) {
       foi_parameters = list(
         foi_location = -6,
         foi_scale = 4
       )
-     }
+    }
   }
+  # Load Stan model
+  model <- stanmodels[[foi_model]]
+
+  # Set default chunks structure
   if (is.null(chunks)) {
     chunks <- get_chunk_structure(
       serodata = serodata,
@@ -337,11 +364,28 @@ fit_seromodel <- function(
         )
       )
   }
-  else if (foi_model %in% c("av_normal", "av_normal_log")) {
+  else if (foi_model %in% c("av_normal", "av_normal_serorev")
+           ) {
     stan_data <- append(
       stan_data,
       list(ages = serodata$age_mean_f)
       )
+    if (include_seroreversion) {
+      if (serorev_prior == "uniform") {
+        serorev_prior <- 0
+      }
+      else if (serorev_prior == "normal") {
+        serorev_prior <- 1
+      }
+      stan_data <- append(
+        stan_data,
+        list(
+          serorev_prior = serorev_prior,
+          serorev_a = serorev_parameters$serorev_a,
+          serorev_b = serorev_parameters$serorev_b
+        )
+      )
+    }
   }
 
   if (foi_model == "constant") {
@@ -543,7 +587,7 @@ get_foi_central_estimates <- function(
   }
   else if (
     seromodel_object@model_name %in%
-    c("av_normal", "av_normal_log")
+    c("av_normal", "av_normal_serorev")
   ) {
     foi_central_estimates <- data.frame(
       age = rev(cohort_ages$age)

@@ -11,8 +11,12 @@ data {
 
 	// prior choices
 	int chunks[age_max];
-	real foi_location;
+	real<lower=0> foi_location;
 	real<lower=0> foi_scale;
+
+  int<lower=0, upper=1> serorev_prior;
+  real<lower=0> serorev_a;
+  real<lower=0> serorev_b;
 }
 
 transformed data {
@@ -20,24 +24,23 @@ transformed data {
 }
 
 parameters {
-  row_vector[n_chunks] log_fois;
+  row_vector<lower=0>[n_chunks] fois;
   real<lower=0> sigma;
+  real<lower=0> seroreversion_rate;
 }
 
 transformed parameters {
-  row_vector<lower=0>[n_chunks] fois;
   vector[n_chunks] fois_vector;
   vector[n_obs] prob_infected;
 
-  for(i in 1:n_chunks)
-    fois[i] = exp(log_fois[i]);
   fois_vector = to_vector(fois);
 
   prob_infected = prob_infected_calculate(
     fois_vector,
 		chunks,
     ages,
-    n_obs
+    n_obs,
+    seroreversion_rate
   );
 }
 
@@ -45,9 +48,15 @@ model {
   n_pos ~ binomial(n_total, prob_infected);
   sigma ~ cauchy(0, 1);
 
-	log_fois[1] ~ normal(foi_location, foi_scale);
+	fois[1] ~ normal(foi_location, foi_scale);
   for(i in 2:n_chunks)
-    log_fois[i] ~ normal(log_fois[i - 1], sigma);
+    fois[i] ~ normal(fois[i - 1], sigma);
+
+  if(serorev_prior == 0) {
+    seroreversion_rate ~  uniform(serorev_a, serorev_b);
+  } else if( serorev_prior == 1) {
+    seroreversion_rate ~  normal(serorev_a, serorev_b);
+  }
 }
 
 generated quantities{

@@ -46,7 +46,7 @@ get_table_rhats <- function(seromodel_object,
   }
   else if (
     seromodel_object@model_name %in%
-    c("av_normal", "av_normal_log")
+    c("av_normal", "av_normal_serorev")
   ) {
     model_rhats <- data.frame(
       age = rev(cohort_ages$age),
