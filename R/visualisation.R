@@ -292,9 +292,14 @@ plot_rhats <- function(seromodel_object,
     ggplot2::ggplot(rhats, ggplot2::aes(.data$year, .data$rhat)) +
     ggplot2::geom_line(colour = "purple") +
     ggplot2::geom_point() +
-    ggplot2::coord_cartesian(ylim = c(0.7, 2)) +
+    ggplot2::coord_cartesian(
+      ylim = c(
+        min(1.0, min(rhats$rhat)),
+        max(1.02, max(rhats$rhat))
+        )
+      ) +
     ggplot2::geom_hline(
-      yintercept = 1.1,
+      yintercept = 1.01,
       colour = "blue",
       size = size_text / 12
     ) +
