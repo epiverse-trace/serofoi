@@ -281,48 +281,25 @@ plot_foi <- function(seromodel_object,
 plot_rhats <- function(seromodel_object,
                        cohort_ages,
                        size_text = 25) {
-  if (is.character(seromodel_object)) {
-    message("model did not run")
-    print_warning <- "errors"
+  checkmate::assert_class(seromodel_object, "stanfit", null.ok = TRUE)
 
-    rhats_plot <- ggplot2::ggplot(data.frame()) +
-      ggplot2::geom_point() +
-      ggplot2::xlim(0, 10) +
-      ggplot2::ylim(0, 10) +
-      ggplot2::annotate("text",
-                        x = 4,
-                        y = 5,
-                        label = print_warning
-      ) +
-      ggplot2::theme_bw(25) +
-      ggplot2::theme(
-        axis.text.x = ggplot2::element_blank(),
-        axis.text.y = ggplot2::element_blank()
-      ) +
-      ggplot2::ylab(" ") +
-      ggplot2::xlab(" ")
-    ggplot2::theme(plot.title = ggplot2::element_text(size = 10))
-  } else {
-    if (!is.null(seromodel_object@sim$samples)) {
-      rhats <- get_table_rhats(
-        seromodel_object = seromodel_object,
-        cohort_ages = cohort_ages
-      )
+  rhats <- get_table_rhats(
+    seromodel_object = seromodel_object,
+    cohort_ages = cohort_ages
+  )
 
-      rhats_plot <-
-        ggplot2::ggplot(rhats, ggplot2::aes(.data$year, .data$rhat)) +
-        ggplot2::geom_line(colour = "purple") +
-        ggplot2::geom_point() +
-        ggplot2::coord_cartesian(ylim = c(0.7, 2)) +
-        ggplot2::geom_hline(
-          yintercept = 1.1,
-          colour = "blue",
-          size = size_text / 12
-        ) +
-        ggplot2::theme_bw(size_text) +
-        ggplot2::ylab("Convergence (R^)")
-    }
-  }
+  rhats_plot <-
+    ggplot2::ggplot(rhats, ggplot2::aes(.data$year, .data$rhat)) +
+    ggplot2::geom_line(colour = "purple") +
+    ggplot2::geom_point() +
+    ggplot2::coord_cartesian(ylim = c(0.7, 2)) +
+    ggplot2::geom_hline(
+      yintercept = 1.1,
+      colour = "blue",
+      size = size_text / 12
+    ) +
+    ggplot2::theme_bw(size_text) +
+    ggplot2::ylab("Convergence (R^)")
 
   return(rhats_plot)
 }
