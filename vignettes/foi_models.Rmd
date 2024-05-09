@@ -85,6 +85,10 @@ plot_seromodel(
 ```
 Figure 1. Constant serofoi model plot. Simulated (red) vs modelled (blue) *FoI*.
 
+```{r clean env constant, include = FALSE, echo = TRUE, message=FALSE}
+rm(list = ls(pattern = "_constant"))
+```
+
 In this case, 800 iterations are enough to ensure convergence. The `plot_seromodel` method provides a visualisation of the results, including a summary where the expected log pointwise predictive density (`elpd`) and its standard error (`se`) are shown. We say that a model converges if all the R-hat estimates are below 1.01.
 
 ## Time-varying FoI models
@@ -137,6 +141,10 @@ plot_seromodel(
 )
 ```
 Figure 2. Slow time-varying serofoi model plot.  Simulated (red) vs modelled (blue) *FoI*. 
+
+```{r clean env sw_dec, include = FALSE, echo = TRUE, message=FALSE}
+rm(list = ls(pattern = "_sw_dec|_normal"))
+```
 
 The number of iterations required may depend on the number of years, reflected by the difference between the year of the serosurvey and the maximum age-class sampled.
 
