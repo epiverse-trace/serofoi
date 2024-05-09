@@ -99,7 +99,7 @@ using the data from a seroprevalence survey \code{serodata} as the input data. S
 \dontrun{
 data(chagas2012)
 serodata <- prepare_serodata(chagas2012)
-run_seromodel(
+fit_seromodel(
   serodata,
   foi_model = "constant"
 )
