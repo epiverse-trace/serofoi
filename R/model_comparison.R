@@ -22,13 +22,24 @@
 #' @export
 get_table_rhats <- function(seromodel_object,
                             cohort_ages) {
+  checkmate::assert_class(seromodel_object, "stanfit")
+
   rhats <- bayesplot::rhat(seromodel_object, "foi")
 
   if (any(is.nan(rhats))) {
-    rhats[which(is.nan(rhats))] <- 0
+    warn_msg <- paste0(
+      length(which(is.nan(rhats))),
+      " rhat values are `nan`, ",
+      "indicating the model may not have run correctly for those times.\n",
+      "Setting those rhat values to `NA`."
+    )
+    warning(warn_msg)
+    rhats[which(is.nan(rhats))] <- NA
   }
-  model_rhats <- data.frame(year = cohort_ages$birth_year, rhat = rhats)
-  model_rhats$rhat[model_rhats$rhat == 0] <- NA
+  model_rhats <- data.frame(
+    year = cohort_ages$birth_year,
+    rhat = rhats
+    )
 
   return(model_rhats)
 }
