@@ -36,7 +36,7 @@ serodata_constant <- group_sim_data(serodata_constant, step = 5)
 ```
   * Now, the output is a `stan_fit` object as obtained from [`rstan::sampling`](https://mc-stan.org/rstan/reference/stanmodel-method-sampling.html). Because of this, **some plotting functionalities now require `serodata` as an input**.
 
-* Initial prior distribution parameters `foi_location` and `foi_scale` can be specified explicitely in `fit_seromodel`:
+* Initial prior distribution parameters `foi_location` and `foi_scale` can be specified explicitly in `fit_seromodel`:
 ```
 seromodel <- fit_seromodel(
   serodata,
@@ -104,7 +104,7 @@ seromodel <- fit_seromodel(serodata, foi_model = "tv_normal", chunks = chunks)
   * `plot_seromodel`
 
 * Unit testing:
-  * Separate modelling testings by model
+  * Separate modelling tests by model
   * Use of  `dplyr::near` to test models statistical validity
   * Add tests for data simulation functions
 
@@ -114,9 +114,9 @@ seromodel <- fit_seromodel(serodata, foi_model = "tv_normal", chunks = chunks)
 
 This release of _**serofoi**_, includes the following:
 
-1. Implementation of package modules: Incorporates data preparation, modeling, and visualization modules, they enable efficient handling of data, perform statistical modeling, and generate visual representations of the results.
+1. Implementation of package modules: Incorporates data preparation, modelling, and visualization modules, they enable efficient handling of data, perform statistical modelling, and generate visual representations of the results.
 2. Documentation: It consists of vignettes, a website, and uses cases that provide detailed instructions on how to use the package effectively.
 3. Implementation of 3 models for calculating the Force-of-Infection (FoI): The first model is the constant or endemic model, which assumes a stable FoI over time. The second and third models are time-varying, with the normal FoI model representing a slow change in FoI and the normal-log FoI model representing a fast epidemic change in FoI.
 4. Definition of coverage test to assurance the quality of the package.
 
-Overall, this release introduces essential package functionality, comprehensive documentation, various FoI models, and a coverage test, enabling users to analyze seroprevalence data and calculate the Force-of-infection.
+Overall, this release introduces essential package functionality, comprehensive documentation, various FoI models, and a coverage test, enabling users to analyse seroprevalence data and calculate the Force-of-infection.
