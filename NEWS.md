@@ -1,3 +1,9 @@
+# serofoi development version
+
+## Documentation
+
+* Datasets `simdata_*` were removed from the package and replaced by corresponding code to simulate data in vignettes (see [#184](https://github.com/epiverse-trace/serofoi/pull/184)).
+
 # serofoi 0.1.0
 
 ## New features
