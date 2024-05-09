@@ -4,6 +4,14 @@
 
 * Datasets `simdata_*` were removed from the package and replaced by corresponding code to simulate data in vignettes (see [#184](https://github.com/epiverse-trace/serofoi/pull/184)).
 
+## Breaking changes
+
+* Update R-hat convergence threshold to $\hat{R} < 1.01$ ([Vehtari, Aki, et al. 2021](https://projecteuclid.org/journals/bayesian-analysis/volume-16/issue-2/Rank-Normalization-Folding-and-Localization--An-Improved-R%cb%86-for/10.1214/20-BA1221.full))
+
+## Minor changes
+
+* Add input validation for `plot_rhats`
+
 # serofoi 0.1.0
 
 ## New features
