@@ -20,12 +20,14 @@ model by means of \link{run_seromodel}.}
 \item{cohort_ages}{A data frame containing the age of each cohort
 corresponding to each birth year.}
 
-\item{max_lambda}{TBD}
+\item{max_lambda}{Upper \code{ylim}for force-of-infection plot}
 
 \item{size_text}{Text size use in the theme of the graph returned by the
 function.}
 
-\item{foi_sim}{TBD}
+\item{foi_sim}{Force-of-infection trend to be plotted alongside the estimated
+force-of-infection. Typically this corresponds to the force-of-infection used
+to simulate the serosurvey used to model.}
 }
 \value{
 A ggplot2 object containing the force-of-infection vs time including
