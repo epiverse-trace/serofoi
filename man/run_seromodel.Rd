@@ -8,10 +8,9 @@ estimate the seroprevalence based on the result of the fit}
 run_seromodel(
   serodata,
   foi_model = c("constant", "tv_normal_log", "tv_normal"),
-  foi_location = 0,
-  foi_scale = 1,
-  chunk_size = 1,
+  foi_parameters = NULL,
   chunks = NULL,
+  chunk_size = 1,
   iter = 1000,
   adapt_delta = 0.9,
   max_treedepth = 10,
@@ -43,11 +42,19 @@ options:
 \item{\code{"tv_normal_log"}}{Runs a normal logarithmic model}
 }}
 
-\item{foi_location}{Location parameter of the force-of-infection distribution
-of the selected model. Depending on \code{foi_model}, the meaning may vary.}
+\item{foi_parameters}{List specifying the initial prior parameters of the
+model \code{foi_model} to be specified as (e.g.):
+\describe{
+\item{\code{"constant"}}{\code{list(foi_a = 0, foi_b = 2)}}
+\item{\code{"tv_normal"}}{\code{list(foi_location = 0, foi_scale = 1)}}
+\item{\code{"tv_normal_log"}}{\code{list(foi_location = -6, foi_scale = 4)}}
+}}
 
-\item{foi_scale}{Scale parameter of the force-of-infection distribution
-of the selected model. Depending on \code{foi_model}, the meaning may vary.}
+\item{chunks}{Numeric list specifying the chunk structure of the time
+interval from the birth year of the oldest age cohort
+\code{min(serodata$age_mean_f)} to the time when the serosurvey was conducted
+\code{t_sur}. If \code{NULL}, the time interval is divided in chunks of size
+\code{chunk_size}.}
 
 \item{chunk_size}{Size of the chunks to be used in case that the chunk
 structure \code{chunks} is not specified in \link{fit_seromodel}.
@@ -55,12 +62,6 @@ Default is 1, meaning that one force of infection value is to be estimated
 for every year in the time interval spanned by the serosurvey.
 If the length of the time interval is not exactly divisible by \code{chunk_size},
 the remainder years are included in the last chunk.}
-
-\item{chunks}{Numeric list specifying the chunk structure of the time
-interval from the birth year of the oldest age cohort
-\code{min(serodata$age_mean_f)} to the time when the serosurvey was conducted
-\code{t_sur}. If \code{NULL}, the time interval is divided in chunks of size
-\code{chunk_size}.}
 
 \item{iter}{Number of interactions for each chain including the warmup.
 \code{iter} in \link[rstan:stanmodel-method-sampling]{sampling}.}
