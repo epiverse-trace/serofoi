@@ -4,6 +4,10 @@ data {
      int n_pos[n_obs];
      int n_total[n_obs];
      matrix[n_obs, age_max] observation_exposure_matrix;
+
+     // prior choices
+     real<lower=0> foi_a;
+     real<lower=0, upper=2> foi_b;
 }
 
 parameters {
@@ -28,7 +32,7 @@ transformed parameters {
 model {
   for (i in 1:n_obs)
    n_pos[i] ~ binomial(n_total[i], prob_infected[i]);
-   lambda0 ~ uniform (0, 2);
+   lambda0 ~ uniform (foi_a, foi_b);
 }
 
 generated quantities{
