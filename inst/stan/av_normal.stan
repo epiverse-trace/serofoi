@@ -1,18 +1,18 @@
 functions {
-  #include functions/prob_infected_tv.stan
+  #include functions/prob_infected_av.stan
 }
 
 data {
-  int<lower=0> n_obs;
-  int<lower=1> age_max;
-  int n_pos[n_obs];
-  int n_total[n_obs];
-  matrix[n_obs, age_max] observation_exposure_matrix;
+	int<lower=0> n_obs;
+	int<lower=1> age_max;
+	int n_pos[n_obs];
+	int n_total[n_obs];
+	int ages[n_obs];
 
-  // prior choices
-  int chunks[age_max];
-  real<lower=0> foi_location;
-  real<lower=0> foi_scale;
+	// prior choices
+	int chunks[age_max];
+	real<lower=0> foi_location;
+	real<lower=0> foi_scale;
 }
 
 transformed data {
@@ -20,8 +20,8 @@ transformed data {
 }
 
 parameters {
-   row_vector<lower=0>[n_chunks] fois;
-   real<lower=0> sigma;
+  row_vector<lower=0>[n_chunks] fois;
+  real<lower=0> sigma;
 }
 
 transformed parameters {
@@ -32,10 +32,10 @@ transformed parameters {
 
   prob_infected = prob_infected_calculate(
     fois_vector,
-    chunks,
-    observation_exposure_matrix,
+		chunks,
+    ages,
     n_obs,
-    age_max
+    0
   );
 }
 
@@ -43,7 +43,7 @@ model {
   n_pos ~ binomial(n_total, prob_infected);
   sigma ~ cauchy(0, 1);
 
-  fois[1] ~ normal(foi_location, foi_scale);
+	fois[1] ~ normal(foi_location, foi_scale);
   for(i in 2:n_chunks)
     fois[i] ~ normal(fois[i - 1], sigma);
 }
