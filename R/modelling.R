@@ -149,10 +149,9 @@ validate_prepared_serodata <- function(serodata) {
 run_seromodel <- function(
     serodata,
     foi_model = c("constant", "tv_normal_log", "tv_normal"),
-    foi_location = 0,
-    foi_scale = 1,
-    chunk_size = 1,
+    foi_parameters = NULL,
     chunks = NULL,
+    chunk_size = 1,
     iter = 1000,
     adapt_delta = 0.90,
     max_treedepth = 10,
@@ -168,10 +167,9 @@ run_seromodel <- function(
   seromodel_object <- fit_seromodel(
     serodata = serodata,
     foi_model = foi_model,
-    foi_location = foi_location,
-    foi_scale = foi_scale,
-    chunk_size = chunk_size,
+    foi_parameters = foi_parameters,
     chunks = chunks,
+    chunk_size = chunk_size,
     iter = iter,
     adapt_delta = adapt_delta,
     max_treedepth = max_treedepth,
@@ -220,10 +218,13 @@ run_seromodel <- function(
 #' \item{`"tv_normal"`}{Runs a normal model}
 #' \item{`"tv_normal_log"`}{Runs a normal logarithmic model}
 #' }
-#' @param foi_location Location parameter of the force-of-infection distribution
-#' of the selected model. Depending on `foi_model`, the meaning may vary.
-#' @param foi_scale Scale parameter of the force-of-infection distribution
-#' of the selected model. Depending on `foi_model`, the meaning may vary.
+#' @param foi_parameters List specifying the initial prior parameters of the
+#' model `foi_model` to be specified as (e.g.):
+#' \describe{
+#' \item{`"constant"`}{`list(foi_a = 0, foi_b = 2)`}
+#' \item{`"tv_normal"`}{`list(foi_location = 0, foi_scale = 1)`}
+#' \item{`"tv_normal_log"`}{`list(foi_location = -6, foi_scale = 4)`}
+#' }
 #' @param chunks Numeric list specifying the chunk structure of the time
 #' interval from the birth year of the oldest age cohort
 #' `min(serodata$age_mean_f)` to the time when the serosurvey was conducted
@@ -261,9 +262,8 @@ run_seromodel <- function(
 #' @export
 fit_seromodel <- function(
     serodata,
-    foi_model = c("constant", "tv_normal_log", "tv_normal"),
-    foi_location = 0,
-    foi_scale = 1,
+    foi_model = c("constant", "tv_normal_log", "tv_normal", "av_normal"),
+    foi_parameters = NULL,
     chunks = NULL,
     chunk_size = 1,
     iter = 1000,
@@ -272,16 +272,48 @@ fit_seromodel <- function(
     seed = 12345,
     ...) {
   serodata <- validate_prepared_serodata(serodata)
+  err_msg <- paste0(
+    "foi_model must be either ",
+    "constant, ",
+    "tv_normal, tv_normal_log, or ",
+    "av_normal"
+  )
   stopifnot(
-    "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`" =
-      foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
+    err_msg =
+      foi_model %in% c(
+        "constant",
+        "tv_normal", "tv_normal_log",
+        "av_normal"
+        ),
     "iter must be numeric" = is.numeric(iter),
     "seed must be numeric" = is.numeric(seed)
   )
+
+  # Set default foi parameters
+  if (is.null(foi_parameters)) {
+    if (foi_model == "constant") {
+      foi_parameters <- list(
+        foi_a = 0,
+        foi_b = 2
+      )
+    } else if (foi_model %in% c("tv_normal", "av_normal")) {
+      foi_parameters <- list(
+        foi_location = 0,
+        foi_scale = 1
+      )
+    } else if (foi_model == "tv_normal_log") {
+      foi_parameters <- list(
+        foi_location = -6,
+        foi_scale = 4
+      )
+    }
+  }
+
+  # Load Stan model
   model <- stanmodels[[foi_model]]
   exposure_matrix <- get_exposure_matrix(serodata)
-  n_obs <- nrow(serodata)
 
+  # Set default chunks structure
   if (is.null(chunks)) {
     chunks <- get_chunk_structure(
       serodata = serodata,
@@ -294,16 +326,47 @@ fit_seromodel <- function(
       length(chunks) == max(serodata$age_mean_f)
   )
 
+  # Build Stan data
   stan_data <- list(
-    n_obs = n_obs,
+    n_obs = nrow(serodata),
     n_pos = serodata$counts,
     n_total = serodata$total,
     age_max = max(serodata$age_mean_f),
-    observation_exposure_matrix = exposure_matrix,
-    chunks = chunks,
-    foi_location = foi_location,
-    foi_scale = foi_scale
+    chunks = chunks
   )
+
+  if (foi_model %in% c("constant", "tv_normal", "tv_normal_log")) {
+    exposure_matrix <- get_exposure_matrix(serodata)
+    stan_data <- append(
+      stan_data,
+      list(
+        observation_exposure_matrix = exposure_matrix
+        )
+      )
+  } else if (foi_model == "av_normal") {
+    stan_data <- append(
+      stan_data,
+      list(ages = serodata$age_mean_f)
+      )
+  }
+
+  if (foi_model == "constant") {
+    stan_data <- append(
+      stan_data,
+      list(
+        foi_a = foi_parameters$foi_a,
+        foi_b = foi_parameters$foi_b
+      )
+    )
+  } else {
+    stan_data <- append(
+      stan_data,
+      list(
+        foi_location = foi_parameters$foi_location,
+        foi_scale = foi_parameters$foi_scale
+      )
+    )
+  }
 
   if (foi_model == "tv_normal_log") {
     f_init <- function() {
