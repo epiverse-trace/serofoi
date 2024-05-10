@@ -166,8 +166,10 @@ plot_seroprev_fitted <- function(seromodel_object,
 #' @inheritParams get_foi_central_estimates
 #' @param size_text Text size use in the theme of the graph returned by the
 #'   function.
-#' @param max_lambda TBD
-#' @param foi_sim TBD
+#' @param max_lambda Upper `ylim`for force-of-infection plot
+#' @param foi_sim Force-of-infection trend to be plotted alongside the estimated
+#' force-of-infection. Typically this corresponds to the force-of-infection used
+#' to simulate the serosurvey used to model.
 #' @return A ggplot2 object containing the force-of-infection vs time including
 #'   the corresponding confidence interval.
 #' @examples
@@ -191,14 +193,41 @@ plot_foi <- function(seromodel_object,
                      size_text = 25,
                      foi_sim = NULL) {
   checkmate::assert_class(seromodel_object, "stanfit", null.ok = TRUE)
+
   #-------- This bit is to get the actual length of the foi data
   foi_data <- get_foi_central_estimates(
     seromodel_object = seromodel_object,
     cohort_ages = cohort_ages
   )
 
-  foi_plot <-
-    ggplot2::ggplot(foi_data, ggplot2::aes(x = .data$year)) +
+  if (
+    seromodel_object@model_name %in%
+    c("constant", "tv_normal", "tv_normal_log")
+    ) {
+    xlab <- "year"
+    foi_plot <-
+      ggplot2::ggplot(foi_data, ggplot2::aes(x = .data$year))
+
+    if (!is.null(foi_sim)) {
+      foi_sim_data <- data.frame(
+        year = foi_data$year
+      )
+    }
+  } else if (
+    seromodel_object@model_name == "av_normal"
+  ) {
+    xlab <- "age"
+    foi_plot <-
+      ggplot2::ggplot(foi_data, ggplot2::aes(x = .data$age))
+
+    if (!is.null(foi_sim)) {
+      foi_sim_data <- data.frame(
+        age = foi_data$age
+      )
+    }
+  }
+
+  foi_plot <- foi_plot +
     ggplot2::geom_ribbon(
       ggplot2::aes(
         ymin = .data$lower,
@@ -215,7 +244,7 @@ plot_foi <- function(seromodel_object,
     ggplot2::theme_bw(size_text) +
     ggplot2::coord_cartesian(ylim = c(0, max_lambda)) +
     ggplot2::ylab("Force-of-Infection") +
-    ggplot2::xlab("year")
+    ggplot2::xlab(xlab)
 
   if (!is.null(foi_sim)) {
     if (nrow(foi_data) != length(foi_sim)) {
@@ -288,8 +317,18 @@ plot_rhats <- function(seromodel_object,
     cohort_ages = cohort_ages
   )
 
-  rhats_plot <-
-    ggplot2::ggplot(rhats, ggplot2::aes(.data$year, .data$rhat)) +
+  if (
+    seromodel_object@model_name %in%
+    c("constant", "tv_normal", "tv_normal_log")
+  ) {
+    rhats_plot <-
+      ggplot2::ggplot(rhats, ggplot2::aes(.data$year, .data$rhat))
+  } else if (seromodel_object@model_name == "av_normal") {
+    rhats_plot <-
+      ggplot2::ggplot(rhats, ggplot2::aes(.data$age, .data$rhat))
+  }
+
+  rhats_plot <- rhats_plot +
     ggplot2::geom_line(colour = "purple") +
     ggplot2::geom_point() +
     ggplot2::coord_cartesian(

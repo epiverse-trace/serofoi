@@ -510,6 +510,10 @@ get_exposure_matrix <- function(serodata) {
 #'   model by means of [run_seromodel].
 #' @param cohort_ages  A data frame containing the age of each cohort
 #'   corresponding to each birth year.
+#' @param lower_quantile Lower quantile used to compute the credible interval of
+#' the fitted force-of-infection.
+#' @param upper_quantile Lower quantile used to compute the credible interval of
+#' the fitted force-of-infection.
 #' @return `foi_central_estimates`. Central estimates for the fitted forced FoI
 #' @examples
 #' data(chagas2012)
@@ -524,27 +528,37 @@ get_exposure_matrix <- function(serodata) {
 #'   cohort_ages = cohort_ages
 #' )
 #' @export
-get_foi_central_estimates <- function(seromodel_object,
-                                      cohort_ages) {
-  if (seromodel_object@model_name == "tv_normal_log") {
-    lower_quantile <- 0.1
-    upper_quantile <- 0.9
-    medianv_quantile <- 0.5
-  } else {
-    lower_quantile <- 0.05
-    upper_quantile <- 0.95
-    medianv_quantile <- 0.5
-  }
+get_foi_central_estimates <- function(
+    seromodel_object,
+    cohort_ages,
+    lower_quantile = 0.05,
+    upper_quantile = 0.95
+    ) {
   # extracts force-of-infection from stan fit
   foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
 
+  # defines time scale depending on the type of the model
+  if(
+    seromodel_object@model_name %in%
+    c("constant", "tv_normal", "tv_normal_log")
+  ) {
+    foi_central_estimates <- data.frame(
+      year = cohort_ages$birth_year
+    )
+  } else if (seromodel_object@model_name == "av_normal") {
+    foi_central_estimates <- data.frame(
+      age = rev(cohort_ages$age)
+    )
+  }
+
   # generates central estimations
-  foi_central_estimates <- data.frame(
-    year = cohort_ages$birth_year,
-    lower = apply(foi, 2, quantile, lower_quantile),
-    upper = apply(foi, 2, quantile, upper_quantile),
-    medianv = apply(foi, 2, quantile, medianv_quantile)
-  )
+  foi_central_estimates <- foi_central_estimates %>%
+    mutate(
+      lower = apply(foi, 2, quantile, lower_quantile),
+      upper = apply(foi, 2, quantile, upper_quantile),
+      medianv = apply(foi, 2, quantile, 0.5)
+    )
+
   return(foi_central_estimates)
 }
 
