@@ -150,12 +150,12 @@ run_seromodel <- function(
     serodata,
     foi_model = c("constant", "tv_normal_log", "tv_normal"),
     foi_parameters = NULL,
+    include_seroreversion = FALSE,
+    serorev_prior = "uniform",
+    serorev_parameters = NULL,
     chunks = NULL,
     chunk_size = 1,
     iter = 1000,
-    adapt_delta = 0.90,
-    max_treedepth = 10,
-    seed = 12345,
     print_summary = TRUE,
     ...) {
   .Deprecated("fit_seromodel")
@@ -168,12 +168,12 @@ run_seromodel <- function(
     serodata = serodata,
     foi_model = foi_model,
     foi_parameters = foi_parameters,
+    include_seroreversion = include_seroreversion,
+    serorev_prior = serorev_prior,
+    serorev_parameters = serorev_parameters,
     chunks = chunks,
     chunk_size = chunk_size,
     iter = iter,
-    adapt_delta = adapt_delta,
-    max_treedepth = max_treedepth,
-    seed = seed,
     ...
   )
   message(
@@ -215,8 +215,9 @@ run_seromodel <- function(
 #'   options:
 #' \describe{
 #' \item{`"constant"`}{Runs a constant model}
-#' \item{`"tv_normal"`}{Runs a normal model}
-#' \item{`"tv_normal_log"`}{Runs a normal logarithmic model}
+#' \item{`"tv_normal"`}{Runs a time-varying normal model}
+#' \item{`"tv_normal_log"`}{Runs a time-varying normal logarithmic model}
+#' \item{`"av_normal`}{Runs an age-varying normal model}
 #' }
 #' @param foi_parameters List specifying the initial prior parameters of the
 #' model `foi_model` to be specified as (e.g.):
@@ -224,6 +225,20 @@ run_seromodel <- function(
 #' \item{`"constant"`}{`list(foi_a = 0, foi_b = 2)`}
 #' \item{`"tv_normal"`}{`list(foi_location = 0, foi_scale = 1)`}
 #' \item{`"tv_normal_log"`}{`list(foi_location = -6, foi_scale = 4)`}
+#' }
+#' @param include_seroreversion Boolean specifying whether to include
+#' seroreversion in the model or not.
+#' @param serorev_prior Specify seroreversion distribution to be used.
+#' Currently available options are:
+#' \describe{
+#' \item{`"uniform"`}{Use a uniform prior for the seroreversion}
+#' \item{`"normal"`}{Use a normal prior for the seroreversion}
+#' }
+#' @param serorev_parameters List specifying the initial prior parameters of the
+#' model `foi_model` to be specified as (e.g.):
+#' \describe{
+#' \item{`"uniform"`}{`list(serorev_a = 0, serorev_b = 2)`}
+#' \item{`"normal"`}{`list(serorev_a = 0, serorev_b = 1)`}
 #' }
 #' @param chunks Numeric list specifying the chunk structure of the time
 #' interval from the birth year of the oldest age cohort
@@ -238,16 +253,6 @@ run_seromodel <- function(
 #' the remainder years are included in the last chunk.
 #' @param iter Number of interactions for each chain including the warmup.
 #'   `iter` in [sampling][rstan::sampling].
-#' @param adapt_delta Real number between 0 and 1 that represents the target
-#' average acceptance probability. Increasing the value of `adapt_delta` will
-#' result in a smaller step size and fewer divergences. For further details
-#' refer to the `control` parameter in [sampling][rstan::sampling] or
-#' [here](https://mc-stan.org/rstanarm/reference/adapt_delta.html).
-#' @param max_treedepth Maximum tree depth for the binary tree used in the NUTS
-#' stan sampler. For further details refer to the `control` parameter in
-#' [sampling][rstan::sampling].
-#' @param seed For further details refer to the `seed` parameter in
-#'   [sampling][rstan::sampling].
 #' @param ... Additional parameters for [sampling][rstan::sampling].
 #' @return `seromodel_object`. `stanfit` object returned by the function
 #'   [sampling][rstan::sampling]
@@ -264,12 +269,12 @@ fit_seromodel <- function(
     serodata,
     foi_model = c("constant", "tv_normal_log", "tv_normal", "av_normal"),
     foi_parameters = NULL,
+    include_seroreversion = FALSE,
+    serorev_prior = "uniform",
+    serorev_parameters = NULL,
     chunks = NULL,
     chunk_size = 1,
     iter = 1000,
-    adapt_delta = 0.90,
-    max_treedepth = 10,
-    seed = 12345,
     ...) {
   serodata <- validate_prepared_serodata(serodata)
   err_msg <- paste0(
@@ -285,9 +290,27 @@ fit_seromodel <- function(
         "tv_normal", "tv_normal_log",
         "av_normal"
         ),
-    "iter must be numeric" = is.numeric(iter),
-    "seed must be numeric" = is.numeric(seed)
+    "iter must be numeric" = is.numeric(iter)
   )
+
+  if (include_seroreversion) {
+    # Select model with seroversion
+    foi_model <- paste0(foi_model, "_serorev")
+    # Set default serorev parameters
+    if (is.null(serorev_parameters)) {
+      if (serorev_prior == "uniform") {
+        serorev_parameters = list(
+          serorev_a = 0,
+          serorev_b = 1
+        )
+      } else if (serorev_prior == "normal") {
+        serorev_parameters = list(
+          serorev_a = 0.5,
+          serorev_b = 0.3
+        )
+      }
+    }
+  }
 
   # Set default foi parameters
   if (is.null(foi_parameters)) {
@@ -296,7 +319,9 @@ fit_seromodel <- function(
         foi_a = 0,
         foi_b = 2
       )
-    } else if (foi_model %in% c("tv_normal", "av_normal")) {
+    } else if (
+      foi_model %in% c("tv_normal", "av_normal", "av_normal_serorev")
+    ) {
       foi_parameters <- list(
         foi_location = 0,
         foi_scale = 1
@@ -311,7 +336,6 @@ fit_seromodel <- function(
 
   # Load Stan model
   model <- stanmodels[[foi_model]]
-  exposure_matrix <- get_exposure_matrix(serodata)
 
   # Set default chunks structure
   if (is.null(chunks)) {
@@ -343,11 +367,27 @@ fit_seromodel <- function(
         observation_exposure_matrix = exposure_matrix
         )
       )
-  } else if (foi_model == "av_normal") {
+  } else if (foi_model %in% c("av_normal", "av_normal_serorev")
+           ) {
     stan_data <- append(
       stan_data,
       list(ages = serodata$age_mean_f)
       )
+    if (include_seroreversion) {
+      if (serorev_prior == "uniform") {
+        serorev_prior <- 0
+      } else if (serorev_prior == "normal") {
+        serorev_prior <- 1
+      }
+      stan_data <- append(
+        stan_data,
+        list(
+          serorev_prior = serorev_prior,
+          serorev_a = serorev_parameters$serorev_a,
+          serorev_b = serorev_parameters$serorev_b
+        )
+      )
+    }
   }
 
   if (foi_model == "constant") {
@@ -378,23 +418,19 @@ fit_seromodel <- function(
     }
   }
 
+  # Run Stan model
   seromodel_fit <- rstan::sampling(
     model,
     data = stan_data,
     iter = iter,
     init = f_init,
-    control = list(
-      adapt_delta = adapt_delta,
-      max_treedepth = max_treedepth
-    ),
-    seed = seed,
     # https://github.com/stan-dev/rstan/issues/761#issuecomment-647029649
     chain_id = 0,
     include = FALSE,
     pars = "fois_vector",
     verbose = FALSE,
     refresh = 0,
-   ...
+    ...
   )
 
   if (seromodel_fit@mode == 0) {
@@ -538,14 +574,17 @@ get_foi_central_estimates <- function(
   foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
 
   # defines time scale depending on the type of the model
-  if(
+  if (
     seromodel_object@model_name %in%
     c("constant", "tv_normal", "tv_normal_log")
   ) {
     foi_central_estimates <- data.frame(
       year = cohort_ages$birth_year
     )
-  } else if (seromodel_object@model_name == "av_normal") {
+  } else if (
+    seromodel_object@model_name %in%
+    c("av_normal", "av_normal_serorev")
+  ) {
     foi_central_estimates <- data.frame(
       age = rev(cohort_ages$age)
     )

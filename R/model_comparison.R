@@ -36,10 +36,24 @@ get_table_rhats <- function(seromodel_object,
     warning(warn_msg)
     rhats[which(is.nan(rhats))] <- NA
   }
-  model_rhats <- data.frame(
-    year = cohort_ages$birth_year,
-    rhat = rhats
+
+  if (
+    seromodel_object@model_name %in%
+    c("constant", "tv_normal", "tv_normal_log")
+  ) {
+    model_rhats <- data.frame(
+      year = cohort_ages$birth_year,
+      rhat = rhats
+      )
+  } else if (
+    seromodel_object@model_name %in%
+    c("av_normal", "av_normal_serorev")
+  ) {
+    model_rhats <- data.frame(
+      age = rev(cohort_ages$age),
+      rhat = rhats
     )
+  }
 
   return(model_rhats)
 }
