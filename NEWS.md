@@ -2,6 +2,14 @@
 
 ## New features
 
+* FOI can now be estimated via optimization (maximum a posteriori) of the posterior. This is
+implemented in the new function `fit_seromodel_optimization`, which has the same interface as
+`fit_seromodel`.
+
+# serofoi 0.1.0
+
+## New features
+
 * Data simulation functions from time-varying or age-varying _force of infection_ trends. The following is an example to simulate from a constant (in time) _force of infection_:
 ```
 foi_sim_constant <- rep(0.02, 50)
