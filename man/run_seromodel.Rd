@@ -9,12 +9,12 @@ run_seromodel(
   serodata,
   foi_model = c("constant", "tv_normal_log", "tv_normal"),
   foi_parameters = NULL,
+  include_seroreversion = FALSE,
+  serorev_prior = "uniform",
+  serorev_parameters = NULL,
   chunks = NULL,
   chunk_size = 1,
   iter = 1000,
-  adapt_delta = 0.9,
-  max_treedepth = 10,
-  seed = 12345,
   print_summary = TRUE,
   ...
 )
@@ -38,8 +38,9 @@ The last six columns can be added to \code{serodata} by means of the function
 options:
 \describe{
 \item{\code{"constant"}}{Runs a constant model}
-\item{\code{"tv_normal"}}{Runs a normal model}
-\item{\code{"tv_normal_log"}}{Runs a normal logarithmic model}
+\item{\code{"tv_normal"}}{Runs a time-varying normal model}
+\item{\code{"tv_normal_log"}}{Runs a time-varying normal logarithmic model}
+\item{\verb{"av_normal}}{Runs an age-varying normal model}
 }}
 
 \item{foi_parameters}{List specifying the initial prior parameters of the
@@ -48,6 +49,23 @@ model \code{foi_model} to be specified as (e.g.):
 \item{\code{"constant"}}{\code{list(foi_a = 0, foi_b = 2)}}
 \item{\code{"tv_normal"}}{\code{list(foi_location = 0, foi_scale = 1)}}
 \item{\code{"tv_normal_log"}}{\code{list(foi_location = -6, foi_scale = 4)}}
+}}
+
+\item{include_seroreversion}{Boolean specifying whether to include
+seroreversion in the model or not.}
+
+\item{serorev_prior}{Specify seroreversion distribution to be used.
+Currently available options are:
+\describe{
+\item{\code{"uniform"}}{Use a uniform prior for the seroreversion}
+\item{\code{"normal"}}{Use a normal prior for the seroreversion}
+}}
+
+\item{serorev_parameters}{List specifying the initial prior parameters of the
+model \code{foi_model} to be specified as (e.g.):
+\describe{
+\item{\code{"uniform"}}{\code{list(serorev_a = 0, serorev_b = 2)}}
+\item{\code{"normal"}}{\code{list(serorev_a = 0, serorev_b = 1)}}
 }}
 
 \item{chunks}{Numeric list specifying the chunk structure of the time
@@ -65,19 +83,6 @@ the remainder years are included in the last chunk.}
 
 \item{iter}{Number of interactions for each chain including the warmup.
 \code{iter} in \link[rstan:stanmodel-method-sampling]{sampling}.}
-
-\item{adapt_delta}{Real number between 0 and 1 that represents the target
-average acceptance probability. Increasing the value of \code{adapt_delta} will
-result in a smaller step size and fewer divergences. For further details
-refer to the \code{control} parameter in \link[rstan:stanmodel-method-sampling]{sampling} or
-\href{https://mc-stan.org/rstanarm/reference/adapt_delta.html}{here}.}
-
-\item{max_treedepth}{Maximum tree depth for the binary tree used in the NUTS
-stan sampler. For further details refer to the \code{control} parameter in
-\link[rstan:stanmodel-method-sampling]{sampling}.}
-
-\item{seed}{For further details refer to the \code{seed} parameter in
-\link[rstan:stanmodel-method-sampling]{sampling}.}
 
 \item{print_summary}{Boolean. If \code{TRUE}, a table summarizing modelling
 results is printed.}
