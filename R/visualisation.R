@@ -214,7 +214,8 @@ plot_foi <- function(seromodel_object,
       )
     }
   } else if (
-    seromodel_object@model_name == "av_normal"
+    seromodel_object@model_name %in%
+    c("av_normal", "av_normal_serorev")
   ) {
     xlab <- "age"
     foi_plot <-
@@ -323,7 +324,10 @@ plot_rhats <- function(seromodel_object,
   ) {
     rhats_plot <-
       ggplot2::ggplot(rhats, ggplot2::aes(.data$year, .data$rhat))
-  } else if (seromodel_object@model_name == "av_normal") {
+  } else if (
+    seromodel_object@model_name %in%
+    c("av_normal", "av_normal_serorev")
+  ) {
     rhats_plot <-
       ggplot2::ggplot(rhats, ggplot2::aes(.data$age, .data$rhat))
   }
