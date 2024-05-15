@@ -161,15 +161,19 @@ simulate_serosurvey_time_model <- function(
     dplyr::left_join(sample_size_by_age_random, by="age") %>%
     dplyr::mutate(
       n_seropositive=rbinom(nrow(probability_serop_by_age),
-                            combined_df$sample_size,
-                            combined_df$seropositivity))
+                            sample_size,
+                            seropositivity))
 
   grouped_df <- combined_df %>%
     dplyr::group_by(age_min, age_max) %>%
     dplyr::summarise(
       sample_size=sum(sample_size),
       n_seropositive=sum(n_seropositive)
-      )
+      ) %>%
+    left_join(
+      survey_features,
+      by = c("age_min", "age_max", "sample_size")
+    )
 
   return(grouped_df)
 }
