@@ -178,7 +178,8 @@ simulate_serosurvey_time_model <- function(
     dplyr::group_by(age_min, age_max) %>%
     dplyr::summarise(
       sample_size=sum(sample_size),
-      n_seropositive=sum(n_seropositive)
+      n_seropositive=sum(n_seropositive),
+      .groups = "drop"
     ) %>%
     left_join(
       survey_features,
