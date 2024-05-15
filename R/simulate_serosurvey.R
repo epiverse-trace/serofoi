@@ -178,5 +178,69 @@ simulate_serosurvey_time_model <- function(
   return(grouped_df)
 }
 
+create_features_with_bins <- function(survey_features) {
+  intervals <- vector(length = nrow(survey_features))
+  for(i in seq_along(intervals)) {
+    age_min <- survey_features$age_min[i]
+    age_max <- survey_features$age_max[i]
+    is_first_row <- i == 1
+    intervals[i] <- create_group_interval(age_min, age_max, is_first_row)
+  }
+  survey_features <- survey_features %>%
+    mutate(group = intervals)
+  return(survey_features)
+}
 
+overall_sample_size_by_group <- function(survey_features, age_df) {
+  age_df %>%
+    left_join(survey_features, by = "group") %>%
+    rename(overall_sample_size = sample_size)
+}
+
+multinomial_sampling_group <- function(sample_size, n_ages) {
+  prob_value <- 1 / n_ages
+  probs <- rep(prob_value, n_ages)
+  as.vector(rmultinom(1, sample_size, prob = probs))
+}
+
+generate_random_sample_sizes <- function(survey_df) {
+  df_new <- NULL
+  intervals <- unique(survey_df$group)
+  for (interval_aux in intervals) {
+    df_tmp <- survey_df %>%
+      filter(group == interval_aux)
+    sample_size <- df_tmp$overall_sample_size[1]
+    sample_size_by_age <- multinomial_sampling_group(sample_size, nrow(df_tmp))
+    df_tmp <- df_tmp %>%
+      mutate(sample_size = sample_size_by_age)
+
+    if (is.null(df_new)) {
+      df_new <- df_tmp
+    } else {
+      df_new <- bind_rows(df_new, df_tmp)
+    }
+  }
+  return(df_new)
+}
+
+sample_size_by_individual_age_random <- function(survey_features) {
+
+  age_bins <- seq(1, max(survey_features$age_max), 1)
+  age_df <- data.frame(
+    age = age_bins,
+    group = cut(age_bins,
+                breaks = c(1, survey_features$age_max),
+                include.lowest = TRUE)
+    )
+
+  survey_features <- create_features_with_bins(survey_features)
+
+  survey_features <- overall_sample_size_by_group(
+    survey_features,
+    age_df)
+
+  df_new <- generate_random_sample_sizes(survey_features)
+
+  return(df_new)
+}
 
