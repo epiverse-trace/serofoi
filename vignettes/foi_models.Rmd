@@ -55,17 +55,26 @@ In ***serofoi***, for the constant model, the *FoI* ($\lambda$) is modelled with
 To test the `constant` model we simulate a serosurvey following a stepwise decreasing *FoI* (red line in Fig. 1) using the data simulation functions of ***serofoi***:
 
 ```{r constant simdata, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE}
-foi_sim_constant <- rep(0.02, 50)
+# how the disease circulates
+foi_df <- data.frame(
+    year = seq(2000, 2049, 1)
+) %>% 
+  mutate(foi=0.02)
 
-serodata_constant <- generate_sim_data(
-  sim_data = data.frame(
-    age=seq(1,50),
-    tsur=2050),
-  foi=foi_sim_constant,
-  sample_size_by_age = 5
-) |> 
-  group_sim_data(step = 5)
+# specify 5-year age bins for observations
+survey_features <- data.frame(
+    age_min = seq(0, 45, 5),
+    age_max = seq(5, 50, 5)
+) %>% 
+  mutate(
+    sample_size = 25
+  )
 
+serodata_constant <- simulate_serosurvey(
+  "time",
+  foi_df,
+  survey_features
+  )
 ```
 
 The simulated dataset `serodata_constant` contains information about 250 samples of individuals between 1 and 50 years old (5 samples per age) with age groups of 5 years length. The following code shows how to implement the constant model to this simulated serosurvey:
@@ -109,17 +118,30 @@ $$
 To test the `tv_normal` model we simulate a serosurvey following a stepwise decreasing *FoI* (red line in Fig. 2) using the data simulation functions of ***serofoi***:
 
 ```{r tv_normal simdata, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE}
-no_transm <- 0.0000000001
-foi_sim_sw_dec <- c(rep(0.2, 25), rep(0.1, 10), rep(no_transm, 15))
+foi_sim_sw_dec <- c(
+  rep(0.2, 25),
+  rep(0.1, 10),
+  rep(0.00001, 15)
+  )
 
-serodata_sw_dec <- generate_sim_data(
-  sim_data = data.frame(
-    age=seq(1,50),
-    tsur=2050),
-  foi=foi_sim_sw_dec,
-  sample_size_by_age = 5
-) |> 
-  group_sim_data(step = 5)
+foi_df <- data.frame(
+    year = seq(2000, 2049, 1),
+    foi = foi_sim_sw_dec
+)
+
+survey_features <- data.frame(
+    age_min = seq(0, 45, 5),
+    age_max = seq(5, 50, 5)
+) %>% 
+  mutate(
+    sample_size = 25
+  )
+
+serodata_sw_dec <- simulate_serosurvey(
+  "time",
+  foi_df,
+  survey_features
+  )
 
 ```
 
