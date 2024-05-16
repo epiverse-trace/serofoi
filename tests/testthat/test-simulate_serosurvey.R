@@ -1,4 +1,38 @@
 
+test_that("create_exposure_matrix generates correct exposure matrix", {
+
+  # Test with multiple age groups
+  ages <- c(1, 2, 3)
+  expected <- matrix(0, length(ages), length(ages))
+  expected[lower.tri(expected, diag = TRUE)] <- 1
+  expect_equal(create_exposure_matrix(ages), expected)
+})
+
+test_that("probability_exact_time_varying calculates probabilities correctly", {
+  # Test with simple input
+  ages <- c(1, 2, 3)
+  foi <- 0.1
+  fois <- rep(foi, length(ages))
+  probabilities <- probability_exact_time_varying(ages, fois)
+
+  exact_probability_constant <- function(age, foi) {
+    1 - exp(-age * foi)
+  }
+  expected <- purrr::map_dbl(ages, ~exact_probability_constant(., foi))
+  expect_equal(probabilities, expected, tolerance = 1e-6)
+
+  # Test with seroreversion
+  seroreversion_rate <- 0.05
+  probabilities <- probability_exact_time_varying(ages, fois, seroreversion_rate)
+
+  exact_probability_constant_seroreversion <- function(age, foi, seroreversion) {
+    foi / (foi + seroreversion_rate) * (1 - exp(-(foi + seroreversion_rate) * age))
+  }
+  expected <- purrr::map_dbl(ages, ~exact_probability_constant_seroreversion(., foi, seroreversion))
+
+  expect_equal(probabilities, expected, tolerance = 1e-6)
+})
+
 test_that("probability_exact_age_varying calculates probabilities correctly", {
   # Test with simple input
   ages <- c(1, 2, 3)
@@ -17,7 +51,7 @@ test_that("probability_exact_age_varying calculates probabilities correctly", {
   probabilities <- probability_exact_age_varying(ages, fois, seroreversion_rate)
 
   exact_probability_constant_seroreversion <- function(age, foi, seroreversion) {
-    foi / (foi + seroreversion) * (1 - exp(-(foi + seroreversion) * age))
+    foi / (foi + seroreversion_rate) * (1 - exp(-(foi + seroreversion_rate) * age))
   }
   expected <- purrr::map_dbl(ages, ~exact_probability_constant_seroreversion(., foi, seroreversion))
 
