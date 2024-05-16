@@ -94,27 +94,6 @@ probability_seropositive_age_model_by_age <- function(
   return(df)
 }
 
-#' Create a group interval string based on age boundaries.
-#'
-#' This function generates a group interval string based on the specified age boundaries.
-#' It constructs the interval string in the format '[age_min, age_max]' or '(age_min, age_max]',
-#' depending on whether it's the first row of a dataframe or not.
-#'
-#' @param age_min The minimum age of the interval.
-#' @param age_max The maximum age of the interval.
-#' @param is_first_row Logical indicating whether it's the first row. Default is FALSE.
-#'
-#' @return A string representing the group interval.
-create_group_interval <- function(age_min, age_max, is_first_row=FALSE) {
-
-  first_element <- dplyr::if_else(is_first_row, "[", "(")
-  last_element <- "]"
-  age_min <- dplyr::if_else(is_first_row, age_min, age_min - 1)
-  interval <- paste0(first_element, age_min, ",", age_max, last_element)
-
-  return(interval)
-}
-
 #' Add bins based on age intervals.
 #'
 #' It generates a new column 'group' in the survey_features dataframe, representing
@@ -130,8 +109,7 @@ add_age_bins <- function(survey_features) {
   for(i in seq_along(intervals)) {
     age_min <- survey_features$age_min[i]
     age_max <- survey_features$age_max[i]
-    is_first_row <- i == 1
-    intervals[i] <- create_group_interval(age_min, age_max, is_first_row)
+    intervals[i] <- paste0("[", age_min, ",", age_max, "]")
   }
   survey_features <- survey_features %>%
     mutate(group = intervals)
@@ -182,9 +160,10 @@ multinomial_sampling_group <- function(sample_size, n_ages) {
 #' @return A dataframe with random sample sizes generated for each age based on the overall
 #'         sample size.
 generate_random_sample_sizes <- function(survey_df_long) {
+  
   df_new <- NULL
   intervals <- unique(survey_df_long$group)
-  for (interval_aux in intervals) {
+  for (interval_aux in na.omit(intervals)) {
     df_tmp <- survey_df_long %>%
       filter(group == interval_aux)
     sample_size <- df_tmp$overall_sample_size[1]
@@ -217,11 +196,19 @@ generate_random_sample_sizes <- function(survey_df_long) {
 sample_size_by_individual_age_random <- function(survey_features) {
 
   ages <- seq(1, max(survey_features$age_max), 1)
-  age_bins <- cut(
-    ages,
-    breaks = c(1, survey_features$age_max),
-    include.lowest = TRUE
-    )
+
+  age_bins <- rep(NA, length(ages))
+  for (i in seq_along(ages)) {
+    # Find the index of the row in survey_features where age falls within the range
+    age_min <- survey_features$age_min
+    age_max <- survey_features$age_max
+    idx <- which(ages[i] >= age_min & ages[i] <= age_max)
+    if (length(idx) > 0) {
+      # Assign the group based on the index found
+      age_bins[i] <- paste0("[", age_min[idx], ",", age_max[idx], "]")
+    }
+  }
+
   age_df <- data.frame(
     age = ages,
     group = age_bins
