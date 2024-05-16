@@ -4,7 +4,7 @@ test_that("probability_exact calculates probabilities correctly", {
   ages <- c(1, 2, 3)
   foi <- 0.1
   fois <- rep(foi, length(ages))
-  probabilities <- probability_exact_time_varying(ages, fois)
+  probabilities <- probability_exact(ages, fois)
 
   exact_probability_constant <- function(age, foi) {
     1 - exp(-age * foi)
@@ -15,12 +15,12 @@ test_that("probability_exact calculates probabilities correctly", {
   # Test if FOIs increase that this leads to increased seropositivity
   fois_delta <- runif(length(ages))
   fois_h <- fois + fois_delta
-  probabilities_h <- probability_exact_time_varying(ages, fois_h)
+  probabilities_h <- probability_exact(ages, fois_h)
   expect_true(all(probabilities_h > probabilities))
 
   # Test with seroreversion
   seroreversion_rate <- 0.05
-  probabilities <- probability_exact_time_varying(ages, fois, seroreversion_rate)
+  probabilities <- probability_exact(ages, fois, seroreversion_rate)
 
   exact_probability_constant_seroreversion <- function(age, foi, seroreversion) {
     foi / (foi + seroreversion_rate) * (1 - exp(-(foi + seroreversion_rate) * age))
@@ -30,7 +30,7 @@ test_that("probability_exact calculates probabilities correctly", {
   expect_equal(probabilities, expected, tolerance = 1e-6)
 
   # Test if FOIs increase that this leads to increased seropositivity when seroreversion present
-  probabilities_h <- probability_exact_time_varying(ages, fois_h, seroreversion_rate)
+  probabilities_h <- probability_exact(ages, fois_h, seroreversion_rate)
   expect_true(all(probabilities_h > probabilities))
 })
 
@@ -298,7 +298,7 @@ test_that("simulate_serosurvey_time_model input validation", {
 
   # Test with non-dataframe foi dataframe
   expect_error(simulate_serosurvey_time_model(list(), survey_features),
-               "foi must be a dataframe with columns 'year' and 'foi'.")
+               "foi must be a dataframe with columns foi and year.")
 
   # Test with non-dataframe survey_features dataframe
   expect_error(simulate_serosurvey_time_model(foi_df, list()),
@@ -306,7 +306,7 @@ test_that("simulate_serosurvey_time_model input validation", {
 
   # Test with misspelt columns in foi dataframe
   expect_error(simulate_serosurvey_time_model(data.frame(years = c(1990), foi = c(0.1)), survey_features),
-               "foi must be a dataframe with columns 'year' and 'foi'.")
+               "foi must be a dataframe with columns foi and year.")
 
   # Test with missing columns in survey_features dataframe
   expect_error(simulate_serosurvey_time_model(foi_df, data.frame(age_min = c(1))),
@@ -379,7 +379,7 @@ test_that("simulate_serosurvey_age_model input validation", {
 
   # Test with non-dataframe foi dataframe
   expect_error(simulate_serosurvey_age_model(list(), survey_features),
-               "foi must be a dataframe with columns 'age' and 'foi'.")
+               "foi must be a dataframe with columns foi and age.")
 
   # Test with non-dataframe survey_features dataframe
   expect_error(simulate_serosurvey_age_model(foi_df, list()),
@@ -387,7 +387,7 @@ test_that("simulate_serosurvey_age_model input validation", {
 
   # Test with misspelt columns in foi dataframe
   expect_error(simulate_serosurvey_age_model(data.frame(ages = c(1), foi = c(0.1)), survey_features),
-               "foi must be a dataframe with columns 'age' and 'foi'.")
+               "foi must be a dataframe with columns foi and age.")
 
   # Test with missing columns in survey_features dataframe
   expect_error(simulate_serosurvey_age_model(foi_df, data.frame(age_min = c(1))),
