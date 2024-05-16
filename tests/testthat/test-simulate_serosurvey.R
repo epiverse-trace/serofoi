@@ -573,7 +573,7 @@ test_that("simulate_serosurvey_age_and_time_model input validation", {
 
   # Test with non-dataframe foi dataframe
   expect_error(simulate_serosurvey_age_and_time_model(list(), survey_features),
-               "foi must be a dataframe with columns foi and age.")
+               "foi must be a dataframe with columns foi, age and year.")
 
   # Test with non-dataframe survey_features dataframe
   expect_error(simulate_serosurvey_age_and_time_model(foi_df, list()),
@@ -654,3 +654,4 @@ test_that("simulate_serosurvey handles invalid model inputs", {
   expect_error(simulate_serosurvey("invalid_model", foi_df, survey_features),
                "model must be one of 'age', 'time', or 'age-time'.")
 })
+
