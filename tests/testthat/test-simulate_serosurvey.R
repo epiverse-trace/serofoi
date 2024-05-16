@@ -424,3 +424,46 @@ test_that("simulate_serosurvey_age_model input validation", {
   expect_error(simulate_serosurvey_age_model(foi_df, survey_features, -1),
                "seroreversion_rate must be a non-negative numeric value.")
 })
+
+
+test_that("simulate_serosurvey returns serosurvey data based on specified model", {
+  # Test with 'age' model
+  foi_df <- data.frame(
+    age = seq(1, 20, 1),
+    foi = runif(20, 0.05, 0.15)
+  )
+  survey_features <- data.frame(
+    age_min = c(1, 3, 15),
+    age_max = c(2, 14, 20),
+    sample_size = c(1000, 2000, 1500)
+  )
+  serosurvey <- simulate_serosurvey("age", foi_df, survey_features)
+  expect_true(all(names(serosurvey) %in% c("age_min", "age_max", "sample_size", "n_seropositive")))
+
+  # Test with 'time' model
+  foi_df <- data.frame(
+    year = seq(1990, 2009, 1),
+    foi = runif(20, 0.05, 0.15)
+  )
+  serosurvey <- simulate_serosurvey("time", foi_df, survey_features)
+  expect_true(all(names(serosurvey) %in% c("age_min", "age_max", "sample_size", "n_seropositive")))
+
+  # Test with 'age-time' model: TODO
+  serosurvey <- simulate_serosurvey("age-time", foi_df, survey_features)
+  expect_true(all(names(serosurvey) %in% c("age_min", "age_max", "sample_size", "n_seropositive")))
+})
+
+test_that("simulate_serosurvey handles invalid model inputs", {
+  # Test with invalid model
+  foi_df <- data.frame(
+    age = seq(1, 20, 1),
+    foi = runif(20, 0.05, 0.15)
+  )
+  survey_features <- data.frame(
+    age_min = c(1, 3, 15),
+    age_max = c(2, 14, 20),
+    sample_size = c(1000, 2000, 1500)
+  )
+  expect_error(simulate_serosurvey("invalid_model", foi_df, survey_features),
+               "model must be one of 'age', 'time', or 'age-time'.")
+})
