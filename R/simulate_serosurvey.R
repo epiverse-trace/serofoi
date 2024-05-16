@@ -209,15 +209,15 @@ multinomial_sampling_group <- function(sample_size, n_ages) {
 #' and the distribution of individuals across age groups. It uses multinomial sampling to allocate
 #' the total sample size to each age group proportionally.
 #'
-#' @param survey_df A dataframe with columns 'age', 'group' and 'overall_sample_size'.
+#' @param survey_df_long A dataframe with columns 'age', 'group' and 'overall_sample_size'.
 #'
 #' @return A dataframe with random sample sizes generated for each age based on the overall
 #'         sample size.
-generate_random_sample_sizes <- function(survey_df) {
+generate_random_sample_sizes <- function(survey_df_long) {
   df_new <- NULL
-  intervals <- unique(survey_df$group)
+  intervals <- unique(survey_df_long$group)
   for (interval_aux in intervals) {
-    df_tmp <- survey_df %>%
+    df_tmp <- survey_df_long %>%
       filter(group == interval_aux)
     sample_size <- df_tmp$overall_sample_size[1]
     sample_size_by_age <- multinomial_sampling_group(sample_size, nrow(df_tmp))
@@ -424,4 +424,90 @@ simulate_serosurvey_age_model <- function(
     )
 
   return(grouped_df)
+}
+
+
+#' Simulate serosurvey data based on various FOI models.
+#'
+#' This function generates binned serosurvey data based on either a time-varying FOI model,
+#' an age-varying FOI model, or an age-and-time-varying FOI model. In all cases, it is possible
+#' to optionally include seroreversion. This function allows construction of serosurveys
+#' with binned age groups, and it generates uncertainty in the distribution of a sample size
+#' within an age bin through multinomial sampling.
+#'
+#' @param model A string specifying the model type which can be one of ['age', 'time', 'age-time'].
+#' @param foi A dataframe containing the force of infection (FOI) values.
+#'            For time-varying models the columns should be ['year', 'foi'].
+#'            For age-varying models the columns should be ['age', 'foi'].
+#'            For age-and-time-varying models the columns should be ['age', 'time', 'foi'].
+#' @param survey_features A dataframe containing information about the binned age groups and sample
+#'                        sizes for each. It should contain columns: ['age_min', 'age_max', 'sample_size'].
+#' @param seroreversion_rate A non-negative value determining the rate of seroreversion (per year).
+#'                           Default is 0.
+#'
+#' @return A dataframe with simulated serosurvey data, including age group information, overall
+#'         sample sizes, the number of seropositive individuals, and other survey features.
+#' @examples
+#' # time-varying model
+#' foi_df <- data.frame(
+#'   year = seq(1990, 2009, 1)
+#' ) %>%
+#' mutate(foi = rnorm(length(year), 0.1, 0.01))
+#' survey_features <- data.frame(
+#'   age_min = c(1, 3, 15),
+#'   age_max = c(2, 14, 20),
+#'   sample_size = c(1000, 2000, 1500))
+#' serosurvey <- simulate_serosurvey(
+#' model = "time",
+#' foi = foi_df,
+#' survey_features = survey_features)
+#'
+#' # age-varying model
+#' foi_df <- data.frame(
+#'   age = seq(1, 20, 1)
+#' ) %>%
+#' mutate(foi = rnorm(length(year), 0.1, 0.01))
+#' survey_features <- data.frame(
+#'   age_min = c(1, 3, 15),
+#'   age_max = c(2, 14, 20),
+#'   sample_size = c(1000, 2000, 1500))
+#' serosurvey <- simulate_serosurvey(
+#' model = "age",
+#' foi = foi_df,
+#' survey_features = survey_features)
+#'
+#' # age-and-time-varying model TODO
+#' @export
+simulate_serosurvey <- function(
+    model,
+    foi,
+    survey_features,
+    seroreversion_rate=0
+) {
+
+  # don't advertise time-age in case people think this is something else
+  if(model %in% c("age", "time", "age-time", "time-age"))
+    stop("model must be one of ['age', 'time', 'age-time'].")
+
+  if(model == "time") {
+    serosurvey <- simulate_serosurvey_time_model(
+      foi,
+      survey_features,
+      seroreversion_rate
+    )
+  } else if(model == "age") {
+    serosurvey <- simulate_serosurvey_age_model(
+      foi,
+      survey_features,
+      seroreversion_rate
+    )
+  } else if(model == "age-time" || model == "time-age") {
+    serosurvey <- simulate_serosurvey_age_and_time_model( #TODO add age-time
+      foi,
+      survey_features,
+      seroreversion_rate
+    )
+  }
+
+  return(serosurvey)
 }

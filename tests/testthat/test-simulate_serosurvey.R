@@ -232,6 +232,37 @@ test_that("generate_random_sample_sizes function works as expected", {
   expect_equal(group_df$sample_size, group_df$overall_sample_size)
 })
 
+test_that("sample_size_by_individual_age_random returns correct dataframe structure", {
+
+  # Test with sample survey_features data: contiguous age bins
+  survey_features <- data.frame(
+    age_min = c(1, 3, 15),
+    age_max = c(2, 14, 20),
+    sample_size = c(1000, 2000, 1500)
+  )
+  actual_df <- sample_size_by_individual_age_random(survey_features)
+  expect_equal(nrow(actual_df), max(survey_features$age_max))
+
+  group_df <- actual_df %>%
+    dplyr::group_by(group) %>%
+    dplyr::summarise(
+      overall_sample_size = overall_sample_size[1],
+      sample_size = sum(sample_size)
+    )
+  expect_equal(group_df$sample_size, group_df$overall_sample_size)
+
+  # Test with sample survey_features data: non-contiguous age bins
+  # TODO: doesn't work as age_bins construction too simple currently.
+  # It may just be that cut won't work reliably here.
+  survey_features <- data.frame(
+    age_min = c(1, 7, 18),
+    age_max = c(2, 16, 20),
+    sample_size = c(1000, 2000, 1500)
+  )
+  actual_df <- sample_size_by_individual_age_random(survey_features)
+  expect_equal(nrow(actual_df), max(survey_features$age_max))
+})
+
 
 test_that("simulate_serosurvey_time_model function works as expected", {
   # Test case 1: Check if the output dataframe has the correct structure
