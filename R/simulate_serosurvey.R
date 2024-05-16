@@ -14,18 +14,18 @@ create_exposure_matrix <- function(ages) {
 #' @param ages Integer indicating the ages of the exposed cohorts
 #' @param foi Numeric atomic vector corresponding to the age-varying
 #' force-of-infection to simulate from
-#' @param mu Seroreversion rate
+#' @param seroreversion_rate Non-negative seroreversion rate. Default is 0.
 #' @return vector of probabilities of being seropositive for age-varying FoI
 #' including seroreversion (ordered from youngest to oldest individuals)
 probability_exact_time_varying <- function(
     ages,
     foi,
-    mu = 0
+    seroreversion_rate = 0
 ) {
 
   exposure_matrix <- create_exposure_matrix(ages)
   probabilities <-
-    (foi / (foi + mu)) * (1 - exp(-drop(exposure_matrix %*% (foi + mu))))
+    (foi / (foi + seroreversion_rate)) * (1 - exp(-drop(exposure_matrix %*% (foi + seroreversion_rate))))
   return(probabilities)
 }
 
@@ -53,16 +53,26 @@ probability_exact_age_varying <- function(
   return(probability)
 }
 
+#' Generate probabilities of seropositivity by age based on a time-varying model.
+#'
+#' This function calculates the probabilities of seropositivity by age based on a time-varying FOI model.
+#' It takes into account the FOI and the rate of seroreversion.
+#'
+#' @param foi A dataframe containing the force of infection (FOI) values for different years.
+#'            It should have two columns: 'year' and 'foi'.
+#' @param seroreversion_rate A non-negative numeric value representing the rate of seroreversion.
+#'
+#' @return A dataframe with columns 'age' and 'seropositivity'.
 probability_seropositive_time_model_by_age <- function(
     foi,
-    seroreversion) {
+    seroreversion_rate) {
 
   ages <- seq_along(foi$year)
 
   probabilities <- probability_exact_time_varying(
     age = ages,
     foi = foi$foi,
-    mu = seroreversion
+    seroreversion_rate = seroreversion_rate
   )
 
   df <- data.frame(
@@ -73,6 +83,17 @@ probability_seropositive_time_model_by_age <- function(
   return(df)
 }
 
+#' Create a group interval string based on age boundaries.
+#'
+#' This function generates a group interval string based on the specified age boundaries.
+#' It constructs the interval string in the format '[age_min, age_max]' or '(age_min, age_max]',
+#' depending on whether it's the first row of a dataframe or not.
+#'
+#' @param age_min The minimum age of the interval.
+#' @param age_max The maximum age of the interval.
+#' @param is_first_row Logical indicating whether it's the first row. Default is FALSE.
+#'
+#' @return A string representing the group interval.
 create_group_interval <- function(age_min, age_max, is_first_row=FALSE) {
 
   first_element <- dplyr::if_else(is_first_row, "[", "(")
@@ -83,7 +104,17 @@ create_group_interval <- function(age_min, age_max, is_first_row=FALSE) {
   return(interval)
 }
 
-create_features_with_bins <- function(survey_features) {
+#' Add bins based on age intervals.
+#'
+#' It generates a new column 'group' in the survey_features dataframe, representing
+#' the group interval for each row based on the age_min and age_max columns.
+#'
+#' @param survey_features A dataframe containing age_min and age_max columns representing
+#'                        the minimum and maximum age boundaries for each group.
+#'
+#' @return A dataframe with an additional 'group' column representing the group interval
+#'         for each row based on the age_min and age_max columns.
+add_age_bins <- function(survey_features) {
   intervals <- vector(length = nrow(survey_features))
   for(i in seq_along(intervals)) {
     age_min <- survey_features$age_min[i]
@@ -96,12 +127,30 @@ create_features_with_bins <- function(survey_features) {
   return(survey_features)
 }
 
-overall_sample_size_by_group <- function(survey_features, age_df) {
+#' Create a survey dataframe with per individual age information.
+#'
+#'
+#' @param survey_features A dataframe containing information about age groups and sample sizes.
+#' @param age_df A dataframe containing 'age' and 'group'.
+#'
+#' @return A dataframe with overall sample sizes calculated by joining survey_features and age_df.
+#'         This dataframe has columns including 'age' and 'overall_sample_size'.
+survey_by_individual_age <- function(survey_features, age_df) {
   age_df %>%
     left_join(survey_features, by = "group") %>%
     rename(overall_sample_size = sample_size)
 }
 
+#' Generate random sample sizes using multinomial sampling.
+#'
+#' This function generates random sample sizes for each age group using multinomial sampling.
+#' It takes the total sample size and the number of age groups as input and returns a vector
+#' of sample sizes for each age group.
+#'
+#' @param sample_size The total sample size to be distributed among age groups.
+#' @param n_ages The number of age groups.
+#'
+#' @return A vector containing random sample sizes for each age group.
 multinomial_sampling_group <- function(sample_size, n_ages) {
   prob_value <- 1 / n_ages
   probs <- rep(prob_value, n_ages)
@@ -111,6 +160,16 @@ multinomial_sampling_group <- function(sample_size, n_ages) {
   return(sample_size_by_age)
 }
 
+#' Generate random sample sizes for each age group.
+#'
+#' This function generates random sample sizes for each age group based on the overall sample size
+#' and the distribution of individuals across age groups. It uses multinomial sampling to allocate
+#' the total sample size to each age group proportionally.
+#'
+#' @param survey_df A dataframe with columns 'age', 'group' and 'overall_sample_size'.
+#'
+#' @return A dataframe with random sample sizes generated for each age based on the overall
+#'         sample size.
 generate_random_sample_sizes <- function(survey_df) {
   df_new <- NULL
   intervals <- unique(survey_df$group)
@@ -131,31 +190,68 @@ generate_random_sample_sizes <- function(survey_df) {
   return(df_new)
 }
 
+#' Generate random sample sizes for each individual age based on survey features.
+#'
+#' This function generates random sample sizes for each individual age based on the provided
+#' survey features. It first creates age bins, assigns each individual in the survey features
+#' to an age bin, calculates the overall sample size by group, and then generates random sample
+#' sizes for each age group. Finally, it returns a dataframe with the random sample sizes for
+#' each individual age.
+#'
+#' @param survey_features A dataframe containing information about individuals' age ranges and
+#'                        sample sizes.
+#'
+#' @return A dataframe with random sample sizes generated for each individual age based on the
+#'         provided survey features.
 sample_size_by_individual_age_random <- function(survey_features) {
 
-  age_bins <- seq(1, max(survey_features$age_max), 1)
+  ages <- seq(1, max(survey_features$age_max), 1)
+  age_bins <- cut(
+    ages,
+    breaks = c(1, survey_features$age_max),
+    include.lowest = TRUE
+    )
   age_df <- data.frame(
-    age = age_bins,
-    group = cut(age_bins,
-                breaks = c(1, survey_features$age_max),
-                include.lowest = TRUE)
+    age = ages,
+    group = age_bins
     )
 
-  survey_features <- create_features_with_bins(survey_features)
+  survey_features <- add_age_bins(survey_features)
 
-  survey_features <- overall_sample_size_by_group(
+  survey_features_by_individual_age <- survey_by_individual_age(
     survey_features,
     age_df)
 
-  df_new <- generate_random_sample_sizes(survey_features)
+  df_new <- generate_random_sample_sizes(survey_features_by_individual_age)
 
   return(df_new)
 }
 
+
+#' Simulate serosurvey data based on a time-varying FOI model.
+#'
+#' This function simulates serosurvey data based on a time-varying FOI model,
+#' optionally including seroreversion.
+#' It calculates the probabilities of seropositivity by age, generates random sample sizes
+#' for each age group, and then simulates the number of seropositive individuals for each
+#' age group based on the calculated probabilities and sample sizes. Finally, it aggregates
+#' the results by age group and returns a dataframe containing the simulated serosurvey data.
+#'
+#' @param foi A dataframe containing the force of infection (FOI) values for different years.
+#'            It should have two columns: 'year' and 'foi'.
+#' @param survey_features A dataframe containing information about individuals' age ranges and
+#'                        sample sizes.
+#' @param seroreversion_rate A non-negative value determining the rate of seroreversion (per year).
+#'                           Default is 0.
+#'
+#' @return A dataframe with simulated serosurvey data, including age group information, overall
+#'         sample sizes, the number of seropositive individuals, and other survey features.
+#'
+#' @export
 simulate_serosurvey_time_model <- function(
     foi,
     survey_features,
-    seroreversion=FALSE
+    seroreversion=0
 ) {
 
   probability_serop_by_age <- probability_seropositive_time_model_by_age(
