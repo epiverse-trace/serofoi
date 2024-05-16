@@ -105,7 +105,7 @@ test_that("probability_seropositive_time_model_by_age works", {
   seroreversion <- 0.0
   prob_df <- probability_seropositive_time_model_by_age(
     foi = foi,
-    seroreversion = seroreversion
+    seroreversion_rate = seroreversion
   )
 
   # check output dimensions
@@ -120,7 +120,7 @@ test_that("probability_seropositive_time_model_by_age works", {
   seroreversion <- 0.1
   prob_df_1 <- probability_seropositive_time_model_by_age(
     foi = foi,
-    seroreversion = seroreversion
+    seroreversion_rate = seroreversion
   )
 
   # check output dimensions
@@ -141,7 +141,7 @@ test_that("probability_seropositive_age_model_by_age works", {
   seroreversion <- 0.0
   prob_df <- probability_seropositive_age_model_by_age(
     foi = foi,
-    seroreversion = seroreversion
+    seroreversion_rate = seroreversion
   )
 
   # check output dimensions
