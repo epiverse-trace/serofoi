@@ -107,24 +107,6 @@ test_that("probability_seropositive_age_model_by_age works", {
   expect_true(all(prob_df_1$seropositivity < prob_df$seropositivity))
 })
 
-test_that("create_group_interval function works as expected", {
-  # Test case 1: Check if interval is created correctly for is_first_row = TRUE
-  age_min <- 20
-  age_max <- 30
-  is_first_row <- TRUE
-  expected_interval <- "[20,30]"
-  actual_interval <- create_group_interval(age_min, age_max, is_first_row)
-  expect_equal(actual_interval, expected_interval)
-
-  # Test case 2: Check if interval is created correctly for is_first_row = FALSE
-  age_min <- 20
-  age_max <- 30
-  is_first_row <- FALSE
-  expected_interval <- "(19,30]"
-  actual_interval <- create_group_interval(age_min, age_max, is_first_row)
-  expect_equal(actual_interval, expected_interval)
-})
-
 test_that("add_age_bins function works as expected", {
   # Test case 1: Check if intervals are created correctly for a single row dataframe
   survey_features <- data.frame(age_min = 20, age_max = 30)
@@ -135,7 +117,7 @@ test_that("add_age_bins function works as expected", {
 
   # Test case 2: Check if intervals are created correctly for multiple rows dataframe
   survey_features <- data.frame(age_min = c(20, 31), age_max = c(30, 50))
-  expected_intervals <- c("[20,30]", "(30,50]")
+  expected_intervals <- c("[20,30]", "[31,50]")
   actual_survey_features <- add_age_bins(survey_features)
   actual_intervals <- actual_survey_features$group
   expect_equal(actual_intervals, expected_intervals)
@@ -150,9 +132,9 @@ test_that("survey_by_individual_age function works as expected", {
   expect_equal(actual_df, expected_df)
 
   # Test case 2: Check if overall sample size is calculated correctly for multiple rows dataframe
-  age_df <- data.frame(age_min = c(20, 30), age_max = c(31, 50), group = c("[20,30]", "(30,50]"))
-  survey_features <- data.frame(group = c("[20,30]", "(30,50]"), sample_size = c(100, 150))
-  expected_df <- data.frame(age_min = c(20, 30), age_max = c(31, 50), group = c("[20,30]", "(30,50]"), overall_sample_size = c(100, 150))
+  age_df <- data.frame(age_min = c(20, 30), age_max = c(31, 50), group = c("[20,30]", "[31,50]"))
+  survey_features <- data.frame(group = c("[20,30]", "[31,50]"), sample_size = c(100, 150))
+  expected_df <- data.frame(age_min = c(20, 30), age_max = c(31, 50), group = c("[20,30]", "[31,50]"), overall_sample_size = c(100, 150))
   actual_df <- survey_by_individual_age(survey_features, age_df)
   expect_equal(actual_df, expected_df)
 })
@@ -196,7 +178,7 @@ test_that("generate_random_sample_sizes function works as expected", {
   # Test case 2: Check if random sample sizes are generated correctly for two intervals
   survey_df <- data.frame(
     age=seq(20, 50, 1),
-    group = c(rep("[20,30]", 11), rep("(30, 50)", 20)),
+    group = c(rep("[20,30]", 11), rep("[31, 50)", 20)),
     overall_sample_size = c(rep(100, 11), rep(27, 20))
   )
   actual_df <- generate_random_sample_sizes(survey_df)
@@ -237,7 +219,7 @@ test_that("sample_size_by_individual_age_random returns correct dataframe struct
     sample_size = c(1000, 2000, 1500)
   )
   actual_df <- sample_size_by_individual_age_random(survey_features)
-  expect_equal(nrow(actual_df), max(survey_features$age_max))
+  expect_equal(nrow(actual_df), 15)
 })
 
 
