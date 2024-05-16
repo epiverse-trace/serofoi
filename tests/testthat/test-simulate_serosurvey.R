@@ -1,3 +1,29 @@
+
+test_that("probability_exact_age_varying calculates probabilities correctly", {
+  # Test with simple input
+  ages <- c(1, 2, 3)
+  foi <- 0.1
+  fois <- rep(foi, length(ages))
+  probabilities <- probability_exact_age_varying(ages, fois)
+
+  exact_probability_constant <- function(age, foi) {
+    1 - exp(-age * foi)
+  }
+  expected <- purrr::map_dbl(ages, ~exact_probability_constant(., foi))
+  expect_equal(probabilities, expected, tolerance = 1e-6)
+
+  # Test with seroreversion
+  seroreversion_rate <- 0.05
+  probabilities <- probability_exact_age_varying(ages, fois, seroreversion_rate)
+
+  exact_probability_constant_seroreversion <- function(age, foi, seroreversion) {
+    foi / (foi + seroreversion) * (1 - exp(-(foi + seroreversion) * age))
+  }
+  expected <- purrr::map_dbl(ages, ~exact_probability_constant_seroreversion(., foi, seroreversion))
+
+  expect_equal(probabilities, expected, tolerance = 1e-6)
+})
+
 test_that("probability_seropositive_time_model_by_age works", {
 
   foi <- data.frame(
@@ -216,3 +242,4 @@ test_that("simulate_serosurvey_time_model input validation", {
   expect_error(simulate_serosurvey_time_model(foi_df, survey_features, -1),
                "seroreversion_rate must be a non-negative numeric value.")
 })
+
