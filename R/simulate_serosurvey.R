@@ -263,6 +263,17 @@ simulate_serosurvey_time_model <- function(
     seroreversion_rate=0
 ) {
 
+  # Input validation
+  if (!is.data.frame(foi) || !all(c("year", "foi") %in% names(foi))) {
+    stop("foi must be a dataframe with columns 'year' and 'foi'.")
+  }
+  if (!is.data.frame(survey_features) || !all(c("age_min", "age_max", "sample_size") %in% names(survey_features))) {
+    stop("survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
+  }
+  if (!is.numeric(seroreversion_rate) || seroreversion_rate < 0) {
+    stop("seroreversion_rate must be a non-negative numeric value.")
+  }
+
   probability_serop_by_age <- probability_seropositive_time_model_by_age(
     foi = foi,
     seroreversion_rate = seroreversion_rate
