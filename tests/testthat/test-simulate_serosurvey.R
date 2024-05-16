@@ -176,3 +176,43 @@ test_that("simulate_serosurvey_time_model function works as expected", {
   expect_true(all(actual_df_2$n_seropositive <= actual_df$n_seropositive))
 })
 
+test_that("simulate_serosurvey_time_model input validation", {
+
+  foi_df <- data.frame(
+    year = seq(1990, 2009, 1),
+    foi = rnorm(20, 0.1, 0.01)
+  )
+
+  survey_features <- data.frame(
+    age_min = c(1, 3, 15),
+    age_max = c(2, 14, 20),
+    sample_size = c(1000, 2000, 1500)
+  )
+
+  # Test with valid inputs
+  expect_silent(simulate_serosurvey_time_model(foi_df, survey_features))
+
+  # Test with non-dataframe foi dataframe
+  expect_error(simulate_serosurvey_time_model(list(), survey_features),
+               "foi must be a dataframe with columns 'year' and 'foi'.")
+
+  # Test with non-dataframe survey_features dataframe
+  expect_error(simulate_serosurvey_time_model(foi_df, list()),
+               "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
+
+  # Test with misspelt columns in foi dataframe
+  expect_error(simulate_serosurvey_time_model(data.frame(years = c(1990), foi = c(0.1)), survey_features),
+               "foi must be a dataframe with columns 'year' and 'foi'.")
+
+  # Test with missing columns in survey_features dataframe
+  expect_error(simulate_serosurvey_time_model(foi_df, data.frame(age_min = c(1))),
+               "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
+
+  # Test with non-numeric seroreversion_rate
+  expect_error(simulate_serosurvey_time_model(foi_df, survey_features, "seroreversion"),
+               "seroreversion_rate must be a non-negative numeric value.")
+
+  # Test with negative seroreversion_rate
+  expect_error(simulate_serosurvey_time_model(foi_df, survey_features, -1),
+               "seroreversion_rate must be a non-negative numeric value.")
+})
