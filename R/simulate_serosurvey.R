@@ -8,7 +8,7 @@
 create_exposure_matrix <- function(ages) {
 
   n_ages <- length(ages)
-  exposure_matrix <- matrix(NA, n_ages, n_ages)
+  exposure_matrix <- matrix(0, n_ages, n_ages)
   exposure_matrix <- lower.tri(exposure_matrix, diag = TRUE)
   exposure_matrix[exposure_matrix==TRUE] <- 1
 
@@ -32,7 +32,7 @@ probability_exact_time_varying <- function(
 
   exposure_matrix <- create_exposure_matrix(ages)
   probabilities <-
-    (fois / (fois + seroreversion_rate)) * (1 - exp(-drop(exposure_matrix %*% (fois + seroreversion_rate))))
+    (fois / (fois + seroreversion_rate)) * (1 - exp(-exposure_matrix %*% (fois + seroreversion_rate)))
   return(probabilities)
 }
 
