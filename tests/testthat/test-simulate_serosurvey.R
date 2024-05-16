@@ -160,11 +160,19 @@ test_that("simulate_serosurvey_time_model function works as expected", {
   expect_equal(actual_rows, expected_rows)
 
   # Test case 3: try a much higher FOI which should result in a higher proportion seropositive
-  foi_df <- data.frame(
+  foi_df_1 <- data.frame(
     year=seq(1990, 2009, 1)
   ) %>%
     mutate(foi=rep(10, 20))
-  actual_df_1 <- simulate_serosurvey_time_model(foi_df, survey_features)
+  actual_df_1 <- simulate_serosurvey_time_model(foi_df_1, survey_features)
   expect_true(all(actual_df_1$n_seropositive >= actual_df$n_seropositive))
+
+  # Test case 4: allow a high rate of seroreversion which should reduce the proportion seropositive
+  actual_df_2 <- simulate_serosurvey_time_model(
+    foi=foi_df,
+    survey_features=survey_features,
+    seroreversion_rate=10
+    )
+  expect_true(all(actual_df_2$n_seropositive <= actual_df$n_seropositive))
 })
 
