@@ -1,9 +1,5 @@
 
-#' Computes the probability of being seropositive when FOIs vary by time, age
-#' or both
-#'
-#' It is the responsibility of the user of this function to call it with the correct
-#' FOIs as it is these that vary according to model.
+#' Computes the probability of being seropositive when FOIs vary by age
 #'
 #' @param ages Integer indicating the ages of the exposed cohorts
 #' @param fois Numeric atomic vector corresponding to the age-varying
@@ -11,7 +7,7 @@
 #' @param seroreversion_rate Non-negative seroreversion rate. Default is 0.
 #' @return vector of probabilities of being seropositive for age-varying FoI
 #' including seroreversion (ordered from youngest to oldest individuals)
-probability_exact <- function(
+probability_exact_age_varying <- function(
     ages,
     fois,
     seroreversion_rate = 0
@@ -33,6 +29,40 @@ probability_exact <- function(
   return(probabilities)
 }
 
+#' Computes the probability of being seropositive when FOIs vary by time
+#'
+#' @param years Integer indicating the years covering the birth ages of the sample
+#' @param fois Numeric atomic vector corresponding to the age-varying
+#' force-of-infection to simulate from
+#' @param seroreversion_rate Non-negative seroreversion rate. Default is 0.
+#' @return vector of probabilities of being seropositive for age-varying FoI
+#' including seroreversion (ordered from youngest to oldest individuals)
+probability_exact_time_varying <- function(
+    years,
+    fois,
+    seroreversion_rate = 0
+) {
+
+  n_years <- length(years)
+  ages <- seq(1, n_years, 1)
+
+  probabilities <- vector(length = length(years))
+  # solves ODE exactly within pieces
+  for (i in seq_along(years)) { # birth cohorts
+    probability_previous <- 0
+    for(j in 1:(n_years - i + 1)) { # exposure during lifetime
+      foi_tmp <- fois[i + j - 1]
+      lambda_over_both <- (foi_tmp / (foi_tmp + seroreversion_rate))
+      probability_previous <- lambda_over_both +
+        (probability_previous - lambda_over_both) *
+        exp(-(foi_tmp + seroreversion_rate))
+    }
+    probabilities[i] <- probability_previous
+  }
+  probabilities_oldest_age_last <- rev(probabilities)
+  return(probabilities_oldest_age_last)
+}
+
 #' Generate probabilities of seropositivity by age based on a time-varying FOI model.
 #'
 #' This function calculates the probabilities of seropositivity by age based on a time-varying FOI model.
@@ -47,16 +77,16 @@ probability_seropositive_time_model_by_age <- function(
     foi,
     seroreversion_rate) {
 
-  ages <- seq_along(foi$year)
+  years <- foi$year
 
-  probabilities <- probability_exact(
-    ages = ages,
+  probabilities <- probability_exact_time_varying(
+    years = years,
     fois = foi$foi,
     seroreversion_rate = seroreversion_rate
   )
 
   df <- data.frame(
-    age = ages,
+    age = seq_along(years),
     seropositivity = probabilities
   )
 
@@ -80,7 +110,7 @@ probability_seropositive_age_model_by_age <- function(
 
   ages <- seq_along(foi$age)
 
-  probabilities <- probability_exact(
+  probabilities <- probability_exact_age_varying(
     ages = ages,
     fois = foi$foi,
     seroreversion_rate = seroreversion_rate
@@ -160,7 +190,7 @@ multinomial_sampling_group <- function(sample_size, n_ages) {
 #' @return A dataframe with random sample sizes generated for each age based on the overall
 #'         sample size.
 generate_random_sample_sizes <- function(survey_df_long) {
-  
+
   df_new <- NULL
   intervals <- unique(survey_df_long$group)
   for (interval_aux in na.omit(intervals)) {
@@ -248,6 +278,34 @@ validate_seroreversion_rate <- function(seroreversion_rate) {
   }
 }
 
+generate_seropositive_counts_by_age_bin <- function(
+    probability_seropositive_by_age,
+    sample_size_by_age_random,
+    survey_features
+    ) {
+
+  combined_df <- probability_seropositive_by_age %>%
+    dplyr::left_join(sample_size_by_age_random, by="age") %>%
+    dplyr::mutate(
+      n_seropositive=rbinom(nrow(probability_seropositive_by_age),
+                            sample_size,
+                            seropositivity))
+
+  grouped_df <- combined_df %>%
+    dplyr::group_by(age_min, age_max) %>%
+    dplyr::summarise(
+      sample_size=sum(sample_size),
+      n_seropositive=sum(n_seropositive),
+      .groups = "drop"
+    ) %>%
+    left_join(
+      survey_features,
+      by = c("age_min", "age_max", "sample_size")
+    )
+
+  return(grouped_df)
+}
+
 #' Simulate serosurvey data based on a time-varying FOI model.
 #'
 #' This function generates binned serosurvey data based on a time-varying FOI model,
@@ -297,24 +355,7 @@ simulate_serosurvey_time_model <- function(
     survey_features = survey_features
   )
 
-  combined_df <- probability_serop_by_age %>%
-    dplyr::left_join(sample_size_by_age_random, by="age") %>%
-    dplyr::mutate(
-      n_seropositive=rbinom(nrow(probability_serop_by_age),
-                            sample_size,
-                            seropositivity))
 
-  grouped_df <- combined_df %>%
-    dplyr::group_by(age_min, age_max) %>%
-    dplyr::summarise(
-      sample_size=sum(sample_size),
-      n_seropositive=sum(n_seropositive),
-      .groups = "drop"
-    ) %>%
-    left_join(
-      survey_features,
-      by = c("age_min", "age_max", "sample_size")
-    )
 
   return(grouped_df)
 }
@@ -402,7 +443,7 @@ simulate_serosurvey_age_and_time_model <- function(
   validate_survey(survey_features)
   validate_seroreversion_rate(seroreversion_rate)
 
-  probability_serop_by_age <- probability_seropositive_age_model_by_age(
+  probability_serop_by_age <- probability_seropositive_age_and_time_model_by_age(
     foi = foi,
     seroreversion_rate = seroreversion_rate
   )

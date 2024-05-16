@@ -1,26 +1,26 @@
 
-test_that("probability_exact calculates probabilities correctly", {
+test_that("probability_exact_age_varying calculates probabilities correctly", {
   # Test with simple input
   ages <- c(1, 2, 3)
   foi <- 0.1
   fois <- rep(foi, length(ages))
-  probabilities <- probability_exact(ages, fois)
+  probabilities <- probability_exact_age_varying(ages, fois)
 
   exact_probability_constant <- function(age, foi) {
     1 - exp(-age * foi)
   }
   expected <- purrr::map_dbl(ages, ~exact_probability_constant(., foi))
-  expect_equal(probabilities, expected, tolerance = 1e-6)
+  expect_equal(probabilities, expected, tolerance = 1e-6) # TODO change to dplyr::near
 
   # Test if FOIs increase that this leads to increased seropositivity
   fois_delta <- runif(length(ages))
   fois_h <- fois + fois_delta
-  probabilities_h <- probability_exact(ages, fois_h)
+  probabilities_h <- probability_exact_age_varying(ages, fois_h)
   expect_true(all(probabilities_h > probabilities))
 
   # Test with seroreversion
   seroreversion_rate <- 0.05
-  probabilities <- probability_exact(ages, fois, seroreversion_rate)
+  probabilities <- probability_exact_age_varying(ages, fois, seroreversion_rate)
 
   exact_probability_constant_seroreversion <- function(age, foi, seroreversion) {
     foi / (foi + seroreversion_rate) * (1 - exp(-(foi + seroreversion_rate) * age))
@@ -30,9 +30,71 @@ test_that("probability_exact calculates probabilities correctly", {
   expect_equal(probabilities, expected, tolerance = 1e-6)
 
   # Test if FOIs increase that this leads to increased seropositivity when seroreversion present
-  probabilities_h <- probability_exact(ages, fois_h, seroreversion_rate)
+  probabilities_h <- probability_exact_age_varying(ages, fois_h, seroreversion_rate)
   expect_true(all(probabilities_h > probabilities))
+
+  # Test with analytical solution for non-constant FOIs
+  ages <- c(1, 2)
+  fois <- c(0.1, 0.2)
+  probabilities <- probability_exact_age_varying(years, fois)
+  expected <- c(1 - exp(-0.1), 1 - exp(-(0.1 + 0.2)))
+  expect_true(
+    all(
+      dplyr::near(
+        probabilities,
+        expected,
+        tol = 1e-6
+      )
+    )
+  )
 })
+
+test_that("probability_exact_time_varying calculates probabilities correctly", {
+  # Test with constant FOI
+  years <- c(1, 2, 3)
+  foi <- 0.1
+  fois <- rep(foi, length(years))
+  probabilities <- probability_exact_time_varying(years, fois)
+
+  exact_probability_constant <- function(age, foi) {
+    1 - exp(-age * foi)
+  }
+  ages <- seq_along(years)
+  expected <- purrr::map_dbl(ages, ~exact_probability_constant(., foi))
+  expect_true(
+    all(
+      dplyr::near(
+        probabilities,
+        expected,
+        tol = 1e-6
+      )
+    )
+  )
+
+  # Test with analytical solution
+  years <- c(1, 2)
+  fois <- c(0.1, 0.2)
+  probabilities <- probability_exact_time_varying(years, fois)
+  expected <- c(1 - exp(-0.2), 1 - exp(-(0.1 + 0.2)))
+  expect_true(
+    all(
+      dplyr::near(
+        probabilities,
+        expected,
+        tol = 1e-6
+      )
+    )
+  )
+
+  # Test that time-varying model gives a different answer to age-varying
+  ages <- seq_along(years)
+  probabilities_age <- probability_exact_age_varying(ages, fois)
+  expect_true(
+    probabilities_age[1] != probabilities[1] # for youngest age group these differ
+  )
+
+})
+
 
 
 test_that("probability_seropositive_time_model_by_age works", {
