@@ -110,7 +110,7 @@ probability_seropositive_age_model_by_age <- function(
     foi,
     seroreversion_rate) {
 
-  ages <- seq_along(foi$year)
+  ages <- seq_along(foi$age)
 
   probabilities <- probability_exact_age_varying(
     ages = ages,
@@ -348,6 +348,36 @@ simulate_serosurvey_time_model <- function(
   return(grouped_df)
 }
 
+
+#' Simulate serosurvey data based on an age-varying FOI model.
+#'
+#' This function generates binned serosurvey data based on an age-varying FOI model,
+#' optionally including seroreversion. This function allows construction of serosurveys
+#' with binned age groups, and it generates uncertainty in the distribution of a sample size
+#' within an age bin through multinomial sampling.
+#'
+#' @param foi A dataframe containing the force of infection (FOI) values for different ages.
+#'            It should have two columns: 'age' and 'foi'.
+#' @param survey_features A dataframe containing information about the binned age groups and sample
+#'                        sizes for each. It should contain columns: ['age_min', 'age_max', 'sample_size'].
+#' @param seroreversion_rate A non-negative value determining the rate of seroreversion (per year).
+#'                           Default is 0.
+#'
+#' @return A dataframe with simulated serosurvey data, including age group information, overall
+#'         sample sizes, the number of seropositive individuals, and other survey features.
+#' @examples
+#' # specify FOIs for each year
+#' foi_df <- data.frame(
+#'   age = seq(1, 20, 1)
+#' ) %>%
+#' mutate(foi = rnorm(length(year), 0.1, 0.01))
+#' survey_features <- data.frame(
+#'   age_min = c(1, 3, 15),
+#'   age_max = c(2, 14, 20),
+#'   sample_size = c(1000, 2000, 1500))
+#' serosurvey <- simulate_serosurvey_age_model(
+#' foi_df, survey_features)
+#' @export
 simulate_serosurvey_age_model <- function(
     foi,
     survey_features,
