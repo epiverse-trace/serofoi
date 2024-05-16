@@ -124,6 +124,26 @@ probability_seropositive_age_model_by_age <- function(
   return(df)
 }
 
+#' Generate probabilities of seropositivity by age based on an age-and-time varying FOI model.
+#'
+#' This function calculates the probabilities of seropositivity by age based on an age-and-time-varying FOI model.
+#' It takes into account the FOI and the rate of seroreversion.
+#'
+#' @param foi A dataframe containing the force of infection (FOI) values for different ages.
+#'            It should have two columns: 'age' and 'foi'.
+#' @param seroreversion_rate A non-negative numeric value representing the rate of seroreversion.
+#'
+#' @return A dataframe with columns 'age' and 'seropositivity'.
+probability_seropositive_age_and_time_model_by_age <- function(
+    foi,
+    seroreversion_rate
+    ) {
+
+
+
+}
+
+
 #' Add bins based on age intervals.
 #'
 #' It generates a new column 'group' in the survey_features dataframe, representing
@@ -355,7 +375,11 @@ simulate_serosurvey_time_model <- function(
     survey_features = survey_features
   )
 
-
+  grouped_df <- generate_seropositive_counts_by_age_bin(
+    probability_serop_by_age,
+    sample_size_by_age_random,
+    survey_features
+  )
 
   return(grouped_df)
 }
@@ -410,24 +434,11 @@ simulate_serosurvey_age_model <- function(
     survey_features = survey_features
   )
 
-  combined_df <- probability_serop_by_age %>%
-    dplyr::left_join(sample_size_by_age_random, by="age") %>%
-    dplyr::mutate(
-      n_seropositive=rbinom(nrow(probability_serop_by_age),
-                            sample_size,
-                            seropositivity))
-
-  grouped_df <- combined_df %>%
-    dplyr::group_by(age_min, age_max) %>%
-    dplyr::summarise(
-      sample_size=sum(sample_size),
-      n_seropositive=sum(n_seropositive),
-      .groups = "drop"
-    ) %>%
-    left_join(
-      survey_features,
-      by = c("age_min", "age_max", "sample_size")
-    )
+  grouped_df <- generate_seropositive_counts_by_age_bin(
+    probability_serop_by_age,
+    sample_size_by_age_random,
+    survey_features
+  )
 
   return(grouped_df)
 }
@@ -452,24 +463,11 @@ simulate_serosurvey_age_and_time_model <- function(
     survey_features = survey_features
   )
 
-  combined_df <- probability_serop_by_age %>%
-    dplyr::left_join(sample_size_by_age_random, by="age") %>%
-    dplyr::mutate(
-      n_seropositive=rbinom(nrow(probability_serop_by_age),
-                            sample_size,
-                            seropositivity))
-
-  grouped_df <- combined_df %>%
-    dplyr::group_by(age_min, age_max) %>%
-    dplyr::summarise(
-      sample_size=sum(sample_size),
-      n_seropositive=sum(n_seropositive),
-      .groups = "drop"
-    ) %>%
-    left_join(
-      survey_features,
-      by = c("age_min", "age_max", "sample_size")
-    )
+  grouped_df <- generate_seropositive_counts_by_age_bin(
+    probability_serop_by_age,
+    sample_size_by_age_random,
+    survey_features
+  )
 
   return(grouped_df)
 }
