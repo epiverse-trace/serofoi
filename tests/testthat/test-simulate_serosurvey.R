@@ -408,6 +408,17 @@ test_that("simulate_serosurvey returns serosurvey data based on specified model"
   expect_true(all(names(serosurvey) %in% c("age_min", "age_max", "sample_size", "n_seropositive")))
 
   # Test with 'age-time' model: TODO
+  years <- 1981:2000
+  foi_df <- NULL
+  for (year in years) {
+    aux_df <- data.frame(
+      year = year,
+      age = seq(1, 30, 1),
+      foi = runif(30, 0.05, 0.15)
+    )
+    foi_df <- bind_rows(foi_df, aux_df)
+  }
+
   serosurvey <- simulate_serosurvey("age-time", foi_df, survey_features)
   expect_true(all(names(serosurvey) %in% c("age_min", "age_max", "sample_size", "n_seropositive")))
 })
