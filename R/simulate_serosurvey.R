@@ -238,6 +238,28 @@ sample_size_by_individual_age_random <- function(survey_features) {
   return(df_new)
 }
 
+validate_survey <- function(survey_features) {
+  if (!is.data.frame(survey_features) || !all(c("age_min", "age_max", "sample_size") %in% names(survey_features))) {
+    stop("survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
+  }
+}
+
+validate_foi_df <- function(foi_df, cnames_additional) {
+  if (!is.data.frame(foi_df) || !all(cnames_additional %in% names(foi_df))) {
+    if(length(cnames_additional) == 1)
+      message_end <- paste0(" and ", cnames_additional, ".")
+    else
+      message_end <- paste0(", ", paste(cnames_additional, collapse=" and "), ".")
+    message_beginning <- "foi must be a dataframe with columns foi"
+    stop(paste0(message_beginning, message_end))
+  }
+}
+
+validate_seroreversion_rate <- function(seroreversion_rate) {
+  if (!is.numeric(seroreversion_rate) || seroreversion_rate < 0) {
+    stop("seroreversion_rate must be a non-negative numeric value.")
+  }
+}
 
 #' Simulate serosurvey data based on a time-varying FOI model.
 #'
@@ -275,15 +297,9 @@ simulate_serosurvey_time_model <- function(
 ) {
 
   # Input validation
-  if (!is.data.frame(foi) || !all(c("year", "foi") %in% names(foi))) {
-    stop("foi must be a dataframe with columns 'year' and 'foi'.")
-  }
-  if (!is.data.frame(survey_features) || !all(c("age_min", "age_max", "sample_size") %in% names(survey_features))) {
-    stop("survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
-  }
-  if (!is.numeric(seroreversion_rate) || seroreversion_rate < 0) {
-    stop("seroreversion_rate must be a non-negative numeric value.")
-  }
+  validate_foi_df(foi, c("year"))
+  validate_survey(survey_features)
+  validate_seroreversion_rate(seroreversion_rate)
 
   probability_serop_by_age <- probability_seropositive_time_model_by_age(
     foi = foi,
@@ -353,15 +369,51 @@ simulate_serosurvey_age_model <- function(
 ) {
 
   # Input validation
-  if (!is.data.frame(foi) || !all(c("age", "foi") %in% names(foi))) {
-    stop("foi must be a dataframe with columns 'age' and 'foi'.")
-  }
-  if (!is.data.frame(survey_features) || !all(c("age_min", "age_max", "sample_size") %in% names(survey_features))) {
-    stop("survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
-  }
-  if (!is.numeric(seroreversion_rate) || seroreversion_rate < 0) {
-    stop("seroreversion_rate must be a non-negative numeric value.")
-  }
+  validate_foi_df(foi, c("age"))
+  validate_survey(survey_features)
+  validate_seroreversion_rate(seroreversion_rate)
+
+  probability_serop_by_age <- probability_seropositive_age_model_by_age(
+    foi = foi,
+    seroreversion_rate = seroreversion_rate
+  )
+
+  sample_size_by_age_random <- sample_size_by_individual_age_random(
+    survey_features = survey_features
+  )
+
+  combined_df <- probability_serop_by_age %>%
+    dplyr::left_join(sample_size_by_age_random, by="age") %>%
+    dplyr::mutate(
+      n_seropositive=rbinom(nrow(probability_serop_by_age),
+                            sample_size,
+                            seropositivity))
+
+  grouped_df <- combined_df %>%
+    dplyr::group_by(age_min, age_max) %>%
+    dplyr::summarise(
+      sample_size=sum(sample_size),
+      n_seropositive=sum(n_seropositive),
+      .groups = "drop"
+    ) %>%
+    left_join(
+      survey_features,
+      by = c("age_min", "age_max", "sample_size")
+    )
+
+  return(grouped_df)
+}
+
+simulate_serosurvey_age_and_time_model <- function(
+    foi,
+    survey_features,
+    seroreversion_rate=0
+) {
+
+  # Input validation
+  validate_foi_df(foi, c("age", "year"))
+  validate_survey(survey_features)
+  validate_seroreversion_rate(seroreversion_rate)
 
   probability_serop_by_age <- probability_seropositive_age_model_by_age(
     foi = foi,
