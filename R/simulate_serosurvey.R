@@ -1,3 +1,10 @@
+
+#' Create an exposure matrix based on age groups.
+#'
+#' @param ages A vector containing the ages for which to generate the exposure matrix.
+#'             The age groups should be numeric and ordered.
+#' @return An exposure matrix indicating exposure status between different age groups.
+#'         Rows and columns correspond to ages, and elements indicate exposure status.
 create_exposure_matrix <- function(ages) {
 
   n_ages <- length(ages)
@@ -12,48 +19,53 @@ create_exposure_matrix <- function(ages) {
 #' force-of-infection including seroreversion
 #'
 #' @param ages Integer indicating the ages of the exposed cohorts
-#' @param foi Numeric atomic vector corresponding to the age-varying
+#' @param fois Numeric atomic vector corresponding to the age-varying
 #' force-of-infection to simulate from
 #' @param seroreversion_rate Non-negative seroreversion rate. Default is 0.
 #' @return vector of probabilities of being seropositive for age-varying FoI
 #' including seroreversion (ordered from youngest to oldest individuals)
 probability_exact_time_varying <- function(
     ages,
-    foi,
+    fois,
     seroreversion_rate = 0
 ) {
 
   exposure_matrix <- create_exposure_matrix(ages)
   probabilities <-
-    (foi / (foi + seroreversion_rate)) * (1 - exp(-drop(exposure_matrix %*% (foi + seroreversion_rate))))
+    (fois / (fois + seroreversion_rate)) * (1 - exp(-drop(exposure_matrix %*% (fois + seroreversion_rate))))
   return(probabilities)
 }
 
 #' Returns the probability of being seropositive for age-varying
 #' force-of-infection including seroreversion
 #'
-#' @param age Integer corresponding to the age of the exposed cohort
-#' @param foi Numeric atomic vector corresponding to the age-varying FoI to
-#' simulate from
-#' @param mu Seroreversion rate
-#' @return probability of being seropositive for age-varying FoI
-#' including seroreversion
+#' @param ages Integer indicating the ages of the exposed cohorts
+#' @param fois Numeric atomic vector corresponding to the age-varying
+#' force-of-infection to simulate from
+#' @param seroreversion_rate Non-negative seroreversion rate. Default is 0.
+#' @return vector of probabilities of being seropositive for age-varying FoI
+#' including seroreversion (ordered from youngest to oldest individuals)
 probability_exact_age_varying <- function(
-    age,
-    foi,
-    mu = 0
+    ages,
+    fois,
+    seroreversion_rate = 0
 ) {
-  probability <- 0
+  probabilities <- vector(length = length(ages))
   # solves ODE exactly within pieces
-  for (i in 1:age) {
-    probability <-
-      (1 / (foi[i] + mu)) *
-      (foi[i] + exp(-(foi[i] + mu)) * (probability * (foi[i] + mu) - foi[i]))
+  for (i in seq_along(ages)) {
+    foi_tmp <- fois[i]
+    if(i == 1)
+      probability_previous <- 0
+    else
+      probability_previous <- probabilities[i - 1]
+    probabilities[i] <-
+      (1 / (foi_tmp + seroreversion_rate)) *
+      (foi_tmp + exp(-(foi_tmp + seroreversion_rate)) * (probability_previous * (foi_tmp + seroreversion_rate) - foi_tmp))
   }
-  return(probability)
+  return(probabilities)
 }
 
-#' Generate probabilities of seropositivity by age based on a time-varying model.
+#' Generate probabilities of seropositivity by age based on a time-varying FOI model.
 #'
 #' This function calculates the probabilities of seropositivity by age based on a time-varying FOI model.
 #' It takes into account the FOI and the rate of seroreversion.
@@ -70,8 +82,39 @@ probability_seropositive_time_model_by_age <- function(
   ages <- seq_along(foi$year)
 
   probabilities <- probability_exact_time_varying(
+    ages = ages,
+    fois = foi$foi,
+    seroreversion_rate = seroreversion_rate
+  )
+
+  df <- data.frame(
     age = ages,
-    foi = foi$foi,
+    seropositivity = probabilities
+  )
+
+  return(df)
+}
+
+
+#' Generate probabilities of seropositivity by age based on an age-varying FOI model.
+#'
+#' This function calculates the probabilities of seropositivity by age based on an age-varying FOI model.
+#' It takes into account the FOI and the rate of seroreversion.
+#'
+#' @param foi A dataframe containing the force of infection (FOI) values for different ages.
+#'            It should have two columns: 'age' and 'foi'.
+#' @param seroreversion_rate A non-negative numeric value representing the rate of seroreversion.
+#'
+#' @return A dataframe with columns 'age' and 'seropositivity'.
+probability_seropositive_age_model_by_age <- function(
+    foi,
+    seroreversion_rate) {
+
+  ages <- seq_along(foi$year)
+
+  probabilities <- probability_exact_age_varying(
+    ages = ages,
+    fois = foi$foi,
     seroreversion_rate = seroreversion_rate
   )
 
@@ -275,6 +318,54 @@ simulate_serosurvey_time_model <- function(
   }
 
   probability_serop_by_age <- probability_seropositive_time_model_by_age(
+    foi = foi,
+    seroreversion_rate = seroreversion_rate
+  )
+
+  sample_size_by_age_random <- sample_size_by_individual_age_random(
+    survey_features = survey_features
+  )
+
+  combined_df <- probability_serop_by_age %>%
+    dplyr::left_join(sample_size_by_age_random, by="age") %>%
+    dplyr::mutate(
+      n_seropositive=rbinom(nrow(probability_serop_by_age),
+                            sample_size,
+                            seropositivity))
+
+  grouped_df <- combined_df %>%
+    dplyr::group_by(age_min, age_max) %>%
+    dplyr::summarise(
+      sample_size=sum(sample_size),
+      n_seropositive=sum(n_seropositive),
+      .groups = "drop"
+    ) %>%
+    left_join(
+      survey_features,
+      by = c("age_min", "age_max", "sample_size")
+    )
+
+  return(grouped_df)
+}
+
+simulate_serosurvey_age_model <- function(
+    foi,
+    survey_features,
+    seroreversion_rate=0
+) {
+
+  # Input validation
+  if (!is.data.frame(foi) || !all(c("age", "foi") %in% names(foi))) {
+    stop("foi must be a dataframe with columns 'age' and 'foi'.")
+  }
+  if (!is.data.frame(survey_features) || !all(c("age_min", "age_max", "sample_size") %in% names(survey_features))) {
+    stop("survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
+  }
+  if (!is.numeric(seroreversion_rate) || seroreversion_rate < 0) {
+    stop("seroreversion_rate must be a non-negative numeric value.")
+  }
+
+  probability_serop_by_age <- probability_seropositive_age_model_by_age(
     foi = foi,
     seroreversion_rate = seroreversion_rate
   )
