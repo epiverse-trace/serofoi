@@ -230,33 +230,42 @@ sample_size_by_individual_age_random <- function(survey_features) {
 
 #' Simulate serosurvey data based on a time-varying FOI model.
 #'
-#' This function simulates serosurvey data based on a time-varying FOI model,
-#' optionally including seroreversion.
-#' It calculates the probabilities of seropositivity by age, generates random sample sizes
-#' for each age group, and then simulates the number of seropositive individuals for each
-#' age group based on the calculated probabilities and sample sizes. Finally, it aggregates
-#' the results by age group and returns a dataframe containing the simulated serosurvey data.
+#' This function generates binned serosurvey data based on a time-varying FOI model,
+#' optionally including seroreversion. This function allows construction of serosurveys
+#' with binned age groups, and it generates uncertainty in the distribution of a sample size
+#' within an age bin through multinomial sampling.
 #'
 #' @param foi A dataframe containing the force of infection (FOI) values for different years.
 #'            It should have two columns: 'year' and 'foi'.
-#' @param survey_features A dataframe containing information about individuals' age ranges and
-#'                        sample sizes.
+#' @param survey_features A dataframe containing information about the binned age groups and sample
+#'                        sizes for each. It should contain columns: ['age_min', 'age_max', 'sample_size'].
 #' @param seroreversion_rate A non-negative value determining the rate of seroreversion (per year).
 #'                           Default is 0.
 #'
 #' @return A dataframe with simulated serosurvey data, including age group information, overall
 #'         sample sizes, the number of seropositive individuals, and other survey features.
-#'
+#' @examples
+#' # specify FOIs for each year
+#' foi_df <- data.frame(
+#'   year = seq(1990, 2009, 1)
+#' ) %>%
+#' mutate(foi = rnorm(length(year), 0.1, 0.01))
+#' survey_features <- data.frame(
+#'   age_min = c(1, 3, 15),
+#'   age_max = c(2, 14, 20),
+#'   sample_size = c(1000, 2000, 1500))
+#' serosurvey <- simulate_serosurvey_time_model(
+#' foi_df, survey_features)
 #' @export
 simulate_serosurvey_time_model <- function(
     foi,
     survey_features,
-    seroreversion=0
+    seroreversion_rate=0
 ) {
 
   probability_serop_by_age <- probability_seropositive_time_model_by_age(
     foi = foi,
-    seroreversion = seroreversion
+    seroreversion_rate = seroreversion_rate
   )
 
   sample_size_by_age_random <- sample_size_by_individual_age_random(
