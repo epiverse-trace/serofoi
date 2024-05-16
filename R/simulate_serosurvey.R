@@ -1,20 +1,4 @@
 
-#' Create an exposure matrix based on age groups.
-#'
-#' @param ages A vector containing the ages for which to generate the exposure matrix.
-#'             The age groups should be numeric and ordered.
-#' @return An exposure matrix indicating exposure status between different age groups.
-#'         Rows and columns correspond to ages, and elements indicate exposure status.
-create_exposure_matrix <- function(ages) {
-
-  n_ages <- length(ages)
-  exposure_matrix <- matrix(0, n_ages, n_ages)
-  exposure_matrix <- lower.tri(exposure_matrix, diag = TRUE)
-  exposure_matrix[exposure_matrix==TRUE] <- 1
-
-  return(exposure_matrix)
-}
-
 #' Computes the probability of being seropositive for age-varying
 #' force-of-infection including seroreversion
 #'
@@ -30,9 +14,19 @@ probability_exact_time_varying <- function(
     seroreversion_rate = 0
 ) {
 
-  exposure_matrix <- create_exposure_matrix(ages)
-  probabilities <-
-    (fois / (fois + seroreversion_rate)) * (1 - exp(-exposure_matrix %*% (fois + seroreversion_rate)))
+  probabilities <- vector(length = length(ages))
+  # solves ODE exactly within pieces
+  for (i in seq_along(ages)) {
+    foi_tmp <- fois[i]
+    if(i == 1)
+      probability_previous <- 0
+    else
+      probability_previous <- probabilities[i - 1]
+    lambda_over_both <- (foi_tmp / (foi_tmp + seroreversion_rate))
+    probabilities[i] <- lambda_over_both +
+      (probability_previous - lambda_over_both) *
+      exp(-(foi_tmp + seroreversion_rate))
+  }
   return(probabilities)
 }
 
