@@ -170,14 +170,14 @@ test_that("probability_seropositive_age_model_by_age works", {
 test_that("probability_seropositive_age_and_time_model_by_age works as expected", {
   us <- c(0.1, 0.2, 0.3)
   vs <- c(1, 0.5, 0.2)
-  foi <- expand_grid(
+  foi <- tidyr::expand_grid(
     u=us,
     v=vs
   ) %>%
     mutate(foi=u * v) %>%
     pull(foi)
 
-  foi_df <- expand_grid(
+  foi_df <- tidyr::expand_grid(
     year=c(1990, 1991, 1992),
     age=c(1, 2, 3)
   ) %>%
@@ -516,7 +516,7 @@ test_that("simulate_serosurvey_age_model input validation", {
 test_that("simulate_serosurvey_age_and_time_model function works as expected", {
   # Test case 1: Check if the output dataframe has the correct structure
   sample_sizes <- c(1000, 2000, 1500)
-  foi_df <- expand_grid(
+  foi_df <- tidyr::expand_grid(
     year = seq(1990, 2009, 1),
     age = seq(1, 20, 1)
   ) %>%
@@ -537,7 +537,7 @@ test_that("simulate_serosurvey_age_and_time_model function works as expected", {
   expect_equal(actual_rows, expected_rows)
 
   # Test case 3: try a much higher FOI which should result in a higher proportion seropositive
-  foi_df_1 <- expand_grid(
+  foi_df_1 <- tidyr::expand_grid(
     year = seq(1990, 2009, 1),
     age = seq(1, 20, 1)
   ) %>%
@@ -556,7 +556,7 @@ test_that("simulate_serosurvey_age_and_time_model function works as expected", {
 
 test_that("simulate_serosurvey_age_and_time_model input validation", {
 
-  foi_df <- expand_grid(
+  foi_df <- tidyr::expand_grid(
     year = seq(1990, 2009, 1),
     age = seq(1, 20, 1)
   ) %>%
@@ -630,7 +630,7 @@ test_that("simulate_serosurvey returns serosurvey data based on specified model"
   expect_true(all(names(serosurvey) %in% c("age_min", "age_max", "sample_size", "n_seropositive")))
 
   # Test with 'age-time' model
-  foi_df <- expand_grid(
+  foi_df <- tidyr::expand_grid(
     year = seq(1990, 2009, 1),
     age = seq(1, 20, 1)
   ) %>%
