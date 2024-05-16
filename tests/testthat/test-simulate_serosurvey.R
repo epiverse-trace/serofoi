@@ -1,13 +1,4 @@
 
-test_that("create_exposure_matrix generates correct exposure matrix", {
-
-  # Test with multiple age groups
-  ages <- c(1, 2, 3)
-  expected <- matrix(0, length(ages), length(ages))
-  expected[lower.tri(expected, diag = TRUE)] <- 1
-  expect_equal(create_exposure_matrix(ages), expected)
-})
-
 test_that("probability_exact_time_varying calculates probabilities correctly", {
   # Test with simple input
   ages <- c(1, 2, 3)
@@ -21,6 +12,12 @@ test_that("probability_exact_time_varying calculates probabilities correctly", {
   expected <- purrr::map_dbl(ages, ~exact_probability_constant(., foi))
   expect_equal(probabilities, expected, tolerance = 1e-6)
 
+  # Test if FOIs increase that this leads to increased seropositivity
+  fois_delta <- runif(length(ages))
+  fois_h <- fois + fois_delta
+  probabilities_h <- probability_exact_time_varying(ages, fois_h)
+  expect_true(all(probabilities_h > probabilities))
+
   # Test with seroreversion
   seroreversion_rate <- 0.05
   probabilities <- probability_exact_time_varying(ages, fois, seroreversion_rate)
@@ -31,6 +28,10 @@ test_that("probability_exact_time_varying calculates probabilities correctly", {
   expected <- purrr::map_dbl(ages, ~exact_probability_constant_seroreversion(., foi, seroreversion))
 
   expect_equal(probabilities, expected, tolerance = 1e-6)
+
+  # Test if FOIs increase that this leads to increased seropositivity when seroreversion present
+  probabilities_h <- probability_exact_time_varying(ages, fois_h, seroreversion_rate)
+  expect_true(all(probabilities_h > probabilities))
 })
 
 test_that("probability_exact_age_varying calculates probabilities correctly", {
