@@ -1,6 +1,9 @@
 
-#' Computes the probability of being seropositive for age-varying
-#' force-of-infection including seroreversion
+#' Computes the probability of being seropositive when FOIs vary by time, age
+#' or both
+#'
+#' It is the responsibility of the user of this function to call it with the correct
+#' FOIs as it is these that vary according to model.
 #'
 #' @param ages Integer indicating the ages of the exposed cohorts
 #' @param fois Numeric atomic vector corresponding to the age-varying
@@ -8,7 +11,7 @@
 #' @param seroreversion_rate Non-negative seroreversion rate. Default is 0.
 #' @return vector of probabilities of being seropositive for age-varying FoI
 #' including seroreversion (ordered from youngest to oldest individuals)
-probability_exact_time_varying <- function(
+probability_exact <- function(
     ages,
     fois,
     seroreversion_rate = 0
@@ -30,35 +33,6 @@ probability_exact_time_varying <- function(
   return(probabilities)
 }
 
-#' Returns the probability of being seropositive for age-varying
-#' force-of-infection including seroreversion
-#'
-#' @param ages Integer indicating the ages of the exposed cohorts
-#' @param fois Numeric atomic vector corresponding to the age-varying
-#' force-of-infection to simulate from
-#' @param seroreversion_rate Non-negative seroreversion rate. Default is 0.
-#' @return vector of probabilities of being seropositive for age-varying FoI
-#' including seroreversion (ordered from youngest to oldest individuals)
-probability_exact_age_varying <- function(
-    ages,
-    fois,
-    seroreversion_rate = 0
-) {
-  probabilities <- vector(length = length(ages))
-  # solves ODE exactly within pieces
-  for (i in seq_along(ages)) {
-    foi_tmp <- fois[i]
-    if(i == 1)
-      probability_previous <- 0
-    else
-      probability_previous <- probabilities[i - 1]
-    probabilities[i] <-
-      (1 / (foi_tmp + seroreversion_rate)) *
-      (foi_tmp + exp(-(foi_tmp + seroreversion_rate)) * (probability_previous * (foi_tmp + seroreversion_rate) - foi_tmp))
-  }
-  return(probabilities)
-}
-
 #' Generate probabilities of seropositivity by age based on a time-varying FOI model.
 #'
 #' This function calculates the probabilities of seropositivity by age based on a time-varying FOI model.
@@ -75,7 +49,7 @@ probability_seropositive_time_model_by_age <- function(
 
   ages <- seq_along(foi$year)
 
-  probabilities <- probability_exact_time_varying(
+  probabilities <- probability_exact(
     ages = ages,
     fois = foi$foi,
     seroreversion_rate = seroreversion_rate
@@ -106,7 +80,7 @@ probability_seropositive_age_model_by_age <- function(
 
   ages <- seq_along(foi$age)
 
-  probabilities <- probability_exact_age_varying(
+  probabilities <- probability_exact(
     ages = ages,
     fois = foi$foi,
     seroreversion_rate = seroreversion_rate
