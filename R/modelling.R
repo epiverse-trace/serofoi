@@ -468,12 +468,13 @@ get_chunk_structure <- function(
 #' cohort_ages <- get_cohort_ages(serodata = serodata)
 #' @export
 get_cohort_ages <- function(serodata) {
-  birth_year <- (min(serodata$birth_year):serodata$tsur[1])
-  age <- (seq_along(min(serodata$birth_year):(serodata$tsur[1] - 1)))
+
+  birth_year <- min(serodata$birth_year):(serodata$tsur[1] - 1)
+  age <- rev(seq_along(birth_year))
 
   cohort_ages <- data.frame(
-    birth_year = birth_year[-length(birth_year)],
-    age = rev(age)
+    birth_year = birth_year,
+    age = age
   )
   return(cohort_ages)
 }
