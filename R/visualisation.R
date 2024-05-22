@@ -167,9 +167,9 @@ plot_seroprev_fitted <- function(seromodel_object,
 #' @param size_text Text size use in the theme of the graph returned by the
 #'   function.
 #' @param max_lambda Upper `ylim`for force-of-infection plot
-#' @param foi_sim Force-of-infection trend to be plotted alongside the estimated
-#' force-of-infection. Typically this corresponds to the force-of-infection used
-#' to simulate the serosurvey used to model.
+#' @param foi Data frame with the Force-of-infection trend to be plotted
+#' alongside the estimated force-of-infection. Typically this corresponds to
+#' the force-of-infection used to simulate the serosurvey used to model.
 #' @return A ggplot2 object containing the force-of-infection vs time including
 #'   the corresponding confidence interval.
 #' @examples
@@ -188,16 +188,16 @@ plot_seroprev_fitted <- function(seromodel_object,
 #' )
 #' @export
 plot_foi <- function(seromodel_object,
-                     cohort_ages,
+                     serodata,
                      max_lambda = NA,
                      size_text = 25,
-                     foi_sim = NULL) {
+                     foi = NULL) {
   checkmate::assert_class(seromodel_object, "stanfit", null.ok = TRUE)
 
   #-------- This bit is to get the actual length of the foi data
   foi_data <- get_foi_central_estimates(
     seromodel_object = seromodel_object,
-    cohort_ages = cohort_ages
+    serodata = serodata
   )
 
   if (
@@ -208,22 +208,42 @@ plot_foi <- function(seromodel_object,
     foi_plot <-
       ggplot2::ggplot(foi_data, ggplot2::aes(x = .data$year))
 
-    if (!is.null(foi_sim)) {
-      foi_sim_data <- data.frame(
-        year = foi_data$year
+    if (!is.null(foi)) {
+      stopifnot(
+        "`year` must be present in `foi`" = "year" %in% colnames(foi)
       )
+      foi_data <- dplyr::left_join(
+        foi_data,
+        foi,
+        by = "year"
+      )
+      foi_plot <- foi_plot +
+        ggplot2::geom_line(
+          data = foi_data, ggplot2::aes(y = foi),
+          colour = "#b30909",
+          size = size_text / 8
+        )
     }
-  } else if (
-    seromodel_object@model_name == "av_normal"
-  ) {
+  } else if (seromodel_object@model_name == "av_normal") {
     xlab <- "age"
     foi_plot <-
       ggplot2::ggplot(foi_data, ggplot2::aes(x = .data$age))
 
-    if (!is.null(foi_sim)) {
-      foi_sim_data <- data.frame(
-        age = foi_data$age
+    if (!is.null(foi)) {
+      stopifnot(
+        "`age` must be present in `foi`" = "age" %in% colnames(foi)
       )
+      foi_data <- dplyr::left_join(
+        foi_data,
+        foi,
+        by = "age"
+      )
+      foi_plot <- foi_plot +
+        ggplot2::geom_line(
+          data = foi_data, ggplot2::aes(y = foi),
+          colour = "#b30909",
+          size = size_text / 8
+        )
     }
   }
 
@@ -245,38 +265,6 @@ plot_foi <- function(seromodel_object,
     ggplot2::coord_cartesian(ylim = c(0, max_lambda)) +
     ggplot2::ylab("Force-of-Infection") +
     ggplot2::xlab(xlab)
-
-  if (!is.null(foi_sim)) {
-    if (nrow(foi_data) != length(foi_sim)) {
-      warn_msg <- paste0(
-        "`foi_sim` has different length than `exposure_years`. ",
-        "Dropping last elements of `foi_sim`"
-      )
-      warning(warn_msg)
-      remove_x_values <- length(foi_sim) - nrow(foi_data)
-      foi_sim_data <- data.frame(
-        year = foi_data$year,
-        foi_sim = foi_sim[-(1:remove_x_values)]
-      )
-      foi_plot <- foi_plot +
-        ggplot2::geom_line(
-          data = foi_sim_data, ggplot2::aes(y = foi_sim),
-          colour = "#b30909",
-          size = size_text / 8
-        )
-    } else {
-      foi_sim_data <- data.frame(
-        year = foi_data$year,
-        foi_sim = foi_sim
-      )
-      foi_plot <- foi_plot +
-        ggplot2::geom_line(
-          data = foi_sim_data, ggplot2::aes(y = foi_sim),
-          colour = "#b30909",
-          size = size_text / 8
-        )
-    }
-  }
 
   return(foi_plot)
 }
@@ -355,10 +343,9 @@ plot_rhats <- function(seromodel_object,
 #' @inheritParams get_foi_central_estimates
 #' @inheritParams run_seromodel
 #' @inheritParams get_prev_expanded
+#' @inheritParams plot_foi
 #' @param size_text Text size use in the theme of the graph returned by the
 #'   function.
-#' @param max_lambda TBD
-#' @param foi_sim TBD
 #' @return A ggplot object with a vertical arrange containing the
 #'   seropositivity, force of infection, and convergence plots.
 #' @examples
@@ -381,7 +368,7 @@ plot_seromodel <- function(seromodel_object,
                            size_text = 25,
                            bin_data = TRUE,
                            bin_step = 5,
-                           foi_sim = NULL) {
+                           foi = NULL) {
   checkmate::assert_class(seromodel_object, "stanfit", null.ok = TRUE)
   serodata <- validate_serodata(serodata)
 
@@ -398,10 +385,10 @@ plot_seromodel <- function(seromodel_object,
 
   foi_plot <- plot_foi(
     seromodel_object = seromodel_object,
-    cohort_ages = cohort_ages,
+    serodata = serodata,
     max_lambda = max_lambda,
     size_text = size_text,
-    foi_sim = foi_sim
+    foi = foi
   )
 
   rhats_plot <- plot_rhats(
