@@ -508,9 +508,8 @@ get_exposure_matrix <- function(serodata) {
 #' Extract central estimates for the fitted forced FoI
 #'
 #' @param seromodel_object Stanfit object containing the results of fitting a
-#'   model by means of [run_seromodel].
-#' @param cohort_ages  A data frame containing the age of each cohort
-#'   corresponding to each birth year.
+#'   model by means of [fit_seromodel].
+#' @inheritParams fit_seromodel
 #' @param lower_quantile Lower quantile used to compute the credible interval of
 #' the fitted force-of-infection.
 #' @param upper_quantile Lower quantile used to compute the credible interval of
@@ -526,18 +525,18 @@ get_exposure_matrix <- function(serodata) {
 #' cohort_ages <- get_cohort_ages(serodata = serodata)
 #' foi_central_estimates <- get_foi_central_estimates(
 #'   seromodel_object = seromodel_object,
-#'   cohort_ages = cohort_ages
+#'   serodata = serodata
 #' )
 #' @export
 get_foi_central_estimates <- function(
     seromodel_object,
-    cohort_ages,
+    serodata,
     lower_quantile = 0.05,
     upper_quantile = 0.95
     ) {
   # extracts force-of-infection from stan fit
   foi <- rstan::extract(seromodel_object, "foi", inc_warmup = FALSE)[[1]]
-
+  cohort_ages <- get_cohort_ages(serodata)
   # defines time scale depending on the type of the model
   if(
     seromodel_object@model_name %in%
