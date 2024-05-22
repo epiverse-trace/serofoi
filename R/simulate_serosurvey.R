@@ -410,7 +410,7 @@ simulate_serosurvey_time_model <- function(
   validate_seroreversion_rate(seroreversion_rate)
   validate_survey_and_foi_consistency(
     survey_features,
-    foi_df
+    foi
     )
 
   probability_serop_by_age <- probability_seropositive_time_model_by_age(
@@ -473,7 +473,7 @@ simulate_serosurvey_age_model <- function(
   validate_seroreversion_rate(seroreversion_rate)
   validate_survey_and_foi_consistency(
     survey_features,
-    foi_df
+    foi
   )
 
   probability_serop_by_age <- probability_seropositive_age_model_by_age(
@@ -536,7 +536,7 @@ simulate_serosurvey_age_and_time_model <- function(
   validate_seroreversion_rate(seroreversion_rate)
   validate_survey_and_foi_consistency(
     survey_features,
-    foi_df
+    foi
   )
 
   probability_serop_by_age <- probability_seropositive_age_and_time_model_by_age(
