@@ -24,33 +24,32 @@ transformed data {
 }
 
 parameters {
-  row_vector<lower=0>[n_chunks] fois;
+  vector<lower=0>[n_chunks] foi_vector;
   real<lower=0> sigma;
   real<lower=0> seroreversion_rate;
 }
 
 transformed parameters {
-  vector[n_chunks] fois_vector;
   vector[n_obs] prob_infected;
 
-  fois_vector = to_vector(fois);
-
-  prob_infected = prob_infected_calculate(
-    fois_vector,
-		chunks,
-    ages,
-    n_obs,
-    seroreversion_rate
-  );
+  for (i in 1:n_obs){
+    int age = ages[i];
+    prob_infected[i] = prob_infected_age_varying(
+      age,
+      foi_vector,
+      chunks,
+      seroreversion_rate
+    );
+  }
 }
 
 model {
   n_pos ~ binomial(n_total, prob_infected);
   sigma ~ cauchy(0, 1);
 
-	fois[1] ~ normal(foi_location, foi_scale);
+	foi_vector[1] ~ normal(foi_location, foi_scale);
   for(i in 2:n_chunks)
-    fois[i] ~ normal(fois[i - 1], sigma);
+    foi_vector[i] ~ normal(foi_vector[i - 1], sigma);
 
   if(serorev_prior == 0) {
     seroreversion_rate ~  uniform(serorev_a, serorev_b);
@@ -64,9 +63,16 @@ generated quantities{
   vector[n_obs] P_sim;
   vector[n_obs] logLikelihood;
   vector[age_max] foi;
+  vector[age_max] prob_infected_expanded;
 
-  for(i in 1:age_max) {
-    foi[i] = fois_vector[chunks[i]];
+  for(age in 1:age_max) {
+    foi[age] = foi_vector[chunks[age]];
+    prob_infected_expanded[age] = prob_infected_age_varying(
+      age,
+      foi_vector,
+      chunks,
+      seroreversion_rate
+    );
   }
 
   for(i in 1:n_obs){
