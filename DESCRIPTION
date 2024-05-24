@@ -52,7 +52,9 @@ Imports:
     ggplot2,
     Hmisc,
     loo,
-    purrr
+    purrr,
+    tidyr,
+    tibble
 LinkingTo: 
     BH (>= 1.66.0),
     Rcpp (>= 0.12.0),
