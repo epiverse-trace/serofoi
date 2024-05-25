@@ -35,7 +35,7 @@ fit_seromodel <- function(
   if (is_seroreversion)
     model_name <- paste0(model_type, "_seroreversion")
   else
-    model_name <- model_type
+    model_name <- paste0(model_type, "_no_seroreversion")
 
   # model <- stan_models[[model_name]]
   model <- rstan::stan_model(paste0("inst/stan/", model_name, ".stan"))
