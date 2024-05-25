@@ -1,0 +1,11 @@
+default:
+  priors: 
+    indexes: 
+      uniform : 0
+      normal : 1
+    defaults:
+      prior_index : 1
+      min : 0
+      max : 10
+      mean : 0
+      sd : 1
