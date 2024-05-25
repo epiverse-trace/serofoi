@@ -14,6 +14,7 @@ fit_seromodel <- function(
   serosurvey,
   model_type = "constant",
   foi_prior = sf_normal(),
+  foi_index = NULL,
   is_seroreversion = FALSE,
   seroreversion_prior = sf_uniform(),
   ...
@@ -26,6 +27,7 @@ fit_seromodel <- function(
     serosurvey = serosurvey,
     model_type = model_type,
     foi_prior = foi_prior,
+    foi_index = foi_index,
     is_seroreversion = is_seroreversion,
     seroreversion_prior = seroreversion_prior
   )
