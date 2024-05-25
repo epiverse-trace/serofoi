@@ -1,5 +1,5 @@
 vector  prob_infected_noseroreversion(
-  vector fois_vector,
+  vector foi_vector,
   int[] chunks,
   matrix observation_exposure_matrix,
   int n_obs,
@@ -7,7 +7,7 @@ vector  prob_infected_noseroreversion(
   ) {
     real scalar_dot_product;
     vector[n_obs] prob_infected;
-    vector[age_max] foi_every_age = fois_vector[chunks];
+    vector[age_max] foi_every_age = foi_vector[chunks];
 
     for(i in 1:n_obs){
       scalar_dot_product = dot_product(
@@ -20,22 +20,19 @@ vector  prob_infected_noseroreversion(
     return prob_infected;
 }
 
-vector prob_infected_calculate(
-  vector fois_vector,
-  int[] chunks,
-  matrix observation_exposure_matrix,
-  int n_obs,
-  int age_max
+  real prob_infected_age_varying(
+    int age,
+    vector foi_vector,
+    int[] chunks,
+    real seroreversion_rate
   ) {
-    vector[n_obs] prob_infected;
+    real prob = 0.0;
+    for(j in 1:age){
+      real foi = foi_vector[chunks[j]];
+      real lambda_over_both = foi / (foi + seroreversion_rate);
+      real e_lower = exp(-(foi + seroreversion_rate));
 
-    prob_infected = prob_infected_noseroreversion(
-      fois_vector,
-      chunks,
-      observation_exposure_matrix,
-      n_obs,
-      age_max
-      );
-
-    return prob_infected;
+      prob = lambda_over_both + e_lower * (prob - lambda_over_both);
+    }
+    return prob;
   }
