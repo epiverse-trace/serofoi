@@ -33,6 +33,38 @@ sf_none <- function() {
   return(list(name = "none"))
 }
 
+get_foi_index <- function(
+  serosurvey,
+  group_size
+  ) {
+    checkmate::assert_int(
+      group_size,
+      lower = 1,
+      upper = max(serosurvey$age_max)
+      )
+
+    foi_index <- unlist(
+      purrr::map(
+        seq(
+          1,
+          max(serosurvey$age_max) / group_size,
+          1),
+        rep,
+        times = group_size
+      )
+    )
+
+    foi_index <- append(
+      foi_index,
+      rep(
+        max(foi_index),
+        max(serosurvey$age_max) - length(foi_index)
+      )
+    )
+
+  return(foi_index)
+}
+
 set_stan_data_defaults <- function(
     stan_data,
     is_seroreversion = FALSE
@@ -73,6 +105,7 @@ build_stan_data <- function(
     serosurvey,
     model_type = "constant",
     foi_prior = sf_uniform(),
+    foi_index = NULL,
     is_seroreversion = FALSE,
     seroreversion_prior = sf_none()
 ) {
@@ -86,6 +119,20 @@ build_stan_data <- function(
     age_groups = serosurvey$age_group
   ) %>%
     set_stan_data_defaults(is_seroreversion = is_seroreversion)
+
+  if (is.null(foi_index)) {
+    foi_index_default <- get_foi_index(serosurvey = serosurvey, group_size = 1)
+    stan_data <- append(
+      stan_data,
+      list(foi_index = foi_index_default)
+    )
+  } else {
+    # TODO: check that foi_index is the right size
+    stan_data <- append(
+      stan_data,
+      list(foi_index = foi_index)
+    )
+  }
 
   config_file <- "inst/extdata/config.yml"
   prior_index <- config::get(file = config_file, "priors")$indexes
