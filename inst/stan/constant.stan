@@ -35,12 +35,12 @@ generated quantities{
   #include generated_quantities/log_likelihood.stan
 
   vector[age_max] prob_infected_expanded;
-  vector[age_max] foi_vector;
+  vector[age_max] foi_expanded;
 
   for(i in 1:age_max) {
-    foi_vector[i] = foi;
+    foi_expanded[i] = foi;
   }
-	
+
 	prob_infected_expanded = prob_infected_constant(
 		ages,
 		age_max,
