@@ -44,7 +44,6 @@ probability_exact_time_varying <- function(
 ) {
 
   n_years <- length(years)
-  ages <- seq(1, n_years, 1)
 
   probabilities <- vector(length = length(years))
   # solves ODE exactly within pieces
