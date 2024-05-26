@@ -19,7 +19,7 @@ parameters {
 transformed parameters {
   vector[n_observations] prob_infected;
 
-  prob_infected = prob_infected_age(
+  prob_infected = prob_infected_age_model(
     age_groups,
 		n_observations,
     foi_vector,
@@ -52,7 +52,7 @@ generated quantities{
     foi_expanded[age] = foi_vector[foi_index[age]];
   }
 
-	prob_infected_expanded = prob_infected_age(
+	prob_infected_expanded = prob_infected_age_model(
 		ages,
 		age_max,
 		foi_vector,

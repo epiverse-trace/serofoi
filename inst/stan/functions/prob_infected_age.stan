@@ -1,6 +1,5 @@
-real prob_infected_age_single_age(
+real prob_infected_age_model_single_age(
   int age,
-  real age_max,
   vector foi_vector,
   int[] foi_index,
   real seroreversion_rate
@@ -16,7 +15,7 @@ real prob_infected_age_single_age(
   return prob;
 }
 
-vector prob_infected_age(
+vector prob_infected_age_model(
 	int[] ages,
 	int n_ages,
 	vector foi_vector,
@@ -26,9 +25,8 @@ vector prob_infected_age(
 	vector[n_ages] prob_infected;
 
 	for (i in 1:n_ages) {
-		prob_infected[i] = prob_infected_age_single_age(
+		prob_infected[i] = prob_infected_age_model_single_age(
 			ages[i],
-			n_ages,
 			foi_vector,
 			foi_index,
 			seroreversion_rate
