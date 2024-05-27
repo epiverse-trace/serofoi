@@ -1,3 +1,19 @@
+#' Prepares serosurvey for plotting
+#'
+#' Adds seroprevalence values with corresponing binomial confidence interval
+#' @inheritParams fit_seromodel
+#' @param alpha 1 - alpha indicates the confidence level to be used
+#' @return serosurvey with additional columns:
+#' \describe{
+#'  \item{seroprev}{Seroprevalence computed as the proportion of positive
+#'                  cases `n_seropositive` in the number of samples
+#'                  `sample_size` for each age group}
+#'  \item{seroprev_lower}{Lower limit of the binomial confidence interval
+#'                        of `seroprev`}
+#'  \item{seroprev_upper}{Upper limit of the binomial confidence interval
+#'                        of `seroprev`}
+#' }
+#' @export
 prepare_serosurvey_for_plotting <- function(
   serosurvey,
   alpha = 0.05
@@ -23,6 +39,13 @@ prepare_serosurvey_for_plotting <- function(
     dplyr::relocate(age_group)
 }
 
+#' Plots seroprevalence from the given serosurvey
+#'
+#' @inheritParams fit_seromodel
+#' @param size_text Size of text for plotting (`base_size` in
+#' [ggplot2][ggplot2::theme_bw])
+#' @return ggplot object with seroprevalence plot
+#' @export
 plot_serosurvey <- function(
     serosurvey,
     size_text = 11
@@ -63,6 +86,21 @@ plot_serosurvey <- function(
   return(seroprev_plot)
 }
 
+#' Extracts central estimates from stan_fit object for specified parameter
+#'
+#' @param seromodel stan_fit object obtained from sampling a model
+#' with [fit_seromode]
+#' @inheritParams fit_seromodel
+#' @param alpha 1 - alpha indicates the credibility level to be used
+#' @param par_name String specifying the parameter to be extracted
+#' from `seromodel`
+#' @returns A dataframe with the following columns
+#' \describe{
+#'  \item{`median`}{Median of the samples computed as the 0.5 quantile}
+#'  \item{`lower`}{Lower quantile `alpha`}
+#'  \item{`upper`}{Upper quantile `1 - alpha`}
+#' }
+#' @export
 extract_central_estimates <- function(
   seromodel,
   serosurvey,
@@ -79,6 +117,12 @@ extract_central_estimates <- function(
   return(central_estimates)
 }
 
+#' Plot seroprevalence estimates on top of the serosurvey
+#'
+#' @inheritParams extract_central_estimates
+#' @inheritParams plot_serosurvey
+#' @returns ggplot object with seroprevalence estimates and serisurvey plots
+#' @export
 plot_seroprevalence_estimates <- function(
   seromodel,
   serosurvey,
@@ -116,6 +160,19 @@ plot_seroprevalence_estimates <- function(
   return(seroprevalence_plot)
 }
 
+#' Plots force-of-infection central estimates
+#'
+#' @inheritParams extract_central_estimates
+#' @inheritParams fit_seromodel
+#' @param foi_df Dataframe with columns
+#' \describe{
+#'  \item{`year`/`age`}{Year/Age (depending on the model)}
+#'  \item{`foi`}{Force-of-infection values by year/age}
+#' }
+#' @inheritParams plot_serosurvey
+#' @param foi_max Max force-of-infection value for plotting
+#' @return ggplot object with estimated force-of-infection
+#' @export
 plot_foi_estimates <- function(
   seromodel,
   serosurvey,
