@@ -308,38 +308,6 @@ sample_size_by_individual_age_random <- function(survey_features) {
   return(df_new)
 }
 
-validate_survey <- function(survey_features) {
-  if (!is.data.frame(survey_features) || !all(c("age_min", "age_max", "sample_size") %in% names(survey_features))) {
-    stop("survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
-  }
-}
-
-validate_foi_df <- function(foi_df, cnames_additional) {
-  if (!is.data.frame(foi_df) || !all(cnames_additional %in% names(foi_df)) || ncol(foi_df) != (1 + length(cnames_additional))) {
-    if(length(cnames_additional) == 1)
-      message_end <- paste0(" and ", cnames_additional, ".")
-    else
-      message_end <- paste0(", ", paste(cnames_additional, collapse=" and "), ".")
-    message_beginning <- "foi must be a dataframe with columns foi"
-    stop(paste0(message_beginning, message_end))
-  }
-}
-
-validate_seroreversion_rate <- function(seroreversion_rate) {
-  if (!is.numeric(seroreversion_rate) || seroreversion_rate < 0) {
-    stop("seroreversion_rate must be a non-negative numeric value.")
-  }
-}
-
-validate_survey_and_foi_consistency <- function(
-    survey_features,
-    foi_df
-) {
-  max_age_foi_df <- nrow(foi_df)
-  if(max_age_foi_df > max(survey_features$age_max))
-    stop("maximum age implicit in foi_df should not exceed max age in survey_features.")
-}
-
 generate_seropositive_counts_by_age_bin <- function(
     probability_seropositive_by_age,
     sample_size_by_age_random,
