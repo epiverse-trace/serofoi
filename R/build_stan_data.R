@@ -1,3 +1,9 @@
+#' Sets normal distribution parameters for sampling
+#'
+#' @param mean Mean of the normal distribution
+#' @param sd Standard deviation of the normal distribution
+#' @return List with specified statistics and name of the model
+#' @export
 sf_normal <- function(mean = 0, sd = 1) {
   # Restricting normal inputs to be non-negative
   if(mean < 0 | sd <= 0) {
@@ -12,6 +18,12 @@ sf_normal <- function(mean = 0, sd = 1) {
   return(list(mean = mean, sd = sd, name = "normal"))
 }
 
+#' Sets uniform distribution parameters for sampling
+#'
+#' @param min Minimum value of the random variable of the uniform distribution
+#' @param max Maximum value of the random variable of the uniform distribution
+#' @return List with specified statistics and name of the model
+#' @export
 sf_uniform <- function(min = 0, max = 10) {
   # Restricting uniform inputs to be non-negative
   if (min < 0 | max < 0) {
@@ -29,10 +41,20 @@ sf_uniform <- function(min = 0, max = 10) {
   return(list(min = min, max = max, name = "uniform"))
 }
 
+#' Sets empty distribution
 sf_none <- function() {
   return(list(name = "none"))
 }
 
+#' Generates force-of-infection indexes for heterogeneous age groups
+#'
+#' The max value of the force-of-infection indexes correspond to
+#' the number of foi values to be estimated when sampling.
+#' @inheritParams fit_seromodel
+#' @param group_size Age groups size
+#' @return Integer vector with the indexes numerating each year/age
+#' (depending on the model).
+#' @export
 get_foi_index <- function(
   serosurvey,
   group_size
@@ -65,6 +87,11 @@ get_foi_index <- function(
   return(foi_index)
 }
 
+#' Set stan data defaults for sampling
+#'
+#' @param stan_data List to be pased to [rstan][rstan::sampling]
+#' @inheritParams fit_seromodel
+#' @return List with default values of stan data for sampling
 set_stan_data_defaults <- function(
     stan_data,
     is_seroreversion = FALSE
@@ -101,6 +128,11 @@ set_stan_data_defaults <- function(
   return(stan_data)
 }
 
+#' Builds stan data for sampling depending on the selected model
+#'
+#' @inheritParams fit_seromodel
+#' @return List with necessary data for sampling the specified model
+#' @export
 build_stan_data <- function(
     serosurvey,
     model_type = "constant",
