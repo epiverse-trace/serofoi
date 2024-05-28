@@ -185,6 +185,12 @@ plot_foi_estimates <- function(
   # TODO: Add checks for foi_df (size, colnames, etc.)
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
+  model_name <- seromodel@model_name
+  stopifnot(
+    "seromodel@name should start with either 'age' or 'time'" =
+    startsWith(model_name, "age") | startsWith(model_name, "time")
+  )
+
   foi_central_estimates <- extract_central_estimates(
     seromodel = seromodel,
     serosurvey = serosurvey,
@@ -195,7 +201,7 @@ plot_foi_estimates <- function(
   if (is.null(foi_max))
     foi_max <- max(foi_central_estimates$upper)
 
-  if (startsWith(seromodel@model_name, "age")) {
+  if (startsWith(model_name, "age")) {
     xlab <- "Age"
     ages <- 1:max(serosurvey$age_max)
     foi_central_estimates <- mutate(
@@ -209,7 +215,7 @@ plot_foi_estimates <- function(
     foi_plot <- ggplot2::ggplot(
       data = foi_central_estimates, ggplot2::aes(x = age)
     )
-  } else if (startsWith(seromodel@model_name, "time")) {
+  } else if (startsWith(model_name, "time")) {
     xlab <- "Year"
     ages <- rev(1:max(serosurvey$age_max))
     years <- unique(serosurvey$tsur) - ages
@@ -269,9 +275,15 @@ plot_rhats <- function(
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
+  model_name <- seromodel@model_name
+  stopifnot(
+    "seromodel@name should start with either 'age' or 'time'" =
+    startsWith(model_name, "age") | startsWith(model_name, "time")
+  )
+
   rhats <- bayesplot::rhat(seromodel, par_name)
 
-  if (startsWith(seromodel@model_name, "age")) {
+  if (startsWith(model_name, "age")) {
     xlab <- "Age"
     ages <- 1:max(serosurvey$age_max)
     rhats_df <- data.frame(
@@ -282,7 +294,7 @@ plot_rhats <- function(
     rhats_plot <- ggplot2::ggplot(
       data = rhats_df, ggplot2::aes(x = age)
     )
-  } else if (startsWith(seromodel@model_name, "time")) {
+  } else if (startsWith(model_name, "time")) {
     xlab <- "Year"
     ages <- rev(1:max(serosurvey$age_max))
     years <- unique(serosurvey$tsur) - ages
