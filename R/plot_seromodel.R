@@ -327,3 +327,140 @@ plot_rhats <- function(
 
     return(rhats_plot)
 }
+
+#' Summarise specified model
+#'
+#' @inheritParams extract_central_estimates
+#' @param elpd_digits Number of elpd digits to show
+#' @param foi_digits Number of foi digits to show
+#' @param seroreversion_digits Number of seroreversion rate digits to show
+#' @return A list showing
+#' \describe{
+#'  \item{`model_name`}{Name of the model}
+#'  \item{`elpd`}{elpd and its standard deviation}
+#'  \item{`foi`}{Estimated foi with credible interval (for 'constant' model)}
+#'  \item{`foi_rhat`}{foi rhat value (for 'constant' model)}
+#'  \item{`seroreversion_rate`}{Estimated seroreversion rate}
+#'  \item{`rhat_seroreversion_rate`}{Seroreversion rate rhat value}
+#' }
+#' @export
+summarise_seromodel <- function(
+  seromodel,
+  serosurvey,
+  alpha = 0.05,
+  elpd_digits = 1,
+  foi_digits = 2,
+  seroreversion_digits = 2,
+  rhat_digits = 2
+) {
+  checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
+
+  loo_fit <- loo::loo(
+    seromodel,
+    pars = c(parameter_name = "log_likelihood")
+  )
+  elp <- loo_fit$estimates["elpd_loo", ] %>% round(elpd_digits)
+
+  summary_list <- list(
+    model_name = seromodel@model_name,
+    elpd = paste0(elpd[1], "(se=", elpd[2], ")")
+  )
+
+  model_name <- seromodel@model_name
+  if (startsWith(model_name, "constant")) {
+    foi_central_estimates <- extract_central_estimates(
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      alpha = alpha,
+      par_name = "foi"
+    ) %>%
+    signif(foi_digits)
+
+    foi_summary <- paste0(
+      foi_central_estimates$median,
+      "(", 1 - alpha, "% CI, ",
+      foi_central_estimates$lower, "-",
+      foi_central_estimates$upper, ")"
+    )
+    rhat_foi <- bayesplot::rhat(seromodel, "foi") %>%
+      signif(rhat_digits)
+    summary_list <- append(
+      summary_list,
+      list(
+        foi = foi_summary,
+        rhat_foi = rhat_foi
+      )
+    )
+  }
+
+  if (!endsWith(model_name, "no_seroreversion")) {
+    seroreversion_rate_central_estimates <- extract_central_estimates(
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      alpha = alpha,
+      par_name = "seroreversion_rate"
+    ) %>%
+      signif(seroreversion_digits)
+
+    seroreversion_rate_summary <- paste0(
+      seroreversion_rate_central_estimates$median,
+      "(", 1 - alpha, "% CI, ",
+      seroreversion_rate_central_estimates$lower, "-",
+      seroreversion_rate_central_estimates$upper, ")"
+    )
+    rhat_seroreversion_rate <- bayesplot::rhat(
+      seromodel,
+      "seroreversion_rate"
+      ) %>%
+      signif(rhat_digits)
+    summary_list <- append(
+      summary_list,
+      list(
+        seroreversion_rate = seroreversion_rate_summary,
+        rhat_seroreversion_rate = rhat_seroreversion_rate
+      )
+    )
+  }
+  return(summary_list)
+}
+
+#' Plots model summary
+#'
+#' @inheritParams summarise_seromodel
+#' @return ggplot object with a summary of the specified model
+#' @export
+plot_summary <- function(
+  seromodel,
+  serosurvey,
+  ...
+) {
+  checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
+
+  summary_table <- summarise_seromodel(
+    seromodel = seromodel,
+    serosurvey = serosurvey,
+    ...
+    ) %>%
+    t() #convert summary to table
+
+  summary_df <- data.frame(
+    row = NCOL(summary_table):1,
+    text = paste0(colnames(summary_table), ": ", summary_table[1, ])
+  )
+
+  summary_plot <- ggplot2::ggplot(
+    summary_df,
+    ggplot2::aes(x = 1, y = row)) +
+    ggplot2::scale_y_continuous(
+      limits = c(0, nrow(summary_df) + 1),
+      breaks = NULL
+    ) +
+    ggplot2::theme_void() +
+    ggplot2::geom_text(
+      ggplot2::aes(label = text),
+      fontface = "bold"
+    )
+
+  return(summary_plot)
+}
+
