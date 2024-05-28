@@ -107,7 +107,8 @@ extract_central_estimates <- function(
   alpha = 0.05,
   par_name = "foi_vector"
 ) {
-  samples <- rstan::extract(seromodel, par_name)[[1]]
+  samples <- rstan::extract(seromodel, par_name)[[1]] %>%
+    as.matrix() #to deal with 1-time estimates
   central_estimates <- data.frame(
     median = apply(samples, 2, quantile, 0.5),
     lower = apply(samples, 2, quantile, alpha),
