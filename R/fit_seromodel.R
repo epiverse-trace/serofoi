@@ -74,7 +74,7 @@ fit_seromodel <- function(
     model_name <- paste0(model_type, "_no_seroreversion")
 
   # model <- stan_models[[model_name]]
-  model <- rstan::stan_model(paste0("inst/stan/", model_name, ".stan"))
+  model <- stanmodels[[model_name]]
   seromodel <- rstan::sampling(
     model,
     data = stan_data,
