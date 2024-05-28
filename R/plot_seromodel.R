@@ -464,3 +464,57 @@ plot_summary <- function(
   return(summary_plot)
 }
 
+#' Visualise results of the provided model
+#'
+#' @inheritParams plot_summary
+#' @inheritParams plot_seroprevalence_estimates
+#' @inheritParams plot_foi_estimates
+#' @inheritParams plot_rhats
+plot_seromodel <- function(
+  seromodel,
+  serosurvey,
+  ...
+) {
+  checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
+
+  summary_plot <- plot_summary(
+    seromodel,
+    serosurvey,
+    ...
+  )
+
+  seroprev_plot <- plot_seroprevalence_estimates(
+    seromodel,
+    serosurvey,
+    ...
+  )
+
+  plot_list <- list(
+    summary_plot,
+    seroprev_plot
+  )
+
+  model_name <- seromodel@model_name
+  if (!startsWith(model_name, "constant")) {
+    foi_plot <- plot_foi_estimates(
+      seromodel,
+      serosurvey,
+      foi_df = foi_df,
+      ...
+    )
+
+    rhats_plot <- plot_rhats(
+      seromodel,
+      serosurvey,
+      ...
+    )
+
+    plot_list <- append(
+      plot_list,
+      list(foi_plot, rhats_plot)
+    )
+  }
+
+  seromodel_plot <- cowplot::plot_grid(plotlist = plot_list, ncol = 1)
+  return(seromodel_plot)
+}
