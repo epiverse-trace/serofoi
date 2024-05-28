@@ -96,7 +96,7 @@ set_stan_data_defaults <- function(
     stan_data,
     is_seroreversion = FALSE
 ) {
-  config_file <- "inst/extdata/config.yml"
+  config_file <- system.file("extdata", "config.yml", package = "serofoi")
   prior_default <- config::get(file = config_file, "priors")$defaults
 
   foi_defaults <- list(
@@ -165,9 +165,9 @@ build_stan_data <- function(
       list(foi_index = foi_index)
     )
   }
-
-  config_file <- "inst/extdata/config.yml"
+  config_file <- system.file("extdata", "config.yml", package = "serofoi")
   prior_index <- config::get(file = config_file, "priors")$indexes
+
   if (foi_prior$name == "uniform") {
     stan_data$foi_prior_index <- prior_index[["uniform"]]
     stan_data$foi_min <- foi_prior$min
