@@ -359,7 +359,7 @@ summarise_seromodel <- function(
     seromodel,
     pars = c(parameter_name = "log_likelihood")
   )
-  elp <- loo_fit$estimates["elpd_loo", ] %>% round(elpd_digits)
+  elpd <- loo_fit$estimates["elpd_loo", ] %>% round(elpd_digits)
 
   summary_list <- list(
     model_name = seromodel@model_name,
@@ -470,6 +470,8 @@ plot_summary <- function(
 #' @inheritParams plot_seroprevalence_estimates
 #' @inheritParams plot_foi_estimates
 #' @inheritParams plot_rhats
+#' @return seromodel summary plot
+#' @export
 plot_seromodel <- function(
   seromodel,
   serosurvey,

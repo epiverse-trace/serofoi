@@ -18,6 +18,9 @@ with \link{fit_seromode}}
 \item{\code{n_seropositive}}{Number of positive samples for each age group}
 }}
 }
+\value{
+seromodel summary plot
+}
 \description{
 Visualise results of the provided model
 }
