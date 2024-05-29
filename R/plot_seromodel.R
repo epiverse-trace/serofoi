@@ -501,7 +501,6 @@ plot_seromodel <- function(
     foi_plot <- plot_foi_estimates(
       seromodel,
       serosurvey,
-      foi_df = foi_df,
       ...
     )
 
