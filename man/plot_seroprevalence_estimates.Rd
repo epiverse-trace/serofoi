@@ -4,7 +4,12 @@
 \alias{plot_seroprevalence_estimates}
 \title{Plot seroprevalence estimates on top of the serosurvey}
 \usage{
-plot_seroprevalence_estimates(seromodel, serosurvey, alpha = 0.05, ...)
+plot_seroprevalence_estimates(
+  seromodel,
+  serosurvey,
+  alpha = 0.05,
+  size_text = 11
+)
 }
 \arguments{
 \item{seromodel}{stan_fit object obtained from sampling a model
@@ -19,6 +24,9 @@ with \link{fit_seromode}}
 }}
 
 \item{alpha}{1 - alpha indicates the credibility level to be used}
+
+\item{size_text}{Size of text for plotting (\code{base_size} in
+\link[ggplot2:ggtheme]{ggplot2})}
 }
 \value{
 ggplot object with seroprevalence estimates and serisurvey plots

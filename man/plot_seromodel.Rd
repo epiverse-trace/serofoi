@@ -4,7 +4,18 @@
 \alias{plot_seromodel}
 \title{Visualise results of the provided model}
 \usage{
-plot_seromodel(seromodel, serosurvey, ...)
+plot_seromodel(
+  seromodel,
+  serosurvey,
+  alpha = 0.05,
+  foi_df = NULL,
+  foi_max = NULL,
+  elpd_digits = 1,
+  foi_digits = 2,
+  seroreversion_digits = 2,
+  rhat_digits = 2,
+  size_text = 11
+)
 }
 \arguments{
 \item{seromodel}{stan_fit object obtained from sampling a model
@@ -17,6 +28,25 @@ with \link{fit_seromode}}
 \item{\code{sample_size}}{Number of samples for each age group}
 \item{\code{n_seropositive}}{Number of positive samples for each age group}
 }}
+
+\item{alpha}{1 - alpha indicates the credibility level to be used}
+
+\item{foi_df}{Dataframe with columns
+\describe{
+\item{\code{year}/\code{age}}{Year/Age (depending on the model)}
+\item{\code{foi}}{Force-of-infection values by year/age}
+}}
+
+\item{foi_max}{Max force-of-infection value for plotting}
+
+\item{elpd_digits}{Number of elpd digits to show}
+
+\item{foi_digits}{Number of foi digits to show}
+
+\item{seroreversion_digits}{Number of seroreversion rate digits to show}
+
+\item{size_text}{Size of text for plotting (\code{base_size} in
+\link[ggplot2:ggtheme]{ggplot2})}
 }
 \value{
 seromodel summary plot

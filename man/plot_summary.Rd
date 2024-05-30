@@ -4,7 +4,15 @@
 \alias{plot_summary}
 \title{Plots model summary}
 \usage{
-plot_summary(seromodel, serosurvey, ...)
+plot_summary(
+  seromodel,
+  serosurvey,
+  elpd_digits = 1,
+  foi_digits = 2,
+  seroreversion_digits = 2,
+  rhat_digits = 2,
+  size_text = 11
+)
 }
 \arguments{
 \item{seromodel}{stan_fit object obtained from sampling a model
@@ -17,6 +25,12 @@ with \link{fit_seromode}}
 \item{\code{sample_size}}{Number of samples for each age group}
 \item{\code{n_seropositive}}{Number of positive samples for each age group}
 }}
+
+\item{elpd_digits}{Number of elpd digits to show}
+
+\item{foi_digits}{Number of foi digits to show}
+
+\item{seroreversion_digits}{Number of seroreversion rate digits to show}
 }
 \value{
 ggplot object with a summary of the specified model

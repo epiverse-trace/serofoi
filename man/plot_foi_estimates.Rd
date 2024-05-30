@@ -9,8 +9,8 @@ plot_foi_estimates(
   serosurvey,
   alpha = 0.05,
   foi_df = NULL,
-  size_text = 11,
-  foi_max = NULL
+  foi_max = NULL,
+  size_text = 11
 )
 }
 \arguments{
@@ -33,10 +33,10 @@ with \link{fit_seromode}}
 \item{\code{foi}}{Force-of-infection values by year/age}
 }}
 
+\item{foi_max}{Max force-of-infection value for plotting}
+
 \item{size_text}{Size of text for plotting (\code{base_size} in
 \link[ggplot2:ggtheme]{ggplot2})}
-
-\item{foi_max}{Max force-of-infection value for plotting}
 }
 \value{
 ggplot object with estimated force-of-infection
