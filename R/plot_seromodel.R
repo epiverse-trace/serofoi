@@ -432,6 +432,7 @@ summarise_seromodel <- function(
 plot_summary <- function(
   seromodel,
   serosurvey,
+  size_text,
   ...
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
@@ -458,6 +459,7 @@ plot_summary <- function(
     ggplot2::theme_void() +
     ggplot2::geom_text(
       ggplot2::aes(label = text),
+      size = size_text,
       fontface = "bold"
     )
 
@@ -475,6 +477,7 @@ plot_summary <- function(
 plot_seromodel <- function(
   seromodel,
   serosurvey,
+  size_text = 11,
   ...
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
@@ -482,12 +485,14 @@ plot_seromodel <- function(
   summary_plot <- plot_summary(
     seromodel,
     serosurvey,
+    size_text,
     ...
   )
 
   seroprev_plot <- plot_seroprevalence_estimates(
     seromodel,
     serosurvey,
+    size_text,
     ...
   )
 
@@ -501,12 +506,14 @@ plot_seromodel <- function(
     foi_plot <- plot_foi_estimates(
       seromodel,
       serosurvey,
+      size_text,
       ...
     )
 
     rhats_plot <- plot_rhats(
       seromodel,
       serosurvey,
+      size_text,
       ...
     )
 
