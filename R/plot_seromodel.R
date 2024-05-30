@@ -432,7 +432,7 @@ summarise_seromodel <- function(
 plot_summary <- function(
   seromodel,
   serosurvey,
-  size_text,
+  size_text = 11,
   ...
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
