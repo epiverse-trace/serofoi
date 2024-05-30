@@ -1,11 +1,13 @@
 default:
   priors: 
     indexes: 
-      uniform : 0
-      normal : 1
+      uniform: 0
+      normal: 1
     defaults:
-      prior_index : 1
-      min : 0
-      max : 10
-      mean : 0
-      sd : 1
+      prior_index: 1
+      # uniform distribution
+      min: 0
+      max: 10
+      # normal distribution
+      mean: 0
+      sd: 1
