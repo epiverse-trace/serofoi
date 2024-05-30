@@ -10,8 +10,7 @@ plot_summary(
   elpd_digits = 1,
   foi_digits = 2,
   seroreversion_digits = 2,
-  rhat_digits = 2,
-  size_text = 11
+  rhat_digits = 2
 )
 }
 \arguments{

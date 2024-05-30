@@ -128,7 +128,7 @@ plot_seroprevalence_estimates <- function(
   seromodel,
   serosurvey,
   alpha = 0.05,
-  ...
+  size_text = 11
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
@@ -142,7 +142,7 @@ plot_seroprevalence_estimates <- function(
 
   seroprevalence_plot <- plot_serosurvey(
     serosurvey = serosurvey,
-    ...
+    size_text = size_text
     ) +
     ggplot2::geom_line(
       data = seroprevalence_central_estimates,
@@ -179,8 +179,8 @@ plot_foi_estimates <- function(
   serosurvey,
   alpha = 0.05,
   foi_df = NULL,
-  size_text = 11,
-  foi_max = NULL
+  foi_max = NULL,
+  size_text = 11
 ) {
   # TODO: Add checks for foi_df (size, colnames, etc.)
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
@@ -378,7 +378,7 @@ summarise_seromodel <- function(
 
     foi_summary <- paste0(
       foi_central_estimates$median,
-      "(", 1 - alpha, "% CI, ",
+      "(", 100 * (1 - alpha), "% CI, ",
       foi_central_estimates$lower, "-",
       foi_central_estimates$upper, ")"
     )
@@ -432,15 +432,20 @@ summarise_seromodel <- function(
 plot_summary <- function(
   seromodel,
   serosurvey,
-  size_text = 11,
-  ...
+  elpd_digits = 1,
+  foi_digits = 2,
+  seroreversion_digits = 2,
+  rhat_digits = 2
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
   summary_table <- summarise_seromodel(
     seromodel = seromodel,
     serosurvey = serosurvey,
-    ...
+    elpd_digits = elpd_digits,
+    foi_digits = foi_digits,
+    seroreversion_digits = seroreversion_digits,
+    rhat_digits = rhat_digits
     ) %>%
     t() #convert summary to table
 
@@ -459,7 +464,6 @@ plot_summary <- function(
     ggplot2::theme_void() +
     ggplot2::geom_text(
       ggplot2::aes(label = text),
-      size = size_text,
       fontface = "bold"
     )
 
@@ -477,23 +481,31 @@ plot_summary <- function(
 plot_seromodel <- function(
   seromodel,
   serosurvey,
-  size_text = 11,
-  ...
+  alpha = 0.05,
+  foi_df = NULL,
+  foi_max = NULL,
+  elpd_digits = 1,
+  foi_digits = 2,
+  seroreversion_digits = 2,
+  rhat_digits = 2,
+  size_text = 11
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
   summary_plot <- plot_summary(
-    seromodel,
-    serosurvey,
-    size_text,
-    ...
+    seromodel = seromodel,
+    serosurvey = serosurvey,
+    elpd_digits = elpd_digits,
+    foi_digits = foi_digits,
+    seroreversion_digits = seroreversion_digits,
+    rhat_digits = rhat_digits
   )
 
   seroprev_plot <- plot_seroprevalence_estimates(
-    seromodel,
-    serosurvey,
-    size_text,
-    ...
+    seromodel = seromodel,
+    serosurvey = serosurvey,
+    alpha = alpha,
+    size_text = size_text
   )
 
   plot_list <- list(
@@ -504,17 +516,18 @@ plot_seromodel <- function(
   model_name <- seromodel@model_name
   if (!startsWith(model_name, "constant")) {
     foi_plot <- plot_foi_estimates(
-      seromodel,
-      serosurvey,
-      size_text,
-      ...
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      alpha = alpha,
+      foi_df = foi_df,
+      foi_max = foi_max,
+      size_text = size_text
     )
 
     rhats_plot <- plot_rhats(
-      seromodel,
-      serosurvey,
-      size_text,
-      ...
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      size_text = size_text
     )
 
     plot_list <- append(
