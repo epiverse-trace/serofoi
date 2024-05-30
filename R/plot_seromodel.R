@@ -132,13 +132,21 @@ plot_seroprevalence_estimates <- function(
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
-  seroprevalence_central_estimates <- extract_central_estimates(
-    seromodel = seromodel,
-    serosurvey = serosurvey,
-    alpha = alpha,
-    par_name = "prob_infected_expanded"
+  seroprevalence_central_estimates <- data.frame(
+    median = 0.0,
+    lower = 0.0,
+    upper = 0.0,
+    age = 0
+  ) %>%
+  rbind(
+    extract_central_estimates(
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      alpha = alpha,
+      par_name = "prob_infected_expanded"
   ) %>%
     mutate(age = seq(1, max(serosurvey$age_max)))
+  )
 
   seroprevalence_plot <- plot_serosurvey(
     serosurvey = serosurvey,

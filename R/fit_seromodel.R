@@ -25,7 +25,7 @@ add_age_group_to_serosurvey <- function(serosurvey) {
 #' }
 #' @param model_type Type of the model. Either "constant", "age" or "time"
 #' @param foi_prior Force-of-infection distribution specified by means of
-#'  the helper functions. Currently available options are:
+#' the helper functions. Currently available options are:
 #' \describe{
 #'   \item{`[sf_normal]`}
 #'   \item{`[sf_uniform]`}
