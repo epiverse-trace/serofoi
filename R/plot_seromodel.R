@@ -404,7 +404,7 @@ summarise_seromodel <- function(
 
     seroreversion_rate_summary <- paste0(
       seroreversion_rate_central_estimates$median,
-      "(", 1 - alpha, "% CI, ",
+      "(", 100 * (1 - alpha), "% CI, ",
       seroreversion_rate_central_estimates$lower, "-",
       seroreversion_rate_central_estimates$upper, ")"
     )
@@ -427,6 +427,7 @@ summarise_seromodel <- function(
 #' Plots model summary
 #'
 #' @inheritParams summarise_seromodel
+#' @inheritParams plot_serosurvey
 #' @return ggplot object with a summary of the specified model
 #' @export
 plot_summary <- function(
@@ -435,7 +436,8 @@ plot_summary <- function(
   elpd_digits = 1,
   foi_digits = 2,
   seroreversion_digits = 2,
-  rhat_digits = 2
+  rhat_digits = 2,
+  size_text = 11
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
@@ -464,7 +466,8 @@ plot_summary <- function(
     ggplot2::theme_void() +
     ggplot2::geom_text(
       ggplot2::aes(label = text),
-      fontface = "bold"
+      fontface = "bold",
+      size = size_text / 2.5
     )
 
   return(summary_plot)
@@ -498,7 +501,8 @@ plot_seromodel <- function(
     elpd_digits = elpd_digits,
     foi_digits = foi_digits,
     seroreversion_digits = seroreversion_digits,
-    rhat_digits = rhat_digits
+    rhat_digits = rhat_digits,
+    size_text = size_text
   )
 
   seroprev_plot <- plot_seroprevalence_estimates(
