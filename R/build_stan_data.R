@@ -153,7 +153,10 @@ build_stan_data <- function(
     set_stan_data_defaults(is_seroreversion = is_seroreversion)
 
   if (is.null(foi_index)) {
-    foi_index_default <- get_foi_index(serosurvey = serosurvey, group_size = 1)
+    foi_index_default <- get_foi_index(
+      serosurvey = serosurvey,
+      group_size = 1
+    )
     stan_data <- append(
       stan_data,
       list(foi_index = foi_index_default)

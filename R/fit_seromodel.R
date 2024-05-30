@@ -73,7 +73,6 @@ fit_seromodel <- function(
   else
     model_name <- paste0(model_type, "_no_seroreversion")
 
-  # model <- stan_models[[model_name]]
   model <- stanmodels[[model_name]]
   seromodel <- rstan::sampling(
     model,
