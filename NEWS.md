@@ -47,7 +47,7 @@ Note that the meaning of the parameters may vary depending on the model.
 
 * The x-axis label in `plot_foi` and `plot_rhats` is `"age"` or `"year"` depending on the model type.
 
-# serofoi 0.1.0
+# serofoi 1.0.0
 
 ## New features
 
