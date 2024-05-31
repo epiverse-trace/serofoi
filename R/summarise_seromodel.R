@@ -62,7 +62,7 @@ summarise_central_estimate <- function(
 #' Summarise specified model
 #'
 #' @inheritParams extract_central_estimates
-#' @inheritParams extract_loo_estimate
+#' @inheritParams summarise_loo_estimate
 #' @inheritParams summarise_central_estimate
 #' @return A list summarising the specified model
 #' \describe{
