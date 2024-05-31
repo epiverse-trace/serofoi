@@ -10,9 +10,8 @@ plot_seromodel(
   alpha = 0.05,
   foi_df = NULL,
   foi_max = NULL,
-  elpd_digits = 1,
-  foi_digits = 2,
-  seroreversion_digits = 2,
+  loo_estimate_digits = 1,
+  central_estimate_digits = central_estimate_digits,
   rhat_digits = 2,
   size_text = 11
 )
@@ -39,11 +38,9 @@ with \link{fit_seromode}}
 
 \item{foi_max}{Max force-of-infection value for plotting}
 
-\item{elpd_digits}{Number of elpd digits to show}
+\item{loo_estimate_digits}{Number of loo estimate digits}
 
-\item{foi_digits}{Number of foi digits to show}
-
-\item{seroreversion_digits}{Number of seroreversion rate digits to show}
+\item{central_estimate_digits}{Number of central estimate digits}
 
 \item{size_text}{Size of text for plotting (\code{base_size} in
 \link[ggplot2:ggtheme]{ggplot2})}
