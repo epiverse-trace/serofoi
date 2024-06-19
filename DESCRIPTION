@@ -1,4 +1,3 @@
-Type: Package
 Package: serofoi
 Title: Estimates the Force-of-Infection of a given pathogen from
     population based seroprevalence studies
