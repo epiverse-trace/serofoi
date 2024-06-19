@@ -15,9 +15,9 @@ Authors@R: c(
     person("Jaime A.", "Pavlich-Mariscal", role = "ctb",
            comment = c(ORCID = "0000-0002-3892-6680"))
   )
-Description: R package to estimate time-varying Force-of-Infection of a
-    given pathogen from population based seroprevalence studies using a
-    bayesian framework.
+Description: Estimate time-varying Force-of-Infection of a given pathogen
+    from population based seroprevalence studies using a bayesian
+    framework.
 License: MIT + file LICENSE
 URL: https://epiverse-trace.github.io/serofoi/,
     https://github.com/epiverse-trace/serofoi
