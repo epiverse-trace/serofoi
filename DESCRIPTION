@@ -1,58 +1,45 @@
-Package: serofoi
 Type: Package
-Title: Estimates the Force-of-Infection of a given pathogen from population based seroprevalence studies
+Package: serofoi
+Title: Estimates the Force-of-Infection of a given pathogen from
+    population based seroprevalence studies
 Version: 0.1.0
-Authors@R: 
-    c(
-        person(
-            given = "Zulma M.",
-            family = "Cucunubá",
-            role = c("aut", "cre"),
-            email = "zulma.cucunuba@javeriana.edu.co",
-            comment = c(ORCID = "0000-0002-8165-3198")
-        ),
-        person(
-            given = "Nicolás",
-            family = "T. Domínguez",
-            role = c("aut"),
-            email = "ex-ntorres@javeriana.edu.co",
-            comment = c(ORCID = "0009-0002-8484-1298")
-        ),
-        person(
-            given = "Ben",
-            family = "Lambert",
-            role = c("aut")
-        ),
-        person(
-            given = "Pierre",
-            family = "Nouvellet",
-            role = c("aut")
-        )
-    )
-Contributor: Miguel Gámez, Geraldine Gómez, Jaime A. Pavlich-Mariscal
+Authors@R: c(
+    person("Zulma M.", "Cucunubá", , "zulma.cucunuba@javeriana.edu.co", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-8165-3198")),
+    person("Nicolás", "T. Domínguez", , "ex-ntorres@javeriana.edu.co", role = "aut",
+           comment = c(ORCID = "0009-0002-8484-1298")),
+    person("Ben", "Lambert", role = "aut"),
+    person("Pierre", "Nouvellet", role = "aut")
+  )
 Maintainer: Zulma M. Cucunubá <zulma.cucunuba@javeriana.edu.co>
-Description: R package to estimate time-varying Force-of-Infection of a given pathogen from population based seroprevalence studies using a bayesian framework.
+Description: R package to estimate time-varying Force-of-Infection of a
+    given pathogen from population based seroprevalence studies using a
+    bayesian framework.
 License: MIT + file LICENSE
-Encoding: UTF-8
-Language: en-GB
-LazyData: true
-RoxygenNote: 7.3.1
-NeedsCompilation: yes
+URL: https://epiverse-trace.github.io/serofoi/,
+    https://github.com/epiverse-trace/serofoi
+BugReports: https://github.com/epiverse-trace/serofoi/issues
 Depends: 
     R (>= 3.5.0)
 Imports:
-    checkmate,
-    methods,
-    Rcpp (>= 0.12.0),
-    rstan (>= 2.18.1),
-    rstantools (>= 2.3.1),
-    dplyr,
     bayesplot,
+    checkmate,
     cowplot,
+    dplyr,
     ggplot2,
     Hmisc,
     loo,
-    purrr
+    methods,
+    purrr,
+    Rcpp (>= 0.12.0),
+    rstan (>= 2.18.1),
+    rstantools (>= 2.3.1)
+Suggests: 
+    knitr,
+    rmarkdown,
+    spelling,
+    testthat (>= 3.0.0),
+    vdiffr
 LinkingTo: 
     BH (>= 1.66.0),
     Rcpp (>= 0.12.0),
@@ -60,20 +47,17 @@ LinkingTo:
     RcppParallel (>= 5.0.1),
     rstan (>= 2.18.1),
     StanHeaders (>= 2.18.0)
-Suggests: 
-    knitr,
-    rmarkdown,
-    testthat (>= 3.0.0),
-    vdiffr,
-    spelling
-Config/testthat/edition: 3
-Config/Needs/website:
-    epiverse-trace/epiversetheme
-VignetteBuilder: knitr
-URL: https://epiverse-trace.github.io/serofoi/, https://github.com/epiverse-trace/serofoi
-Additional_repositories:
-    https://mc-stan.org/r-packages/
+VignetteBuilder: 
+    knitr
+Additional_repositories:https://mc-stan.org/r-packages/
 Biarch: true
-SystemRequirements: GNU make
+Config/Needs/website:epiverse-trace/epiversetheme
+Config/testthat/edition: 3
+Contributor: Miguel Gámez, Geraldine Gómez, Jaime A. Pavlich-Mariscal
+Encoding: UTF-8
+Language: en-GB
+LazyData: true
+NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)
-BugReports: https://github.com/epiverse-trace/serofoi/issues
+RoxygenNote: 7.3.1
+SystemRequirements: GNU make
