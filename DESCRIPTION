@@ -70,9 +70,10 @@ Config/testthat/edition: 3
 Config/Needs/website:
     epiverse-trace/epiversetheme
 VignetteBuilder: knitr
-URL: https://trace-lac.github.io/serofoi/
+URL: https://epiverse-trace.github.io/serofoi/, https://github.com/epiverse-trace/serofoi
 Additional_repositories:
     https://mc-stan.org/r-packages/
 Biarch: true
 SystemRequirements: GNU make
 Roxygen: list(markdown = TRUE)
+BugReports: https://github.com/epiverse-trace/serofoi/issues
