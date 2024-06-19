@@ -48,9 +48,9 @@ LinkingTo:
     StanHeaders (>= 2.18.0)
 VignetteBuilder: 
     knitr
-Additional_repositories:https://mc-stan.org/r-packages/
+Additional_repositories: https://mc-stan.org/r-packages/
 Biarch: true
-Config/Needs/website:epiverse-trace/epiversetheme
+Config/Needs/website: epiverse-trace/epiversetheme
 Config/testthat/edition: 3
 Contributor: Miguel Gámez, Geraldine Gómez, Jaime A. Pavlich-Mariscal
 Encoding: UTF-8
