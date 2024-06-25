@@ -2,14 +2,15 @@
 #'
 #' @inheritParams fit_seromodel
 add_age_group_to_serosurvey <- function(serosurvey) {
-  if (!any(colnames(serosurvey) == "age_group")) {
+  if (any(colnames(serosurvey) == "age_group")) {
+    message("Using `age_group` already present in serosurvey")
+  } else {
     serosurvey <- serosurvey %>%
       dplyr::mutate(
         age_group = floor((.data$age_min + .data$age_max) / 2)
       )
-  } else {
-    message("Using `age_group` already present in serosurvey")
   }
+
   return(serosurvey)
 }
 

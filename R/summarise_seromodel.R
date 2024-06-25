@@ -10,7 +10,7 @@ summarise_loo_estimate <- function(
     par_loo_estimate = "elpd_loo",
     loo_estimate_digits = 2
 ) {
-	checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
+  checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
   loo_fit <- loo::loo(
     seromodel,
@@ -19,9 +19,9 @@ summarise_loo_estimate <- function(
   loo_estimate <- loo_fit$estimates[par_loo_estimate, ] %>%
     round(loo_estimate_digits)
 
-	loo_estimate_summary <- paste0(loo_estimate[1], "(se=", loo_estimate[2], ")")
+  loo_estimate_summary <- paste0(loo_estimate[1], "(se=", loo_estimate[2], ")")
 
-	return(loo_estimate_summary)
+  return(loo_estimate_summary)
 }
 
 #' Summarise central estimate
@@ -94,7 +94,7 @@ summarise_seromodel <- function(
     loo_estimate_digits = loo_estimate_digits
   )
 
-  summary_list[par_loo_estimate] = loo_estimate_summary
+  summary_list[par_loo_estimate] <- loo_estimate_summary
 
   check_convergence <- c()
   if (startsWith(model_name, "constant")) {
@@ -160,9 +160,9 @@ summarise_seromodel <- function(
   }
 
   if (all(check_convergence)) {
-    summary_list["converged"] = "yes"
+    summary_list["converged"] <- "yes"
   } else {
-    summary_list["converged"] = "no"
+    summary_list["converged"] <- "no"
   }
 
   return(summary_list)

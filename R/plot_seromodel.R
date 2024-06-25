@@ -63,7 +63,7 @@ plot_serosurvey <- function(
     ggplot2::geom_errorbar(
       ggplot2::aes(
         ymin = .data$seroprev_lower,
-        ymax = .data$seroprev_upper,
+        ymax = .data$seroprev_upper
       ),
       width = 0.1
     ) +
@@ -127,7 +127,7 @@ extract_central_estimates <- function(
 plot_summary <- function(
   seromodel,
   serosurvey,
-  loo_estimate_digits= 1,
+  loo_estimate_digits = 1,
   central_estimate_digits = 2,
   rhat_digits = 2,
   size_text = 11
@@ -137,7 +137,7 @@ plot_summary <- function(
   summary_table <- summarise_seromodel(
     seromodel = seromodel,
     serosurvey = serosurvey,
-    loo_estimate_digits= loo_estimate_digits,
+    loo_estimate_digits = loo_estimate_digits,
     central_estimate_digits = central_estimate_digits,
     rhat_digits = rhat_digits
     ) %>%
@@ -263,7 +263,7 @@ plot_foi_estimates <- function(
       foi_central_estimates,
       age = ages
     )
-    if(!is.null(foi_df)) {
+    if (!is.null(foi_df)) {
       foi_central_estimates <- foi_central_estimates %>%
         left_join(foi_df, by = "age")
     }
@@ -278,7 +278,7 @@ plot_foi_estimates <- function(
       foi_central_estimates,
       year = years
     )
-    if(!is.null(foi_df)) {
+    if (!is.null(foi_df)) {
       foi_central_estimates <- foi_central_estimates %>%
         left_join(foi_df, by = "year")
     }
@@ -367,7 +367,7 @@ plot_rhats <- function(
   rhats_plot <- rhats_plot +
     ggplot2::geom_hline(
       yintercept = 1.01,
-      linetype = 'dashed'
+      linetype = "dashed"
     ) +
     ggplot2::geom_line(ggplot2::aes(y = rhat)) +
     ggplot2::geom_point(ggplot2::aes(y = rhat)) +
@@ -398,7 +398,7 @@ plot_seromodel <- function(
   alpha = 0.05,
   foi_df = NULL,
   foi_max = NULL,
-  loo_estimate_digits= 1,
+  loo_estimate_digits = 1,
   central_estimate_digits = central_estimate_digits,
   rhat_digits = 2,
   size_text = 11
@@ -408,7 +408,7 @@ plot_seromodel <- function(
   summary_plot <- plot_summary(
     seromodel = seromodel,
     serosurvey = serosurvey,
-    loo_estimate_digits= loo_estimate_digits,
+    loo_estimate_digits = loo_estimate_digits,
     central_estimate_digits = central_estimate_digits,
     rhat_digits = rhat_digits,
     size_text = size_text
