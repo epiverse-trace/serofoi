@@ -7,14 +7,16 @@
 generate_random_sample_sizes(survey_df_long)
 }
 \arguments{
-\item{survey_df_long}{A dataframe with columns 'age', 'group' and 'overall_sample_size'.}
+\item{survey_df_long}{A dataframe with columns 'age', 'group' and
+'overall_sample_size'.}
 }
 \value{
-A dataframe with random sample sizes generated for each age based on the overall
-sample size.
+A dataframe with random sample sizes generated for each age based on
+the overall sample size.
 }
 \description{
-This function generates random sample sizes for each age group based on the overall sample size
-and the distribution of individuals across age groups. It uses multinomial sampling to allocate
-the total sample size to each age group proportionally.
+This function generates random sample sizes for each age group based on the
+overall sample size and the distribution of individuals across age groups.
+It uses multinomial sampling to allocate the total sample size to each age
+group proportionally.
 }
