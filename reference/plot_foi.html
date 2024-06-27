@@ -19,8 +19,7 @@ survey the y axis to the force-of-infection."><meta property="og:image" content=
     
 
     <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-dark" data-bs-theme="dark"><div class="container">
-    
-    <a href="https://epiverse-trace.github.io/" class="external-link"><img src="../logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
+    <a href="https://epiverse-trace.github.io/" class="external-link"><img src="https://epiverse-trace.github.io/blueprints/logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
@@ -44,8 +43,18 @@ survey the y axis to the force-of-infection."><meta property="og:image" content=
     <a class="dropdown-item" href="../articles/use_cases.html">Real-life use cases for serofoi</a>
   </div>
 </li>
-      </ul><ul class="navbar-nav"><li><form class="form-inline" role="search">
-<input type="search" class="form-control" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json"></form></li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
+      </ul><form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
+
+      <ul class="navbar-nav"><li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/epiverse-trace/serofoi/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul></div>
 
     
@@ -54,7 +63,7 @@ survey the y axis to the force-of-infection."><meta property="og:image" content=
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Generate force-of-infection plot corresponding to the specified fitted serological model</h1>
-      
+      <small class="dont-index">Source: <a href="https://github.com/epiverse-trace/serofoi/blob/HEAD/R/visualisation.R" class="external-link"><code>R/visualisation.R</code></a></small>
       <div class="d-none name"><code>plot_foi.Rd</code></div>
     </div>
 
@@ -78,26 +87,26 @@ survey the y axis to the force-of-infection.</p>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt id="arg-seromodel-object">seromodel_object<a class="anchor" aria-label="anchor" href="#arg-seromodel-object"></a></dt>
+    <dl><dt>seromodel_object</dt>
 <dd><p>Stanfit object containing the results of fitting a
 model by means of <a href="run_seromodel.html">run_seromodel</a>.</p></dd>
 
 
-<dt id="arg-cohort-ages">cohort_ages<a class="anchor" aria-label="anchor" href="#arg-cohort-ages"></a></dt>
+<dt>cohort_ages</dt>
 <dd><p>A data frame containing the age of each cohort
 corresponding to each birth year.</p></dd>
 
 
-<dt id="arg-max-lambda">max_lambda<a class="anchor" aria-label="anchor" href="#arg-max-lambda"></a></dt>
+<dt>max_lambda</dt>
 <dd><p>TBD</p></dd>
 
 
-<dt id="arg-size-text">size_text<a class="anchor" aria-label="anchor" href="#arg-size-text"></a></dt>
+<dt>size_text</dt>
 <dd><p>Text size use in the theme of the graph returned by the
 function.</p></dd>
 
 
-<dt id="arg-foi-sim">foi_sim<a class="anchor" aria-label="anchor" href="#arg-foi-sim"></a></dt>
+<dt>foi_sim</dt>
 <dd><p>TBD</p></dd>
 
 </dl></div>
@@ -124,7 +133,7 @@ the corresponding confidence interval.</p>
 <span class="r-in"><span>  cohort_ages <span class="op">=</span> <span class="va">cohort_ages</span>,</span></span>
 <span class="r-in"><span>  size_text <span class="op">=</span> <span class="fl">15</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot_foi-1.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="plot_foi-1.png" alt="" width="768" height="576"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -136,7 +145,7 @@ the corresponding confidence interval.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
     </footer></div>

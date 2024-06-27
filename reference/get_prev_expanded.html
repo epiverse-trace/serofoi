@@ -17,8 +17,7 @@ for plotting an analysis purposes."><meta property="og:image" content="https://e
     
 
     <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-dark" data-bs-theme="dark"><div class="container">
-    
-    <a href="https://epiverse-trace.github.io/" class="external-link"><img src="../logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
+    <a href="https://epiverse-trace.github.io/" class="external-link"><img src="https://epiverse-trace.github.io/blueprints/logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
@@ -42,8 +41,18 @@ for plotting an analysis purposes."><meta property="og:image" content="https://e
     <a class="dropdown-item" href="../articles/use_cases.html">Real-life use cases for serofoi</a>
   </div>
 </li>
-      </ul><ul class="navbar-nav"><li><form class="form-inline" role="search">
-<input type="search" class="form-control" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json"></form></li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
+      </ul><form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
+
+      <ul class="navbar-nav"><li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/epiverse-trace/serofoi/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul></div>
 
     
@@ -52,7 +61,7 @@ for plotting an analysis purposes."><meta property="og:image" content="https://e
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Generate data frame containing the confidence interval based on a force-of-infection fitting</h1>
-      
+      <small class="dont-index">Source: <a href="https://github.com/epiverse-trace/serofoi/blob/HEAD/R/modelling.R" class="external-link"><code>R/modelling.R</code></a></small>
       <div class="d-none name"><code>get_prev_expanded.Rd</code></div>
     </div>
 
@@ -69,12 +78,12 @@ for plotting an analysis purposes.</p>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt id="arg-foi">foi<a class="anchor" aria-label="anchor" href="#arg-foi"></a></dt>
+    <dl><dt>foi</dt>
 <dd><p>Object containing the information of the force-of-infection. It is
 obtained from <code>rstan::extract(seromodel_object$seromodel, "foi", inc_warmup = FALSE)[[1]]</code>.</p></dd>
 
 
-<dt id="arg-serodata">serodata<a class="anchor" aria-label="anchor" href="#arg-serodata"></a></dt>
+<dt>serodata</dt>
 <dd><p>A data frame containing the data from a seroprevalence
 survey. This data frame must contain at least the following columns:</p><dl><dt><code>total</code></dt>
 <dd><p>Number of samples for each age group</p></dd>
@@ -100,18 +109,18 @@ were born</p></dd>
 <code><a href="prepare_serodata.html">prepare_serodata()</a></code>.</p></dd>
 
 
-<dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
+<dt>alpha</dt>
 <dd><p>Probability threshold for statistical significance used for both
 the binomial confidence interval, and the lower and upper quantiles of the
 estimated prevalence.</p></dd>
 
 
-<dt id="arg-bin-data">bin_data<a class="anchor" aria-label="anchor" href="#arg-bin-data"></a></dt>
+<dt>bin_data</dt>
 <dd><p>If <code>TRUE</code>, <code>serodata</code> is binned by means of
 <code>prepare_bin_data</code>. Otherwise, age groups are kept as originally input.</p></dd>
 
 
-<dt id="arg-bin-step">bin_step<a class="anchor" aria-label="anchor" href="#arg-bin-step"></a></dt>
+<dt>bin_step</dt>
 <dd><p>Integer specifying the age groups bin size to be used when
 <code>bin_data</code> is set to <code>TRUE</code>.</p></dd>
 
@@ -301,7 +310,7 @@ purposes in the <code>visualization</code> module.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
     </footer></div>

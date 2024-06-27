@@ -17,8 +17,7 @@ estimates plots."><meta property="og:image" content="https://epiverse-trace.gith
     
 
     <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-dark" data-bs-theme="dark"><div class="container">
-    
-    <a href="https://epiverse-trace.github.io/" class="external-link"><img src="../logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
+    <a href="https://epiverse-trace.github.io/" class="external-link"><img src="https://epiverse-trace.github.io/blueprints/logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
@@ -42,8 +41,18 @@ estimates plots."><meta property="og:image" content="https://epiverse-trace.gith
     <a class="dropdown-item" href="../articles/use_cases.html">Real-life use cases for serofoi</a>
   </div>
 </li>
-      </ul><ul class="navbar-nav"><li><form class="form-inline" role="search">
-<input type="search" class="form-control" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json"></form></li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
+      </ul><form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
+
+      <ul class="navbar-nav"><li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/epiverse-trace/serofoi/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul></div>
 
     
@@ -52,7 +61,7 @@ estimates plots."><meta property="og:image" content="https://epiverse-trace.gith
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Generate vertical arrangement of plots showing a summary of a model, the estimated seroprevalence, the force-of-infection fit and the R-hat estimates plots.</h1>
-      
+      <small class="dont-index">Source: <a href="https://github.com/epiverse-trace/serofoi/blob/HEAD/R/visualisation.R" class="external-link"><code>R/visualisation.R</code></a></small>
       <div class="d-none name"><code>plot_seromodel.Rd</code></div>
     </div>
 
@@ -78,12 +87,12 @@ estimates plots.</p>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt id="arg-seromodel-object">seromodel_object<a class="anchor" aria-label="anchor" href="#arg-seromodel-object"></a></dt>
+    <dl><dt>seromodel_object</dt>
 <dd><p>Stanfit object containing the results of fitting a
 model by means of <a href="run_seromodel.html">run_seromodel</a>.</p></dd>
 
 
-<dt id="arg-serodata">serodata<a class="anchor" aria-label="anchor" href="#arg-serodata"></a></dt>
+<dt>serodata</dt>
 <dd><p>A data frame containing the data from a seroprevalence
 survey. This data frame must contain at least the following columns:</p><dl><dt><code>total</code></dt>
 <dd><p>Number of samples for each age group</p></dd>
@@ -109,32 +118,32 @@ were born</p></dd>
 <code><a href="prepare_serodata.html">prepare_serodata()</a></code>.</p></dd>
 
 
-<dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
+<dt>alpha</dt>
 <dd><p>Probability threshold for statistical significance used for both
 the binomial confidence interval, and the lower and upper quantiles of the
 estimated prevalence.</p></dd>
 
 
-<dt id="arg-max-lambda">max_lambda<a class="anchor" aria-label="anchor" href="#arg-max-lambda"></a></dt>
+<dt>max_lambda</dt>
 <dd><p>TBD</p></dd>
 
 
-<dt id="arg-size-text">size_text<a class="anchor" aria-label="anchor" href="#arg-size-text"></a></dt>
+<dt>size_text</dt>
 <dd><p>Text size use in the theme of the graph returned by the
 function.</p></dd>
 
 
-<dt id="arg-bin-data">bin_data<a class="anchor" aria-label="anchor" href="#arg-bin-data"></a></dt>
+<dt>bin_data</dt>
 <dd><p>If <code>TRUE</code>, <code>serodata</code> is binned by means of
 <code>prepare_bin_data</code>. Otherwise, age groups are kept as originally input.</p></dd>
 
 
-<dt id="arg-bin-step">bin_step<a class="anchor" aria-label="anchor" href="#arg-bin-step"></a></dt>
+<dt>bin_step</dt>
 <dd><p>Integer specifying the age groups bin size to be used when
 <code>bin_data</code> is set to <code>TRUE</code>.</p></dd>
 
 
-<dt id="arg-foi-sim">foi_sim<a class="anchor" aria-label="anchor" href="#arg-foi-sim"></a></dt>
+<dt>foi_sim</dt>
 <dd><p>TBD</p></dd>
 
 </dl></div>
@@ -163,7 +172,7 @@ seropositivity, force of infection, and convergence plots.</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>     The last age interval will be truncated to (75,77]</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 61 rows containing missing values or values outside the scale range</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> (`geom_point()`).</span>
-<span class="r-plt img"><img src="plot_seromodel-1.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="plot_seromodel-1.png" alt="" width="768" height="576"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -175,7 +184,7 @@ seropositivity, force of infection, and convergence plots.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
     </footer></div>

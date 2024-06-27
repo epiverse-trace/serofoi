@@ -17,8 +17,7 @@ the time when the serosurvey was conducted."><meta property="og:image" content="
     
 
     <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-dark" data-bs-theme="dark"><div class="container">
-    
-    <a href="https://epiverse-trace.github.io/" class="external-link"><img src="../logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
+    <a href="https://epiverse-trace.github.io/" class="external-link"><img src="https://epiverse-trace.github.io/blueprints/logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
@@ -42,8 +41,18 @@ the time when the serosurvey was conducted."><meta property="og:image" content="
     <a class="dropdown-item" href="../articles/use_cases.html">Real-life use cases for serofoi</a>
   </div>
 </li>
-      </ul><ul class="navbar-nav"><li><form class="form-inline" role="search">
-<input type="search" class="form-control" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json"></form></li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
+      </ul><form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
+
+      <ul class="navbar-nav"><li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/epiverse-trace/serofoi/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul></div>
 
     
@@ -52,7 +61,7 @@ the time when the serosurvey was conducted."><meta property="og:image" content="
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Generate list containing the chunk structure to be used in the retrospective estimation of the force of infection.</h1>
-      
+      <small class="dont-index">Source: <a href="https://github.com/epiverse-trace/serofoi/blob/HEAD/R/modelling.R" class="external-link"><code>R/modelling.R</code></a></small>
       <div class="d-none name"><code>get_chunk_structure.Rd</code></div>
     </div>
 
@@ -69,7 +78,7 @@ the time when the serosurvey was conducted.</p>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt id="arg-serodata">serodata<a class="anchor" aria-label="anchor" href="#arg-serodata"></a></dt>
+    <dl><dt>serodata</dt>
 <dd><p>A data frame containing the data from a seroprevalence
 survey. This data frame must contain at least the following columns:</p><dl><dt><code>total</code></dt>
 <dd><p>Number of samples for each age group</p></dd>
@@ -95,7 +104,7 @@ were born</p></dd>
 <code><a href="prepare_serodata.html">prepare_serodata()</a></code>.</p></dd>
 
 
-<dt id="arg-chunk-size">chunk_size<a class="anchor" aria-label="anchor" href="#arg-chunk-size"></a></dt>
+<dt>chunk_size</dt>
 <dd><p>Size of the chunks to be used in case that the chunk
 structure <code>chunks</code> is not specified in <a href="fit_seromodel.html">fit_seromodel</a>.
 Default is 1, meaning that one force of infection value is to be estimated
@@ -121,7 +130,7 @@ the remainder years are included in the last chunk.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
     </footer></div>

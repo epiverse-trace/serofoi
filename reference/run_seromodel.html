@@ -21,8 +21,7 @@ fit_seromodel for further details."><meta property="og:image" content="https://e
     
 
     <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-dark" data-bs-theme="dark"><div class="container">
-    
-    <a href="https://epiverse-trace.github.io/" class="external-link"><img src="../logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
+    <a href="https://epiverse-trace.github.io/" class="external-link"><img src="https://epiverse-trace.github.io/blueprints/logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
@@ -46,8 +45,18 @@ fit_seromodel for further details."><meta property="og:image" content="https://e
     <a class="dropdown-item" href="../articles/use_cases.html">Real-life use cases for serofoi</a>
   </div>
 </li>
-      </ul><ul class="navbar-nav"><li><form class="form-inline" role="search">
-<input type="search" class="form-control" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json"></form></li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
+      </ul><form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
+
+      <ul class="navbar-nav"><li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/epiverse-trace/serofoi/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul></div>
 
     
@@ -56,7 +65,7 @@ fit_seromodel for further details."><meta property="og:image" content="https://e
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Run specified stan model for the force-of-infection and estimate the seroprevalence based on the result of the fit</h1>
-      
+      <small class="dont-index">Source: <a href="https://github.com/epiverse-trace/serofoi/blob/HEAD/R/modelling.R" class="external-link"><code>R/modelling.R</code></a></small>
       <div class="d-none name"><code>run_seromodel.Rd</code></div>
     </div>
 
@@ -88,7 +97,7 @@ using the data from a seroprevalence survey <code>serodata</code> as the input d
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt id="arg-serodata">serodata<a class="anchor" aria-label="anchor" href="#arg-serodata"></a></dt>
+    <dl><dt>serodata</dt>
 <dd><p>A data frame containing the data from a seroprevalence
 survey. This data frame must contain at least the following columns:</p><dl><dt><code>total</code></dt>
 <dd><p>Number of samples for each age group</p></dd>
@@ -114,7 +123,7 @@ were born</p></dd>
 <code><a href="prepare_serodata.html">prepare_serodata()</a></code>.</p></dd>
 
 
-<dt id="arg-foi-model">foi_model<a class="anchor" aria-label="anchor" href="#arg-foi-model"></a></dt>
+<dt>foi_model</dt>
 <dd><p>Name of the selected model. Current version provides three
 options:</p><dl><dt><code>"constant"</code></dt>
 <dd><p>Runs a constant model</p></dd>
@@ -129,17 +138,17 @@ options:</p><dl><dt><code>"constant"</code></dt>
 </dl></dd>
 
 
-<dt id="arg-foi-location">foi_location<a class="anchor" aria-label="anchor" href="#arg-foi-location"></a></dt>
+<dt>foi_location</dt>
 <dd><p>Location parameter of the force-of-infection distribution
 of the selected model. Depending on <code>foi_model</code>, the meaning may vary.</p></dd>
 
 
-<dt id="arg-foi-scale">foi_scale<a class="anchor" aria-label="anchor" href="#arg-foi-scale"></a></dt>
+<dt>foi_scale</dt>
 <dd><p>Scale parameter of the force-of-infection distribution
 of the selected model. Depending on <code>foi_model</code>, the meaning may vary.</p></dd>
 
 
-<dt id="arg-chunk-size">chunk_size<a class="anchor" aria-label="anchor" href="#arg-chunk-size"></a></dt>
+<dt>chunk_size</dt>
 <dd><p>Size of the chunks to be used in case that the chunk
 structure <code>chunks</code> is not specified in <a href="fit_seromodel.html">fit_seromodel</a>.
 Default is 1, meaning that one force of infection value is to be estimated
@@ -148,7 +157,7 @@ If the length of the time interval is not exactly divisible by <code>chunk_size<
 the remainder years are included in the last chunk.</p></dd>
 
 
-<dt id="arg-chunks">chunks<a class="anchor" aria-label="anchor" href="#arg-chunks"></a></dt>
+<dt>chunks</dt>
 <dd><p>Numeric list specifying the chunk structure of the time
 interval from the birth year of the oldest age cohort
 <code>min(serodata$age_mean_f)</code> to the time when the serosurvey was conducted
@@ -156,12 +165,12 @@ interval from the birth year of the oldest age cohort
 <code>chunk_size</code>.</p></dd>
 
 
-<dt id="arg-iter">iter<a class="anchor" aria-label="anchor" href="#arg-iter"></a></dt>
+<dt>iter</dt>
 <dd><p>Number of interactions for each chain including the warmup.
 <code>iter</code> in sampling.</p></dd>
 
 
-<dt id="arg-adapt-delta">adapt_delta<a class="anchor" aria-label="anchor" href="#arg-adapt-delta"></a></dt>
+<dt>adapt_delta</dt>
 <dd><p>Real number between 0 and 1 that represents the target
 average acceptance probability. Increasing the value of <code>adapt_delta</code> will
 result in a smaller step size and fewer divergences. For further details
@@ -169,23 +178,23 @@ refer to the <code>control</code> parameter in sampling or
 <a href="https://mc-stan.org/rstanarm/reference/adapt_delta.html" class="external-link">here</a>.</p></dd>
 
 
-<dt id="arg-max-treedepth">max_treedepth<a class="anchor" aria-label="anchor" href="#arg-max-treedepth"></a></dt>
+<dt>max_treedepth</dt>
 <dd><p>Maximum tree depth for the binary tree used in the NUTS
 stan sampler. For further details refer to the <code>control</code> parameter in
 sampling.</p></dd>
 
 
-<dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
+<dt>seed</dt>
 <dd><p>For further details refer to the <code>seed</code> parameter in
 sampling.</p></dd>
 
 
-<dt id="arg-print-summary">print_summary<a class="anchor" aria-label="anchor" href="#arg-print-summary"></a></dt>
+<dt>print_summary</dt>
 <dd><p>Boolean. If <code>TRUE</code>, a table summarizing modelling
 results is printed.</p></dd>
 
 
-<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dt>...</dt>
 <dd><p>Additional parameters for sampling.</p></dd>
 
 </dl></div>
@@ -219,7 +228,7 @@ the implementation of the model. For further details refer to
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
     </footer></div>

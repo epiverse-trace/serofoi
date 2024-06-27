@@ -13,8 +13,7 @@
     
 
     <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-dark" data-bs-theme="dark"><div class="container">
-    
-    <a href="https://epiverse-trace.github.io/" class="external-link"><img src="../logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
+    <a href="https://epiverse-trace.github.io/" class="external-link"><img src="https://epiverse-trace.github.io/blueprints/logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
@@ -38,8 +37,18 @@
     <a class="dropdown-item" href="../articles/use_cases.html">Real-life use cases for serofoi</a>
   </div>
 </li>
-      </ul><ul class="navbar-nav"><li><form class="form-inline" role="search">
-<input type="search" class="form-control" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json"></form></li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
+      </ul><form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
+
+      <ul class="navbar-nav"><li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/epiverse-trace/serofoi/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul></div>
 
     
@@ -48,7 +57,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Generate simulated serosurvey according to the specified FoI</h1>
-      
+      <small class="dont-index">Source: <a href="https://github.com/epiverse-trace/serofoi/blob/HEAD/R/seroprevalence_data.R" class="external-link"><code>R/seroprevalence_data.R</code></a></small>
       <div class="d-none name"><code>generate_sim_data.Rd</code></div>
     </div>
 
@@ -71,7 +80,7 @@
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt id="arg-sim-data">sim_data<a class="anchor" aria-label="anchor" href="#arg-sim-data"></a></dt>
+    <dl><dt>sim_data</dt>
 <dd><p>A dataframe object containing the following columns:</p><dl><dt><code>age</code></dt>
 <dd><p>Age group markers</p></dd>
 
@@ -82,30 +91,30 @@
 </dl></dd>
 
 
-<dt id="arg-foi">foi<a class="anchor" aria-label="anchor" href="#arg-foi"></a></dt>
+<dt>foi</dt>
 <dd><p>Numeric atomic vector corresponding to the desired
 time-varying or age-varying Force-of-Infection to simulate from</p></dd>
 
 
-<dt id="arg-sample-size-by-age">sample_size_by_age<a class="anchor" aria-label="anchor" href="#arg-sample-size-by-age"></a></dt>
+<dt>sample_size_by_age</dt>
 <dd><p>Integer indicating the sample size by age group.
 This corresponds to the number of trials <code>size</code> in <a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a>.</p></dd>
 
 
-<dt id="arg-mu">mu<a class="anchor" aria-label="anchor" href="#arg-mu"></a></dt>
+<dt>mu</dt>
 <dd><p>Seroreversion rate</p></dd>
 
 
-<dt id="arg-model-type">model_type<a class="anchor" aria-label="anchor" href="#arg-model-type"></a></dt>
+<dt>model_type</dt>
 <dd><p>String specifying the type of model to be used.
 Current valid options are 'time-varying' and 'age-varying'</p></dd>
 
 
-<dt id="arg-survey-label">survey_label<a class="anchor" aria-label="anchor" href="#arg-survey-label"></a></dt>
+<dt>survey_label</dt>
 <dd><p>Label for the resulting simulated serosurvey.</p></dd>
 
 
-<dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
+<dt>seed</dt>
 <dd><p>Seed for random number generation.</p></dd>
 
 </dl></div>
@@ -142,7 +151,7 @@ Current valid options are 'time-varying' and 'age-varying'</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
     </footer></div>
