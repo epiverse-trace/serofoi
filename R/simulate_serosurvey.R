@@ -406,6 +406,15 @@ validate_survey_and_foi_consistency <- function(
     stop("maximum age implicit in foi_df should not exceed max age in survey_features.")
 }
 
+validate_survey_and_foi_consistency_age_time <- function(
+    survey_features,
+    foi_df
+) {
+  max_age_foi_df <- max(foi_df$year) - min(foi_df$year) + 1
+  if(max_age_foi_df > max(survey_features$age_max))
+    stop("maximum age implicit in foi_df should not exceed max age in survey_features.")
+}
+
 generate_seropositive_counts_by_age_bin <- function(
     probability_seropositive_by_age,
     sample_size_by_age_random,
@@ -599,7 +608,7 @@ simulate_serosurvey_age_and_time_model <- function(
   validate_foi_df(foi, c("age", "year"))
   validate_survey(survey_features)
   validate_seroreversion_rate(seroreversion_rate)
-  validate_survey_and_foi_consistency(
+  validate_survey_and_foi_consistency_age_time(
     survey_features,
     foi
   )
