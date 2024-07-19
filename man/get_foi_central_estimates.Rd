@@ -6,17 +6,28 @@
 \usage{
 get_foi_central_estimates(
   seromodel_object,
-  cohort_ages,
+  serodata,
   lower_quantile = 0.05,
   upper_quantile = 0.95
 )
 }
 \arguments{
 \item{seromodel_object}{Stanfit object containing the results of fitting a
-model by means of \link{run_seromodel}.}
+model by means of \link{fit_seromodel}.}
 
-\item{cohort_ages}{A data frame containing the age of each cohort
-corresponding to each birth year.}
+\item{serodata}{A data frame containing the data from a seroprevalence
+survey. This data frame must contain at least the following columns:
+\describe{
+\item{\code{total}}{Number of samples for each age group}
+\item{\code{counts}}{Number of positive samples for each age group}
+\item{\code{tsur}}{Year in which the survey took place}
+\item{\code{age_mean_f}}{Floor value of the average between age_min and age_max}
+\item{\code{sample_size}}{The size of the sample}
+\item{\code{birth_year}}{The year in which the individuals of each age group
+were born}
+}
+The last six columns can be added to \code{serodata} by means of the function
+\code{\link[=prepare_serodata]{prepare_serodata()}}.}
 
 \item{lower_quantile}{Lower quantile used to compute the credible interval of
 the fitted force-of-infection.}
@@ -40,6 +51,6 @@ seromodel_object <- fit_seromodel(
 cohort_ages <- get_cohort_ages(serodata = serodata)
 foi_central_estimates <- get_foi_central_estimates(
   seromodel_object = seromodel_object,
-  cohort_ages = cohort_ages
+  serodata = serodata
 )
 }

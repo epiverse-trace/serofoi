@@ -21,7 +21,10 @@ probability_exact_age_varying <- function(
       probability_previous <- 0
     else
       probability_previous <- probabilities[i - 1]
-    lambda_over_both <- (foi_tmp / (foi_tmp + seroreversion_rate))
+    if(foi_tmp == 0)
+      lambda_over_both <- 0
+    else
+      lambda_over_both <- (foi_tmp / (foi_tmp + seroreversion_rate))
     probabilities[i] <- lambda_over_both +
       (probability_previous - lambda_over_both) *
       exp(-(foi_tmp + seroreversion_rate))
@@ -52,7 +55,10 @@ probability_exact_time_varying <- function(
     probability_previous <- 0
     for(j in 1:(n_years - i + 1)) { # exposure during lifetime
       foi_tmp <- fois[i + j - 1]
-      lambda_over_both <- (foi_tmp / (foi_tmp + seroreversion_rate))
+      if(foi_tmp == 0)
+        lambda_over_both <- 0
+      else
+        lambda_over_both <- (foi_tmp / (foi_tmp + seroreversion_rate))
       probability_previous <- lambda_over_both +
         (probability_previous - lambda_over_both) *
         exp(-(foi_tmp + seroreversion_rate))
@@ -160,7 +166,10 @@ probability_seropositive_age_and_time_model_by_age <- function(
     foi_diag <- diag(foi_matrix_subset)
     for(j in 1:(n_years - i + 1)) { # exposure during lifetime
       foi_tmp <- foi_diag[j]
-      lambda_over_both <- (foi_tmp / (foi_tmp + seroreversion_rate))
+      if(foi_tmp == 0)
+        lambda_over_both <- 0
+      else
+        lambda_over_both <- (foi_tmp / (foi_tmp + seroreversion_rate))
       probability_previous <- lambda_over_both +
         (probability_previous - lambda_over_both) *
         exp(-(foi_tmp + seroreversion_rate))
@@ -172,6 +181,43 @@ probability_seropositive_age_and_time_model_by_age <- function(
   df <- data.frame(
     age = ages,
     seropositivity = probabilities_oldest_age_last
+  )
+
+  return(df)
+}
+
+#' Generate probabilities of seropositivity by age based user's choice of model.
+#'
+#' This function generates seropositivity probabilities based on either a
+#' time-varying FOI model, an age-varying FOI model, or an age-and-time-varying
+#' FOI model. In all cases, it is possible to optionally include seroreversion.
+#'
+#' @param model A string specifying the model type which can be one of ['age', 'time', 'age-time'].
+#' @param foi A dataframe containing the force of infection (FOI) values.
+#'            For time-varying models the columns should be ['year', 'foi'].
+#'            For age-varying models the columns should be ['age', 'foi'].
+#'            For age-and-time-varying models the columns should be ['age', 'time', 'foi'].
+#' @param seroreversion_rate A non-negative value determining the rate of seroreversion (per year).
+#'                           Default is 0.
+#'
+#' @return A dataframe with columns 'age' and 'seropositivity'.
+#' @export
+probability_seropositive_by_age <- function(
+    model,
+    foi,
+    seroreversion_rate = 0) {
+
+  if(model == "time") {
+    probability_function <- probability_seropositive_time_model_by_age
+  } else if(model == "age") {
+    probability_function <- probability_seropositive_age_model_by_age
+  } else if(model == "age-time" || model == "time-age") {
+    probability_function <- probability_seropositive_age_and_time_model_by_age
+  }
+
+  df <- probability_function(
+    foi = foi,
+    seroreversion_rate = seroreversion_rate
   )
 
   return(df)
@@ -309,10 +355,29 @@ sample_size_by_individual_age_random <- function(survey_features) {
   return(df_new)
 }
 
+check_age_constraints <- function(df) {
+  for (i in 1:nrow(df)) {
+    for (j in 1:nrow(df)) {
+      if (i != j && df$age_max[i] == df$age_min[j]) {
+        return(FALSE)
+      }
+    }
+  }
+  return(TRUE)
+}
+
 validate_survey <- function(survey_features) {
+
   if (!is.data.frame(survey_features) || !all(c("age_min", "age_max", "sample_size") %in% names(survey_features))) {
     stop("survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
   }
+
+  # check that the age_max of a bin does not coincide with
+  # the age min of a different bin
+  is_age_ok <- check_age_constraints(survey_features)
+  if(!is_age_ok)
+    stop("Age bins in a survey are inclusive of both bounds, so the age_max of
+         one bin cannot equal the age_min of another.")
 }
 
 validate_foi_df <- function(foi_df, cnames_additional) {
@@ -607,7 +672,20 @@ simulate_serosurvey_age_and_time_model <- function(
 #' foi = foi_df,
 #' survey_features = survey_features)
 #'
-#' # age-and-time-varying model TODO
+#' # age-and-time varying model
+#' foi_df <- expand.grid(
+#'   year = seq(1990, 2009, 1),
+#'   age = seq(1, 20, 1)
+#' ) %>%
+#' mutate(foi = rnorm(20 * 20, 0.1, 0.01))
+#' survey_features <- data.frame(
+#'   age_min = c(1, 3, 15),
+#'   age_max = c(2, 14, 20),
+#'   sample_size = c(1000, 2000, 1500))
+#' serosurvey <- simulate_serosurvey(
+#' model = "age",
+#' foi = foi_df,
+#' survey_features = survey_features)
 #' @export
 simulate_serosurvey <- function(
     model,
