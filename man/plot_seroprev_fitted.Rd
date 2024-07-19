@@ -16,7 +16,7 @@ plot_seroprev_fitted(
 }
 \arguments{
 \item{seromodel_object}{Stanfit object containing the results of fitting a
-model by means of \link{run_seromodel}.}
+model by means of \link{fit_seromodel}.}
 
 \item{serodata}{A data frame containing the data from a seroprevalence
 survey. This data frame must contain at least the following columns:

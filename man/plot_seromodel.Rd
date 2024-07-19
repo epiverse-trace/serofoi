@@ -14,12 +14,12 @@ plot_seromodel(
   size_text = 25,
   bin_data = TRUE,
   bin_step = 5,
-  foi_sim = NULL
+  foi = NULL
 )
 }
 \arguments{
 \item{seromodel_object}{Stanfit object containing the results of fitting a
-model by means of \link{run_seromodel}.}
+model by means of \link{fit_seromodel}.}
 
 \item{serodata}{A data frame containing the data from a seroprevalence
 survey. This data frame must contain at least the following columns:
@@ -39,7 +39,7 @@ The last six columns can be added to \code{serodata} by means of the function
 the binomial confidence interval, and the lower and upper quantiles of the
 estimated prevalence.}
 
-\item{max_lambda}{TBD}
+\item{max_lambda}{Upper \code{ylim}for force-of-infection plot}
 
 \item{size_text}{Text size use in the theme of the graph returned by the
 function.}
@@ -50,7 +50,8 @@ function.}
 \item{bin_step}{Integer specifying the age groups bin size to be used when
 \code{bin_data} is set to \code{TRUE}.}
 
-\item{foi_sim}{TBD}
+\item{foi}{Object containing the information of the force-of-infection. It is
+obtained from \code{rstan::extract(seromodel_object$seromodel, "foi", inc_warmup = FALSE)[[1]]}.}
 }
 \value{
 A ggplot object with a vertical arrange containing the

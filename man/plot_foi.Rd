@@ -7,27 +7,38 @@ specified fitted serological model}
 \usage{
 plot_foi(
   seromodel_object,
-  cohort_ages,
+  serodata,
   max_lambda = NA,
   size_text = 25,
-  foi_sim = NULL
+  foi = NULL
 )
 }
 \arguments{
 \item{seromodel_object}{Stanfit object containing the results of fitting a
-model by means of \link{run_seromodel}.}
+model by means of \link{fit_seromodel}.}
 
-\item{cohort_ages}{A data frame containing the age of each cohort
-corresponding to each birth year.}
+\item{serodata}{A data frame containing the data from a seroprevalence
+survey. This data frame must contain at least the following columns:
+\describe{
+\item{\code{total}}{Number of samples for each age group}
+\item{\code{counts}}{Number of positive samples for each age group}
+\item{\code{tsur}}{Year in which the survey took place}
+\item{\code{age_mean_f}}{Floor value of the average between age_min and age_max}
+\item{\code{sample_size}}{The size of the sample}
+\item{\code{birth_year}}{The year in which the individuals of each age group
+were born}
+}
+The last six columns can be added to \code{serodata} by means of the function
+\code{\link[=prepare_serodata]{prepare_serodata()}}.}
 
 \item{max_lambda}{Upper \code{ylim}for force-of-infection plot}
 
 \item{size_text}{Text size use in the theme of the graph returned by the
 function.}
 
-\item{foi_sim}{Force-of-infection trend to be plotted alongside the estimated
-force-of-infection. Typically this corresponds to the force-of-infection used
-to simulate the serosurvey used to model.}
+\item{foi}{Data frame with the Force-of-infection trend to be plotted
+alongside the estimated force-of-infection. Typically this corresponds to
+the force-of-infection used to simulate the serosurvey used to model.}
 }
 \value{
 A ggplot2 object containing the force-of-infection vs time including
