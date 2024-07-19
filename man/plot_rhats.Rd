@@ -9,10 +9,7 @@ plot_rhats(seromodel_object, cohort_ages, size_text = 25)
 }
 \arguments{
 \item{seromodel_object}{Stanfit object containing the results of fitting a
-model by means of \link{run_seromodel}.}
-
-\item{cohort_ages}{A data frame containing the age of each cohort
-corresponding to each birth year.}
+model by means of \link{fit_seromodel}.}
 
 \item{size_text}{Text size use in the theme of the graph returned by the
 function.}
