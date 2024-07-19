@@ -223,8 +223,9 @@ foi_df %>%
   geom_line()
 ```
 
-We now simulate a serosurvey with these historical FOIs; we make the sample sizes larger to be able to clearly visualise the patterns in seropositivity.
+We now simulate a serosurvey assuming these historical FOIs generated the population-wide seropositivities in 2025; we make the sample sizes larger to be able to clearly visualise the patterns in seropositivity.
 ```{r}
+max_age <- 80
 sample_size <- 50
 survey_features <- data.frame(
   age_min = seq(1, max_age, 1),
