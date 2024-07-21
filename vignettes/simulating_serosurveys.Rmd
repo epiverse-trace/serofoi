@@ -1,5 +1,5 @@
 ---
-title: "simulating serosurveys"
+title: "Simulating Serosurveys"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{simulating_serosurveys}
@@ -58,12 +58,28 @@ serosurvey <- simulate_serosurvey(
 
 glimpse(serosurvey)
 ```
-And we can then plot the proportions of those seropositive. 
+And we can then plot the proportions of those seropositive, including the posterior 95% percentiles (when assuming a flat prior). 
 ```{r}
+add_posterior_quantiles <- function(df) {
+  df %>% 
+    mutate(
+    alpha = 1 + n_seropositive,
+    beta = 1 + sample_size - n_seropositive
+  ) %>% 
+  mutate(
+    lower = qbeta(0.025, alpha, beta),
+    middle = qbeta(0.5, alpha, beta),
+    upper = qbeta(0.975, alpha, beta)
+  )
+}
+
 serosurvey %>% 
-  ggplot(aes(x=age_min, y=n_seropositive)) +
-  geom_point() +
-  geom_smooth(se=FALSE)
+  add_posterior_quantiles() %>% 
+  ggplot(aes(x=age_min, y=middle)) +
+  geom_pointrange(aes(ymin=lower, ymax=upper)) +
+  geom_smooth(se=FALSE) +
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Seropositivity")
 ```
 
 We can also simulate the true seropositivities and overlay these on the sample-based equivalents.
@@ -75,14 +91,17 @@ seropositive_true <- probability_seropositive_by_age(
 ) %>% 
   mutate(age_min = age)
 
+# plot both
 serosurvey %>% 
+  add_posterior_quantiles() %>% 
   left_join(seropositive_true, by='age_min') %>% 
-  mutate(seropositivity_sampled=n_seropositive/sample_size) %>% 
-  ggplot(aes(x=age_min, y=seropositivity_sampled)) +
-  geom_point() +
+  ggplot(aes(x=age_min, y=middle)) +
+  geom_pointrange(aes(ymin=lower, ymax=upper)) +
+  geom_smooth(se=FALSE) +
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Seropositivity") +
   geom_line(aes(y=seropositivity),
-            colour="orange") +
-  ylab("Seropositivity")
+            colour="orange")
 ```
 
 ## Age-varying FOI
@@ -119,15 +138,19 @@ serosurvey_combined <- serosurvey %>%
 
 # plot both
 serosurvey_combined %>% 
-  ggplot(aes(x=age_min, y=n_seropositive)) +
-  geom_point() +
+  add_posterior_quantiles() %>% 
+  ggplot(aes(x=age_min, y=middle)) +
+  geom_pointrange(aes(ymin=lower, ymax=upper)) +
+  geom_smooth(se=FALSE) +
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Seropositivity") +
   geom_smooth(se=FALSE) +
   facet_wrap(~type)
 ```
 Above, we see that the FOI for the age-dependent FOI pathogen increases rapidly during the earliest years then plateaus in later adulthood as the FOI effectively becomes negligible.
 
 ## Time-dependent FOI
-We now consider a pathogen where the FOI varies only over calendar time. We imagine a pathogen that has a 'spiky' FOI, characteristic of an epidemics.
+We now consider a pathogen where the FOI varies only over calendar time. We imagine a pathogen that has a 'spiky' FOI, characteristic of an epidemic disease.
 
 ```{r}
 spiky_foi <- c(
@@ -160,12 +183,38 @@ serosurvey <- simulate_serosurvey(
 
 # plot shows jumps in seropositivity
 serosurvey %>% 
-  ggplot(aes(x=age_min, y=n_seropositive)) +
-  geom_point() +
-  geom_smooth(se=FALSE)
+  add_posterior_quantiles() %>% 
+  ggplot(aes(x=age_min, y=middle)) +
+  geom_pointrange(aes(ymin=lower, ymax=upper)) +
+  geom_smooth(se=FALSE) +
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Seropositivity")
 ```
+
+Again, we can plot the true seropositivities, which highlights the jumps in seropositivity corresponding to cohorts born either side of epidemics.
+```{r}
+seropositive_true <- probability_seropositive_by_age(
+  model = "time",
+  foi = foi_df,
+  seroreversion_rate = 0
+) %>% 
+  mutate(age_min = age)
+
+serosurvey %>% 
+  add_posterior_quantiles() %>% 
+  left_join(seropositive_true, by='age_min') %>% 
+  ggplot(aes(x=age_min, y=middle)) +
+  geom_pointrange(aes(ymin=lower, ymax=upper)) +
+  geom_smooth(se=FALSE) +
+  scale_y_continuous(labels=scales::percent) +
+  geom_line(aes(y=seropositivity),
+            colour="orange") +
+  ylab("Seropositivity")
+```
+
+
 ## Age-and-time-dependent FOI
-Many pathogens may have a transmission strength that varies according to both age and time. A good example of this could be for a sexually transmitted disease where transmission follows a characteristic age-specific pattern, peaking in the early 20s. Here, we imagine such a disease which has only recently invaded a population.
+Many pathogens may have a transmission strength that varies according to both age and time. An example of this could be for a sexually transmitted disease where transmission follows a characteristic age-specific pattern, peaking in the early 20s. Here, we imagine such a disease which has relatively recently invaded a population.
 
 We imagine the time-specific multiplier of FOI follows the below variation.
 ```{r}
@@ -223,14 +272,14 @@ foi_df %>%
   geom_line()
 ```
 
-We now simulate a serosurvey assuming these historical FOIs generated the population-wide seropositivities in 2025; we make the sample sizes larger to be able to clearly visualise the patterns in seropositivity.
+We now simulate a serosurvey assuming these historical FOIs generated the population-wide seropositivities in 2025; we make the sample sizes larger to be able to clearly visualise the patterns in seropositivity. We also illustrate how serosurveys with wider age-bins can be generated by choosing 5-year bins.
 ```{r}
 max_age <- 80
 sample_size <- 50
 survey_features <- data.frame(
-  age_min = seq(1, max_age, 1),
-  age_max = seq(1, max_age, 1),
-  sample_size = rep(sample_size, max_age))
+  age_min = seq(1, max_age, 5),
+  age_max = seq(5, max_age, 5)) %>% 
+  mutate(sample_size = rep(sample_size, length(age_min)))
 
 serosurvey <- simulate_serosurvey(
   model = "age-time",
@@ -240,8 +289,34 @@ serosurvey <- simulate_serosurvey(
 
 # plot
 serosurvey %>% 
-  ggplot(aes(x=age_min, y=n_seropositive)) +
-  geom_point() +
-  geom_smooth(se=FALSE)
+  add_posterior_quantiles() %>% 
+  ggplot(aes(x=age_min, y=middle)) +
+  geom_pointrange(aes(ymin=lower, ymax=upper)) +
+  geom_smooth(se=FALSE) +
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Seropositivity")
+```
+
+We compare this with a closely related pathogen which exhibits seroreversion -- a process by which individuals lose their antibody detectability over time. Owing to its seroreversion, this pathogen produces a seropositivity profile that peaks at a slightly lower level than previously.
+```{r}
+# generate serosurvey for a seroreverting pathogen
+serosurvey_serorevert <- simulate_serosurvey(
+  model = "age-time",
+  foi = foi_df %>% select(-birth_year),
+  survey_features = survey_features,
+  seroreversion_rate = 0.01
+)
+
+# plot
+serosurvey_serorevert %>% 
+  mutate(type="seroreverting") %>% 
+  bind_rows(serosurvey %>% mutate(type="non-seroreverting")) %>% 
+  add_posterior_quantiles() %>% 
+  ggplot(aes(x=age_min, y=middle)) +
+  geom_pointrange(aes(ymin=lower, ymax=upper)) +
+  geom_smooth(se=FALSE) +
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Seropositivity") +
+  facet_wrap(~type)
 ```
 
