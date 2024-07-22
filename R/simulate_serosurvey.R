@@ -223,6 +223,36 @@ probability_seropositive_by_age <- function(
   return(df)
 }
 
+#' Generate probabilities of seropositivity by age based on an age-varying FOI model.
+#'
+#' This function calculates the probabilities of seropositivity by age based on an age-varying FOI model.
+#' It takes into account the FOI and the rate of seroreversion.
+#'
+#' @param foi A dataframe containing the force of infection (FOI) values for different ages.
+#'            It should have two columns: 'age' and 'foi'.
+#' @param seroreversion_rate A non-negative numeric value representing the rate of seroreversion.
+#'
+#' @return A dataframe with columns 'age' and 'seropositivity'.
+probability_seropositive_general_model_by_age <- function(
+    foi,
+    seroreversion_rate) {
+
+  ages <- seq_along(foi$age)
+
+  probabilities <- probability_exact_age_varying(
+    ages = ages,
+    fois = foi$foi,
+    seroreversion_rate = seroreversion_rate
+  )
+
+  df <- data.frame(
+    age = ages,
+    seropositivity = probabilities
+  )
+
+  return(df)
+}
+
 
 #' Add bins based on age intervals.
 #'
@@ -729,3 +759,5 @@ simulate_serosurvey <- function(
 
   return(serosurvey)
 }
+
+
