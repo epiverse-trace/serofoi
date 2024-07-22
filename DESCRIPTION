@@ -36,6 +36,7 @@ Imports:
     purrr,
     tidyr,
     tibble,
+    Matrix,
     Rcpp (>= 0.12.0),
     rstan (>= 2.18.1),
     rstantools (>= 2.3.1)
