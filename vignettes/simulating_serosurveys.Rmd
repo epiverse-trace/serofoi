@@ -321,7 +321,7 @@ serosurvey_serorevert %>%
 ```
 
 # Simulating from a general serological model
-We now illustrate an example age- and time-dependent FOI model for representing the prevalence of HIV (in the absence of treatment). In the absence of treatment, HIV invariably ends in death, and death usually occurs after the onset of AIDS which can occur typically many years after death. This means that the time from infection to death has a characteristic waiting time, which year we model as being around 10 years long.
+We now illustrate an example age- and time-dependent FOI model for representing the prevalence of HIV (in the absence of treatment). In the absence of treatment, HIV invariably ends in death, and death usually occurs after the onset of AIDS which occurs typically many years after infection. This means that the time from infection to death has a characteristic waiting time, which year we model as being around 10 years long.
 
 Our model considers a single susceptible group, $S^{\tau}(t)$ indexed by their birth year, $\tau$, and calendar time, $t$. There are then a series of consecutive seropositive states, $X_i^{\tau}(t)$, for $i\in[1,10]$; then finally a dead state, $D^{\tau}(t)$. By distributing the seropositive population across a range of states, this model effectively institutes a delay from infection until death. Our model takes the following form:
 
@@ -336,7 +336,7 @@ Our model considers a single susceptible group, $S^{\tau}(t)$ indexed by their b
 
 where $S^{\tau}(0)=1$ and all other compartments have initial conditions set to zero. We assume that $u(.)$ and $v(.)$ are piecewise-constant with one-year pieces, with their values the same as those from the sexually transmitted disease example above.
 
-This model does not fit neatly into our other classes of serocatalytic models and, more generally, we cannot produce specific methods for any foreseeable model structure. But it is possible to produce a general strategy for solving such models by rewriting them as linear systems of ordinary differential equations.
+This model does not fit neatly into our other classes of serocatalytic models, and, more generally, we cannot produce specific methods for any foreseeable model structure. But it is possible to find a general strategy for solving such models by rewriting them as piecewise-linear systems of ordinary differential equations.
 
 Since the system is linear, we can write it as a vector differential equation by defining $\boldsymbol{Y}^{\tau}(t):=[S^{\tau}(t),X_1^{\tau}(t),...,X_{10}^{\tau}(t),D^{\tau}(t)]'$ as a vector of states and $\bar{\boldsymbol{A}}_{t,\tau}$ as a matrix of constants that are fixed for a given year and year of birth:
 
@@ -363,12 +363,14 @@ where we have used matrix exponentials to find the solution because the individu
     \boldsymbol{Y}^{\tau}(t) = \exp\left(\sum_{t'=1}^{t}\bar{\boldsymbol{A}}_{t',\tau}\right) \boldsymbol{Y}^{\tau}(0).
 \end{equation}
 
-We now illustrate how such a system can be solved and used to simulate a serosurvey.
+We now illustrate how such a system can be solved and used to simulate a serosurvey using `serofoi`. The key to this is writing a method for constructing the matrix $\boldsymbol{A}}_{t',\tau}$ in the above expression.
 
 ```{r}
+# use same age- and time-specific multipliers
 u <- foi_df_age$foi
 v <- foi_df_time$foi
 
+# function to construct A matrix for one piece
 construct_A <- function(t, tau, u, v) {
   u_bar <- u[t - tau]
   v_bar <- v[t]
@@ -382,175 +384,49 @@ construct_A <- function(t, tau, u, v) {
   A
 }
 
+# determines the sum of seropositive compartments of those still alive
+calculate_seropositivity_function <- function(Y) {
+  sum(Y[2:11]) / (1 - Y[12])
+}
+
+# initial conditions in 12D state vector
 initial_conditions <- rep(0, 12)
 initial_conditions[1] <- 1
 
-sum_of_A <- function(t, tau, construct_A_fn, ...) {
-  k <- 1
-  for(i in (tau + 1):t) {
-    if(k == 1)
-      A <- construct_A_fn(i, tau, ...)
-    else {
-      tmp <- construct_A_fn(i, tau, ...)
-      A <- A + tmp
-    }
-    k <- k + 1
-  }
-  A
-}
-
-library(Matrix)
-# solving for all groups born between tau=1 and tau=80
-prop_seropositive_of_alive <- vector(length = 80)
-for(i in seq_along(prop_seropositive_of_alive)) {
-  A_sum <- sum_of_A(80, 80 - i, construct_A, u, v)
-  Y <- Matrix::expm(A_sum) %>% as.matrix() %*% initial_conditions
-  prop_seropositive_of_alive[i] <- sum(Y[2:11]) / (1 - Y[12])
-}
-
-plot(1:80, prop_seropositive_of_alive)
-```
-
-Compare with time-varying model
-```{r}
-construct_A <- function(t, tau, lambda) {
-  A <- matrix(0, ncol = 2, nrow = 2)
-  A[1, 1] <- -lambda[t]
-  A[2, 1] <- lambda[t]
-  A
-}
-
-lambda <- runif(80, 0, 0.01)
-initial_conditions <- c(1, 0)
-prop_seropositive_of_alive <- vector(length = 80)
-for(i in seq_along(prop_seropositive_of_alive)) {
-  A_sum <- sum_of_A(80, 80 - i, construct_A, lambda)
-  Y <- Matrix::expm(A_sum) %>% as.matrix() %*% initial_conditions
-  prop_seropositive_of_alive[i] <- Y[2]
-}
-
-plot(1:80, prop_seropositive_of_alive)
-seroreversion_system <- data.frame(
-  age=1:80,
-  seropositivity=prop_seropositive_of_alive
-) %>% 
-  mutate(type="system")
-
-
-foi_df <- data.frame(
-  year=seq(1, 80, 1),
-  foi=lambda
-)
-
-seropositive_true <- probability_seropositive_by_age(
-  model = "time",
-  foi = foi_df,
-  seroreversion_rate = 0
-) %>% 
-  mutate(type="official")
-
-seroreversion_system %>% 
-  bind_rows(seropositive_true) %>% 
+# solve
+seropositive_hiv <- probability_seropositive_general_model_by_age(
+    construct_A,
+    calculate_seropositivity_function,
+    initial_conditions,
+    max_age=80,
+    u,
+    v
+  )
+seropositive_hiv %>% 
   ggplot(aes(x=age, y=seropositivity)) +
-  geom_line(aes(colour=type))
-
+  geom_line() +
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Seropositivity") +
+  xlab("Age")
 ```
 
-Compare with an age-varying model
+We can also simulate a serosurvey assuming the above model.
 ```{r}
-construct_A <- function(t, tau, lambda) {
-  A <- matrix(0, ncol = 2, nrow = 2)
-  A[1, 1] <- -lambda[t - tau]
-  A[2, 1] <- lambda[t - tau]
-  A
-}
+serosurvey <- simulate_serosurvey_general_model(
+    construct_A,
+    calculate_seropositivity_function,
+    initial_conditions,
+    survey_features,
+    u,
+    v
+) 
 
-lambda <- runif(80, 0, 0.01)
-initial_conditions <- c(1, 0)
-prop_seropositive_of_alive <- vector(length = 80)
-for(i in seq_along(prop_seropositive_of_alive)) {
-  A_sum <- sum_of_A(80, 80 - i, construct_A, lambda)
-  Y <- Matrix::expm(A_sum) %>% as.matrix() %*% initial_conditions
-  prop_seropositive_of_alive[i] <- Y[2]
-}
-
-plot(1:80, prop_seropositive_of_alive)
-seroreversion_system <- data.frame(
-  age=1:80,
-  seropositivity=prop_seropositive_of_alive
-) %>% 
-  mutate(type="system")
-
-
-foi_df <- data.frame(
-  age=seq(1, 80, 1),
-  foi=lambda
-)
-
-seropositive_true <- probability_seropositive_by_age(
-  model = "age",
-  foi = foi_df,
-  seroreversion_rate = 0
-) %>% 
-  mutate(type="official")
-
-seroreversion_system %>% 
-  bind_rows(seropositive_true) %>% 
-  ggplot(aes(x=age, y=seropositivity)) +
-  geom_line(aes(colour=type))
+# plot
+serosurvey %>% 
+  add_posterior_quantiles() %>% 
+  ggplot(aes(x=age_min, y=middle)) +
+  geom_pointrange(aes(ymin=lower, ymax=upper)) +
+  geom_smooth(se=FALSE) +
+  scale_y_continuous(labels=scales::percent) +
+  ylab("Seropositivity")
 ```
-
-Check age and time
-```{r}
-construct_A <- function(t, tau, u, v) {
-  A <- matrix(0, ncol = 2, nrow = 2)
-  u_bar <- u[t - tau]
-  v_bar <- v[t]
-  
-  A[1, 1] <- -u_bar * v_bar
-  A[2, 1] <- u_bar * v_bar
-  A
-}
-
-u <- foi_df_age$foi
-v <- foi_df_time$foi
-initial_conditions <- c(1, 0)
-prop_seropositive_of_alive <- vector(length = 80)
-for(i in seq_along(prop_seropositive_of_alive)) {
-  A_sum <- sum_of_A(80, 80 - i, construct_A, u, v)
-  Y <- Matrix::expm(A_sum) %>% as.matrix() %*% initial_conditions
-  prop_seropositive_of_alive[i] <- Y[2]
-}
-
-seroreversion_system <- data.frame(
-  age=1:80,
-  seropositivity=prop_seropositive_of_alive
-) %>% 
-  mutate(type="system")
-
-foi_df <- expand.grid(
-  year=foi_df_time$year,
-  age=foi_df_age$age
-) %>% 
-  left_join(foi_df_age, by="age") %>% 
-  rename(foi_age=foi) %>% 
-  left_join(foi_df_time, by="year") %>% 
-  rename(foi_time=foi) %>% 
-  mutate(foi = foi_age * foi_time) %>% 
-  select(-c("foi_age", "foi_time")) %>% 
-  mutate(birth_year = year - age) %>% 
-  filter(birth_year >= 1945) %>% 
-  arrange(birth_year, age)
-
-serosurvey_true <- probability_seropositive_by_age(
-  model = "age-time",
-  foi = foi_df %>% select(-birth_year)
-) %>% 
-  mutate(type="official")
-
-seroreversion_system %>% 
-  bind_rows(serosurvey_true) %>% 
-  ggplot(aes(x=age, y=seropositivity)) +
-  geom_line(aes(colour=type))
-```
-

@@ -223,30 +223,50 @@ probability_seropositive_by_age <- function(
   return(df)
 }
 
-#' Generate probabilities of seropositivity by age based on an age-varying FOI model.
+sum_of_A <- function(t, tau, construct_A_fn, ...) {
+  k <- 1
+  for(t_primed in (tau + 1):t) {
+    if(k == 1)
+      A <- construct_A_fn(t_primed, tau, ...)
+    else {
+      tmp <- construct_A_fn(t_primed, tau, ...)
+      A <- A + tmp
+    }
+    k <- k + 1
+  }
+  A
+}
+
+#' Generate probabilities of seropositivity by age based on a general FOI model.
 #'
-#' This function calculates the probabilities of seropositivity by age based on an age-varying FOI model.
-#' It takes into account the FOI and the rate of seroreversion.
+#' This function calculates the probabilities of seropositivity by age based on
+#' an abstract model of the serocatalytic system.
 #'
-#' @param foi A dataframe containing the force of infection (FOI) values for different ages.
-#'            It should have two columns: 'age' and 'foi'.
-#' @param seroreversion_rate A non-negative numeric value representing the rate of seroreversion.
+#' @param construct_A_fn A function that constructs a matrix that defines the multiplier
+#' term in the linear ODE system.
+#' @param calculate_seropositivity_function A function which takes the state vector
+#' and returns the seropositive fraction.
+#' @param initial_conditions The initial state vector proportions for each birth cohort.
+#' @param max_age The maximum age to simulate seropositivity for.
 #'
 #' @return A dataframe with columns 'age' and 'seropositivity'.
+#' @export
 probability_seropositive_general_model_by_age <- function(
-    foi,
-    seroreversion_rate) {
+    construct_A_function,
+    calculate_seropositivity_function,
+    initial_conditions,
+    max_age,
+    ...) {
 
-  ages <- seq_along(foi$age)
-
-  probabilities <- probability_exact_age_varying(
-    ages = ages,
-    fois = foi$foi,
-    seroreversion_rate = seroreversion_rate
-  )
+  probabilities <- vector(length = max_age)
+  for(i in seq_along(probabilities)) {
+    A_sum <- sum_of_A(max_age, max_age - i, construct_A, ...)
+    Y <- Matrix::expm(A_sum) %>% as.matrix() %*% initial_conditions
+    probabilities[i] <- calculate_seropositivity_function(Y)
+  }
 
   df <- data.frame(
-    age = ages,
+    age = 1:max_age,
     seropositivity = probabilities
   )
 
@@ -760,4 +780,46 @@ simulate_serosurvey <- function(
   return(serosurvey)
 }
 
+#' Simulate serosurvey data based on general serocatalytic model.
+#'
+#' This simulation method assumes only that the model system can be written as a piecewise-
+#' linear ordinary differential equation system.
+#'
+#' @inheritParams probability_seropositive_general_model_by_age
+#' @inheritParams simulate_serosurvey
+#'
+#' @return A dataframe with simulated serosurvey data, including age group information, overall
+#'         sample sizes, the number of seropositive individuals, and other survey features.
+#'
+#' @export
+simulate_serosurvey_general_model <- function(
+    construct_A_function,
+    calculate_seropositivity_function,
+    initial_conditions,
+    survey_features,
+    ...
+) {
 
+  # Input validation
+  validate_survey(survey_features)
+
+  probability_serop_by_age <- probability_seropositive_general_model_by_age(
+    construct_A_function,
+    calculate_seropositivity_function,
+    initial_conditions,
+    max(survey_features$age_max),
+    ...
+  )
+
+  sample_size_by_age_random <- sample_size_by_individual_age_random(
+    survey_features = survey_features
+  )
+
+  grouped_df <- generate_seropositive_counts_by_age_bin(
+    probability_serop_by_age,
+    sample_size_by_age_random,
+    survey_features
+  )
+
+  return(grouped_df)
+}
