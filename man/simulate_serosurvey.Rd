@@ -60,5 +60,18 @@ model = "age",
 foi = foi_df,
 survey_features = survey_features)
 
-# age-and-time-varying model TODO
+# age-and-time varying model
+foi_df <- expand.grid(
+  year = seq(1990, 2009, 1),
+  age = seq(1, 20, 1)
+) \%>\%
+mutate(foi = rnorm(20 * 20, 0.1, 0.01))
+survey_features <- data.frame(
+  age_min = c(1, 3, 15),
+  age_max = c(2, 14, 20),
+  sample_size = c(1000, 2000, 1500))
+serosurvey <- simulate_serosurvey(
+model = "age",
+foi = foi_df,
+survey_features = survey_features)
 }

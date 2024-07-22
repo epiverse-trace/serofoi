@@ -54,7 +54,8 @@ Imports:
     loo,
     purrr,
     tidyr,
-    tibble
+    tibble,
+    Matrix
 LinkingTo: 
     BH (>= 1.66.0),
     Rcpp (>= 0.12.0),
