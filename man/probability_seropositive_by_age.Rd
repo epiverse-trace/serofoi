@@ -4,7 +4,7 @@
 \alias{probability_seropositive_by_age}
 \title{Generate probabilities of seropositivity by age based user's choice of model.}
 \usage{
-probability_seropositive_by_age(model, foi, seroreversion_rate)
+probability_seropositive_by_age(model, foi, seroreversion_rate = 0)
 }
 \arguments{
 \item{model}{A string specifying the model type which can be one of \link{'age', 'time', 'age-time'}.}
