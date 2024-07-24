@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 
 ```{r cleaning, include = FALSE, echo = TRUE}
 library(serofoi)
+library(dplyr)
 ```
 
 The current version of ***serofoi*** supports three different models for estimating the *Force-of-Infection (FoI)*, including constant and time-varying trajectories. For fitting the model to the seroprevalence data we use a suit of bayesian models that include prior and upper prior distributions
@@ -57,24 +58,31 @@ To test the `constant` model we simulate a serosurvey following a stepwise decre
 ```{r constant simdata, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE}
 # how the disease circulates
 foi_df <- data.frame(
-    year = seq(2000, 2049, 1)
-) %>% 
-  mutate(foi=0.02)
+    year = seq(2000, 2049, 1),
+    foi = rep(0.02, 50)
+)
 
 # specify 5-year age bins for observations
 survey_features <- data.frame(
-    age_min = seq(0, 45, 5),
-    age_max = seq(5, 50, 5)
-) %>% 
-  mutate(
-    sample_size = 25
-  )
+    age_min = seq(1, 50, 5),
+    age_max = seq(5, 50, 5),
+    sample_size = rep(25, 10)
+)
 
 serodata_constant <- simulate_serosurvey(
   "time",
   foi_df,
   survey_features
-  )
+) %>%
+rename(
+  total = sample_size,
+  counts = n_seropositive
+) %>%
+mutate(
+  tsur = 2050,
+  survey = "simdata_constant"
+) %>%
+prepare_serodata()
 ```
 
 The simulated dataset `serodata_constant` contains information about 250 samples of individuals between 1 and 50 years old (5 samples per age) with age groups of 5 years length. The following code shows how to implement the constant model to this simulated serosurvey:
@@ -88,7 +96,7 @@ seromodel_constant <- fit_seromodel(
 plot_seromodel(
   seromodel_constant,
   serodata = serodata_constant,
-  foi_sim = foi_sim_constant,
+  foi = foi_df,
   size_text = 6
 )
 ```
@@ -118,30 +126,36 @@ $$
 To test the `tv_normal` model we simulate a serosurvey following a stepwise decreasing *FoI* (red line in Fig. 2) using the data simulation functions of ***serofoi***:
 
 ```{r tv_normal simdata, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE}
-foi_sim_sw_dec <- c(
-  rep(0.2, 25),
-  rep(0.1, 10),
-  rep(0.00001, 15)
-  )
 
 foi_df <- data.frame(
     year = seq(2000, 2049, 1),
-    foi = foi_sim_sw_dec
+    foi = c(
+      rep(0.2, 25),
+      rep(0.1, 10),
+      rep(0.00001, 15)
+    )
 )
 
 survey_features <- data.frame(
-    age_min = seq(0, 45, 5),
-    age_max = seq(5, 50, 5)
-) %>% 
-  mutate(
-    sample_size = 25
-  )
+    age_min = seq(1, 50, 5),
+    age_max = seq(5, 50, 5),
+    sample_size = rep(25, 10)
+)
 
 serodata_sw_dec <- simulate_serosurvey(
   "time",
   foi_df,
   survey_features
-  )
+) %>%
+rename(
+  total = sample_size,
+  counts = n_seropositive
+) %>%
+mutate(
+  tsur = 2050,
+  survey = "simdata_step_wise"
+) %>%
+prepare_serodata()
 
 ```
 
@@ -158,7 +172,7 @@ seromodel_tv_normal <- fit_seromodel(
 plot_seromodel(
   seromodel_tv_normal,
   serodata = serodata_sw_dec,
-  foi_sim = foi_sim_sw_dec,
+  foi = foi_df,
   size_text = 6
 )
 ```
@@ -181,22 +195,35 @@ This is done in order to capture fast changes in the *FoI* trend.  Importantly, 
 To test the `tv_normal_log` model we simulate a serosurvey conducted in 2050 emulating a hypothetical situation where a three-year epidemic occurred between 2030 and 2035:
 
 ```{r tv_normal_log simdata, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE}
-no_transm <- 0.0000000001
-big_outbreak <- 0.6
-foi_sim_large_epi <- c(
-  rep(no_transm, 30),
-  rep(big_outbreak, 5),
-  rep(no_transm, 15)
+foi_df <- data.frame(
+    year = seq(2000, 2049, 1),
+    foi = c(
+      rep(0, 30),
+      rep(0.6, 5),
+      rep(0, 15)
+    )
 )
 
-serodata_large_epi <- generate_sim_data(
-  sim_data = data.frame(
-    age=seq(1,50),
-    tsur=2050),
-  foi=foi_sim_large_epi,
-  sample_size_by_age = 25
-) |> 
-  group_sim_data(step = 5)
+survey_features <- data.frame(
+    age_min = seq(1, 50, 5),
+    age_max = seq(5, 50, 5),
+    sample_size = rep(25, 10)
+)
+
+serodata_large_epi <- simulate_serosurvey(
+  survey_features = survey_features,
+  foi = foi_df,
+  model = "time"
+) %>%
+rename(
+  total = sample_size,
+  counts = n_seropositive
+) %>%
+mutate(
+  tsur = 2050,
+  survey = "simdata_big_outbreak"
+) %>%
+prepare_serodata()
 
 ```
 
@@ -213,7 +240,7 @@ seromodel_tv_normal_log <- fit_seromodel(
 plot_tv_normal_log <- plot_seromodel(
   seromodel_tv_normal_log,
   serodata = serodata_large_epi,
-  foi_sim = foi_sim_large_epi,
+  foi = foi_df,
   size_text = 6
 )
 plot(plot_tv_normal_log)
@@ -250,7 +277,7 @@ seromodel_constant <- fit_seromodel(
 plot_constant <- plot_seromodel(
   seromodel_constant,
   serodata = serodata_large_epi,
-  foi_sim = foi_sim_large_epi,
+  foi = foi_df,
   size_text = 6
 )
 
@@ -263,13 +290,13 @@ seromodel_tv_normal <- fit_seromodel(
 plot_tv_normal <- plot_seromodel(
   seromodel_tv_normal,
   serodata = serodata_large_epi,
-  foi_sim = foi_sim_large_epi,
+  foi = foi_df,
   size_text = 6
 )
 ```
 Using the function `cowplot::plot_grid` we can visualise the results of the three models simultaneously:
 
-```{r model_comparison_plot, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center", fig.keep="none"}
+```{r model_comparison_plot, include = TRUE, echo = TRUE, errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center"}
 cowplot::plot_grid(
   plot_constant, plot_tv_normal, plot_tv_normal_log,
   nrow = 1, ncol = 3, labels = "AUTO"
