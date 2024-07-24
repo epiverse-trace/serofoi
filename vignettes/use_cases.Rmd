@@ -209,12 +209,14 @@ m2_cha <- fit_seromodel(
 p1_cha <- plot_seromodel(
   m1_cha,
   serodata = chagas2012p,
-  size_text = 6
+  size_text = 6,
+  bin_data = FALSE
 )
 p2_cha <- plot_seromodel(
   m2_cha,
   serodata = chagas2012p,
-  size_text = 6
+  size_text = 6,
+  bin_data = FALSE
 )
 cowplot::plot_grid(p1_cha, p2_cha, ncol = 2)
 ```
