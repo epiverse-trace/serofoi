@@ -1,3 +1,52 @@
+# serofoi development version
+
+## Documentation
+
+* Datasets `simdata_*` were removed from the package and replaced by corresponding code to simulate data in vignettes (see [#184](https://github.com/epiverse-trace/serofoi/pull/184)).
+
+## Breaking changes
+
+* Update R-hat convergence threshold to $\hat{R} < 1.01$ ([Vehtari, Aki, et al. 2021](https://projecteuclid.org/journals/bayesian-analysis/volume-16/issue-2/Rank-Normalization-Folding-and-Localization--An-Improved-R%cb%86-for/10.1214/20-BA1221.full))
+
+* Add `av_normal` model without seroreversion.
+
+* Allow for uniform prior parameters specification for `constant` model $\sim U(a, b)$
+
+* Change initial prior parameters input specification in `fit_seromodel`. Now they are specified by means 
+parameter `foi_parameter` as follows:
+
+```
+# constant model
+foi_model <- "constant"
+foi_parameter <- list(
+  foi_a = 0.01,
+  foi_b = 0.1
+)
+
+# normal models
+foi_model <- "tv_normal" # "tv_normal_log" or "av_normal"
+foi_parameters <- list(
+  foi_location = 0.1,
+  foi_scale = 0.05
+)
+
+# running the model
+seromodel <- fit_seromodel(
+  serodata = serodata,
+  foi_model = foi_model,
+  foi_parameters = foi_parameters
+)
+```
+
+Note that the meaning of the parameters may vary depending on the model.
+
+
+## Minor changes
+
+* Add input validation for `plot_rhats`.
+
+* The x-axis label in `plot_foi` and `plot_rhats` is `"age"` or `"year"` depending on the model type.
+
 # serofoi 0.1.0
 
 ## New features

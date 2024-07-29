@@ -4,7 +4,12 @@
 \alias{get_foi_central_estimates}
 \title{Extract central estimates for the fitted forced FoI}
 \usage{
-get_foi_central_estimates(seromodel_object, cohort_ages)
+get_foi_central_estimates(
+  seromodel_object,
+  cohort_ages,
+  lower_quantile = 0.05,
+  upper_quantile = 0.95
+)
 }
 \arguments{
 \item{seromodel_object}{Stanfit object containing the results of fitting a
@@ -12,6 +17,12 @@ model by means of \link{run_seromodel}.}
 
 \item{cohort_ages}{A data frame containing the age of each cohort
 corresponding to each birth year.}
+
+\item{lower_quantile}{Lower quantile used to compute the credible interval of
+the fitted force-of-infection.}
+
+\item{upper_quantile}{Lower quantile used to compute the credible interval of
+the fitted force-of-infection.}
 }
 \value{
 \code{foi_central_estimates}. Central estimates for the fitted forced FoI
