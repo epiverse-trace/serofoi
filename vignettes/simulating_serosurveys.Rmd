@@ -312,7 +312,7 @@ We compare this with a closely related pathogen which exhibits seroreversion -- 
 # generate serosurvey for a seroreverting pathogen
 serosurvey_serorevert <- simulate_serosurvey(
   model = "age-time",
-  foi = foi_df %>% select(-birth_year),
+  foi = foi_age_time,
   survey_features = survey_features,
   seroreversion_rate = 0.01
 )
