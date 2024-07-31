@@ -14,20 +14,24 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, message = FALSE, warning=FALSE}
 library(serofoi)
 library(ggplot2)
 library(dplyr)
 library(purrr)
 library(forcats)
 ```
+```{r ggplot theme, include=FALSE}
+theme_set(theme_bw())
+```
+
 
 In this vignette, we show how it is possible to simulate serosurveys using the `simulate_serosurvey` function. This function separates two aspects: the serocatalytic model used to simulate population-wide seropositivity throughout individuals' lives; and the features of the particular serological survey that are being used to uncover these dynamics.
 
 ## Constant FOI
 We start by assuming that a disease has a constant force-of-infection (FOI) over time.
 
-```{r}
+```{r, fig.align="center"}
 max_age <- 80
 foi_constant <- data.frame(
   age = seq(1, max_age, 1),
@@ -112,7 +116,7 @@ foi_age_varying %>%
 
 We use the same survey design as before and simulate a serological survey.
 
-```{r}
+```{r, fig.align="center"}
 serosurvey_age_dep <- simulate_serosurvey(
   model = "age",
   foi = foi_age_varying,
@@ -227,7 +231,7 @@ ggplot() +
 Many pathogens may have a transmission strength that varies according to both age and time. An example of this could be for a sexually transmitted disease where transmission follows a characteristic age-specific pattern, peaking in the early 20s. Here, we imagine such a disease which has relatively recently invaded a population.
   
 We imagine the time-specific multiplier of FOI follows the below variation.
-```{r}
+```{r, fig.align="center"}
 foi_time <- c(rep(0, 40), rep(1, 40))
 foi_df_time <- data.frame(
   year = seq(1946, 2025, 1),
@@ -241,7 +245,7 @@ foi_df_time %>%
 ```
 
 We create a pattern of age-structured FOI multipliers which peaks in those of early 20s.
-```{r}
+```{r, fig.align="center"}
 ages <- seq(1, 80, 1)
 foi_age <- 2 * dlnorm(
   ages, meanlog = 3.5, sdlog = 0.5)
