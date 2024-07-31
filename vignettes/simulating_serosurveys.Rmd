@@ -76,35 +76,24 @@ add_posterior_quantiles <- function(df) {
   )
 }
 
-serosurvey %>% 
-  add_posterior_quantiles() %>% 
-  ggplot(aes(x=age_min, y=middle)) +
-  geom_pointrange(aes(ymin=lower, ymax=upper)) +
-  geom_smooth(se=FALSE) +
-  scale_y_continuous(labels=scales::percent) +
-  ylab("Seropositivity")
-```
-
-We can also simulate the true seropositivities and overlay these on the sample-based equivalents.
-```{r}
-seropositive_true <- probability_seropositive_by_age(
-  model = "age",
-  foi = foi_df,
-  seroreversion_rate = 0
-) %>% 
-  mutate(age_min = age)
-
-# plot both
-serosurvey %>% 
-  add_posterior_quantiles() %>% 
-  left_join(seropositive_true, by='age_min') %>% 
-  ggplot(aes(x=age_min, y=middle)) +
-  geom_pointrange(aes(ymin=lower, ymax=upper)) +
-  geom_smooth(se=FALSE) +
+ggplot() +
+  geom_pointrange(
+    data = serosurvey_constant %>% add_posterior_quantiles(),
+    aes(x = age_min, y = middle, ymin = lower, ymax = upper)
+    ) +
+  geom_line(
+    data = probability_seropositive_by_age(
+      model = "age",
+      foi = foi_constant,
+      seroreversion_rate = 0
+      ),
+    aes(x = age, y = seropositivity),
+    color = "blue",
+    linewidth = 1
+  ) +
   scale_y_continuous(labels=scales::percent) +
   ylab("Seropositivity") +
-  geom_line(aes(y=seropositivity),
-            colour="orange")
+  xlab("Age")
 ```
 
 ## Age-varying FOI
@@ -136,24 +125,45 @@ Below, we see that the FOI for the age-dependent FOI pathogen increases rapidly 
 
 ```{r, fig.align="center", echo=FALSE}
 # combine with constant FOI survey
-serosurvey_combined <- serosurvey %>% 
-  mutate(type="constant FOI") %>% 
-  bind_rows(serosurvey_age_dep %>% 
-              mutate(type = "age-dependent FOI")) %>% 
-  mutate(type=as.factor(type)) %>% 
-  mutate(type=fct_relevel(type,
-                          "constant FOI",
-                          "age-dependent FOI")) 
+serosurvey_combined <- serosurvey_constant %>%
+  add_posterior_quantiles() %>%
+  rename(age = age_min) %>%
+  mutate(type = "constant FOI") %>%
+  left_join(
+    probability_seropositive_by_age(
+      model = "age",
+      foi = foi_constant,
+      seroreversion_rate = 0
+      ),
+    by = "age") %>%
+  bind_rows(
+    serosurvey_age_dep %>%
+      add_posterior_quantiles() %>% 
+      rename(age = age_min) %>%
+      mutate(type = "age-dependent FOI") %>%
+      left_join(
+          probability_seropositive_by_age(
+          model = "age",
+          foi = foi_age_varying,
+          seroreversion_rate = 0
+      ),
+      by = "age")
+    ) %>% 
+  mutate(type = as.factor(type)) 
 
 # plot both
-serosurvey_combined %>% 
-  add_posterior_quantiles() %>% 
-  ggplot(aes(x=age_min, y=middle)) +
-  geom_pointrange(aes(ymin=lower, ymax=upper)) +
-  geom_smooth(se=FALSE) +
+ggplot(data = serosurvey_combined) +
+  geom_pointrange(
+    aes(x = age, y = middle, ymin = lower, ymax = upper)
+    ) +
+  geom_line(
+    aes(x = age, y = seropositivity),
+    color = "blue",
+    linewidth = 1
+  ) +
   scale_y_continuous(labels=scales::percent) +
   ylab("Seropositivity") +
-  geom_smooth(se=FALSE) +
+  xlab("Age") +
   facet_wrap(~type)
 ```
 
@@ -187,36 +197,30 @@ serosurvey_spiky <- simulate_serosurvey(
   foi = foi_spiky,
   survey_features = survey_features
 )
-
-# plot shows jumps in seropositivity
-serosurvey %>% 
-  add_posterior_quantiles() %>% 
-  ggplot(aes(x=age_min, y=middle)) +
-  geom_pointrange(aes(ymin=lower, ymax=upper)) +
-  geom_smooth(se=FALSE) +
-  scale_y_continuous(labels=scales::percent) +
-  ylab("Seropositivity")
 ```
 
-Again, we can plot the true seropositivities, which highlights the jumps in seropositivity corresponding to cohorts born either side of epidemics.
-```{r}
-seropositive_true <- probability_seropositive_by_age(
-  model = "time",
-  foi = foi_df,
-  seroreversion_rate = 0
-) %>% 
-  mutate(age_min = age)
+Again, we can plot the true seropositivities, which highlights the jumps in seropositivity corresponding to cohorts born either side of epidemics:
 
-serosurvey %>% 
-  add_posterior_quantiles() %>% 
-  left_join(seropositive_true, by='age_min') %>% 
-  ggplot(aes(x=age_min, y=middle)) +
-  geom_pointrange(aes(ymin=lower, ymax=upper)) +
-  geom_smooth(se=FALSE) +
+```{r, echo=FALSE, fig.align="center"}
+# plot shows jumps in seropositivity
+ggplot() +
+  geom_pointrange(
+    data = serosurvey_spiky %>% add_posterior_quantiles(),
+    aes(x = age_min, y = middle, ymin = lower, ymax = upper)
+    ) +
+  geom_line(
+    data = probability_seropositive_by_age(
+      model = "time",
+      foi = foi_spiky,
+      seroreversion_rate = 0
+      ),
+    aes(x = age, y = seropositivity),
+    color = "blue",
+    linewidth = 1
+  ) +
   scale_y_continuous(labels=scales::percent) +
-  geom_line(aes(y=seropositivity),
-            colour="orange") +
-  ylab("Seropositivity")
+  ylab("Seropositivity") +
+  xlab("Age")
 ```
 
 ## Age-and-time-dependent FOI
@@ -298,13 +302,24 @@ serosurvey <- simulate_serosurvey(
 
 ```{r, echo=FALSE, fig.align="center"}
 # plot
-serosurvey %>% 
-  add_posterior_quantiles() %>% 
-  ggplot(aes(x=age_min, y=middle)) +
-  geom_pointrange(aes(ymin=lower, ymax=upper)) +
-  geom_smooth(se=FALSE) +
+ggplot() +
+  geom_pointrange(
+    data = serosurvey %>% add_posterior_quantiles(),
+    aes(x = age_min, y = middle, ymin = lower, ymax = upper)
+    ) +
+  geom_line(
+    data = probability_seropositive_by_age(
+      model = "age-time",
+      foi = foi_age_time,
+      seroreversion_rate = 0
+      ),
+    aes(x = age, y = seropositivity),
+    color = "blue",
+    linewidth = 1
+  ) +
   scale_y_continuous(labels=scales::percent) +
-  ylab("Seropositivity")
+  ylab("Seropositivity") +
+  xlab("Age")
 ```
 
 We compare this with a closely related pathogen which exhibits seroreversion -- a process by which individuals lose their antibody detectability over time. Owing to its seroreversion, this pathogen produces a seropositivity profile that peaks at a slightly lower level than previously.
@@ -316,17 +331,49 @@ serosurvey_serorevert <- simulate_serosurvey(
   survey_features = survey_features,
   seroreversion_rate = 0.01
 )
+```
 
-# plot
-serosurvey_serorevert %>% 
-  mutate(type="seroreverting") %>% 
-  bind_rows(serosurvey %>% mutate(type="non-seroreverting")) %>% 
-  add_posterior_quantiles() %>% 
-  ggplot(aes(x=age_min, y=middle)) +
-  geom_pointrange(aes(ymin=lower, ymax=upper)) +
-  geom_smooth(se=FALSE) +
+```{r, fig.align="center", echo=FALSE}
+# combine with constant FOI survey
+serosurvey_combined <- serosurvey %>%
+  add_posterior_quantiles() %>%
+  rename(age = age_min) %>%
+  mutate(type = "non-seroreverting") %>%
+  left_join(
+    probability_seropositive_by_age(
+      model = "age-time",
+      foi = foi_age_time,
+      seroreversion_rate = 0
+      ),
+    by = "age") %>%
+  bind_rows(
+    serosurvey_serorevert %>%
+      add_posterior_quantiles() %>% 
+      rename(age = age_min) %>%
+      mutate(type = "seroreverting") %>%
+      left_join(
+        probability_seropositive_by_age(
+          model = "age-time",
+          foi = foi_age_time,
+          seroreversion_rate = 0.01
+      ),
+      by = "age")
+    ) %>% 
+  mutate(type = as.factor(type)) 
+
+# plot both
+ggplot(data = serosurvey_combined) +
+  geom_pointrange(
+    aes(x = age, y = middle, ymin = lower, ymax = upper)
+    ) +
+  geom_line(
+    aes(x = age, y = seropositivity),
+    color = "blue",
+    linewidth = 1
+  ) +
   scale_y_continuous(labels=scales::percent) +
   ylab("Seropositivity") +
+  xlab("Age") +
   facet_wrap(~type)
 ```
 
