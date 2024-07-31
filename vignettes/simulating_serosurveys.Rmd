@@ -29,15 +29,16 @@ We start by assuming that a disease has a constant force-of-infection (FOI) over
 
 ```{r}
 max_age <- 80
-foi_df <- data.frame(
+foi_constant <- data.frame(
   age = seq(1, max_age, 1),
   foi = rep(0.05, max_age)
 )
 
-foi_df %>% 
+foi_constant %>% 
   ggplot(aes(x=age, y=foi)) +
   geom_line()
 ```
+
 We suppose that we carry out a serological survey which randomly samples the population. For simplicity, to start, we imagine that all individual one-year group ages are sampled and the sample size in each age is the same: $n=15$.
 
 ```{r}
@@ -50,16 +51,18 @@ survey_features <- data.frame(
 
 We then put these pieces together and simulate a serosurvey. Either a time-varying FOI model or an age-varying FOI model would produce the same results here since they are equivalent when the FOI is constant.
 ```{r}
-serosurvey <- simulate_serosurvey(
+serosurvey_constant <- simulate_serosurvey(
   model = "age",
-  foi = foi_df,
+  foi = foi_constant,
   survey_features = survey_features
 )
 
-glimpse(serosurvey)
+glimpse(serosurvey_constant)
 ```
-And we can then plot the proportions of those seropositive, including the posterior 95% percentiles (when assuming a flat prior). 
-```{r}
+
+Now, we can plot the proportions of those seropositive, including the posterior 95% percentiles (when assuming a flat prior), and plot it along the true seropositivities (line blue):
+
+```{r, echo=FALSE, fig.align="center"}
 add_posterior_quantiles <- function(df) {
   df %>% 
     mutate(
@@ -107,25 +110,31 @@ serosurvey %>%
 ## Age-varying FOI
 We now consider a pathogen which has an FOI that varies throughout the age of individuals. We assume the FOI declines strongly throughout childhood.
 
-```{r}
-foi_df <- data.frame(
+```{r, fig.align="center"}
+foi_age_varying <- data.frame(
   age = seq(1, max_age, 1)
 ) %>% 
   mutate(foi=0.1 * exp(-0.1 * age))
 
-foi_df %>% 
+foi_age_varying %>% 
   ggplot(aes(x=age, y=foi)) +
   geom_line()
 ```
+
 We use the same survey design as before and simulate a serological survey.
 
 ```{r}
 serosurvey_age_dep <- simulate_serosurvey(
   model = "age",
-  foi = foi_df,
+  foi = foi_age_varying,
   survey_features = survey_features
 )
 
+```
+
+Below, we see that the FOI for the age-dependent FOI pathogen increases rapidly during the earliest years then plateaus in later adulthood as the FOI effectively becomes negligible.
+
+```{r, fig.align="center", echo=FALSE}
 # combine with constant FOI survey
 serosurvey_combined <- serosurvey %>% 
   mutate(type="constant FOI") %>% 
@@ -147,37 +156,35 @@ serosurvey_combined %>%
   geom_smooth(se=FALSE) +
   facet_wrap(~type)
 ```
-Above, we see that the FOI for the age-dependent FOI pathogen increases rapidly during the earliest years then plateaus in later adulthood as the FOI effectively becomes negligible.
 
 ## Time-dependent FOI
 We now consider a pathogen where the FOI varies only over calendar time. We imagine a pathogen that has a 'spiky' FOI, characteristic of an epidemic disease.
 
-```{r}
-spiky_foi <- c(
-  rep(0, 10),
-  rep(0.1, 2),
-  rep(0, 20),
-  rep(0.2, 1),
-  rep(0, 15),
-  rep(0.1, 2),
-  rep(0, 30)
-)
-
-foi_df <- data.frame(
+```{r, fig.align="center"}
+foi_spiky <- data.frame(
   year = seq(1946, 2025, 1),
-  foi = spiky_foi
+  foi = c(
+    rep(0, 10),
+    rep(0.1, 2),
+    rep(0, 20),
+    rep(0.2, 1),
+    rep(0, 15),
+    rep(0.1, 2),
+    rep(0, 30)
+    )
 )
 
 # plot
-foi_df %>% 
+foi_spiky %>% 
   ggplot(aes(x=year, y=foi)) +
   geom_line()
 ```
+
 The same serological survey design then produces a serological profile with distinct patterning.
 ```{r}
-serosurvey <- simulate_serosurvey(
+serosurvey_spiky <- simulate_serosurvey(
   model = "time",
-  foi = foi_df,
+  foi = foi_spiky,
   survey_features = survey_features
 )
 
@@ -212,10 +219,9 @@ serosurvey %>%
   ylab("Seropositivity")
 ```
 
-
 ## Age-and-time-dependent FOI
 Many pathogens may have a transmission strength that varies according to both age and time. An example of this could be for a sexually transmitted disease where transmission follows a characteristic age-specific pattern, peaking in the early 20s. Here, we imagine such a disease which has relatively recently invaded a population.
-
+  
 We imagine the time-specific multiplier of FOI follows the below variation.
 ```{r}
 foi_time <- c(rep(0, 40), rep(1, 40))
@@ -249,7 +255,7 @@ foi_df_age %>%
 
 To create the overall FOI (which is a function of both time and age), we create the product of the time- and age-dependent parts of it.
 ```{r}
-foi_df <- expand.grid(
+foi_age_time <- expand.grid(
   year=foi_df_time$year,
   age=foi_df_age$age
 ) %>% 
@@ -258,14 +264,16 @@ foi_df <- expand.grid(
   left_join(foi_df_time, by="year") %>% 
   rename(foi_time=foi) %>% 
   mutate(foi = foi_age * foi_time) %>% 
-  select(-c("foi_age", "foi_time")) %>% 
-  mutate(birth_year = year - age) %>% 
-  filter(birth_year >= 1945) %>% 
-  arrange(birth_year, age)
+  select(-c("foi_age", "foi_time"))
+```
 
+```{r, fig.align="center", echo=FALSE}
 # plot a few birth years
 select_birth_years <- c(1955, 1965, 1975, 1985, 1995, 2005, 2015)
-foi_df %>% 
+foi_age_time %>% 
+  mutate(birth_year = year - age) %>% 
+  filter(birth_year >= 1945) %>% 
+  arrange(birth_year, age) %>%
   filter(birth_year %in% select_birth_years) %>% 
   mutate(birth_year = as.factor(birth_year)) %>% 
   ggplot(aes(x=year, y=foi, colour=birth_year)) +
@@ -283,10 +291,12 @@ survey_features <- data.frame(
 
 serosurvey <- simulate_serosurvey(
   model = "age-time",
-  foi = foi_df %>% select(-birth_year),
+  foi = foi_age_time,
   survey_features = survey_features
 )
+```
 
+```{r, echo=FALSE, fig.align="center"}
 # plot
 serosurvey %>% 
   add_posterior_quantiles() %>% 
@@ -363,9 +373,9 @@ where we have used matrix exponentials to find the solution because the individu
     \boldsymbol{Y}^{\tau}(t) = \exp\left(\sum_{t'=1}^{t}\bar{\boldsymbol{A}}_{t',\tau}\right) \boldsymbol{Y}^{\tau}(0).
 \end{equation}
 
-We now illustrate how such a system can be solved and used to simulate a serosurvey using `serofoi`. The key to this is writing a method for constructing the matrix $\boldsymbol{A}}_{t',\tau}$ in the above expression.
+We now illustrate how such a system can be solved and used to simulate a serosurvey using `serofoi`. The key to this is writing a method for constructing the matrix $\boldsymbol{A}_{t',\tau}$ in the above expression.
 
-```{r}
+```{r, fig.align="center"}
 # use same age- and time-specific multipliers
 u <- foi_df_age$foi
 v <- foi_df_time$foi
@@ -420,7 +430,9 @@ serosurvey <- simulate_serosurvey_general_model(
     u,
     v
 ) 
+```
 
+```{r, echo=FALSE, fig.align="center"}
 # plot
 serosurvey %>% 
   add_posterior_quantiles() %>% 
