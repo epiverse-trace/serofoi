@@ -62,7 +62,7 @@ summarise_central_estimate <- function(
 #' Summarise specified model
 #'
 #' @inheritParams extract_central_estimates
-#' @inheritParams extract_loo_estimate
+#' @inheritParams summarise_loo_estimate
 #' @inheritParams summarise_central_estimate
 #' @return A list summarising the specified model
 #' \describe{
@@ -96,6 +96,7 @@ summarise_seromodel <- function(
 
   summary_list[par_loo_estimate] = loo_estimate_summary
 
+  check_convergence <- c()
   if (startsWith(model_name, "constant")) {
     foi_summary <- summarise_central_estimate(
       seromodel = seromodel,
@@ -107,12 +108,25 @@ summarise_seromodel <- function(
 
     foi_rhat <- bayesplot::rhat(seromodel, "foi") %>%
       signif(rhat_digits)
+
+    check_convergence <- append(
+      check_convergence,
+      foi_rhat < 1.01
+    )
+
     summary_list <- append(
       summary_list,
       list(
         foi = foi_summary,
         foi_rhat = foi_rhat
       )
+    )
+  } else {
+    rhats <- bayesplot::rhat(seromodel, "foi_vector")
+
+    check_convergence <- append(
+      check_convergence,
+      all(rhats < 1.01)
     )
   }
 
@@ -128,8 +142,13 @@ summarise_seromodel <- function(
     seroreversion_rate_rhat <- bayesplot::rhat(
       seromodel,
       "seroreversion_rate"
-    ) %>%
+      ) %>%
       signif(rhat_digits)
+
+    check_convergence <- append(
+      check_convergence,
+      seroreversion_rate_rhat < 1.01
+    )
 
     summary_list <- append(
       summary_list,
@@ -138,6 +157,12 @@ summarise_seromodel <- function(
         seroreversion_rate_rhat = seroreversion_rate_rhat
       )
     )
+  }
+
+  if (all(check_convergence)) {
+    summary_list["converged"] = "yes"
+  } else {
+    summary_list["converged"] = "no"
   }
 
   return(summary_list)
