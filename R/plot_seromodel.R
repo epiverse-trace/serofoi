@@ -128,7 +128,7 @@ plot_seroprevalence_estimates <- function(
   seromodel,
   serosurvey,
   alpha = 0.05,
-  ...
+  size_text = 11
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
@@ -142,7 +142,7 @@ plot_seroprevalence_estimates <- function(
 
   seroprevalence_plot <- plot_serosurvey(
     serosurvey = serosurvey,
-    ...
+    size_text = size_text
     ) +
     ggplot2::geom_line(
       data = seroprevalence_central_estimates,
@@ -179,8 +179,8 @@ plot_foi_estimates <- function(
   serosurvey,
   alpha = 0.05,
   foi_df = NULL,
-  size_text = 11,
-  foi_max = NULL
+  foi_max = NULL,
+  size_text = 11
 ) {
   # TODO: Add checks for foi_df (size, colnames, etc.)
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
@@ -368,7 +368,8 @@ plot_summary <- function(
     ggplot2::theme_void() +
     ggplot2::geom_text(
       ggplot2::aes(label = text),
-      fontface = "bold"
+      fontface = "bold",
+      size = size_text / 2.5
     )
 
   return(summary_plot)
@@ -406,9 +407,10 @@ plot_seromodel <- function(
   )
 
   seroprev_plot <- plot_seroprevalence_estimates(
-    seromodel,
-    serosurvey,
-    ...
+    seromodel = seromodel,
+    serosurvey = serosurvey,
+    alpha = alpha,
+    size_text = size_text
   )
 
   plot_list <- list(
@@ -421,13 +423,16 @@ plot_seromodel <- function(
     foi_plot <- plot_foi_estimates(
       seromodel,
       serosurvey,
-      ...
+      alpha = alpha,
+      foi_df = foi_df,
+      foi_max = foi_max,
+      size_text
     )
 
     rhats_plot <- plot_rhats(
-      seromodel,
-      serosurvey,
-      ...
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      size_text = size_text
     )
 
     plot_list <- append(
