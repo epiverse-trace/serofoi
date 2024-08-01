@@ -328,29 +328,89 @@ plot_rhats <- function(
     return(rhats_plot)
 }
 
+#' Extract specified loo estimate
+#'
+#' @inheritParams extract_central_estimates
+#' @param par_loo_estimate Name of the loo estimate to be extracted.
+#' @param loo_estimate_digits Number of loo estimate digits
+#' @return Text summarising specified loo estimate
+#' @export
+summarise_loo_estimate <- function(
+    seromodel,
+    par_loo_estimate = "elpd_loo",
+    loo_estimate_digits = 2
+) {
+	checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
+
+  loo_fit <- loo::loo(
+    seromodel,
+    pars = c(parameter_name = "log_likelihood")
+  )
+  loo_estimate <- loo_fit$estimates[par_loo_estimate, ] %>%
+    round(loo_estimate_digits)
+
+	loo_estimate_summary <- paste0(loo_estimate[1], "(se=", loo_estimate[2], ")")
+
+	return(loo_estimate_summary)
+}
+
+#' Summarise central estimate
+#'
+#' @inheritParams extract_central_estimates
+#' @param central_estimate_digits Number of central estimate digits
+#' @return Text summarising specified central estimate
+#' @export
+summarise_central_estimate <- function(
+  seromodel,
+  serosurvey,
+  alpha,
+  par_name = "seroreversion_rate",
+  central_estimate_digits = 2
+) {
+  checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
+
+  central_estimates <- signif(
+      extract_central_estimates(
+        seromodel = seromodel,
+        serosurvey = serosurvey,
+        alpha = alpha,
+        par_name = par_name
+    ),
+    digits = 2
+  )
+
+  central_estimate_summary <- paste0(
+    central_estimates$median,
+    "(", 100 * (1 - alpha), "% CI, ",
+    central_estimates$lower, "-",
+    central_estimates$upper, ")"
+  )
+
+  return(central_estimate_summary)
+}
+
 #' Summarise specified model
 #'
 #' @inheritParams extract_central_estimates
-#' @param elpd_digits Number of elpd digits to show
-#' @param foi_digits Number of foi digits to show
-#' @param seroreversion_digits Number of seroreversion rate digits to show
-#' @return A list showing
+#' @inheritParams extract_loo_estimate
+#' @inheritParams summarise_central_estimate
+#' @return A list summarising the specified model
 #' \describe{
 #'  \item{`model_name`}{Name of the model}
 #'  \item{`elpd`}{elpd and its standard deviation}
 #'  \item{`foi`}{Estimated foi with credible interval (for 'constant' model)}
 #'  \item{`foi_rhat`}{foi rhat value (for 'constant' model)}
 #'  \item{`seroreversion_rate`}{Estimated seroreversion rate}
-#'  \item{`rhat_seroreversion_rate`}{Seroreversion rate rhat value}
+#'  \item{`seroreversion_rate_rhat`}{Seroreversion rate rhat value}
 #' }
 #' @export
 summarise_seromodel <- function(
   seromodel,
   serosurvey,
   alpha = 0.05,
-  elpd_digits = 1,
-  foi_digits = 2,
-  seroreversion_digits = 2,
+  par_loo_estimate = "elpd_loo",
+  loo_estimate_digits = 1,
+  central_estimate_digits = 2,
   rhat_digits = 2
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
@@ -361,85 +421,83 @@ summarise_seromodel <- function(
   )
   elpd <- loo_fit$estimates["elpd_loo", ] %>% round(elpd_digits)
 
-  summary_list <- list(
-    model_name = seromodel@model_name,
-    elpd = paste0(elpd[1], "(se=", elpd[2], ")")
+  loo_estimate_summary <- summarise_loo_estimate(
+    seromodel = seromodel,
+    par_loo_estimate = par_loo_estimate,
+    loo_estimate_digits = loo_estimate_digits
   )
 
-  model_name <- seromodel@model_name
+  summary_list[par_loo_estimate] = loo_estimate_summary
+
   if (startsWith(model_name, "constant")) {
-    foi_central_estimates <- extract_central_estimates(
+    foi_summary <- summarise_central_estimate(
       seromodel = seromodel,
       serosurvey = serosurvey,
       alpha = alpha,
-      par_name = "foi"
-    ) %>%
-    signif(foi_digits)
-
-    foi_summary <- paste0(
-      foi_central_estimates$median,
-      "(", 1 - alpha, "% CI, ",
-      foi_central_estimates$lower, "-",
-      foi_central_estimates$upper, ")"
+      par_name = "foi",
+      central_estimate_digits = central_estimate_digits
     )
-    rhat_foi <- bayesplot::rhat(seromodel, "foi") %>%
+
+    foi_rhat <- bayesplot::rhat(seromodel, "foi") %>%
       signif(rhat_digits)
     summary_list <- append(
       summary_list,
       list(
         foi = foi_summary,
-        rhat_foi = rhat_foi
+        foi_rhat = foi_rhat
       )
     )
   }
 
   if (!endsWith(model_name, "no_seroreversion")) {
-    seroreversion_rate_central_estimates <- extract_central_estimates(
+    seroreversion_rate_summary <- summarise_central_estimate(
       seromodel = seromodel,
       serosurvey = serosurvey,
       alpha = alpha,
-      par_name = "seroreversion_rate"
-    ) %>%
-      signif(seroreversion_digits)
-
-    seroreversion_rate_summary <- paste0(
-      seroreversion_rate_central_estimates$median,
-      "(", 1 - alpha, "% CI, ",
-      seroreversion_rate_central_estimates$lower, "-",
-      seroreversion_rate_central_estimates$upper, ")"
+      par_name = "seroreversion_rate",
+      central_estimate_digits = central_estimate_digits
     )
-    rhat_seroreversion_rate <- bayesplot::rhat(
+
+    seroreversion_rate_rhat <- bayesplot::rhat(
       seromodel,
       "seroreversion_rate"
       ) %>%
       signif(rhat_digits)
+
     summary_list <- append(
       summary_list,
       list(
         seroreversion_rate = seroreversion_rate_summary,
-        rhat_seroreversion_rate = rhat_seroreversion_rate
+        seroreversion_rate_rhat = seroreversion_rate_rhat
       )
     )
   }
+
   return(summary_list)
 }
 
 #' Plots model summary
 #'
 #' @inheritParams summarise_seromodel
+#' @inheritParams plot_serosurvey
 #' @return ggplot object with a summary of the specified model
 #' @export
 plot_summary <- function(
   seromodel,
   serosurvey,
-  ...
+  loo_estimate_digits= 1,
+  central_estimate_digits = 2,
+  rhat_digits = 2,
+  size_text = 11
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
   summary_table <- summarise_seromodel(
     seromodel = seromodel,
     serosurvey = serosurvey,
-    ...
+    loo_estimate_digits= loo_estimate_digits,
+    central_estimate_digits = central_estimate_digits,
+    rhat_digits = rhat_digits
     ) %>%
     t() #convert summary to table
 
@@ -475,14 +533,24 @@ plot_summary <- function(
 plot_seromodel <- function(
   seromodel,
   serosurvey,
-  ...
+  alpha = 0.05,
+  foi_df = NULL,
+  foi_max = NULL,
+  loo_estimate_digits = 1,
+  central_estimate_digits = 2,
+  seroreversion_digits = 2,
+  rhat_digits = 2,
+  size_text = 11
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
   summary_plot <- plot_summary(
-    seromodel,
-    serosurvey,
-    ...
+    seromodel = seromodel,
+    serosurvey = serosurvey,
+    loo_estimate_digits = loo_estimate_digits,
+    central_estimate_digits = central_estimate_digits,
+    rhat_digits = rhat_digits,
+    size_text = size_text
   )
 
   seroprev_plot <- plot_seroprevalence_estimates(
