@@ -86,7 +86,7 @@ validate_seroreversion_rate <- function(seroreversion_rate) {
   }
 }
 
-validate_survey_and_foi_consistency <- function(
+validate_survey_and_foi_consistency <- function( #nolint
     survey_features,
     foi_df
 ) {
@@ -95,7 +95,7 @@ validate_survey_and_foi_consistency <- function(
     stop("maximum age implicit in foi_df should not exceed max age in survey_features.")
 }
 
-validate_survey_and_foi_consistency_age_time <- function(
+validate_survey_and_foi_consistency_age_time <- function( #nolint
     survey_features,
     foi_df
 ) {
