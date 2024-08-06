@@ -82,9 +82,10 @@ probability_exact_time_varying <- function(
 #' rate of seroreversion.
 #'
 #' @return A dataframe with columns 'age' and 'seropositivity'.
-probability_seropositive_time_model_by_age <- function(
-    foi,
-    seroreversion_rate) {
+probability_seropositive_time_model_by_age <- function( #nolint
+  foi,
+  seroreversion_rate
+) {
 
   years <- foi$year
 
@@ -116,9 +117,10 @@ probability_seropositive_time_model_by_age <- function(
 #' of seroreversion.
 #'
 #' @return A dataframe with columns 'age' and 'seropositivity'.
-probability_seropositive_age_model_by_age <- function(
-    foi,
-    seroreversion_rate) {
+probability_seropositive_age_model_by_age <- function( #nolint
+  foi,
+  seroreversion_rate
+) {
 
   ages <- seq_along(foi$age)
 
@@ -149,10 +151,10 @@ probability_seropositive_age_model_by_age <- function(
 #' the rate of seroreversion.
 #'
 #' @return A dataframe with columns 'age' and 'seropositivity'.
-probability_seropositive_age_and_time_model_by_age <- function(
-    foi,
-    seroreversion_rate
-    ) {
+probability_seropositive_age_and_time_model_by_age <- function( #nolint
+  foi,
+  seroreversion_rate
+) {
 
   foi_matrix <- foi %>%
     tidyr::pivot_wider(
@@ -213,10 +215,11 @@ probability_seropositive_age_and_time_model_by_age <- function(
 #'
 #' @return A dataframe with columns 'age' and 'seropositivity'.
 #' @export
-probability_seropositive_by_age <- function(
-    model,
-    foi,
-    seroreversion_rate = 0) {
+probability_seropositive_by_age <- function( #nolint
+  model,
+  foi,
+  seroreversion_rate = 0
+) {
 
   if(model == "time") {
     probability_function <- probability_seropositive_time_model_by_age
@@ -263,12 +266,13 @@ sum_of_A <- function(t, tau, construct_A_fn, ...) {
 #'
 #' @return A dataframe with columns 'age' and 'seropositivity'.
 #' @export
-probability_seropositive_general_model_by_age <- function(
-    construct_A_function,
-    calculate_seropositivity_function,
-    initial_conditions,
-    max_age,
-    ...) {
+probability_seropositive_general_model_by_age <- function( #nolint
+  construct_A_fn,
+  calculate_seropositivity_function, #nolint
+  initial_conditions,
+  max_age,
+  ...
+) {
 
   probabilities <- vector(length = max_age)
   for(i in seq_along(probabilities)) {
@@ -415,7 +419,7 @@ sample_size_by_individual_age_random <- function(survey_features) { #nolint
 
   survey_features <- add_age_bins(survey_features)
 
-  survey_features_by_individual_age <- survey_by_individual_age(
+  survey_features_by_individual_age <- survey_by_individual_age( #nolint
     survey_features,
     age_df)
 
@@ -435,8 +439,8 @@ check_age_constraints <- function(df) {
   return(TRUE)
 }
 
-generate_seropositive_counts_by_age_bin <- function(
-    probability_seropositive_by_age,
+generate_seropositive_counts_by_age_bin <- function( #nolint
+    probability_seropositive_by_age, #nolint
     sample_size_by_age_random,
     survey_features
     ) {
@@ -625,10 +629,10 @@ simulate_serosurvey_age_model <- function(
 #' serosurvey <- simulate_serosurvey_age_and_time_model(
 #' foi_df, survey_features)
 #' @export
-simulate_serosurvey_age_and_time_model <- function(
-    foi,
-    survey_features,
-    seroreversion_rate=0
+simulate_serosurvey_age_and_time_model <- function( #nolint
+  foi,
+  survey_features,
+  seroreversion_rate = 0
 ) {
 
   # Input validation
@@ -774,12 +778,12 @@ simulate_serosurvey <- function(
 #' and other survey features.
 #'
 #' @export
-simulate_serosurvey_general_model <- function(
-    construct_A_function,
-    calculate_seropositivity_function,
-    initial_conditions,
-    survey_features,
-    ...
+simulate_serosurvey_general_model <- function( #nolint
+  construct_A_function,
+  calculate_seropositivity_function, #nolint
+  initial_conditions,
+  survey_features,
+  ...
 ) {
 
   # Input validation
