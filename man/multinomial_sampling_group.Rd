@@ -15,7 +15,7 @@ multinomial_sampling_group(sample_size, n_ages)
 A vector containing random sample sizes for each age group.
 }
 \description{
-This function generates random sample sizes for each age group using multinomial sampling.
-It takes the total sample size and the number of age groups as input and returns a vector
-of sample sizes for each age group.
+This function generates random sample sizes for each age group using
+multinomial sampling. It takes the total sample size and the number of age
+groups as input and returns a vector of sample sizes for each age group.
 }

@@ -1,6 +1,6 @@
 #' Prepares serosurvey for plotting
 #'
-#' Adds seroprevalence values with corresponing binomial confidence interval
+#' Adds seroprevalence values with corresponding binomial confidence interval
 #' @inheritParams fit_seromodel
 #' @param alpha 1 - alpha indicates the confidence level to be used
 #' @return serosurvey with additional columns:
@@ -122,7 +122,7 @@ extract_central_estimates <- function(
 #'
 #' @inheritParams extract_central_estimates
 #' @inheritParams plot_serosurvey
-#' @returns ggplot object with seroprevalence estimates and serisurvey plots
+#' @returns ggplot object with seroprevalence estimates and serosurveys plots
 #' @export
 plot_seroprevalence_estimates <- function(
   seromodel,
