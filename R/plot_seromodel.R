@@ -216,7 +216,7 @@ plot_foi_estimates <- function(
       foi_central_estimates,
       age = ages
     )
-    if(!is.null(foi_df)) {
+    if (!is.null(foi_df)) {
       foi_central_estimates <- foi_central_estimates %>%
         left_join(foi_df, by = "age")
     }
@@ -231,7 +231,7 @@ plot_foi_estimates <- function(
       foi_central_estimates,
       year = years
     )
-    if(!is.null(foi_df)) {
+    if (!is.null(foi_df)) {
       foi_central_estimates <- foi_central_estimates %>%
         left_join(foi_df, by = "year")
     }
@@ -319,7 +319,7 @@ plot_rhats <- function(
   rhats_plot <- rhats_plot +
     ggplot2::geom_hline(
       yintercept = 1.01,
-      linetype = 'dashed'
+      linetype = "dashed"
     ) +
     ggplot2::geom_line(ggplot2::aes(y = .data$rhat)) +
     ggplot2::geom_point(ggplot2::aes(y = .data$rhat)) +
@@ -345,7 +345,7 @@ plot_rhats <- function(
 plot_summary <- function(
   seromodel,
   serosurvey,
-  loo_estimate_digits= 1,
+  loo_estimate_digits = 1,
   central_estimate_digits = 2,
   rhat_digits = 2,
   size_text = 11
@@ -355,14 +355,14 @@ plot_summary <- function(
   summary_table <- summarise_seromodel(
     seromodel = seromodel,
     serosurvey = serosurvey,
-    loo_estimate_digits= loo_estimate_digits,
+    loo_estimate_digits = loo_estimate_digits,
     central_estimate_digits = central_estimate_digits,
     rhat_digits = rhat_digits
     ) %>%
     t() #convert summary to table
 
   summary_df <- data.frame(
-    row = NCOL(summary_table):1,
+    row = rev(seq_len(NCOL(summary_table))),
     text = paste0(colnames(summary_table), ": ", summary_table[1, ])
   )
 
