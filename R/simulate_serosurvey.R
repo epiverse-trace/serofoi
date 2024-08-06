@@ -8,20 +8,20 @@
 #' @return vector of probabilities of being seropositive for age-varying FoI
 #' including seroreversion (ordered from youngest to oldest individuals)
 probability_exact_age_varying <- function(
-    ages,
-    fois,
-    seroreversion_rate = 0
+  ages,
+  fois,
+  seroreversion_rate = 0
 ) {
 
   probabilities <- vector(length = length(ages))
   # solves ODE exactly within pieces
   for (i in seq_along(ages)) {
     foi_tmp <- fois[i]
-    if(i == 1)
+    if (i == 1)
       probability_previous <- 0
     else
       probability_previous <- probabilities[i - 1]
-    if(foi_tmp == 0)
+    if (foi_tmp == 0)
       lambda_over_both <- 0
     else
       lambda_over_both <- (foi_tmp / (foi_tmp + seroreversion_rate))
@@ -42,9 +42,9 @@ probability_exact_age_varying <- function(
 #' @return vector of probabilities of being seropositive for age-varying FoI
 #' including seroreversion (ordered from youngest to oldest individuals)
 probability_exact_time_varying <- function(
-    years,
-    fois,
-    seroreversion_rate = 0
+  years,
+  fois,
+  seroreversion_rate = 0
 ) {
 
   n_years <- length(years)
@@ -53,9 +53,9 @@ probability_exact_time_varying <- function(
   # solves ODE exactly within pieces
   for (i in seq_along(years)) { # birth cohorts
     probability_previous <- 0
-    for(j in 1:(n_years - i + 1)) { # exposure during lifetime
+    for (j in 1:(n_years - i + 1)) { # exposure during lifetime
       foi_tmp <- fois[i + j - 1]
-      if(foi_tmp == 0)
+      if (foi_tmp == 0)
         lambda_over_both <- 0
       else
         lambda_over_both <- (foi_tmp / (foi_tmp + seroreversion_rate))
@@ -175,9 +175,9 @@ probability_seropositive_age_and_time_model_by_age <- function( #nolint
     foi_matrix_subset <- foi_matrix[1:(n_ages - i + 1), i:n_ages] %>%
       as.matrix() # only to handle single element matrix case
     foi_diag <- diag(foi_matrix_subset)
-    for(j in 1:(n_years - i + 1)) { # exposure during lifetime
+    for (j in 1:(n_years - i + 1)) { # exposure during lifetime
       foi_tmp <- foi_diag[j]
-      if(foi_tmp == 0)
+      if (foi_tmp == 0)
         lambda_over_both <- 0
       else
         lambda_over_both <- (foi_tmp / (foi_tmp + seroreversion_rate))
@@ -221,11 +221,11 @@ probability_seropositive_by_age <- function( #nolint
   seroreversion_rate = 0
 ) {
 
-  if(model == "time") {
+  if (model == "time") {
     probability_function <- probability_seropositive_time_model_by_age
-  } else if(model == "age") {
+  } else if (model == "age") {
     probability_function <- probability_seropositive_age_model_by_age
-  } else if(model == "age-time" || model == "time-age") {
+  } else if (model == "age-time" || model == "time-age") {
     probability_function <- probability_seropositive_age_and_time_model_by_age
   }
 
@@ -239,16 +239,16 @@ probability_seropositive_by_age <- function( #nolint
 
 sum_of_A <- function(t, tau, construct_A_fn, ...) {
   k <- 1
-  for(t_primed in (tau + 1):t) {
-    if(k == 1)
+  for (t_primed in (tau + 1):t) {
+    if (k == 1) {
       A <- construct_A_fn(t_primed, tau, ...)
-    else {
+    } else {
       tmp <- construct_A_fn(t_primed, tau, ...)
       A <- A + tmp
     }
     k <- k + 1
   }
-  A
+  return(A)
 }
 
 #' Generate probabilities of seropositivity by age based on a general FOI model.
@@ -275,8 +275,8 @@ probability_seropositive_general_model_by_age <- function( #nolint
 ) {
 
   probabilities <- vector(length = max_age)
-  for(i in seq_along(probabilities)) {
-    A_sum <- sum_of_A(max_age, max_age - i, construct_A, ...)
+  for (i in seq_along(probabilities)) {
+    A_sum <- sum_of_A(max_age, max_age - i, construct_A_fn, ...)
     Y <- Matrix::expm(A_sum) %>% as.matrix() %*% initial_conditions
     probabilities[i] <- calculate_seropositivity_function(Y)
   }
@@ -303,7 +303,7 @@ probability_seropositive_general_model_by_age <- function( #nolint
 #' interval for each row based on the age_min and age_max columns.
 add_age_bins <- function(survey_features) {
   intervals <- vector(length = nrow(survey_features))
-  for(i in seq_along(intervals)) {
+  for (i in seq_along(intervals)) {
     age_min <- survey_features$age_min[i]
     age_max <- survey_features$age_max[i]
     intervals[i] <- paste0("[", age_min, ",", age_max, "]")
@@ -343,7 +343,7 @@ multinomial_sampling_group <- function(sample_size, n_ages) {
   prob_value <- 1 / n_ages
   probs <- rep(prob_value, n_ages)
   sample_size_by_age <- as.vector(
-    rmultinom(1, sample_size, prob=probs)
+    rmultinom(1, sample_size, prob = probs)
   )
   return(sample_size_by_age)
 }
@@ -402,7 +402,7 @@ sample_size_by_individual_age_random <- function(survey_features) { #nolint
 
   age_bins <- rep(NA, length(ages))
   for (i in seq_along(ages)) {
-    # Find the index of the row in survey_features where age falls within the range
+    # Find index of the row in survey_features where age falls within the range
     age_min <- survey_features$age_min
     age_max <- survey_features$age_max
     idx <- which(ages[i] >= age_min & ages[i] <= age_max)
@@ -429,8 +429,8 @@ sample_size_by_individual_age_random <- function(survey_features) { #nolint
 }
 
 check_age_constraints <- function(df) {
-  for (i in 1:nrow(df)) {
-    for (j in 1:nrow(df)) {
+  for (i in seq_len(nrow(df))) {
+    for (j in seq_len(nrow(df))) {
       if (i != j && df$age_max[i] == df$age_min[j]) {
         return(FALSE)
       }
@@ -443,10 +443,10 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
     probability_seropositive_by_age, #nolint
     sample_size_by_age_random,
     survey_features
-    ) {
+) {
 
   combined_df <- probability_seropositive_by_age %>%
-    dplyr::left_join(sample_size_by_age_random, by="age") %>%
+    dplyr::left_join(sample_size_by_age_random, by = "age") %>%
     dplyr::mutate(
       n_seropositive = rbinom(
         nrow(probability_seropositive_by_age),
@@ -501,13 +501,13 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
 #' foi_df, survey_features)
 #' @export
 simulate_serosurvey_time_model <- function(
-    foi,
-    survey_features,
-    seroreversion_rate=0
+  foi,
+  survey_features,
+  seroreversion_rate = 0
 ) {
 
   # Input validation
-  validate_foi_df(foi, c("year"))
+  validate_foi_df(foi, "year")
   validate_survey(survey_features)
   validate_seroreversion_rate(seroreversion_rate)
   validate_survey_and_foi_consistency(
@@ -566,13 +566,13 @@ simulate_serosurvey_time_model <- function(
 #' foi_df, survey_features)
 #' @export
 simulate_serosurvey_age_model <- function(
-    foi,
-    survey_features,
-    seroreversion_rate=0
+  foi,
+  survey_features,
+  seroreversion_rate = 0
 ) {
 
   # Input validation
-  validate_foi_df(foi, c("age"))
+  validate_foi_df(foi, "age")
   validate_survey(survey_features)
   validate_seroreversion_rate(seroreversion_rate)
   validate_survey_and_foi_consistency(
@@ -646,10 +646,11 @@ simulate_serosurvey_age_and_time_model <- function( #nolint
     foi
   )
 
-  probability_serop_by_age <- probability_seropositive_age_and_time_model_by_age(
-    foi = foi,
-    seroreversion_rate = seroreversion_rate
-  )
+  probability_serop_by_age <-
+    probability_seropositive_age_and_time_model_by_age(
+      foi = foi,
+      seroreversion_rate = seroreversion_rate
+      )
 
   sample_size_by_age_random <- sample_size_by_individual_age_random(
     survey_features = survey_features
@@ -734,29 +735,29 @@ simulate_serosurvey_age_and_time_model <- function( #nolint
 #' survey_features = survey_features)
 #' @export
 simulate_serosurvey <- function(
-    model,
-    foi,
-    survey_features,
-    seroreversion_rate=0
+  model,
+  foi,
+  survey_features,
+  seroreversion_rate = 0
 ) {
 
   # don't advertise time-age in case people think this is something else
-  if(!model %in% c("age", "time", "age-time", "time-age"))
+  if (!model %in% c("age", "time", "age-time", "time-age"))
     stop("model must be one of 'age', 'time', or 'age-time'.")
 
-  if(model == "time") {
+  if (model == "time") {
     serosurvey <- simulate_serosurvey_time_model(
       foi,
       survey_features,
       seroreversion_rate
     )
-  } else if(model == "age") {
+  } else if (model == "age") {
     serosurvey <- simulate_serosurvey_age_model(
       foi,
       survey_features,
       seroreversion_rate
     )
-  } else if(model == "age-time" || model == "time-age") {
+  } else if (model == "age-time" || model == "time-age") {
     serosurvey <- simulate_serosurvey_age_and_time_model(
       foi,
       survey_features,
