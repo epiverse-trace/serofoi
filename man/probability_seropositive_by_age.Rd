@@ -7,15 +7,17 @@
 probability_seropositive_by_age(model, foi, seroreversion_rate = 0)
 }
 \arguments{
-\item{model}{A string specifying the model type which can be one of \link{'age', 'time', 'age-time'}.}
+\item{model}{A string specifying the model type which can be one of
+\link{'age', 'time', 'age-time'}.}
 
 \item{foi}{A dataframe containing the force of infection (FOI) values.
 For time-varying models the columns should be \link{'year', 'foi'}.
 For age-varying models the columns should be \link{'age', 'foi'}.
-For age-and-time-varying models the columns should be \link{'age', 'time', 'foi'}.}
+For age-and-time-varying models the columns should be
+\link{'age', 'time', 'foi'}.}
 
-\item{seroreversion_rate}{A non-negative value determining the rate of seroreversion (per year).
-Default is 0.}
+\item{seroreversion_rate}{A non-negative value determining the rate of
+seroreversion (per year). Default is 0.}
 }
 \value{
 A dataframe with columns 'age' and 'seropositivity'.

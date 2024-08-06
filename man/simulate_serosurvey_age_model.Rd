@@ -7,24 +7,26 @@
 simulate_serosurvey_age_model(foi, survey_features, seroreversion_rate = 0)
 }
 \arguments{
-\item{foi}{A dataframe containing the force of infection (FOI) values for different ages.
-It should have two columns: 'age' and 'foi'.}
+\item{foi}{A dataframe containing the force of infection (FOI) values for
+different ages. It should have two columns: 'age' and 'foi'.}
 
-\item{survey_features}{A dataframe containing information about the binned age groups and sample
-sizes for each. It should contain columns: \link{'age_min', 'age_max', 'sample_size'}.}
+\item{survey_features}{A dataframe containing information about the binned
+age groups and sample sizes for each. It should contain columns:
+\link{'age_min', 'age_max', 'sample_size'}.}
 
-\item{seroreversion_rate}{A non-negative value determining the rate of seroreversion (per year).
-Default is 0.}
+\item{seroreversion_rate}{A non-negative value determining the rate of
+seroreversion (per year). Default is 0.}
 }
 \value{
-A dataframe with simulated serosurvey data, including age group information, overall
-sample sizes, the number of seropositive individuals, and other survey features.
+A dataframe with simulated serosurvey data, including age group
+information, overall sample sizes, the number of seropositive individuals,
+and other survey features.
 }
 \description{
-This function generates binned serosurvey data based on an age-varying FOI model,
-optionally including seroreversion. This function allows construction of serosurveys
-with binned age groups, and it generates uncertainty in the distribution of a sample size
-within an age bin through multinomial sampling.
+This function generates binned serosurvey data based on an age-varying FOI
+model, optionally including seroreversion. This function allows construction
+of serosurveys with binned age groups, and it generates uncertainty in the
+distribution of a sample size within an age bin through multinomial sampling.
 }
 \examples{
 # specify FOIs for each year

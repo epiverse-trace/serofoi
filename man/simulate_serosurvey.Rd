@@ -7,29 +7,33 @@
 simulate_serosurvey(model, foi, survey_features, seroreversion_rate = 0)
 }
 \arguments{
-\item{model}{A string specifying the model type which can be one of \link{'age', 'time', 'age-time'}.}
+\item{model}{A string specifying the model type which can be one of
+\link{'age', 'time', 'age-time'}.}
 
 \item{foi}{A dataframe containing the force of infection (FOI) values.
 For time-varying models the columns should be \link{'year', 'foi'}.
 For age-varying models the columns should be \link{'age', 'foi'}.
 For age-and-time-varying models the columns should be \link{'age', 'time', 'foi'}.}
 
-\item{survey_features}{A dataframe containing information about the binned age groups and sample
-sizes for each. It should contain columns: \link{'age_min', 'age_max', 'sample_size'}.}
+\item{survey_features}{A dataframe containing information about the binned
+age groups and sample sizes for each.
+It should contain columns: \link{'age_min', 'age_max', 'sample_size'}.}
 
-\item{seroreversion_rate}{A non-negative value determining the rate of seroreversion (per year).
-Default is 0.}
+\item{seroreversion_rate}{A non-negative value determining the rate of
+seroreversion (per year). Default is 0.}
 }
 \value{
-A dataframe with simulated serosurvey data, including age group information, overall
-sample sizes, the number of seropositive individuals, and other survey features.
+A dataframe with simulated serosurvey data, including age group
+information, overall sample sizes, the number of seropositive individuals,
+and other survey features.
 }
 \description{
-This function generates binned serosurvey data based on either a time-varying FOI model,
-an age-varying FOI model, or an age-and-time-varying FOI model. In all cases, it is possible
-to optionally include seroreversion. This function allows construction of serosurveys
-with binned age groups, and it generates uncertainty in the distribution of a sample size
-within an age bin through multinomial sampling.
+This function generates binned serosurvey data based on either a time-varying
+FOI model, an age-varying FOI model, or an age-and-time-varying FOI model.
+In all cases, it is possible to optionally include seroreversion. This
+function allows construction of serosurveys with binned age groups, and it
+generates uncertainty in the distribution of a sample size within an age bin
+through multinomial sampling.
 }
 \examples{
 # time-varying model

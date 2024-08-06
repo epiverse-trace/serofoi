@@ -36,7 +36,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Language: en-GB
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 NeedsCompilation: yes
 Depends: 
     R (>= 3.5.0)
@@ -55,7 +55,8 @@ Imports:
     purrr,
     tidyr,
     tibble,
-    Matrix
+    Matrix,
+    glue
 LinkingTo: 
     BH (>= 1.66.0),
     Rcpp (>= 0.12.0),

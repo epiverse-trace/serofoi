@@ -38,8 +38,8 @@ foi_constant <- data.frame(
   foi = rep(0.05, max_age)
 )
 
-foi_constant %>% 
-  ggplot(aes(x=age, y=foi)) +
+foi_constant %>%
+  ggplot(aes(x = age, y = foi)) +
   geom_line()
 ```
 
@@ -68,11 +68,11 @@ Now, we can plot the proportions of those seropositive, including the posterior 
 
 ```{r, echo=FALSE, fig.align="center"}
 add_posterior_quantiles <- function(df) {
-  df %>% 
+  df %>%
     mutate(
-    alpha = 1 + n_seropositive,
-    beta = 1 + sample_size - n_seropositive
-  ) %>% 
+    alpha = 1 + .data$n_seropositive,
+    beta = 1 + .data$sample_size - .data$n_seropositive
+  ) %>%
   mutate(
     lower = qbeta(0.025, alpha, beta),
     middle = qbeta(0.5, alpha, beta),
@@ -95,7 +95,7 @@ ggplot() +
     color = "blue",
     linewidth = 1
   ) +
-  scale_y_continuous(labels=scales::percent) +
+  scale_y_continuous(labels = scales::percent) +
   ylab("Seropositivity") +
   xlab("Age")
 ```
@@ -106,11 +106,11 @@ We now consider a pathogen which has an FOI that varies throughout the age of in
 ```{r, fig.align="center"}
 foi_age_varying <- data.frame(
   age = seq(1, max_age, 1)
-) %>% 
-  mutate(foi=0.1 * exp(-0.1 * age))
+) %>%
+  mutate(foi = 0.1 * exp(-0.1 * age))
 
-foi_age_varying %>% 
-  ggplot(aes(x=age, y=foi)) +
+foi_age_varying %>%
+  ggplot(aes(x = age, y = foi)) +
   geom_line()
 ```
 
@@ -142,7 +142,7 @@ serosurvey_combined <- serosurvey_constant %>%
     by = "age") %>%
   bind_rows(
     serosurvey_age_dep %>%
-      add_posterior_quantiles() %>% 
+      add_posterior_quantiles() %>%
       rename(age = age_min) %>%
       mutate(type = "age-dependent FOI") %>%
       left_join(
@@ -152,8 +152,8 @@ serosurvey_combined <- serosurvey_constant %>%
           seroreversion_rate = 0
       ),
       by = "age")
-    ) %>% 
-  mutate(type = as.factor(type)) 
+    ) %>%
+  mutate(type = as.factor(type))
 
 # plot both
 ggplot(data = serosurvey_combined) +
@@ -165,7 +165,7 @@ ggplot(data = serosurvey_combined) +
     color = "blue",
     linewidth = 1
   ) +
-  scale_y_continuous(labels=scales::percent) +
+  scale_y_continuous(labels = scales::percent) +
   ylab("Seropositivity") +
   xlab("Age") +
   facet_wrap(~type)
@@ -189,8 +189,8 @@ foi_spiky <- data.frame(
 )
 
 # plot
-foi_spiky %>% 
-  ggplot(aes(x=year, y=foi)) +
+foi_spiky %>%
+  ggplot(aes(x = year, y = foi)) +
   geom_line()
 ```
 
@@ -222,7 +222,7 @@ ggplot() +
     color = "blue",
     linewidth = 1
   ) +
-  scale_y_continuous(labels=scales::percent) +
+  scale_y_continuous(labels = scales::percent) +
   ylab("Seropositivity") +
   xlab("Age")
 ```
@@ -239,8 +239,8 @@ foi_df_time <- data.frame(
 )
 
 # plot
-foi_df_time %>% 
-  ggplot(aes(x=year, y=foi)) +
+foi_df_time %>%
+  ggplot(aes(x = year, y = foi)) +
   geom_line()
 ```
 
@@ -256,35 +256,35 @@ foi_df_age <- data.frame(
 )
 
 # plot
-foi_df_age %>% 
-  ggplot(aes(x=age, y=foi)) +
+foi_df_age %>%
+  ggplot(aes(x = age, y = foi)) +
   geom_line()
 ```
 
 To create the overall FOI (which is a function of both time and age), we create the product of the time- and age-dependent parts of it.
 ```{r}
 foi_age_time <- expand.grid(
-  year=foi_df_time$year,
-  age=foi_df_age$age
-) %>% 
-  left_join(foi_df_age, by="age") %>% 
-  rename(foi_age=foi) %>% 
-  left_join(foi_df_time, by="year") %>% 
-  rename(foi_time=foi) %>% 
-  mutate(foi = foi_age * foi_time) %>% 
+  year = foi_df_time$year,
+  age = foi_df_age$age
+) %>%
+  left_join(foi_df_age, by = "age") %>%
+  rename(foi_age = foi) %>%
+  left_join(foi_df_time, by = "year") %>%
+  rename(foi_time = foi) %>%
+  mutate(foi = foi_age * foi_time) %>%
   select(-c("foi_age", "foi_time"))
 ```
 
 ```{r, fig.align="center", echo=FALSE}
 # plot a few birth years
 select_birth_years <- c(1955, 1965, 1975, 1985, 1995, 2005, 2015)
-foi_age_time %>% 
-  mutate(birth_year = year - age) %>% 
-  filter(birth_year >= 1945) %>% 
+foi_age_time %>%
+  mutate(birth_year = year - age) %>%
+  filter(birth_year >= 1945) %>%
   arrange(birth_year, age) %>%
-  filter(birth_year %in% select_birth_years) %>% 
-  mutate(birth_year = as.factor(birth_year)) %>% 
-  ggplot(aes(x=year, y=foi, colour=birth_year)) +
+  filter(birth_year %in% select_birth_years) %>%
+  mutate(birth_year = as.factor(birth_year)) %>%
+  ggplot(aes(x = year, y = foi, colour = birth_year)) +
   geom_line()
 ```
 
@@ -294,7 +294,7 @@ max_age <- 80
 sample_size <- 50
 survey_features <- data.frame(
   age_min = seq(1, max_age, 5),
-  age_max = seq(5, max_age, 5)) %>% 
+  age_max = seq(5, max_age, 5)) %>%
   mutate(sample_size = rep(sample_size, length(age_min)))
 
 serosurvey <- simulate_serosurvey(
@@ -321,7 +321,7 @@ ggplot() +
     color = "blue",
     linewidth = 1
   ) +
-  scale_y_continuous(labels=scales::percent) +
+  scale_y_continuous(labels = scales::percent) +
   ylab("Seropositivity") +
   xlab("Age")
 ```
@@ -352,7 +352,7 @@ serosurvey_combined <- serosurvey %>%
     by = "age") %>%
   bind_rows(
     serosurvey_serorevert %>%
-      add_posterior_quantiles() %>% 
+      add_posterior_quantiles() %>%
       rename(age = age_min) %>%
       mutate(type = "seroreverting") %>%
       left_join(
@@ -362,8 +362,8 @@ serosurvey_combined <- serosurvey %>%
           seroreversion_rate = 0.01
       ),
       by = "age")
-    ) %>% 
-  mutate(type = as.factor(type)) 
+    ) %>%
+  mutate(type = as.factor(type))
 
 # plot both
 ggplot(data = serosurvey_combined) +
@@ -375,7 +375,7 @@ ggplot(data = serosurvey_combined) +
     color = "blue",
     linewidth = 1
   ) +
-  scale_y_continuous(labels=scales::percent) +
+  scale_y_continuous(labels = scales::percent) +
   ylab("Seropositivity") +
   xlab("Age") +
   facet_wrap(~type)
@@ -435,18 +435,18 @@ v <- foi_df_time$foi
 construct_A <- function(t, tau, u, v) {
   u_bar <- u[t - tau]
   v_bar <- v[t]
-  
+
   A <- diag(-1, ncol = 12, nrow = 12)
   A[row(A) == (col(A) + 1)] <- 1
   A[1, 1] <- -u_bar * v_bar
   A[2, 1] <- u_bar * v_bar
   A[12, 12] <- 0
-  
+
   A
 }
 
 # determines the sum of seropositive compartments of those still alive
-calculate_seropositivity_function <- function(Y) {
+calculate_seropositivity_fn <- function(Y) {
   sum(Y[2:11]) / (1 - Y[12])
 }
 
@@ -457,16 +457,16 @@ initial_conditions[1] <- 1
 # solve
 seropositive_hiv <- probability_seropositive_general_model_by_age(
     construct_A,
-    calculate_seropositivity_function,
+    calculate_seropositivity_fn,
     initial_conditions,
-    max_age=80,
+    max_age = 80,
     u,
     v
   )
-seropositive_hiv %>% 
-  ggplot(aes(x=age, y=seropositivity)) +
+seropositive_hiv %>%
+  ggplot(aes(x = age, y = seropositivity)) +
   geom_line() +
-  scale_y_continuous(labels=scales::percent) +
+  scale_y_continuous(labels = scales::percent) +
   ylab("Seropositivity") +
   xlab("Age")
 ```
@@ -475,21 +475,21 @@ We can also simulate a serosurvey assuming the above model.
 ```{r}
 serosurvey <- simulate_serosurvey_general_model(
     construct_A,
-    calculate_seropositivity_function,
+    calculate_seropositivity_fn,
     initial_conditions,
     survey_features,
     u,
     v
-) 
+)
 ```
 
 ```{r, echo=FALSE, fig.align="center"}
 # plot
-serosurvey %>% 
-  add_posterior_quantiles() %>% 
-  ggplot(aes(x=age_min, y=middle)) +
-  geom_pointrange(aes(ymin=lower, ymax=upper)) +
-  geom_smooth(se=FALSE) +
-  scale_y_continuous(labels=scales::percent) +
+serosurvey %>%
+  add_posterior_quantiles() %>%
+  ggplot(aes(x = age_min, y = middle)) +
+  geom_pointrange(aes(ymin = lower, ymax = upper)) +
+  geom_smooth(se = FALSE) +
+  scale_y_continuous(labels = scales::percent) +
   ylab("Seropositivity")
 ```

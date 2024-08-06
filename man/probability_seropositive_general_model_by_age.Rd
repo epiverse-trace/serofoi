@@ -5,7 +5,7 @@
 \title{Generate probabilities of seropositivity by age based on a general FOI model.}
 \usage{
 probability_seropositive_general_model_by_age(
-  construct_A_function,
+  construct_A_fn,
   calculate_seropositivity_function,
   initial_conditions,
   max_age,
@@ -13,15 +13,16 @@ probability_seropositive_general_model_by_age(
 )
 }
 \arguments{
-\item{calculate_seropositivity_function}{A function which takes the state vector
-and returns the seropositive fraction.}
+\item{construct_A_fn}{A function that constructs a matrix that defines the
+multiplier term in the linear ODE system.}
 
-\item{initial_conditions}{The initial state vector proportions for each birth cohort.}
+\item{calculate_seropositivity_function}{A function which takes the state
+vector and returns the seropositive fraction.}
+
+\item{initial_conditions}{The initial state vector proportions for each
+birth cohort.}
 
 \item{max_age}{The maximum age to simulate seropositivity for.}
-
-\item{construct_A_fn}{A function that constructs a matrix that defines the multiplier
-term in the linear ODE system.}
 }
 \value{
 A dataframe with columns 'age' and 'seropositivity'.
