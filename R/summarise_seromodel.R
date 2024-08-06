@@ -94,9 +94,9 @@ summarise_seromodel <- function(
     loo_estimate_digits = loo_estimate_digits
   )
 
-  summary_list[par_loo_estimate] = loo_estimate_summary
+  summary_list[par_loo_estimate] <- loo_estimate_summary
 
-  check_convergence <- c()
+  check_convergence <- NULL
   if (startsWith(model_name, "constant")) {
     foi_summary <- summarise_central_estimate(
       seromodel = seromodel,
@@ -160,9 +160,9 @@ summarise_seromodel <- function(
   }
 
   if (all(check_convergence)) {
-    summary_list["converged"] = "yes"
+    summary_list["converged"] <- "yes"
   } else {
-    summary_list["converged"] = "no"
+    summary_list["converged"] <- "no"
   }
 
   return(summary_list)
