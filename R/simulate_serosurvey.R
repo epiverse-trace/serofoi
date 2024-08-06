@@ -159,7 +159,7 @@ probability_seropositive_age_and_time_model_by_age <- function( #nolint
   foi_matrix <- foi %>%
     tidyr::pivot_wider(
       values_from = foi,
-      names_from = c(year)) %>%
+      names_from = c(.data$year)) %>%
     tibble::column_to_rownames("age") %>%
     as.matrix()
 
@@ -326,7 +326,7 @@ add_age_bins <- function(survey_features) {
 survey_by_individual_age <- function(survey_features, age_df) {
   age_df %>%
     left_join(survey_features, by = "group") %>%
-    rename(overall_sample_size = sample_size)
+    rename(overall_sample_size = .data$sample_size)
 }
 
 #' Generate random sample sizes using multinomial sampling.
@@ -366,7 +366,7 @@ generate_random_sample_sizes <- function(survey_df_long) {
   intervals <- unique(survey_df_long$group)
   for (interval_aux in na.omit(intervals)) {
     df_tmp <- survey_df_long %>%
-      filter(group == interval_aux)
+      filter(.data$group == interval_aux)
     sample_size <- df_tmp$overall_sample_size[1]
     sample_size_by_age <- multinomial_sampling_group(sample_size, nrow(df_tmp))
     df_tmp <- df_tmp %>%
@@ -448,15 +448,17 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
   combined_df <- probability_seropositive_by_age %>%
     dplyr::left_join(sample_size_by_age_random, by="age") %>%
     dplyr::mutate(
-      n_seropositive=rbinom(nrow(probability_seropositive_by_age),
-                            sample_size,
-                            seropositivity))
+      n_seropositive = rbinom(
+        nrow(probability_seropositive_by_age),
+        .data$sample_size,
+        .data$seropositivity)
+      )
 
   grouped_df <- combined_df %>%
-    dplyr::group_by(age_min, age_max) %>%
+    dplyr::group_by(.data$age_min, .data$age_max) %>%
     dplyr::summarise(
-      sample_size=sum(sample_size),
-      n_seropositive=sum(n_seropositive),
+      sample_size = sum(.data$sample_size),
+      n_seropositive = sum(.data$n_seropositive),
       .groups = "drop"
     ) %>%
     left_join(
