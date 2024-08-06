@@ -19,9 +19,6 @@ Description: Estimate time-varying Force-of-Infection of a given pathogen
     from population based seroprevalence studies using a bayesian
     framework.
 License: MIT + file LICENSE
-URL: https://epiverse-trace.github.io/serofoi/,
-    https://github.com/epiverse-trace/serofoi
-BugReports: https://github.com/epiverse-trace/serofoi/issues
 Depends: 
     R (>= 3.5.0)
 Imports:
@@ -37,6 +34,7 @@ Imports:
     tidyr,
     tibble,
     Matrix,
+    glue
     Rcpp (>= 0.12.0),
     rstan (>= 2.18.1),
     rstantools (>= 2.3.1)
@@ -64,5 +62,5 @@ Language: en-GB
 LazyData: true
 NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 SystemRequirements: GNU make
