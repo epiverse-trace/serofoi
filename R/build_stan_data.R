@@ -89,7 +89,7 @@ get_foi_index <- function(
 
 #' Set stan data defaults for sampling
 #'
-#' @param stan_data List to be pased to [rstan][rstan::sampling]
+#' @param stan_data List to be passed to [rstan][rstan::sampling]
 #' @inheritParams fit_seromodel
 #' @return List with default values of stan data for sampling
 set_stan_data_defaults <- function(
