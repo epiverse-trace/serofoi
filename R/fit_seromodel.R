@@ -27,9 +27,9 @@ add_age_group_to_serosurvey <- function(serosurvey) {
 #' @param foi_prior Force-of-infection distribution specified by means of
 #'  the helper functions. Currently available options are:
 #' \describe{
-#'   \item{`[sf_normal]`}
-#'   \item{`[sf_uniform]`}
-#'   \item{`[sf_none]`}
+#'  \item{`[sf_normal]`}
+#'  \item{`[sf_uniform]`}
+#'  \item{`[sf_none]`}
 #' }
 #' @param foi_index Integer vector specifying the age-groups for which
 #' force-of-infection values will be estimated
@@ -38,9 +38,9 @@ add_age_group_to_serosurvey <- function(serosurvey) {
 #' @param seroreversion_prior seroreversion distribution specified by means of
 #'  the helper functions. Currently available options are:
 #' \describe{
-#'   \item{`[sf_normal]`}
-#'   \item{`[sf_uniform]`}
-#'   \item{`[sf_none]`}
+#'  \item{`[sf_normal]`}
+#'  \item{`[sf_uniform]`}
+#'  \item{`[sf_none]`}
 #' }
 #' @param ... Additional parameters for [rstan][rstan::sampling]
 #' @returns stan_fit object with force-of-infection and seroreversion
