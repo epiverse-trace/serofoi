@@ -7,14 +7,15 @@
 add_age_bins(survey_features)
 }
 \arguments{
-\item{survey_features}{A dataframe containing age_min and age_max columns representing
-the minimum and maximum age boundaries for each group.}
+\item{survey_features}{A dataframe containing age_min and age_max columns
+representing the minimum and maximum age boundaries for each group.}
 }
 \value{
-A dataframe with an additional 'group' column representing the group interval
-for each row based on the age_min and age_max columns.
+A dataframe with an additional 'group' column representing the group
+interval for each row based on the age_min and age_max columns.
 }
 \description{
-It generates a new column 'group' in the survey_features dataframe, representing
-the group interval for each row based on the age_min and age_max columns.
+It generates a new column 'group' in the survey_features dataframe,
+representing the group interval for each row based on the age_min and
+age_max columns.
 }

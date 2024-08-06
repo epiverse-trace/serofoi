@@ -2,20 +2,23 @@
 % Please edit documentation in R/simulate_serosurvey.R
 \name{probability_seropositive_age_model_by_age}
 \alias{probability_seropositive_age_model_by_age}
-\title{Generate probabilities of seropositivity by age based on an age-varying FOI model.}
+\title{Generate probabilities of seropositivity by age based on an age-varying
+FOI model.}
 \usage{
 probability_seropositive_age_model_by_age(foi, seroreversion_rate)
 }
 \arguments{
-\item{foi}{A dataframe containing the force of infection (FOI) values for different ages.
-It should have two columns: 'age' and 'foi'.}
+\item{foi}{A dataframe containing the force of infection (FOI) values for
+different ages. It should have two columns: 'age' and 'foi'.}
 
-\item{seroreversion_rate}{A non-negative numeric value representing the rate of seroreversion.}
+\item{seroreversion_rate}{A non-negative numeric value representing the rate
+of seroreversion.}
 }
 \value{
 A dataframe with columns 'age' and 'seropositivity'.
 }
 \description{
-This function calculates the probabilities of seropositivity by age based on an age-varying FOI model.
+This function calculates the probabilities of seropositivity by age based on
+an age-varying FOI model.
 It takes into account the FOI and the rate of seroreversion.
 }

@@ -7,7 +7,8 @@
 probability_exact_time_varying(years, fois, seroreversion_rate = 0)
 }
 \arguments{
-\item{years}{Integer indicating the years covering the birth ages of the sample}
+\item{years}{Integer indicating the years covering the birth ages of the
+sample}
 
 \item{fois}{Numeric atomic vector corresponding to the age-varying
 force-of-infection to simulate from}

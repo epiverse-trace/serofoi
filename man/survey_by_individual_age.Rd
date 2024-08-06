@@ -7,12 +7,14 @@
 survey_by_individual_age(survey_features, age_df)
 }
 \arguments{
-\item{survey_features}{A dataframe containing information about age groups and sample sizes.}
+\item{survey_features}{A dataframe containing information about age groups
+and sample sizes.}
 
 \item{age_df}{A dataframe containing 'age' and 'group'.}
 }
 \value{
-A dataframe with overall sample sizes calculated by joining survey_features and age_df.
+A dataframe with overall sample sizes calculated by joining
+survey_features and age_df.
 This dataframe has columns including 'age' and 'overall_sample_size'.
 }
 \description{

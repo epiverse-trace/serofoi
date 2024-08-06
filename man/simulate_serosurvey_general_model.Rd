@@ -13,19 +13,22 @@ simulate_serosurvey_general_model(
 )
 }
 \arguments{
-\item{calculate_seropositivity_function}{A function which takes the state vector
-and returns the seropositive fraction.}
+\item{calculate_seropositivity_function}{A function which takes the state
+vector and returns the seropositive fraction.}
 
-\item{initial_conditions}{The initial state vector proportions for each birth cohort.}
+\item{initial_conditions}{The initial state vector proportions for each
+birth cohort.}
 
-\item{survey_features}{A dataframe containing information about the binned age groups and sample
-sizes for each. It should contain columns: \link{'age_min', 'age_max', 'sample_size'}.}
+\item{survey_features}{A dataframe containing information about the binned
+age groups and sample sizes for each.
+It should contain columns: \link{'age_min', 'age_max', 'sample_size'}.}
 }
 \value{
-A dataframe with simulated serosurvey data, including age group information, overall
-sample sizes, the number of seropositive individuals, and other survey features.
+A dataframe with simulated serosurvey data, including age group
+information, overall sample sizes, the number of seropositive individuals,
+and other survey features.
 }
 \description{
-This simulation method assumes only that the model system can be written as a piecewise-
-linear ordinary differential equation system.
+This simulation method assumes only that the model system can be written as
+a piecewise-linear ordinary differential equation system.
 }
