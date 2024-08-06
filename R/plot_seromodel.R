@@ -14,7 +14,7 @@
 #'                        of `seroprev`}
 #' }
 #' @export
-prepare_serosurvey_for_plotting <- function(
+prepare_serosurvey_for_plotting <- function( #nolint
   serosurvey,
   alpha = 0.05
   ) {
@@ -132,7 +132,7 @@ plot_seroprevalence_estimates <- function(
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
-  seroprevalence_central_estimates <- data.frame(
+  seroprevalence_central_estimates <- data.frame( #nolint
     median = 0.0,
     lower = 0.0,
     upper = 0.0,
