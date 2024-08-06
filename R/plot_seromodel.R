@@ -36,7 +36,7 @@ prepare_serosurvey_for_plotting <- function( #nolint
       seroprev_upper = "Upper"
     ) %>%
     dplyr::arrange(.data$age_group) %>%
-    dplyr::relocate(age_group)
+    dplyr::relocate(.data$age_group)
 }
 
 #' Plots seroprevalence from the given serosurvey
@@ -63,7 +63,7 @@ plot_serosurvey <- function(
     ggplot2::geom_errorbar(
       ggplot2::aes(
         ymin = .data$seroprev_lower,
-        ymax = .data$seroprev_upper,
+        ymax = .data$seroprev_upper
       ),
       width = 0.1
     ) +
@@ -154,12 +154,12 @@ plot_seroprevalence_estimates <- function(
     ) +
     ggplot2::geom_line(
       data = seroprevalence_central_estimates,
-      ggplot2::aes(x = age, y = median),
+      ggplot2::aes(x = .data$age, y = median),
       colour = "#7a0177"
     ) +
     ggplot2::geom_ribbon(
       data = seroprevalence_central_estimates,
-      ggplot2::aes(x = age, ymin = lower, ymax = upper),
+      ggplot2::aes(x = .data$age, ymin = .data$lower, ymax = .data$upper),
       fill = "#c994c7", alpha = 0.5
     ) +
     ggplot2::coord_cartesian(
@@ -221,7 +221,7 @@ plot_foi_estimates <- function(
         left_join(foi_df, by = "age")
     }
     foi_plot <- ggplot2::ggplot(
-      data = foi_central_estimates, ggplot2::aes(x = age)
+      data = foi_central_estimates, ggplot2::aes(x = .data$age)
     )
   } else if (startsWith(model_name, "time")) {
     xlab <- "Year"
@@ -236,7 +236,7 @@ plot_foi_estimates <- function(
         left_join(foi_df, by = "year")
     }
     foi_plot <- ggplot2::ggplot(
-      data = foi_central_estimates, ggplot2::aes(x = year)
+      data = foi_central_estimates, ggplot2::aes(x = .data$year)
     )
   }
 
@@ -261,7 +261,7 @@ plot_foi_estimates <- function(
   if (!is.null(foi_df)) {
     foi_plot <- foi_plot +
       ggplot2::geom_line(
-        ggplot2::aes(y = foi),
+        ggplot2::aes(y = .data$foi),
         colour = "#b30909"
       )
   }
@@ -300,7 +300,7 @@ plot_rhats <- function(
     )
 
     rhats_plot <- ggplot2::ggplot(
-      data = rhats_df, ggplot2::aes(x = age)
+      data = rhats_df, ggplot2::aes(x = .data$age)
     )
   } else if (startsWith(model_name, "time")) {
     xlab <- "Year"
@@ -312,7 +312,7 @@ plot_rhats <- function(
     )
 
     rhats_plot <- ggplot2::ggplot(
-      data = rhats_df, ggplot2::aes(x = year)
+      data = rhats_df, ggplot2::aes(x = .data$year)
     )
   }
 
@@ -321,8 +321,8 @@ plot_rhats <- function(
       yintercept = 1.01,
       linetype = 'dashed'
     ) +
-    ggplot2::geom_line(ggplot2::aes(y = rhat)) +
-    ggplot2::geom_point(ggplot2::aes(y = rhat)) +
+    ggplot2::geom_line(ggplot2::aes(y = .data$rhat)) +
+    ggplot2::geom_point(ggplot2::aes(y = .data$rhat)) +
     ggplot2::coord_cartesian(
       ylim = c(
         min(1.0, min(rhats_df$rhat)),
