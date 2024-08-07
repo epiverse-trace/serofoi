@@ -677,3 +677,83 @@ get_prev_expanded <- function(foi,
 
   return(prev_expanded)
 }
+
+
+#' Fit model to seroprevalence survey using optimization
+#' Returns a single best fit parameter vector, rather than
+#' samples from the posterior (which is what `fit_seromodel` does)
+#' @inheritParams fit_seromodel
+#' @param iter maximum possible number of iterations for optimizer to run
+#' @return `seromodel_optimization`. List of best fit optimized parameter value
+#' @export
+fit_seromodel_optimization <- function(
+    serodata,
+    foi_model = c("constant", "tv_normal_log", "tv_normal"),
+    foi_location = 0,
+    foi_scale = 1,
+    chunks = NULL,
+    chunk_size = 1,
+    iter = 2000,
+    seed = 12345,
+    ...) {
+
+  # Data processing is the same as for fit_seromodel
+  # Validate data
+  validate_prepared_serodata(serodata)
+  stopifnot(
+    "foi_model must be either `constant`, `tv_normal_log`, or `tv_normal`" =
+      foi_model %in% c("constant", "tv_normal_log", "tv_normal"),
+    "seed must be numeric" = is.numeric(seed),
+    "iter must be numeric" = is.numeric(iter)
+  )
+  model <- stanmodels[[foi_model]]
+  cohort_ages <- get_cohort_ages(serodata = serodata)
+  exposure_matrix <- get_exposure_matrix(serodata)
+  n_obs <- nrow(serodata)
+
+  if (is.null(chunks)) {
+    chunks <- get_chunk_structure(
+      serodata = serodata,
+      chunk_size = chunk_size
+    )
+  }
+  checkmate::assert_class(chunks, "numeric")
+  stopifnot(
+    "`chunks` length must be equal to `max(serodata$age_mean_f)`" =
+      length(chunks) == max(serodata$age_mean_f)
+  )
+
+  stan_data <- list(
+    n_obs = n_obs,
+    n_pos = serodata$counts,
+    n_total = serodata$total,
+    age_max = max(serodata$age_mean_f),
+    observation_exposure_matrix = exposure_matrix,
+    chunks = chunks,
+    foi_location = foi_location,
+    foi_scale = foi_scale
+  )
+
+  if (foi_model == "tv_normal_log") {
+    f_init <- function() {
+      list(log_fois = rep(-3, max(chunks)))
+    }
+  } else {
+    f_init <- function() {
+      list(fois = rep(0.01, max(chunks)))
+    }
+  }
+
+  seromodel_optimization <- rstan::optimizing(
+    model,
+    data = stan_data,
+    iter = iter,
+    init = f_init,
+    verbose = FALSE,
+    refresh = 0,
+    seed = seed,
+    as_vector = FALSE
+  )
+
+  return(seromodel_optimization)
+}
