@@ -226,7 +226,7 @@ plot_foi_estimates <- function(
   } else if (startsWith(model_name, "time")) {
     xlab <- "Year"
     ages <- rev(1:max(serosurvey$age_max))
-    years <- unique(serosurvey$tsur) - ages
+    years <- unique(serosurvey$survey_year) - ages
     foi_central_estimates <- mutate(
       foi_central_estimates,
       year = years
@@ -305,7 +305,7 @@ plot_rhats <- function(
   } else if (startsWith(model_name, "time")) {
     xlab <- "Year"
     ages <- rev(1:max(serosurvey$age_max))
-    years <- unique(serosurvey$tsur) - ages
+    years <- unique(serosurvey$survey_year) - ages
     rhats_df <- data.frame(
       year = years,
       rhat = rhats
