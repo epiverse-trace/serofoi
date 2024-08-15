@@ -8,3 +8,6 @@
   // normal
   real<lower=0> foi_mean;
   real<lower=0> foi_sd;
+  // cauchy
+  real<lower=0> foi_sigma_rw_loc;
+  real<lower=0> foi_sigma_rw_sc;
