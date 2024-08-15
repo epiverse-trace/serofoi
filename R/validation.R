@@ -1,20 +1,16 @@
-stop_if_missing <- function(serosurvey, must_have_cols) {
-  if (
-    !all(
-      must_have_cols
-      %in% colnames(serosurvey)
-    )
-  ) {
-    missing <-
-      must_have_cols[which(!(must_have_cols %in% colnames(serosurvey)))]
-    stop(
-      "The following mandatory columns in `serosurvey` are missing.\n",
-      toString(missing)
-    )
-  }
-}
+validate_serosurvey <- function(serosurvey) {
+  # Check that necessary columns are present
+  col_types <- list(
+    age_min = "numeric",
+    age_max = "numeric",
+    sample_size = "numeric",
+    n_seropositive = "numeric",
+    tsur = "numeric"
+  )
 
-stop_if_wrong_type <- function(serosurvey, col_types) {
+  checkmate::assert_names(names(serosurvey), must.include = names(col_types))
+
+  # Validates column types
   error_messages <- list()
   for (col in names(col_types)) {
     valid_col_types <- as.list(col_types[[col]])
@@ -39,25 +35,11 @@ stop_if_wrong_type <- function(serosurvey, col_types) {
       toString(error_messages)
     )
   }
-}
-
-validate_serosurvey <- function(serosurvey) {
-  col_types <- list(
-    age_min = "numeric",
-    age_max = "numeric",
-    sample_size = "numeric",
-    n_seropositive = "numeric",
-    tsur = "numeric"
-  )
-
-  stop_if_missing(serosurvey, must_have_cols = names(col_types))
-
-  stop_if_wrong_type(serosurvey, col_types)
 
   return(serosurvey)
 }
 
-validate_survey <- function(survey_features) {
+validate_survey_features <- function(survey_features) {
 
   if (!is.data.frame(survey_features) ||
       !all(
