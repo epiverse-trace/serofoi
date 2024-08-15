@@ -24,12 +24,19 @@ add_age_group_to_serosurvey <- function(serosurvey) {
 #'   \item{`n_seropositive`}{Number of positive samples for each age group}
 #' }
 #' @param model_type Type of the model. Either "constant", "age" or "time"
+#' @param is_log_foi Boolean to set logarithmic scale in the FOI
 #' @param foi_prior Force-of-infection distribution specified by means of
 #'  the helper functions. Currently available options are:
 #' \describe{
 #'  \item{`sf_normal`}
 #'  \item{`sf_uniform`}
 #'  \item{`sf_none`}
+#' }
+#' @param foi_sigma_rw Prior distribution for the standard deviation of the
+#' force-of-infection. Currently available options are:
+#' \describe{
+#'  \item{`sf_cauchy`}
+#'  \iten{`sf_none`}
 #' }
 #' @param foi_index Integer vector specifying the age-groups for which
 #' force-of-infection values will be estimated
@@ -49,7 +56,9 @@ add_age_group_to_serosurvey <- function(serosurvey) {
 fit_seromodel <- function(
   serosurvey,
   model_type = "constant",
+  is_log_foi = FALSE,
   foi_prior = sf_normal(),
+  foi_sigma_rw = sf_none(),
   foi_index = NULL,
   is_seroreversion = FALSE,
   seroreversion_prior = sf_uniform(),
@@ -64,15 +73,23 @@ fit_seromodel <- function(
     model_type = model_type,
     foi_prior = foi_prior,
     foi_index = foi_index,
+    is_log_foi = is_log_foi,
+    foi_sigma_rw = foi_sigma_rw,
     is_seroreversion = is_seroreversion,
     seroreversion_prior = seroreversion_prior
   )
 
+  # Assigning right name to the model based on user specifications
+  model_name <- model_type
+  if (is_log_foi) {
+    model_name <- paste0(model_name, "_log")
+  }
   if (is_seroreversion)
-    model_name <- paste0(model_type, "_seroreversion")
+    model_name <- paste0(model_name, "_seroreversion")
   else
-    model_name <- paste0(model_type, "_no_seroreversion")
+    model_name <- paste0(model_name, "_no_seroreversion")
 
+  # Compile or load Stan model
   model <- stanmodels[[model_name]]
   seromodel <- rstan::sampling(
     model,

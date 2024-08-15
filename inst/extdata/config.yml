@@ -11,3 +11,6 @@ default:
       # normal distribution
       mean: 0
       sd: 1
+      # cauchy
+      location: 0
+      scale: 1

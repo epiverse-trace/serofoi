@@ -36,6 +36,24 @@ sf_uniform <- function(min = 0, max = 10) {
   return(list(min = min, max = max, name = "uniform"))
 }
 
+#' Sets cauchy distribution parameters for sampling
+#'
+#' @param scale Scale
+#'  of the normal distribution
+#' @param sd Standard deviation of the normal distribution
+#' @return List with specified statistics and name of the model
+#' @export
+sf_cauchy <- function(location = 0, scale = 1) {
+  # Restricting normal inputs to be non-negative
+  if (location < 0 || scale < 0) {
+    stop(
+      "Normal distribution only accepts",
+      " `location>=0` and `scale=>0` for mean and standard deviation")
+  }
+
+  return(list(location = location, scale = scale, name = "cauchy"))
+}
+
 #' Sets empty distribution
 sf_none <- function() {
   return(list(name = "none"))
@@ -99,7 +117,9 @@ set_stan_data_defaults <- function(
     foi_min = prior_default$min,
     foi_max = prior_default$max,
     foi_mean = prior_default$mean,
-    foi_sd = prior_default$sd
+    foi_sd = prior_default$sd,
+    foi_sigma_rw_loc = prior_default$location,
+    foi_sigma_rw_sc = prior_default$scale
   )
   stan_data <- c(
     stan_data,
@@ -133,6 +153,8 @@ build_stan_data <- function(
     model_type = "constant",
     foi_prior = sf_uniform(),
     foi_index = NULL,
+    is_log_foi = FALSE,
+    foi_sigma_rw = sf_none(),
     is_seroreversion = FALSE,
     seroreversion_prior = sf_none()
 ) {
@@ -171,6 +193,11 @@ build_stan_data <- function(
     stan_data$foi_prior_index <- prior_index[["normal"]]
     stan_data$foi_mean <- foi_prior$mean
     stan_data$foi_sd <- foi_prior$sd
+  }
+
+  if(is_log_foi) {
+    stan_data$foi_sigma_rw_loc <- foi_sigma_rw$location
+    stan_data$foi_sigma_rw_sc <- foi_sigma_rw$scale
   }
 
   if (is_seroreversion) {
