@@ -76,7 +76,7 @@ get_foi_index <- function(
       )
     )
 
-    foi_index <- append(
+    foi_index <- c(
       foi_index,
       rep(
         max(foi_index),
@@ -106,7 +106,7 @@ set_stan_data_defaults <- function(
     foi_mean = prior_default$mean,
     foi_sd = prior_default$sd
   )
-  stan_data <- append(
+  stan_data <- c(
     stan_data,
     foi_defaults
   )
@@ -119,7 +119,7 @@ set_stan_data_defaults <- function(
       seroreversion_mean = prior_default$mean,
       seroreversion_sd = prior_default$sd
     )
-    stan_data <- append(
+    stan_data <- c(
       stan_data,
       seroreversion_defaults
     )
@@ -154,13 +154,13 @@ build_stan_data <- function(
 
   if (is.null(foi_index)) {
     foi_index_default <- get_foi_index(serosurvey = serosurvey, group_size = 1)
-    stan_data <- append(
+    stan_data <- c(
       stan_data,
       list(foi_index = foi_index_default)
     )
   } else {
     # TODO: check that foi_index is the right size
-    stan_data <- append(
+    stan_data <- c(
       stan_data,
       list(foi_index = foi_index)
     )

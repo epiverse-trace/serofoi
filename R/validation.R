@@ -24,7 +24,7 @@ stop_if_wrong_type <- function(serosurvey, col_types) {
         !any(vapply(valid_col_types, function(type) {
           do.call(sprintf("is.%s", type), list(serosurvey[[col]]))
         }, logical(1)))) {
-      error_messages <- append(
+      error_messages <- c(
         error_messages,
         sprintf(
           "`%s` must be of any of these types: `%s`",
