@@ -7,12 +7,9 @@
 sf_normal <- function(mean = 0, sd = 1) {
   # Restricting normal inputs to be non-negative
   if (mean < 0 || sd <= 0) {
-    msg <- paste0(
-      "Normal distribution here only accepts",
-      " non-negative values for mean and standard deviation"
-    )
-    message(msg)
-    stop()
+    stop(
+      "Normal distribution only accepts",
+      " `mean>=0` and `sd>0` for mean and standard deviation")
   }
 
   return(list(mean = mean, sd = sd, name = "normal"))
@@ -26,13 +23,11 @@ sf_normal <- function(mean = 0, sd = 1) {
 #' @export
 sf_uniform <- function(min = 0, max = 10) {
   # Restricting uniform inputs to be non-negative
-  if (min < 0 || max < 0) {
-    msg <- paste0(
-      "Uniform distribution here only accepts",
-      " non-negative values for min and max"
+  if (min < 0 || (min >= max)) {
+    stop(
+      "Uniform distribution only accepts",
+      " 0<=min<max"
     )
-    message(msg)
-    stop()
   }
   if (min >= max) {
     message("Uniform distribution only accepts min < max")
@@ -180,8 +175,7 @@ build_stan_data <- function(
 
   if (is_seroreversion) {
     if (seroreversion_prior$name == "none") {
-      message("seroreversion_prior not specified")
-      stop()
+      stop("seroreversion_prior not specified")
     } else if (seroreversion_prior$name == "uniform") {
       stan_data$seroreversion_prior_index <- prior_index[["uniform"]]
       stan_data$seroreversion_min <- seroreversion_prior$min
