@@ -508,7 +508,7 @@ simulate_serosurvey_time_model <- function(
 
   # Input validation
   validate_foi_df(foi, "year")
-  validate_survey(survey_features)
+  validate_survey_features(survey_features)
   validate_seroreversion_rate(seroreversion_rate)
   validate_survey_and_foi_consistency(
     survey_features,
@@ -573,7 +573,7 @@ simulate_serosurvey_age_model <- function(
 
   # Input validation
   validate_foi_df(foi, "age")
-  validate_survey(survey_features)
+  validate_survey_features(survey_features)
   validate_seroreversion_rate(seroreversion_rate)
   validate_survey_and_foi_consistency(
     survey_features,
@@ -639,7 +639,7 @@ simulate_serosurvey_age_and_time_model <- function( #nolint
 
   # Input validation
   validate_foi_df(foi, c("age", "year"))
-  validate_survey(survey_features)
+  validate_survey_features(survey_features)
   validate_seroreversion_rate(seroreversion_rate)
   validate_survey_and_foi_consistency_age_time(
     survey_features,
@@ -790,7 +790,7 @@ simulate_serosurvey_general_model <- function( #nolint
 ) {
 
   # Input validation
-  validate_survey(survey_features)
+  validate_survey_features(survey_features)
 
   probability_serop_by_age <- probability_seropositive_general_model_by_age(
     construct_A_function,
