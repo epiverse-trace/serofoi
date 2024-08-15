@@ -14,3 +14,5 @@ default:
       # cauchy
       location: 0
       scale: 1
+      # init
+      init: 0.1
