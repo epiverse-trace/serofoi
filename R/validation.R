@@ -75,7 +75,8 @@ validate_survey <- function(survey_features) {
   if (!is_age_ok)
     stop(
       "Age bins in a survey are inclusive of both bounds, ",
-      "so the age_max of one bin cannot equal the age_min of another.")
+      "so the age_max of one bin cannot equal the age_min of another."
+      )
 }
 
 validate_foi_df <- function(foi_df, cnames_additional) {
