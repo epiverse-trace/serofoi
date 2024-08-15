@@ -109,12 +109,12 @@ summarise_seromodel <- function(
     foi_rhat <- bayesplot::rhat(seromodel, "foi") %>%
       signif(rhat_digits)
 
-    check_convergence <- append(
+    check_convergence <- c(
       check_convergence,
       foi_rhat < 1.01
     )
 
-    summary_list <- append(
+    summary_list <- c(
       summary_list,
       list(
         foi = foi_summary,
@@ -124,7 +124,7 @@ summarise_seromodel <- function(
   } else {
     rhats <- bayesplot::rhat(seromodel, "foi_vector")
 
-    check_convergence <- append(
+    check_convergence <- c(
       check_convergence,
       all(rhats < 1.01)
     )
@@ -145,12 +145,12 @@ summarise_seromodel <- function(
       ) %>%
       signif(rhat_digits)
 
-    check_convergence <- append(
+    check_convergence <- c(
       check_convergence,
       seroreversion_rate_rhat < 1.01
     )
 
-    summary_list <- append(
+    summary_list <- c(
       summary_list,
       list(
         seroreversion_rate = seroreversion_rate_summary,

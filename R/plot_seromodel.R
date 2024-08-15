@@ -443,7 +443,7 @@ plot_seromodel <- function(
       size_text = size_text
     )
 
-    plot_list <- append(
+    plot_list <- c(
       plot_list,
       list(foi_plot, rhats_plot)
     )
