@@ -195,7 +195,7 @@ build_stan_data <- function(
     stan_data$foi_sd <- foi_prior$sd
   }
 
-  if(is_log_foi) {
+  if (foi_sigma_rw$name == "cauchy") {
     stan_data$foi_sigma_rw_loc <- foi_sigma_rw$location
     stan_data$foi_sigma_rw_sc <- foi_sigma_rw$scale
   }
