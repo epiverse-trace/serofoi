@@ -4,11 +4,16 @@
 \alias{plot_serosurvey}
 \title{Plots seroprevalence from the given serosurvey}
 \usage{
-plot_serosurvey(serosurvey, size_text = 11)
+plot_serosurvey(
+  serosurvey,
+  size_text = 11,
+  bin_serosurvey = FALSE,
+  bin_step = 5
+)
 }
 \arguments{
 \item{serosurvey}{\describe{
-\item{\code{tsur}}{Year in which the survey took place}
+\item{\code{survey_year}}{Year in which the survey took place}
 \item{\code{age_min}}{Floor value of the average between age_min and age_max}
 \item{\code{age_max}}{The size of the sample}
 \item{\code{sample_size}}{Number of samples for each age group}
@@ -17,6 +22,13 @@ plot_serosurvey(serosurvey, size_text = 11)
 
 \item{size_text}{Size of text for plotting (\code{base_size} in
 \link[ggplot2:ggtheme]{ggplot2})}
+
+\item{bin_serosurvey}{If \code{TRUE}, \code{serodata} is binned by means of
+\code{prepare_bin_serosurvey}.
+Otherwise, age groups are kept as originally input.}
+
+\item{bin_step}{Integer specifying the age groups bin size to be used when
+\code{bin_serosurvey} is set to \code{TRUE}.}
 }
 \value{
 ggplot object with seroprevalence plot

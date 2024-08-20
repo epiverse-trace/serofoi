@@ -9,13 +9,15 @@ build_stan_data(
   model_type = "constant",
   foi_prior = sf_uniform(),
   foi_index = NULL,
+  is_log_foi = FALSE,
+  foi_sigma_rw = sf_none(),
   is_seroreversion = FALSE,
   seroreversion_prior = sf_none()
 )
 }
 \arguments{
 \item{serosurvey}{\describe{
-\item{\code{tsur}}{Year in which the survey took place}
+\item{\code{survey_year}}{Year in which the survey took place}
 \item{\code{age_min}}{Floor value of the average between age_min and age_max}
 \item{\code{age_max}}{The size of the sample}
 \item{\code{sample_size}}{Number of samples for each age group}
@@ -27,13 +29,23 @@ build_stan_data(
 \item{foi_prior}{Force-of-infection distribution specified by means of
 the helper functions. Currently available options are:
 \describe{
-\item{\code{sf_normal}}
-\item{\code{sf_uniform}}
-\item{\code{sf_none}}
+\item{\link{sf_normal}}{Function to set normal distribution priors}
+\item{\link{sf_uniform}}{Function to set uniform distribution priors}
 }}
 
 \item{foi_index}{Integer vector specifying the age-groups for which
 force-of-infection values will be estimated}
+
+\item{is_log_foi}{Boolean to set logarithmic scale in the FOI}
+
+\item{foi_sigma_rw}{Prior distribution for the standard deviation of the
+force-of-infection. Currently available options are:
+\describe{
+\item{\link{sf_normal}}{Function to set normal distribution prior.
+Available for time models in the log-scale.}
+\item{\link{sf_cauchy}}{Function to set Cauchy distribution prior.
+Available for time models in regular scale.}
+}}
 
 \item{is_seroreversion}{Boolean specifying whether to include
 seroreversion rate estimation in the model}
@@ -41,9 +53,9 @@ seroreversion rate estimation in the model}
 \item{seroreversion_prior}{seroreversion distribution specified by means of
 the helper functions. Currently available options are:
 \describe{
-\item{\code{sf_normal}}
-\item{\code{sf_uniform}}
-\item{\code{sf_none}}
+\item{\link{sf_normal}}{Function to set normal distribution priors}
+\item{\link{sf_uniform}}{Function to set uniform distribution priors}
+\item{\link{sf_none}}{Function to set no prior distribution}
 }}
 }
 \value{
