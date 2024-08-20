@@ -20,7 +20,6 @@ prepare_serosurvey_for_plotting <- function( #nolint
   ) {
 
   serosurvey <- serosurvey %>%
-    add_age_group_to_serosurvey() %>%
     cbind(
       Hmisc::binconf(
         serosurvey$n_seropositive,
@@ -97,14 +96,46 @@ get_age_intervals <- function(serosurvey, step) {
 #' @inheritParams fit_seromodel
 #' @param size_text Size of text for plotting (`base_size` in
 #' [ggplot2][ggplot2::theme_bw])
+#' @param bin_serosurvey If `TRUE`, `serodata` is binned by means of
+#'   `prepare_bin_serosurvey`. Otherwise, age groups are kept as originally input.
+#' @param bin_step Integer specifying the age groups bin size to be used when
+#' `bin_serosurvey` is set to `TRUE`.
 #' @return ggplot object with seroprevalence plot
 #' @export
 plot_serosurvey <- function(
     serosurvey,
-    size_text = 11
+    size_text = 11,
+    bin_serosurvey = FALSE,
+    bin_step = 5
     ) {
   serosurvey <- validate_serosurvey(serosurvey = serosurvey) %>%
-    prepare_serosurvey_for_plotting()
+    add_age_group_to_serosurvey()
+
+  if (bin_serosurvey) {
+    age_min <- min(serosurvey$age_min)
+    age_max <- max(serosurvey$age_max)
+    checkmate::assert_int(bin_step, lower = 2, upper = age_max)
+
+    serosurvey <- get_age_intervals(
+      serosurvey = serosurvey,
+      step = bin_step
+    )
+
+    serosurvey <- serosurvey %>%
+      dplyr::group_by(.data$age_interval) %>%
+      dplyr::summarise(
+        sample_size = sum(.data$sample_size),
+        n_seropositive = sum(.data$n_seropositive)
+      ) %>%
+      dplyr::mutate(
+        survey_year = unique(serosurvey$survey_year),
+        age_min = as.integer(gsub("[[]|\\,.*", "\\1", .data$age_interval)) + 1,
+        age_max = as.integer(gsub(".*\\,|[]]", "\\1", .data$age_interval))
+      ) %>%
+      add_age_group_to_serosurvey()
+  }
+
+  serosurvey <- prepare_serosurvey_for_plotting(serosurvey)
 
   min_prev <- min(serosurvey$seroprev_lower)
   max_prev <- max(serosurvey$seroprev_upper)
@@ -181,7 +212,9 @@ plot_seroprevalence_estimates <- function(
   seromodel,
   serosurvey,
   alpha = 0.05,
-  size_text = 11
+  size_text = 11,
+  bin_serosurvey = FALSE,
+  bin_step = 5
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
@@ -203,7 +236,9 @@ plot_seroprevalence_estimates <- function(
 
   seroprevalence_plot <- plot_serosurvey(
     serosurvey = serosurvey,
-    size_text = size_text
+    size_text = size_text,
+    bin_serosurvey = bin_serosurvey,
+    bin_step = bin_step
     ) +
     ggplot2::geom_line(
       data = seroprevalence_central_estimates,
@@ -448,6 +483,8 @@ plot_seromodel <- function(
   seromodel,
   serosurvey,
   alpha = 0.05,
+  bin_serosurvey = FALSE,
+  bin_step = 5,
   foi_df = NULL,
   foi_max = NULL,
   loo_estimate_digits = 1,
@@ -471,7 +508,9 @@ plot_seromodel <- function(
     seromodel = seromodel,
     serosurvey = serosurvey,
     alpha = alpha,
-    size_text = size_text
+    size_text = size_text,
+    bin_serosurvey = bin_serosurvey,
+    bin_step = bin_step
   )
 
   plot_list <- list(
