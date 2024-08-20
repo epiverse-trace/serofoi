@@ -4,8 +4,7 @@ validate_serosurvey <- function(serosurvey) {
     age_min = "numeric",
     age_max = "numeric",
     sample_size = "numeric",
-    n_seropositive = "numeric",
-    survey_year = "numeric"
+    n_seropositive = "numeric"
   )
 
   checkmate::assert_names(names(serosurvey), must.include = names(col_types))
