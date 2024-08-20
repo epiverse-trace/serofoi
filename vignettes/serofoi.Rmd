@@ -61,15 +61,17 @@ The integrated dataset `serodata_test` provides a minimal example of the input o
 library(serofoi)
 # Loading and preparing data for modelling
 data(chagas2012)
-serodata_test <- prepare_serodata(chagas2012)
+
 # Model implementation
 model_constant <- fit_seromodel(
-  serodata = serodata_test,
-  foi_model = "constant"
+  serosurvey = chagas2012,
+  model_type = "constant"
 )
 # Visualisation
-plot_seromodel(model_constant,
-  serodata = serodata_test,
+plot_seromodel(
+  model_constant,
+  serosurvey = chagas2012,
+  bin_serosurvey = TRUE,
   size_text = 6
 )
 ```
