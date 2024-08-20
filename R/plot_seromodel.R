@@ -39,6 +39,59 @@ prepare_serosurvey_for_plotting <- function( #nolint
     dplyr::relocate(.data$age_group)
 }
 
+#' Construct age-group variable from age column
+#'
+#' Generates age intervals of length step in the interval spanned by
+#' `age_min` and `age_max` in a serosurvey.
+#' In cases where `max(age_max)%%(step+1)!=0`, the last age interval is
+#' truncated and will have a different length than the others.
+#' @inheritParams plot_serosurvey
+#' @param  step step used to split the age interval
+#' @return Serosurvey with addition factor variable grouping `age_intervals`.
+#'  The interval is taken as closed to the right and to the left.
+get_age_intervals <- function(serosurvey, step) {
+  age_min <- min(serosurvey$age_min)
+  age_max <- max(serosurvey$age_max)
+
+  checkmate::assert_int(age_min, lower = 0)
+  checkmate::assert_int(age_max, lower = age_min)
+  checkmate::assert_int(step, lower = 2, upper = age_max)
+
+  limits_low <- as.integer(
+    seq(
+      age_min, age_max,
+      by = step
+    )
+  )
+
+  if ((age_max - age_min) %% step != 0) {
+    warn_msg <- "(age_min - age_max) is not an integer multiple of step.
+    The last age interval will be truncated to "
+    warn_msg <- paste0(
+      warn_msg, "[", limits_low[length(limits_low)], ",", age_max, "]"
+    )
+    warning(warn_msg)
+  }
+
+  # prepare breaks
+  lim_breaks <- c(limits_low, age_max)
+
+  # define age groups closed to the left and closed to the right
+  survey_features <- data.frame(
+    age_min = limits_low,
+    age_max = limits_low + step - 1
+  ) %>% add_age_bins()
+
+  serosurvey$age_interval <- cut(
+      x = serosurvey$age_group,
+      breaks = lim_breaks,
+      include.lowest = TRUE, right = FALSE,
+      labels = survey_features$group
+    )
+
+  return(serosurvey)
+}
+
 #' Plots seroprevalence from the given serosurvey
 #'
 #' @inheritParams fit_seromodel
