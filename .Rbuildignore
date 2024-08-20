@@ -15,3 +15,4 @@
 ^.lintr$
 ^.*/tests/docker/.*$
 ^CITATION\.cff$
+^vignettes/articles$

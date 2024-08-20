@@ -1,14 +1,6 @@
 ---
-title: "Real-life use cases for serofoi"
-output: rmarkdown::html_vignette
-bibliography: references.bib
-link-citations: true
-vignette: >
-  %\VignetteIndexEntry{Real-life use cases for serofoi}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+title: "Real-Life Use Cases For Serofoi"
 ---
-
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -230,3 +222,4 @@ rm(list = ls(pattern = "cha"))
 ```
 
 ## References
+
