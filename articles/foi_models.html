@@ -42,6 +42,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/foi_models.html">An introduction to Force-of-Infection (FoI) Models</a></li>
+    <li><a class="dropdown-item" href="../articles/simulating_serosurveys.html">Simulating Serosurveys</a></li>
     <li><a class="dropdown-item" href="../articles/use_cases.html">Real-life use cases for serofoi</a></li>
   </ul>
 </li>
@@ -51,7 +52,6 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/epiverse-trace/serofoi/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
@@ -75,17 +75,18 @@
       <img src="../logo.png" class="logo" alt=""><h1>An introduction to Force-of-Infection (FoI) Models</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/epiverse-trace/serofoi/blob/main/vignettes/foi_models.Rmd" class="external-link"><code>vignettes/foi_models.Rmd</code></a></small>
+
       <div class="d-none name"><code>foi_models.Rmd</code></div>
     </div>
 
     
     
 <p>The current version of <strong><em>serofoi</em></strong> supports
-three different models for estimating the <em>Force-of-Infection
-(FoI)</em>, including constant and time-varying trajectories. For
-fitting the model to the seroprevalence data we use a suit of bayesian
-models that include prior and upper prior distributions</p>
+three different serocatalytic models for estimating the
+<em>Force-of-Infection (FoI)</em>: constant, age-varying, and
+time-varying FoI. To estimate relevant parameters we employ a suit of
+Bayesian models using age-disaggregated population-based cross-sectional
+serological surveys as input data.</p>
 <div class="section level2">
 <h2 id="what-is-the-force-of-infection">What is the Force-of-Infection<a class="anchor" aria-label="anchor" href="#what-is-the-force-of-infection"></a>
 </h2>
@@ -97,114 +98,265 @@ simple terms, the force of infection quantifies the risk of a
 susceptible individual becoming infected over a period of time. It is
 usually expressed as a rate per unit of time (e.g., per day or per
 year).</p>
+<p>To illustrate this, consider a simple SIR model:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mfrac><mrow><mi>d</mi><mi>S</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mo>−</mo><mi>β</mi><mi>S</mi><mi>I</mi><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mfrac><mrow><mi>d</mi><mi>I</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mi>β</mi><mi>S</mi><mi>I</mi><mo>−</mo><mi>γ</mi><mi>I</mi><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mfrac><mrow><mi>d</mi><mi>R</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mi>γ</mi><mi>I</mi><mo>,</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">
+\begin{aligned}
+    \frac{dS}{dt} &amp;= -\beta S I,\\
+    \frac{dI}{dt} &amp;= \beta S I - \gamma I,\\
+    \frac{dR}{dt} &amp;= \gamma I,
+\end{aligned}
+</annotation></semantics></math></p>
+<p>The FoI in this case is defined as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>β</mi><mi>I</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda(t) = \beta I(t)</annotation></semantics></math>
+(Note that the FoI is time-dependent by definition). To solve this
+system of equations, we need to know the transmission rate,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\beta&gt;0</annotation></semantics></math>,
+and the rate of recovery from infection
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\gamma&gt;0</annotation></semantics></math>,
+as well as some initial conditions.</p>
+<p><strong>Serocatalytic models</strong> offer a simpler perspective: to
+estimate how the risk of historical exposure to a pathogen varies
+depending on the time of birth of the individuals in the sample. For
+this, we put together the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>I</mi><annotation encoding="application/x-tex">I</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>
+compartments into a single <strong>seropositives</strong> compartment
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">P(t)</annotation></semantics></math>
+and consider the the dynamics of each birth cohort separately:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mfrac><mrow><mi>d</mi><msup><mi>N</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mo>−</mo><mi>λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><msup><mi>N</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mfrac><mrow><mi>d</mi><msup><mi>P</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><msup><mi>N</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><msup><mi>N</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msup><mi>P</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1</mn><mo>;</mo><mspace width="1.0em"></mspace><mi>t</mi><mo>&lt;</mo><mi>τ</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">
+\begin{aligned}
+    &amp;\frac{dN^{\tau}(t)}{dt} = -\lambda(t) N^{\tau}(t),\\
+    &amp;\frac{dP^{\tau}(t)}{dt} = \lambda(t) N^{\tau}(t), \\
+    &amp;N^{\tau}(t)+P^{\tau}(t)=1; \quad t&lt;\tau
+\end{aligned}
+</annotation></semantics></math> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><msup><mi>N</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0 \leq N^\tau(t)\leq 1</annotation></semantics></math>
+is the proportion of individuals born in year
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math>
+who are seronegative at time
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>.
+Assuming lack of maternal antibodies, the initial condition for each
+cohort can be specified as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>N</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>τ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N^{\tau}(\tau) = 1</annotation></semantics></math>.
+Depending on whether the FoI is constant, time dependent, or age
+dependent, this system of equations yields the different solutions on
+which <em>serofoi</em> is based on.</p>
 </div>
 <div class="section level2">
 <h2 id="constant-vs-time-varying-foi">Constant vs Time-varying FoI<a class="anchor" aria-label="anchor" href="#constant-vs-time-varying-foi"></a>
 </h2>
-<p>The <em>FoI</em> is one of the most important parameters in
-epidemiology, but it is often incorrectly assumed to be constant over
-time. Identifying whether the <em>FoI</em> follows a constant or a
-time-varying trend can be important in the identification and
-characterization of the spread of disease. In Table 1 there is a summary
-of the models currently supported by serofoi.</p>
+<p>The <em>FoI</em> is often incorrectly assumed to be constant over
+time. Identifying whether the <em>FoI</em> follows a constant, an
+age-varying or a time-varying trend can be important in the
+identification and characterization of the spread of disease.
+<strong>serofoi</strong> offers tools to implement and compare a wide
+variety of Bayesian models to estimate the FoI according to the
+aforementioned serocatalytic models.</p>
+<p>In the idealised situation where FoI is constant
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda(t) = \lambda</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><msup><mi>P</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msup><mi>P</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\frac{dP^{\tau}(t)}{dt} = \lambda (1 - P^{\tau}(t)).
+</annotation></semantics></math> Applying the integrating factor method
+and using the initial conditions
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>τ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">X^\tau(\tau) = 0</annotation></semantics></math>
+yields to the solution:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>P</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1</mn><mo>−</mo><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mover><mi>λ</mi><mo accent="true">‾</mo></mover><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+P^{\tau}(t) = 1 - \exp(-\bar \lambda t),
+</annotation></semantics></math></p>
+<p>meaning that, in the long rung, the seropositivity converges to
+1<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>P</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>→</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">P^{\tau}(t)\rightarrow 1</annotation></semantics></math>.</p>
+<p>In more realistic applications, the FoI is assumed to be
+piecewise-constant on discrete intervals of 1-year length. The solution
+for each year is then:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>P</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1</mn><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>P</mi><mn>0</mn></msub><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><msub><mi>λ</mi><mi>t</mi></msub><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+P^{\tau}(t) = 1 + (P_0 - 1) \exp(-\lambda_t t)
+</annotation></semantics></math> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mn>0</mn></msub><annotation encoding="application/x-tex">P_0</annotation></semantics></math>
+corresponds to the seropositivity at the end of the previous year and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\lambda_t</annotation></semantics></math>
+is the constant value assumed for the FoI at time
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>.
+From the resulting recursive equation, it is possible to obtain
+analytical solutions for the seropositivity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>P</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">P^\tau(t)</annotation></semantics></math>
+along each 1-year length chunk.</p>
+</div>
+<div class="section level2">
+<h2 id="considering-seroreversion">Considering seroreversion<a class="anchor" aria-label="anchor" href="#considering-seroreversion"></a>
+</h2>
+<p>Since it is possible for seropositive individuals to lose immunity
+over time, we consider the rate at which infected individuals become
+seronegative
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>.
+The system of equations is now:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mfrac><mrow><mi>d</mi><msup><mi>P</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mi>λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><msup><mi>P</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>μ</mi><msup><mi>P</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msup><mi>P</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>τ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mn>0</mn><mo>,</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">
+\begin{aligned}
+    \frac{dP^{\tau}(t)}{dt} &amp;= \lambda(t) (1 - P^{\tau}(t)) - \mu P^{\tau}(t),\\
+    P^{\tau}(\tau) &amp;= 0,
+\end{aligned}
+</annotation></semantics></math></p>
+<p>Similarly, this yields to a iterative solution for the seropositivity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>X</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">X^\tau (t)</annotation></semantics></math>
+when piece-wise constant FoI is considered:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>P</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><msub><mi>λ</mi><mi>t</mi></msub><mrow><msub><mi>λ</mi><mi>t</mi></msub><mo>+</mo><mi>μ</mi></mrow></mfrac><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>P</mi><mn>0</mn></msub><mo>−</mo><mfrac><msub><mi>λ</mi><mi>t</mi></msub><mrow><msub><mi>λ</mi><mi>t</mi></msub><mo>+</mo><mi>μ</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>λ</mi><mi>t</mi></msub><mo>+</mo><mi>μ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+  P^{\tau}(t)  = \frac{\lambda_t}{\lambda_t + \mu} + \left(P_0 - \frac{\lambda_t}{\lambda_t + \mu}\right) \exp(-(\lambda_t + \mu)),
+</annotation></semantics></math></p>
+<p>where, again,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mn>0</mn></msub><annotation encoding="application/x-tex">P_0</annotation></semantics></math>
+corresponds to the proportion of seropositive individuals of cohort
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math>
+by the end of the previous year. Correct indexation and simplification
+of this equation allows the description of age-dependent FOIs.</p>
+</div>
+<div class="section level2">
+<h2 id="estimating-the-foi---bayesian-modelling">Estimating the FoI - Bayesian modelling<a class="anchor" aria-label="anchor" href="#estimating-the-foi---bayesian-modelling"></a>
+</h2>
+<p>Now that we can describe the proportion of seropositive individuals
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">P(t)</annotation></semantics></math>
+by means of the serocatalytic models for constant, time-varying, and
+age-varying FOIs, what we want is to obtain estimates of the FoI
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>
+and the seroreversion rate
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>
+by sampling from a Bayesian model taking a cross-sectional serological
+survey as data. For this, we can use <strong>serofoi</strong>’s
+<code><a href="../reference/fit_seromodel.html">fit_seromodel()</a></code>, which relies on the statistical
+programming language <em>Stan</em> to perform this task. The current
+available models are summarised in table 1:</p>
 <div class="l-body-outset">
 <table class="table">
 <colgroup>
-<col width="21%">
-<col width="78%">
+<col width="10%">
+<col width="3%">
+<col width="20%">
+<col width="20%">
+<col width="13%">
+<col width="12%">
+<col width="20%">
 </colgroup>
 <thead><tr class="header">
-<th>Model Option</th>
-<th align="center">Description and usage</th>
+<th>Serocatalytic model</th>
+<th>scale</th>
+<th>n_seropositive</th>
+<th>FoI_1 prior</th>
+<th>FoI_i, i&gt;1</th>
+<th>sigma</th>
+<th>mu</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><code>constant</code></td>
-<td align="center">Constant FoI</td>
+<td>constant</td>
+<td>regular</td>
+<td>binomial(sample_size, prob_infected)</td>
+<td>normal(mean, sd)<br>uniform(min, max)</td>
+<td>-</td>
+<td>cauchy(mean, sd)</td>
+<td>normal(mean, sd)<br>uniform(min, max)</td>
 </tr>
 <tr class="even">
-<td><code>tv_normal</code></td>
-<td align="center">Time-varying normal FoI: slow change in FoI</td>
+<td>age</td>
+<td>regular</td>
+<td>binomial(sample_size, prob_infected)</td>
+<td>normal(mean, sd)<br>uniform(min, max)</td>
+<td>normal(FoI_{i-1}, sigma)</td>
+<td>cauchy(mean, sd)</td>
+<td>normal(mean, sd)<br>uniform(min, max)</td>
 </tr>
 <tr class="odd">
-<td><code>tv_normal_log</code></td>
-<td align="center">Time-varying normal-log FoI: fast epidemic change in
-FoI</td>
+<td>time</td>
+<td>regular</td>
+<td>binomial(sample_size, prob_infected)</td>
+<td>normal(mean, sd)<br>uniform(min, max)</td>
+<td>normal(FoI_{i-1}, sigma)</td>
+<td>cauchy(mean, sd)</td>
+<td>normal(mean, sd)<br>uniform(min, max)</td>
+</tr>
+<tr class="even">
+<td>time</td>
+<td>log</td>
+<td>binomial(sample_size, prob_infected)</td>
+<td>normal(mean, sd)<br>uniform(min, max)</td>
+<td>normal(FoI_{i-1}, sigma)</td>
+<td>normal(location, scale)</td>
+<td>normal(mean, sd)<br>uniform(min, max)</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Table 1. Model options and descriptions.</p>
+<p>Table 1. Available options.</p>
 </div>
 <div class="section level2">
 <h2 id="model-1--constant-force-of-infection-endemic-model">Model 1. Constant Force-of-Infection (endemic model)<a class="anchor" aria-label="anchor" href="#model-1--constant-force-of-infection-endemic-model"></a>
 </h2>
 <p>The <em>endemic constant model</em> is a simple mathematical model
 used in epidemiology to describe the seroprevalence of an infectious
-disease within a population, as a product of a long-term
-transmission.</p>
-<p>For a constant FoI endemic model, the rate of infection acquisition
+disease within a population, as a product of a long-term transmission.
+In this case, the rate of infection acquisition
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>
-is constant over time for each trajectory, and the seroprevalence
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
-behaves as a cumulative process increasing monotonically with age. For
-the seroprevalence at age
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
-and time
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>,
-we have:
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1</mn><mo>−</mo><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mi>λ</mi><mi>a</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex"> 
-P(a,t) = 1-\exp\left(-\lambda a\right) 
-</annotation></semantics></math> The number of positive cases follows a
-binomial distribution, where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
-is the number of trials (size of the age group) and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
-is the probability of successes (seroprevalence) for a certain age
-group:
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∼</mo><mi>b</mi><mi>i</mi><mi>n</mi><mi>o</mi><mi>m</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
-p(a,t) \sim binom(n(a,t), P(a,t))
-</annotation></semantics></math> In <strong><em>serofoi</em></strong>,
-for the constant model, the <em>FoI</em>
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>)
-is modelled within a Bayesian framework using a uniform prior
-distribution
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∼</mo><mi>U</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sim U(0,2)</annotation></semantics></math>.
-Future versions of the package may allow to choose different default
-distributions. This model can be implemented for the previously prepared
-dataset <code>data_test</code> by means of the
-<code>fit_seromodel</code> function specifying
-<code>fit_seromodel="constant"</code>.</p>
-<p>The object <code>simdata_constant</code> contains a minimal simulated
-dataset that emulates an hypothetical endemic situation where the
-<em>FoI</em> is constant with value 0.2 and includes data for 250
-samples of individuals between 2 and 47 years old with a number of
-trials
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">n=5</annotation></semantics></math>.
-The following code shows how to implement the constant model to this
-simulated serosurvey:</p>
+is constant over time, and the seroprevalence
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">P(A)</annotation></semantics></math>
+behaves as a cumulative process increasing monotonically with age.</p>
+<p>We always model the number of positive cases according to a binomial
+distribution, where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">n(A)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">X(A)</annotation></semantics></math>
+are the sample size and number of seropositive of age group
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+respectively:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∼</mo><mtext mathvariant="italic">𝐵𝑖𝑛𝑜𝑚</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>A</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+X(A) \sim \textit{Binom}(n(A), P(A))
+</annotation></semantics></math></p>
+<p>To test the <code>constant</code> model we simulate a serosurvey
+following a stepwise decreasing <em>FoI</em> (red line in Fig. 1) using
+the data simulation functions of <strong><em>serofoi</em></strong>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"simdata_constant"</span><span class="op">)</span></span>
-<span><span class="va">serodata_constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_serodata.html">prepare_serodata</a></span><span class="op">(</span><span class="va">simdata_constant</span><span class="op">)</span></span>
-<span><span class="va">model_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
-<span>  serodata <span class="op">=</span> <span class="va">serodata_constant</span>,</span>
-<span>  foi_model <span class="op">=</span> <span class="st">"constant"</span>,</span>
+<code class="sourceCode R"><span><span class="co"># how the disease circulates</span></span>
+<span><span class="va">foi_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2000</span>, <span class="fl">2049</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    foi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.02</span>, <span class="fl">50</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># specify 5-year age bins for observations</span></span>
+<span><span class="va">survey_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    age_min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    age_max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    sample_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">serosurvey_constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_serosurvey.html">simulate_serosurvey</a></span><span class="op">(</span></span>
+<span>  <span class="st">"time"</span>,</span>
+<span>  <span class="va">foi_df</span>,</span>
+<span>  <span class="va">survey_features</span></span>
+<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span><span class="fu">mutate</span><span class="op">(</span>survey_year <span class="op">=</span> <span class="fl">2050</span><span class="op">)</span></span></code></pre></div>
+<p>The simulated dataset <code>serosurvey_constant</code> contains
+information about 250 samples of individuals between 1 and 50 years old
+(5 samples per age) with age groups of 5 years length. The following
+code shows how to implement the constant model to this simulated
+serosurvey:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">seromodel_constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
+<span>  serosurvey <span class="op">=</span> <span class="va">serosurvey_constant</span>,</span>
+<span>  model_type <span class="op">=</span> <span class="st">"constant"</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">800</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot_seromodel.html">plot_seromodel</a></span><span class="op">(</span></span>
-<span>  <span class="va">model_1</span>,</span>
-<span>  serodata <span class="op">=</span> <span class="va">serodata_constant</span>,</span>
+<span>  <span class="va">seromodel_constant</span>,</span>
+<span>  serosurvey <span class="op">=</span> <span class="va">serosurvey_constant</span>,</span>
+<span>  foi_df <span class="op">=</span> <span class="va">foi_df</span>,</span>
 <span>  size_text <span class="op">=</span> <span class="fl">6</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="foi_models_files/figure-html/model_1_plot-1.png" width="50%" style="display: block; margin: auto;">
+<p><img src="foi_models_files/figure-html/constant%20model-1.png" width="50%" style="display: block; margin: auto;">
 Figure 1. Constant serofoi model plot. Simulated (red) vs modelled
 (blue) <em>FoI</em>.</p>
-<p>In this case, 800 iterations are enough to ensure convergence. The
-<code>plot_seromodel</code> method provides a visualisation of the
-results, including a summary where the expected log pointwise predictive
-density (<code>elpd</code>) and its standard error (<code>se</code>) are
-shown. We say that a model converges if all the R-hat estimates are
-below 1.1.</p>
+<p>In this case, 800 iterations are enough to ensure convergence.
+<code><a href="../reference/plot_seromodel.html">plot_seromodel()</a></code> returns a visualisation of the results
+including a summary where the expected log pointwise predictive density
+(<code>elpd</code>) and its standard error (<code>se</code>) are shown.
+We say that a model converges if all the R-hat estimates are below
+1.01.</p>
 </div>
 <div class="section level2">
 <h2 id="time-varying-foi-models">Time-varying FoI models<a class="anchor" aria-label="anchor" href="#time-varying-foi-models"></a>
@@ -214,44 +366,72 @@ to be positive at age a at time
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
 also follows a binomial distribution, as described above. However, the
 seroprevalence is obtained from a cumulative of the yearly-varying
-values of the <em>FoI</em> over time:
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1</mn><mo>−</mo><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mi>t</mi><mo>−</mo><mi>a</mi><mo>+</mo><mn>1</mn></mrow><mi>t</mi></munderover><msub><mi>λ</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
-P(a,t) = 1 - \exp\left(-\sum_{i=t-a+1}^{t}\lambda_i\right)
-</annotation></semantics></math> The corresponding serosurvey completed
-at time
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mrow><mi>s</mi><mi>u</mi><mi>r</mi></mrow></msub><annotation encoding="application/x-tex">t_{sur}</annotation></semantics></math>
-is informative for the interval
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>t</mi><mrow><mi>s</mi><mi>u</mi><mi>r</mi></mrow></msub><mo>−</mo><msub><mi>a</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo>,</mo><msub><mi>t</mi><mrow><mi>s</mi><mi>u</mi><mi>r</mi></mrow></msub><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[t_{sur}-a_{max}, t_{sur}]</annotation></semantics></math>.</p>
+values of the <em>FoI</em> over time:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>P</mi><mi>τ</mi></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><msub><mi>λ</mi><mi>t</mi></msub><mrow><msub><mi>λ</mi><mi>t</mi></msub><mo>+</mo><mi>μ</mi></mrow></mfrac><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>P</mi><mn>0</mn></msub><mo>−</mo><mfrac><msub><mi>λ</mi><mi>t</mi></msub><mrow><msub><mi>λ</mi><mi>t</mi></msub><mo>+</mo><mi>μ</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>exp</mo><mrow><mo stretchy="true" form="prefix">(</mo><mo>−</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>λ</mi><mi>t</mi></msub><mo>+</mo><mi>μ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">
+  P^{\tau}(t)  = \frac{\lambda_t}{\lambda_t + \mu} + \left(P_0 - \frac{\lambda_t}{\lambda_t + \mu}\right) \exp(-(\lambda_t + \mu)),
+</annotation></semantics></math></p>
 </div>
 <div class="section level2">
 <h2 id="model-2--time-varying-foi---slow-time-varying-foi">Model 2. Time-varying FoI - Slow Time-Varying FoI<a class="anchor" aria-label="anchor" href="#model-2--time-varying-foi---slow-time-varying-foi"></a>
 </h2>
-<p>The <em>time-varying slow normal model</em> relies on the following
-prior distributions for the <em>FoI</em> to describe the spread of a
-given infectious disease within a population over time: <span class="math display">$$
-\lambda(t)\sim normal(\lambda(t-1), \sigma) \\
-\lambda(t=1) \sim normal(0, 1)
-$$</span> The object <code>simdata_sw_dec</code> contains a minimal
-simulated dataset that emulates a situation where the <em>FoI</em>
-follows a stepwise decreasing tendency (<em>FoI</em> panel in Fig. 2).
-The simulated dataset contains information about 250 samples of
-individuals between 2 and 47 years old with a number of trials
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">n=5</annotation></semantics></math>.
-The following code shows how to implement the slow time-varying normal
-model to this simulated serosurvey:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"simdata_sw_dec"</span><span class="op">)</span></span>
-<span><span class="va">serodata_sw_dec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_serodata.html">prepare_serodata</a></span><span class="op">(</span><span class="va">simdata_sw_dec</span><span class="op">)</span></span>
-<span><span class="va">model_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
-<span>  serodata <span class="op">=</span> <span class="va">serodata_sw_dec</span>,</span>
-<span>  foi_model <span class="op">=</span> <span class="st">"tv_normal"</span>,</span>
+<p>The <em>time-varying model</em> (<code>model_type = "time"</code>)
+uses a forward random walk algorithm where the prior of the first
+chronological FoI value in the time-span of the serological survey can
+be either a normal distribution (<code>foi_prior = sf_normal()</code>)
+or a uniform distribution (<code>foi_prior = sf_unif()</code>).
+Subsequent values of the FoI are sampled from the normal distribution as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mi>i</mi></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>λ</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><mi>σ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda_i \sim \mathcal{N}(\lambda_{i-1}, \sigma)</annotation></semantics></math>,
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>∼</mo><mtext mathvariant="italic">𝐶𝑎𝑢𝑐h𝑦</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sigma \sim \textit{Cauchy}(0, 1)</annotation></semantics></math>.
+The prior distribution for the seroreversion rate can also be either
+normal or uniform, and is specified by means of the parameter
+<code>seroreversio_prior</code>.</p>
+<p>To test the <code>tv_normal</code> model we simulate a serosurvey
+following a stepwise decreasing <em>FoI</em> (red line in Fig. 2) using
+the data simulation functions of <strong><em>serofoi</em></strong>:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">foi_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2000</span>, <span class="fl">2049</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    foi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">25</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">10</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.00001</span>, <span class="fl">15</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">survey_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    age_min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    age_max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    sample_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">serosurvey_sw_dec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_serosurvey.html">simulate_serosurvey</a></span><span class="op">(</span></span>
+<span>  <span class="st">"time"</span>,</span>
+<span>  <span class="va">foi_df</span>,</span>
+<span>  <span class="va">survey_features</span></span>
+<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span><span class="fu">mutate</span><span class="op">(</span>survey_year <span class="op">=</span> <span class="fl">2050</span><span class="op">)</span></span></code></pre></div>
+<p>The simulated dataset <code>foi_sim_sw_dec</code> contains
+information about 250 samples of individuals between 1 and 50 years old
+(5 samples per age) with age groups of 5 years length. The following
+code shows how to implement the slow time-varying normal model to this
+simulated serosurvey:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">seromodel_time_normal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
+<span>  serosurvey <span class="op">=</span> <span class="va">serosurvey_sw_dec</span>,</span>
+<span>  model_type <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>  foi_index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">10</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">1500</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/plot_seromodel.html">plot_seromodel</a></span><span class="op">(</span><span class="va">model_2</span>,</span>
-<span>  serodata <span class="op">=</span> <span class="va">serodata_sw_dec</span>,</span>
+<span><span class="fu"><a href="../reference/plot_seromodel.html">plot_seromodel</a></span><span class="op">(</span></span>
+<span>  <span class="va">seromodel_time_normal</span>,</span>
+<span>  serosurvey <span class="op">=</span> <span class="va">serosurvey_sw_dec</span>,</span>
+<span>  foi_df <span class="op">=</span> <span class="va">foi_df</span>,</span>
 <span>  size_text <span class="op">=</span> <span class="fl">6</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="foi_models_files/figure-html/model_2_plot-1.png" width="50%" style="display: block; margin: auto;">
+<p><img src="foi_models_files/figure-html/tv_normal%20model-1.png" width="50%" style="display: block; margin: auto;">
 Figure 2. Slow time-varying serofoi model plot. Simulated (red) vs
 modelled (blue) <em>FoI</em>.</p>
 <p>The number of iterations required may depend on the number of years,
@@ -261,36 +441,60 @@ maximum age-class sampled.</p>
 <div class="section level2">
 <h2 id="model-3--time-varying-foi---fast-epidemic-model">Model 3. Time-varying FoI - Fast Epidemic Model<a class="anchor" aria-label="anchor" href="#model-3--time-varying-foi---fast-epidemic-model"></a>
 </h2>
-<p>The <em>time-varying fast epidemic model</em>, relies on normal prior
-distributions for the <em>FoI</em> in the logarithmic scale, i.e: <span class="math display">$$
-\lambda(t)\sim normal(\log(\lambda(t-1)), \sigma) \\
-\lambda(t=1) \sim normal(-6, 4)
+<p>The <em>time-varying fast epidemic model</em> is parametrized in such
+a way that the initial FoI value in the forward random walk is sampled
+in the logarithmic scale. In this case, the priors for subsequent FOIs
+are: <span class="math display">$$
+\log\left(\lambda(t)\right) \sim \mathcal{N}(\log(\lambda(t-1)), \sigma)
+\\
+\sigma \sim \mathcal{N} (0, 1)
 $$</span> This is done in order to capture fast changes in the
-<em>FoI</em> trend. Importantly, the standard deviation parameter of
-this normal distribution of the <em>FoI</em>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda(t)</annotation></semantics></math>
-is set using an upper prior that follows a Cauchy distribution.</p>
-<p>In order to test this model we use the minimal simulated dataset
-contained in the <code>simdata_large_epi</code> object. This dataset
-emulates a hypothetical situation where a three-year epidemic occurs
-between 2032 and 2035. The simulated serosurvey tests 250 individuals
-from 0 to 50 years of age in the year 2050. The implementation of the
-fast epidemic model can be obtained running the following lines of
-code:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"simdata_large_epi"</span><span class="op">)</span></span>
-<span><span class="va">serodata_large_epi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_serodata.html">prepare_serodata</a></span><span class="op">(</span><span class="va">simdata_large_epi</span><span class="op">)</span></span>
-<span><span class="va">model_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
-<span>  serodata <span class="op">=</span> <span class="va">serodata_large_epi</span>,</span>
-<span>  foi_model <span class="op">=</span> <span class="st">"tv_normal_log"</span>,</span>
-<span>  iter <span class="op">=</span> <span class="fl">1500</span></span>
+<em>FoI</em> trend.</p>
+<p>To test the <code>log_time</code> model we simulate a serosurvey
+conducted in 2050 emulating a hypothetical situation where a three-year
+epidemic occurred between 2030 and 2035:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">foi_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2000</span>, <span class="fl">2049</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    foi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">15</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">model_3_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_seromodel.html">plot_seromodel</a></span><span class="op">(</span><span class="va">model_3</span>,</span>
-<span>  serodata <span class="op">=</span> <span class="va">serodata_large_epi</span>,</span>
+<span></span>
+<span><span class="va">survey_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    age_min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    age_max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    sample_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">serosurvey_large_epi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_serosurvey.html">simulate_serosurvey</a></span><span class="op">(</span></span>
+<span>  survey_features <span class="op">=</span> <span class="va">survey_features</span>,</span>
+<span>  <span class="va">foi_df</span>,</span>
+<span>  model <span class="op">=</span> <span class="st">"time"</span></span>
+<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span><span class="fu">mutate</span><span class="op">(</span>survey_year <span class="op">=</span> <span class="fl">2050</span><span class="op">)</span></span></code></pre></div>
+<p>The simulated serosurvey tests 250 individuals between 1 and 50 years
+old by the year 2050. The implementation of the fast epidemic model can
+be obtained running the following lines of code:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">seromodel_log_time_normal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
+<span>  serosurvey <span class="op">=</span> <span class="va">serosurvey_large_epi</span>,</span>
+<span>  model_type <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>  is_log_foi <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  foi_index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">5</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  iter <span class="op">=</span> <span class="fl">2000</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">plot_log_time_normal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_seromodel.html">plot_seromodel</a></span><span class="op">(</span></span>
+<span>  <span class="va">seromodel_log_time_normal</span>,</span>
+<span>  serosurvey <span class="op">=</span> <span class="va">serosurvey_large_epi</span>,</span>
+<span>  foi_df <span class="op">=</span> <span class="va">foi_df</span>,</span>
 <span>  size_text <span class="op">=</span> <span class="fl">6</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">model_3_plot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="foi_models_files/figure-html/model_3_plot-1.png" width="50%" style="display: block; margin: auto;">
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">plot_log_time_normal</span><span class="op">)</span></span></code></pre></div>
+<p><img src="foi_models_files/figure-html/tv_normal_log%20model-1.png" width="50%" style="display: block; margin: auto;">
 Figure 3. <em>Time-varying fast epidemic serofoi model</em> plot.
 Simulated (red) vs modelled (blue) <em>FoI</em>.</p>
 <p>In Fig 3 we can see that the <em>fast epidemic serofoi model</em> is
@@ -300,82 +504,25 @@ able to identify the large epidemic simulated on the
 <div class="section level2">
 <h2 id="models-comparison">Models Comparison<a class="anchor" aria-label="anchor" href="#models-comparison"></a>
 </h2>
-<p>The statistical details of the three models are described in Table
-2.</p>
-<div class="l-body-outset">
-<table class="table">
-<colgroup>
-<col width="11%">
-<col width="28%">
-<col width="41%">
-<col width="17%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">Model Option</th>
-<th align="left">Probability of positive case at age
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
-</th>
-<th align="left">Prior distribution</th>
-<th align="left">Upper priors</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>constant</code></td>
-<td align="left"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∼</mo><mi>b</mi><mi>i</mi><mi>n</mi><mi>o</mi><mi>m</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sim binom(n(a,t), P(a,t))</annotation></semantics></math></td>
-<td align="left"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>∼</mo><mi>u</mi><mi>n</mi><mi>i</mi><mi>f</mi><mi>o</mi><mi>r</mi><mi>m</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda\sim uniform(0,2)</annotation></semantics></math></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>tv_normal</code></td>
-<td align="left"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∼</mo><mi>b</mi><mi>i</mi><mi>n</mi><mi>o</mi><mi>m</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sim binom(n(a,t), P(a,t))</annotation></semantics></math></td>
-<td align="left"><span class="math inline">$\lambda\sim
-normal(\lambda(t-1),\sigma)\\
-                                                              \lambda(t=1)\sim
-normal(0,1)$</span></td>
-<td align="left"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>∼</mo><mi>C</mi><mi>a</mi><mi>u</mi><mi>c</mi><mi>h</mi><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sigma\sim Cauchy(0,1)</annotation></semantics></math></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>tv_normal_log</code></td>
-<td align="left"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∼</mo><mi>b</mi><mi>i</mi><mi>n</mi><mi>o</mi><mi>m</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>P</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mo>,</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sim binom(n(a,t), P(a,t))</annotation></semantics></math></td>
-<td align="left"><span class="math inline">$\lambda\sim
-normal(log(\lambda(t-1)),\sigma)\\
-                                                              \lambda(t=1)\sim
-normal(-6,4)$</span></td>
-<td align="left"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>∼</mo><mi>C</mi><mi>a</mi><mi>u</mi><mi>c</mi><mi>h</mi><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sigma\sim Cauchy(0,1)</annotation></semantics></math></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Table 2. Statistical characteristics of
-<strong><em>serofoi</em></strong>’s currently supported models for the
-FoI
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>).
-Here
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
-is the size of an age group
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
-at time-step
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
-is its corresponding seroprevalence.</p>
-<p>Above we showed that the fast epidemic model
-(<code>tv_normal_log</code>) is able to identify the large epidemic
-outbreak described by the <code>simdata_large_epi</code> dataset, which
-was simulated according to a step-wise decreasing <em>FoI</em> (red line
-in Fig 3).</p>
+<p>Above we showed that the fast epidemic model (specified by
+<code>model_type = "time"</code> and <code>is_log = TRUE</code> in
+<code><a href="../reference/fit_seromodel.html">fit_seromodel()</a></code>) is able to identify the large epidemic
+outbreak described by the dataset simulated according to a step-wise
+decreasing <em>FoI</em> (red line in Fig 3).</p>
 <p>Now, we would like to know whether this model actually fits this
 dataset better than the other available models in
 <strong><em>serofoi</em></strong>. For this, we also implement both the
-endemic model (<code>constant</code>) and the slow time-varying normal
-model (<code>tv_normal</code>):</p>
+endemic model (<code>model_type = "constant"</code>) and the slow
+time-varying normal model (<code>model_type="time"</code>,
+<code>is_log = FALSE</code>):</p>
 <p>Using the function <code><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">cowplot::plot_grid</a></code> we can visualise
 the results of the three models simultaneously:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="va">model_1_plot</span>, <span class="va">model_2_plot</span>, <span class="va">model_3_plot</span>,</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span></span>
+<span>  <span class="va">plot_constant</span>, <span class="va">plot_time_normal</span>, <span class="va">plot_log_time_normal</span>,</span>
 <span>  nrow <span class="op">=</span> <span class="fl">1</span>, ncol <span class="op">=</span> <span class="fl">3</span>, labels <span class="op">=</span> <span class="st">"AUTO"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="foi_models_files/figure-html/model_comparison_plot_-1.png" width="480" style="display: block; margin: auto;">
+<p><img src="foi_models_files/figure-html/model_comparison_plot-1.png" width="480" style="display: block; margin: auto;">
 Figure 4. Model comparison between the three serofoi models for a
 large-epidemic simulated dataset.</p>
 <p>A common criterion to decide what model fits the data the best is to

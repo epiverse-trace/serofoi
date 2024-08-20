@@ -26,12 +26,12 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/foi_models.html">An introduction to Force-of-Infection (FoI) Models</a></li>
+    <li><a class="dropdown-item" href="../articles/simulating_serosurveys.html">Simulating Serosurveys</a></li>
     <li><a class="dropdown-item" href="../articles/use_cases.html">Real-life use cases for serofoi</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/epiverse-trace/serofoi/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch"><li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
@@ -46,7 +46,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/epiverse-trace/serofoi/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+
     </div>
 
     <div class="section level2">
@@ -56,7 +56,7 @@
 <ul><li>Data simulation functions from time-varying or age-varying <em>force of infection</em> trends. The following is an example to simulate from a constant (in time) <em>force of infection</em>:</li>
 </ul><pre><code><span><span class="va">foi_sim_constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.02</span>, <span class="fl">50</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">serodata_constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_sim_data.html">generate_sim_data</a></span><span class="op">(</span></span>
+<span><span class="va">serodata_constant</span> <span class="op">&lt;-</span> <span class="fu">generate_sim_data</span><span class="op">(</span></span>
 <span>  sim_data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span><span class="op">)</span>,</span>
 <span>    tsur <span class="op">=</span> <span class="fl">2050</span><span class="op">)</span>,</span>
@@ -64,7 +64,7 @@
 <span>  sample_size_by_age <span class="op">=</span> <span class="fl">5</span></span>
 <span><span class="op">)</span>  </span></code></pre>
 <p>To generate grouped serosurveys the function <code>group_sim_data</code> can be used:</p>
-<pre><code><span><span class="va">serodata_constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/group_sim_data.html">group_sim_data</a></span><span class="op">(</span><span class="va">serodata_constant</span>, step <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre>
+<pre><code><span><span class="va">serodata_constant</span> <span class="op">&lt;-</span> <span class="fu">group_sim_data</span><span class="op">(</span><span class="va">serodata_constant</span>, step <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="breaking-changes-0-1-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-1-0"></a></h3>
@@ -99,7 +99,7 @@
 <strong>Chunks structure specification is now possible</strong>
 <ul><li>Before, the models estimated one value of the <em>force of infection</em> per year in the time spanned by the serosurvey:</li>
 </ul><pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">chagas2012</span><span class="op">)</span></span>
-<span><span class="va">serodata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prepare_serodata.html">prepare_serodata</a></span><span class="op">(</span><span class="va">chagas2012</span><span class="op">)</span></span>
+<span><span class="va">serodata</span> <span class="op">&lt;-</span> <span class="fu">prepare_serodata</span><span class="op">(</span><span class="va">chagas2012</span><span class="op">)</span></span>
 <span><span class="va">seromodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span><span class="va">serodata</span>, foi_model <span class="op">=</span> <span class="st">"tv_normal"</span><span class="op">)</span></span></code></pre>
 <div class="float">
 <img src="https://github.com/epiverse-trace/serofoi/assets/45337127/3ab8e761-d92b-4d10-8897-a8c6d6add854" alt="image"><div class="figcaption">image</div>
@@ -132,7 +132,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="internal-changes-0-1-0">Internal changes<a class="anchor" aria-label="anchor" href="#internal-changes-0-1-0"></a></h3>
-<ul><li><p>Remove large files from git history (see <a href="https://github.com/epiverse-trace/serofoi/issues/77" class="external-link">#77</a>).</p></li>
+<ul><li><p>Remove large files from git history (see #77).</p></li>
 <li>
 <p>Added input validation for the following functions:</p>
 <ul><li><code>prepare_serodata</code></li>

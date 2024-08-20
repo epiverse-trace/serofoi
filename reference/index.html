@@ -26,12 +26,12 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/foi_models.html">An introduction to Force-of-Infection (FoI) Models</a></li>
+    <li><a class="dropdown-item" href="../articles/simulating_serosurveys.html">Simulating Serosurveys</a></li>
     <li><a class="dropdown-item" href="../articles/use_cases.html">Real-life use cases for serofoi</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/epiverse-trace/serofoi/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch"><li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
@@ -61,148 +61,148 @@
 
       <dl><dt>
 
-          <code><a href="chagas2012.html">chagas2012</a></code>
+          <code><a href="add_age_bins.html">add_age_bins()</a></code>
 
         </dt>
-        <dd>Seroprevalence data on serofoi</dd>
+        <dd>Add bins based on age intervals.</dd>
       </dl><dl><dt>
 
-          <code><a href="chik2015.html">chik2015</a></code>
+          <code><a href="add_age_group_to_serosurvey.html">add_age_group_to_serosurvey()</a></code>
 
         </dt>
-        <dd>Seroprevalence data on serofoi</dd>
+        <dd>Adds age group marker to serosurvey</dd>
       </dl><dl><dt>
 
-          <code><a href="extract_seromodel_summary.html">extract_seromodel_summary()</a></code>
+          <code><a href="build_stan_data.html">build_stan_data()</a></code>
 
         </dt>
-        <dd>Function to extract a summary of the specified serological model object</dd>
+        <dd>Builds stan data for sampling depending on the selected model</dd>
+      </dl><dl><dt>
+
+          <code><a href="extract_central_estimates.html">extract_central_estimates()</a></code>
+
+        </dt>
+        <dd>Extracts central estimates from stan_fit object for specified parameter</dd>
       </dl><dl><dt>
 
           <code><a href="fit_seromodel.html">fit_seromodel()</a></code>
 
         </dt>
-        <dd>Fit selected model to the specified seroprevalence survey data</dd>
+        <dd>Runs specified stan model for the force-of-infection</dd>
       </dl><dl><dt>
 
-          <code><a href="generate_sim_data.html">generate_sim_data()</a></code>
+          <code><a href="generate_random_sample_sizes.html">generate_random_sample_sizes()</a></code>
 
         </dt>
-        <dd>Generate simulated serosurvey according to the specified FoI</dd>
+        <dd>Generate random sample sizes for each age group.</dd>
       </dl><dl><dt>
 
-          <code><a href="get_age_group.html">get_age_group()</a></code>
+          <code><a href="get_age_intervals.html">get_age_intervals()</a></code>
 
         </dt>
         <dd>Construct age-group variable from age column</dd>
       </dl><dl><dt>
 
-          <code><a href="get_chunk_structure.html">get_chunk_structure()</a></code>
+          <code><a href="get_foi_index.html">get_foi_index()</a></code>
 
         </dt>
-        <dd>Generate list containing the chunk structure to be used in the retrospective estimation of the force of infection.</dd>
+        <dd>Generates force-of-infection indexes for heterogeneous age groups</dd>
       </dl><dl><dt>
 
-          <code><a href="get_cohort_ages.html">get_cohort_ages()</a></code>
+          <code><a href="multinomial_sampling_group.html">multinomial_sampling_group()</a></code>
 
         </dt>
-        <dd>Generate data frame containing the age of each cohort corresponding to each birth year excluding the year of the survey.</dd>
+        <dd>Generate random sample sizes using multinomial sampling.</dd>
       </dl><dl><dt>
 
-          <code><a href="get_foi_central_estimates.html">get_foi_central_estimates()</a></code>
+          <code><a href="plot_foi_estimates.html">plot_foi_estimates()</a></code>
 
         </dt>
-        <dd>Extract central estimates for the fitted forced FoI</dd>
-      </dl><dl><dt>
-
-          <code><a href="get_prev_expanded.html">get_prev_expanded()</a></code>
-
-        </dt>
-        <dd>Generate data frame containing the confidence interval based on a force-of-infection fitting</dd>
-      </dl><dl><dt>
-
-          <code><a href="get_sim_n_seropositive.html">get_sim_n_seropositive()</a></code>
-
-        </dt>
-        <dd>Generate sample of counts of seropositive individuals by sampling from a binomial distribution</dd>
-      </dl><dl><dt>
-
-          <code><a href="get_sim_probability.html">get_sim_probability()</a></code>
-
-        </dt>
-        <dd>Generate probabilities of being previously exposed to a pathogen given a historical force-of-infection.</dd>
-      </dl><dl><dt>
-
-          <code><a href="get_table_rhats.html">get_table_rhats()</a></code>
-
-        </dt>
-        <dd>Build dataframe containing the R-hat estimates for a given serological model</dd>
-      </dl><dl><dt>
-
-          <code><a href="group_sim_data.html">group_sim_data()</a></code>
-
-        </dt>
-        <dd>Group simulated serological dataset by age</dd>
-      </dl><dl><dt>
-
-          <code><a href="plot_foi.html">plot_foi()</a></code>
-
-        </dt>
-        <dd>Generate force-of-infection plot corresponding to the specified fitted serological model</dd>
-      </dl><dl><dt>
-
-          <code><a href="plot_info_table.html">plot_info_table()</a></code>
-
-        </dt>
-        <dd>Generate plot summarizing a given table</dd>
+        <dd>Plots force-of-infection central estimates</dd>
       </dl><dl><dt>
 
           <code><a href="plot_rhats.html">plot_rhats()</a></code>
 
         </dt>
-        <dd>Generate plot of the R-hat estimates for the specified fitted serological model</dd>
+        <dd>Plot r-hats convergence criteria for the specified model</dd>
       </dl><dl><dt>
 
           <code><a href="plot_seromodel.html">plot_seromodel()</a></code>
 
         </dt>
-        <dd>Generate vertical arrangement of plots showing a summary of a model, the estimated seroprevalence, the force-of-infection fit and the R-hat estimates plots.</dd>
+        <dd>Visualise results of the provided model</dd>
       </dl><dl><dt>
 
-          <code><a href="plot_seroprev.html">plot_seroprev()</a></code>
+          <code><a href="plot_seroprevalence_estimates.html">plot_seroprevalence_estimates()</a></code>
 
         </dt>
-        <dd>Generate seropositivity plot from a raw serological survey dataset</dd>
+        <dd>Plot seroprevalence estimates on top of the serosurvey</dd>
       </dl><dl><dt>
 
-          <code><a href="plot_seroprev_fitted.html">plot_seroprev_fitted()</a></code>
+          <code><a href="plot_serosurvey.html">plot_serosurvey()</a></code>
 
         </dt>
-        <dd>Generate seropositivity plot corresponding to the specified fitted serological model</dd>
+        <dd>Plots seroprevalence from the given serosurvey</dd>
       </dl><dl><dt>
 
-          <code><a href="prepare_serodata.html">prepare_serodata()</a></code>
+          <code><a href="plot_summary.html">plot_summary()</a></code>
 
         </dt>
-        <dd>Prepare data from a serological survey for modelling</dd>
+        <dd>Plots model summary</dd>
+      </dl><dl><dt>
+
+          <code><a href="prepare_serosurvey_for_plotting.html">prepare_serosurvey_for_plotting()</a></code>
+
+        </dt>
+        <dd>Prepares serosurvey for plotting</dd>
       </dl><dl><dt>
 
           <code><a href="probability_exact_age_varying.html">probability_exact_age_varying()</a></code>
 
         </dt>
-        <dd>Returns the probability of being seropositive for age-varying force-of-infection including seroreversion</dd>
+        <dd>Computes the probability of being seropositive when FOIs vary by age</dd>
       </dl><dl><dt>
 
           <code><a href="probability_exact_time_varying.html">probability_exact_time_varying()</a></code>
 
         </dt>
-        <dd>Computes the probability of being seropositive for age-varying force-of-infection including seroreversion</dd>
+        <dd>Computes the probability of being seropositive when FOIs vary by time</dd>
       </dl><dl><dt>
 
-          <code><a href="run_seromodel.html">run_seromodel()</a></code>
+          <code><a href="probability_seropositive_age_and_time_model_by_age.html">probability_seropositive_age_and_time_model_by_age()</a></code>
 
         </dt>
-        <dd>Run specified stan model for the force-of-infection and estimate the seroprevalence based on the result of the fit</dd>
+        <dd>Generate probabilities of seropositivity by age based on an age-and-time varying FOI model.</dd>
+      </dl><dl><dt>
+
+          <code><a href="probability_seropositive_age_model_by_age.html">probability_seropositive_age_model_by_age()</a></code>
+
+        </dt>
+        <dd>Generate probabilities of seropositivity by age based on an age-varying FOI model.</dd>
+      </dl><dl><dt>
+
+          <code><a href="probability_seropositive_by_age.html">probability_seropositive_by_age()</a></code>
+
+        </dt>
+        <dd>Generate probabilities of seropositivity by age based user's choice of model.</dd>
+      </dl><dl><dt>
+
+          <code><a href="probability_seropositive_general_model_by_age.html">probability_seropositive_general_model_by_age()</a></code>
+
+        </dt>
+        <dd>Generate probabilities of seropositivity by age based on a general FOI model.</dd>
+      </dl><dl><dt>
+
+          <code><a href="probability_seropositive_time_model_by_age.html">probability_seropositive_time_model_by_age()</a></code>
+
+        </dt>
+        <dd>Generate probabilities of seropositivity by age based on a time-varying FOI model.</dd>
+      </dl><dl><dt>
+
+          <code><a href="sample_size_by_individual_age_random.html">sample_size_by_individual_age_random()</a></code>
+
+        </dt>
+        <dd>Generate random sample sizes for each individual age based on survey features.</dd>
       </dl><dl><dt>
 
           <code><a href="serofoi-package.html">serofoi-package</a></code> <code><a href="serofoi-package.html">serofoi</a></code>
@@ -211,28 +211,94 @@
         <dd>The 'serofoi' package.</dd>
       </dl><dl><dt>
 
-          <code><a href="simdata_constant.html">simdata_constant</a></code>
+          <code><a href="set_foi_init.html">set_foi_init()</a></code>
 
         </dt>
-        <dd>Constant force-of-infection simulated serosurvey</dd>
+        <dd>Sets initialization function for sampling</dd>
       </dl><dl><dt>
 
-          <code><a href="simdata_large_epi.html">simdata_large_epi</a></code>
+          <code><a href="set_stan_data_defaults.html">set_stan_data_defaults()</a></code>
 
         </dt>
-        <dd>Large epidemic simulated serosurvey</dd>
+        <dd>Set stan data defaults for sampling</dd>
       </dl><dl><dt>
 
-          <code><a href="simdata_sw_dec.html">simdata_sw_dec</a></code>
+          <code><a href="sf_cauchy.html">sf_cauchy()</a></code>
 
         </dt>
-        <dd>Step-wise decreasing force-of-infection simulated serosurvey</dd>
+        <dd>Sets Cauchy distribution parameters for sampling</dd>
       </dl><dl><dt>
 
-          <code><a href="veev2012.html">veev2012</a></code>
+          <code><a href="sf_none.html">sf_none()</a></code>
 
         </dt>
-        <dd>Seroprevalence data on serofoi</dd>
+        <dd>Sets empty distribution</dd>
+      </dl><dl><dt>
+
+          <code><a href="sf_normal.html">sf_normal()</a></code>
+
+        </dt>
+        <dd>Sets normal distribution parameters for sampling</dd>
+      </dl><dl><dt>
+
+          <code><a href="sf_uniform.html">sf_uniform()</a></code>
+
+        </dt>
+        <dd>Sets uniform distribution parameters for sampling</dd>
+      </dl><dl><dt>
+
+          <code><a href="simulate_serosurvey.html">simulate_serosurvey()</a></code>
+
+        </dt>
+        <dd>Simulate serosurvey data based on various FOI models.</dd>
+      </dl><dl><dt>
+
+          <code><a href="simulate_serosurvey_age_and_time_model.html">simulate_serosurvey_age_and_time_model()</a></code>
+
+        </dt>
+        <dd>Simulate serosurvey data based on an age-and-time-varying FOI model.</dd>
+      </dl><dl><dt>
+
+          <code><a href="simulate_serosurvey_age_model.html">simulate_serosurvey_age_model()</a></code>
+
+        </dt>
+        <dd>Simulate serosurvey data based on an age-varying FOI model.</dd>
+      </dl><dl><dt>
+
+          <code><a href="simulate_serosurvey_general_model.html">simulate_serosurvey_general_model()</a></code>
+
+        </dt>
+        <dd>Simulate serosurvey data based on general serocatalytic model.</dd>
+      </dl><dl><dt>
+
+          <code><a href="simulate_serosurvey_time_model.html">simulate_serosurvey_time_model()</a></code>
+
+        </dt>
+        <dd>Simulate serosurvey data based on a time-varying FOI model.</dd>
+      </dl><dl><dt>
+
+          <code><a href="summarise_central_estimate.html">summarise_central_estimate()</a></code>
+
+        </dt>
+        <dd>Summarise central estimate</dd>
+      </dl><dl><dt>
+
+          <code><a href="summarise_loo_estimate.html">summarise_loo_estimate()</a></code>
+
+        </dt>
+        <dd>Extract specified loo estimate</dd>
+      </dl><dl><dt>
+
+          <code><a href="summarise_seromodel.html">summarise_seromodel()</a></code>
+
+        </dt>
+        <dd>Summarise specified model</dd>
+      </dl><dl><dt>
+
+          <code><a href="survey_by_individual_age.html">survey_by_individual_age()</a></code>
+
+        </dt>
+        <dd>Create a survey dataframe with per individual age information.</dd>
       </dl></div>
   </main></div>
 
