@@ -88,6 +88,7 @@ plot_log_time <- plot_seromodel(
 
 cowplot::plot_grid(plot_constant, plot_time, plot_log_time, ncol = 3)
 ```
+
 Figure 1. ***serofoi*** models for FoI estimates of Chikungunya virus transmission in an urban remote area of Brazil.
 
 ```{r clean env chik, include = FALSE, echo = TRUE, message=FALSE}
