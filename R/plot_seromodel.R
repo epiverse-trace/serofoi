@@ -97,7 +97,8 @@ get_age_intervals <- function(serosurvey, step) {
 #' @param size_text Size of text for plotting (`base_size` in
 #' [ggplot2][ggplot2::theme_bw])
 #' @param bin_serosurvey If `TRUE`, `serodata` is binned by means of
-#'   `prepare_bin_serosurvey`. Otherwise, age groups are kept as originally input.
+#'   `prepare_bin_serosurvey`.
+#'   Otherwise, age groups are kept as originally input.
 #' @param bin_step Integer specifying the age groups bin size to be used when
 #' `bin_serosurvey` is set to `TRUE`.
 #' @return ggplot object with seroprevalence plot
@@ -112,7 +113,6 @@ plot_serosurvey <- function(
     add_age_group_to_serosurvey()
 
   if (bin_serosurvey) {
-    age_min <- min(serosurvey$age_min)
     age_max <- max(serosurvey$age_max)
     checkmate::assert_int(bin_step, lower = 2, upper = age_max)
 

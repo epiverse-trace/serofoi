@@ -36,7 +36,7 @@ sf_uniform <- function(min = 0, max = 10) {
   return(list(min = min, max = max, name = "uniform"))
 }
 
-#' Sets cauchy distribution parameters for sampling
+#' Sets Cauchy distribution parameters for sampling
 #'
 #' @param scale Scale
 #'  of the normal distribution
