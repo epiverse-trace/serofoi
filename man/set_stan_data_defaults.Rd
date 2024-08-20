@@ -4,10 +4,12 @@
 \alias{set_stan_data_defaults}
 \title{Set stan data defaults for sampling}
 \usage{
-set_stan_data_defaults(stan_data, is_seroreversion = FALSE)
+set_stan_data_defaults(stan_data, is_log_foi = FALSE, is_seroreversion = FALSE)
 }
 \arguments{
 \item{stan_data}{List to be passed to \link[rstan:stanmodel-method-sampling]{rstan}}
+
+\item{is_log_foi}{Boolean to set logarithmic scale in the FOI}
 
 \item{is_seroreversion}{Boolean specifying whether to include
 seroreversion rate estimation in the model}

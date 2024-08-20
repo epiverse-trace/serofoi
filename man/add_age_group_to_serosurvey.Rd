@@ -8,7 +8,7 @@ add_age_group_to_serosurvey(serosurvey)
 }
 \arguments{
 \item{serosurvey}{\describe{
-\item{\code{tsur}}{Year in which the survey took place}
+\item{\code{survey_year}}{Year in which the survey took place}
 \item{\code{age_min}}{Floor value of the average between age_min and age_max}
 \item{\code{age_max}}{The size of the sample}
 \item{\code{sample_size}}{Number of samples for each age group}

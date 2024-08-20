@@ -8,6 +8,8 @@ plot_seromodel(
   seromodel,
   serosurvey,
   alpha = 0.05,
+  bin_serosurvey = FALSE,
+  bin_step = 5,
   foi_df = NULL,
   foi_max = NULL,
   loo_estimate_digits = 1,
@@ -22,7 +24,7 @@ plot_seromodel(
 with \link{fit_seromode}}
 
 \item{serosurvey}{\describe{
-\item{\code{tsur}}{Year in which the survey took place}
+\item{\code{survey_year}}{Year in which the survey took place}
 \item{\code{age_min}}{Floor value of the average between age_min and age_max}
 \item{\code{age_max}}{The size of the sample}
 \item{\code{sample_size}}{Number of samples for each age group}
@@ -30,6 +32,13 @@ with \link{fit_seromode}}
 }}
 
 \item{alpha}{1 - alpha indicates the credibility level to be used}
+
+\item{bin_serosurvey}{If \code{TRUE}, \code{serodata} is binned by means of
+\code{prepare_bin_serosurvey}.
+Otherwise, age groups are kept as originally input.}
+
+\item{bin_step}{Integer specifying the age groups bin size to be used when
+\code{bin_serosurvey} is set to \code{TRUE}.}
 
 \item{foi_df}{Dataframe with columns
 \describe{
