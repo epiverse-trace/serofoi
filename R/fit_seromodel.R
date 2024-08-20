@@ -60,15 +60,16 @@ set_foi_init <- function(
 #' @param foi_prior Force-of-infection distribution specified by means of
 #'  the helper functions. Currently available options are:
 #' \describe{
-#'  \item{`sf_normal`}
-#'  \item{`sf_uniform`}
-#'  \item{`sf_none`}
+#'  \item{[sf_normal]}{Function to set normal distribution priors}
+#'  \item{[sf_uniform]}{Function to set uniform distribution priors}
 #' }
 #' @param foi_sigma_rw Prior distribution for the standard deviation of the
 #' force-of-infection. Currently available options are:
 #' \describe{
-#'  \item{`sf_cauchy`}
-#'  \iten{`sf_none`}
+#'  \item{[sf_normal]}{Function to set normal distribution prior.
+#'                     Available for time models in the log-scale.}
+#'  \item{[sf_cauchy]}{Function to set Cauchy distribution prior.
+#'                     Available for time models in regular scale.}
 #' }
 #' @param foi_index Integer vector specifying the age-groups for which
 #' force-of-infection values will be estimated
@@ -77,9 +78,9 @@ set_foi_init <- function(
 #' @param seroreversion_prior seroreversion distribution specified by means of
 #'  the helper functions. Currently available options are:
 #' \describe{
-#'  \item{`sf_normal`}
-#'  \item{`sf_uniform`}
-#'  \item{`sf_none`}
+#'  \item{[sf_normal]}{Function to set normal distribution priors}
+#'  \item{[sf_uniform]}{Function to set uniform distribution priors}
+#'  \item{[sf_none]}{Function to set no prior distribution}
 #' }
 #' @param ... Additional parameters for [rstan][rstan::sampling]
 #' @returns stan_fit object with force-of-infection and seroreversion
