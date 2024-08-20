@@ -1,12 +1,5 @@
 ---
-title: "An introduction to Force-of-Infection (FoI) Models"
-output: rmarkdown::html_vignette
-bibliography: references.bib
-link-citations: true
-vignette: >
-  %\VignetteIndexEntry{An introduction to Force-of-Infection (FoI) Models}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+title: "An Introduction To Force Of Infection Models"
 ---
 
 ```{r, include = FALSE}
