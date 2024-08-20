@@ -312,6 +312,7 @@ plot_foi_estimates <- function(
       data = foi_central_estimates, ggplot2::aes(x = .data$age)
     )
   } else if (startsWith(model_name, "time")) {
+    checkmate::assert_names(names(serosurvey), must.include = "survey_year")
     xlab <- "Year"
     ages <- rev(1:max(serosurvey$age_max))
     years <- unique(serosurvey$survey_year) - ages
@@ -391,6 +392,7 @@ plot_rhats <- function(
       data = rhats_df, ggplot2::aes(x = .data$age)
     )
   } else if (startsWith(model_name, "time")) {
+    checkmate::assert_names(names(serosurvey), must.include = "survey_year")
     xlab <- "Year"
     ages <- rev(1:max(serosurvey$age_max))
     years <- unique(serosurvey$survey_year) - ages
