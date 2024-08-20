@@ -101,6 +101,11 @@ fit_seromodel <- function(
     validate_serosurvey() %>%
     add_age_group_to_serosurvey()
 
+  stopifnot(
+    "model_type must be either 'constant', 'time' or 'age'" =
+    model_type %in% c("constant", "time", "age")
+  )
+
   stan_data <- build_stan_data(
     serosurvey = serosurvey,
     model_type = model_type,
