@@ -94,7 +94,7 @@ fit_seromodel <- function(
   foi_index = NULL,
   foi_init = NULL,
   is_seroreversion = FALSE,
-  seroreversion_prior = sf_uniform(),
+  seroreversion_prior = sf_normal(),
   ...
 ) {
   serosurvey <- serosurvey %>%
