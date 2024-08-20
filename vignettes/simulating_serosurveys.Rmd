@@ -19,7 +19,6 @@ library(serofoi)
 library(ggplot2)
 library(dplyr)
 library(purrr)
-library(forcats)
 ```
 ```{r ggplot theme, include=FALSE}
 theme_set(theme_bw())
