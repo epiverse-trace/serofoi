@@ -2,11 +2,11 @@ pandoc: 3.1.11
 pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
-  foi_models: foi_models.html
+  articles/foi_models: foi_models.html
   serofoi: serofoi.html
-  simulating_serosurveys: simulating_serosurveys.html
-  use_cases: use_cases.html
-last_built: 2024-08-20T20:36Z
+  articles/simulating_serosurveys: simulating_serosurveys.html
+  articles/use_cases: use_cases.html
+last_built: 2024-08-20T21:10Z
 urls:
   reference: https://epiverse-trace.github.io/serofoi/reference
   article: https://epiverse-trace.github.io/serofoi/articles
