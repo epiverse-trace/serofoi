@@ -48,50 +48,53 @@ serofoi was used to compare three potential scenarios of Chikungunya transmissio
 ```{r chik_fast, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center", fig.keep="all"}
 # Load and prepare data
 data("chik2015")
-chik2015p <- prepare_serodata(chik2015)
 
 # Implementation of the models
-m1_chik <- fit_seromodel(
-  serodata = chik2015p,
-  foi_model = "constant",
-  iter = 1000,
-  thin = 2
+seromodel_constant <- fit_seromodel(
+  serosurvey = chik2015,
+  model_type = "constant",
+  iter = 1000
 )
 
-m2_chik <- fit_seromodel(
-  serodata = chik2015p,
-  foi_model = "tv_normal",
-  chunk_size = 5,
-  iter = 2000,
-  thin = 2
+
+seromodel_time <- fit_seromodel(
+  serosurvey = chik2015,
+  model_type = "time",
+  foi_prior = sf_normal(0, 0.01),
+  foi_index = get_foi_index(chik2015, group_size = 5),
+  iter = 2500
 )
 
-m3_chik <- fit_seromodel(
-  serodata = chik2015p,
-  foi_model = "tv_normal_log",
-  chunk_size = 5,
-  iter = 2000,
-  thin = 2
+seromodel_log_time <- fit_seromodel(
+  serosurvey = chik2015,
+  model_type = "time",
+  foi_prior = sf_normal(0, 0.01),
+  is_log_foi = TRUE,
+  foi_index = get_foi_index(chik2015, group_size = 5),
+  iter = 2000
 )
 
 # Visualisation of the results
-p1_chik <- plot_seromodel(m1_chik,
-  serodata = chik2015p,
-  max_lambda = 0.07,
+plot_constant <- plot_seromodel(
+  seromodel = seromodel_constant,
+  serosurvey = chik2015,
+  foi_max = 0.07,
   size_text = 6
 )
-p2_chik <- plot_seromodel(m2_chik,
-  serodata = chik2015p,
-  max_lambda = 0.07,
+plot_time <- plot_seromodel(
+  seromodel = seromodel_time,
+  serosurvey = chik2015,
+  foi_max = 0.07,
   size_text = 6
 )
-p3_chik <- plot_seromodel(m3_chik,
-  serodata = chik2015p,
-  max_lambda = 0.07,
+plot_log_time <- plot_seromodel(
+  seromodel = seromodel_log_time,
+  serosurvey = chik2015,
+  foi_max = 0.07,
   size_text = 6
 )
 
-cowplot::plot_grid(p1_chik, p2_chik, p3_chik, ncol = 3)
+cowplot::plot_grid(plot_constant, plot_time, plot_log_time, ncol = 3)
 ```
 Figure 1. ***serofoi*** models for FoI estimates of Chikungunya virus transmission in an urban remote area of Brazil.
 
@@ -113,58 +116,57 @@ From [@carrera2020],  we use a dataset measuring IgG antibodies against *VEEV* i
 
 ### The result:
 
-***serofoi*** was used to compare three potential scenarios of *VEEV* transmission: *constant endemic*, *epidemic slow*, and *epidemic fast*. The results showed a significant increase in the estimated *Force-of-Infection (FoI)* in the region, indicating a rise in *VEEV* transmission. The study found that there was much higher statistical support for a time-varying rather than a constant scenario based on higher elpd and lower se values of the two time-varying models compared to the constant one (Figure 2). The results also suggest slightly (yet relevant) better support for model 3 (`tv-nomal-log`), compared to model 2 (`tv-normal`), suggesting a recent increase in transmission in the study area.
+***serofoi*** was used to compare three potential scenarios of *VEEV* transmission: *constant endemic*, *epidemic slow*, and *epidemic fast*. The results showed a significant increase in the estimated *Force-of-Infection (FoI)* in the region, indicating a rise in *VEEV* transmission. The study found that there was much higher statistical support for a time-varying rather than a constant scenario based on higher elpd and lower se values of the two time-varying models compared to the constant one (Figure 2). The results also suggest slightly (yet relevant) better support for model 3 (`log-time`), compared to model 2 (`time`), suggesting a recent increase in transmission in the study area.
 
 ```{r veev_hidden, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center", fig.keep="all"}
 # Load and prepare data
 data("veev2012")
-veev2012p <- prepare_serodata(veev2012)
 
 # Implementation of the models
-m1_veev <- fit_seromodel(
-  serodata = veev2012p,
-  foi_model = "constant",
-  iter = 500,
-  thin = 2
+seromodel_constant <- fit_seromodel(
+  serosurvey = veev2012,
+  model_type = "constant",
+  iter = 1000
 )
 
-m2_veev <- fit_seromodel(
-  serodata = veev2012p,
-  foi_model = "tv_normal",
-  chunk_size = 5,
-  iter = 2000,
-  thin = 2
+seromodel_time <- fit_seromodel(
+  serosurvey = veev2012,
+  model_type = "time",
+  foi_prior = sf_normal(0, 0.1),
+  foi_index = get_foi_index(veev2012, group_size = 5),
+  iter = 2000
 )
 
-m3_veev <- fit_seromodel(
-  serodata = veev2012p,
-  foi_model = "tv_normal_log",
-  chunk_size = 5,
-  iter = 2000,
-  thin = 2
+seromodel_log_time <- fit_seromodel(
+  serosurvey = veev2012,
+  model_type = "time",
+  foi_prior = sf_normal(0, 0.1),
+  is_log_foi = TRUE,
+  foi_index = get_foi_index(veev2012, group_size = 5),
+  iter = 2000
 )
 
 # Visualisation of the results
-p1_veev <- plot_seromodel(
-  m1_veev,
-  serodata = veev2012p,
-  max_lambda = 0.35,
+plot_constant <- plot_seromodel(
+  seromodel = seromodel_constant,
+  serosurvey = veev2012,
+  foi_max = 0.35,
   size_text = 6
 )
-p2_veev <- plot_seromodel(
-  m2_veev,
-  serodata = veev2012p,
-  max_lambda = 0.35,
+plot_time <- plot_seromodel(
+  seromodel = seromodel_time,
+  serosurvey = veev2012,
+  foi_max = 0.35,
   size_text = 6
 )
-p3_veev <- plot_seromodel(
-  m3_veev,
-  serodata = veev2012p,
-  max_lambda = 0.35,
+plot_log_time <- plot_seromodel(
+  seromodel = seromodel_log_time,
+  serosurvey = veev2012,
+  foi_max = 0.35,
   size_text = 6
 )
 
-cowplot::plot_grid(p1_veev, p2_veev, p3_veev, ncol = 3)
+cowplot::plot_grid(plot_constant, plot_time, plot_log_time, ncol = 3)
 ```
 Figure 2. ***serofoi*** models for *FoI* estimates of *Venezuelan Equine Encephalitis Virus (VEEV)* transmission in a rural remote area of Panama.
 
@@ -190,39 +192,41 @@ Because Chagas is an endemic disease, we should use only the ***serofoi*** endem
 ```{r chagas_endemic, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center", fig.keep="all"}
 # Load and prepare data
 data("chagas2012")
-chagas2012p <- prepare_serodata(chagas2012)
 
 # Implementation of the models
-m1_cha <- fit_seromodel(
-  serodata = chagas2012p,
-  foi_model = "constant",
+seromodel_constant <- fit_seromodel(
+  serosurvey = chagas2012,
+  model_type = "constant",
   iter = 800
 )
-m2_cha <- fit_seromodel(
-  serodata = chagas2012p,
-  foi_model = "tv_normal",
-  chunk_size = 5,
-  iter = 1000
+seromodel_time <- fit_seromodel(
+  serosurvey = chagas2012,
+  model_type = "time",
+  foi_index = get_foi_index(chagas2012, group_size = 10),
+  iter = 1500
 )
 
 # Visualisation of the results
-p1_cha <- plot_seromodel(
-  m1_cha,
-  serodata = chagas2012p,
-  size_text = 6,
-  bin_data = FALSE
+plot_constant <- plot_seromodel(
+  seromodel = seromodel_constant,
+  serosurvey = chagas2012,
+  bin_serosurvey = TRUE,
+  bin_step = 10,
+  size_text = 6
 )
-p2_cha <- plot_seromodel(
-  m2_cha,
-  serodata = chagas2012p,
-  size_text = 6,
-  bin_data = FALSE
+plot_time <- plot_seromodel(
+  seromodel = seromodel_time,
+  serosurvey = chagas2012,
+  bin_serosurvey = TRUE,
+  bin_step = 10,
+  size_text = 6
 )
-cowplot::plot_grid(p1_cha, p2_cha, ncol = 2)
+cowplot::plot_grid(plot_constant, plot_time, ncol = 2)
 ```
 Figure 3. ***serofoi*** endemic models for *FoI* estimates of *Trypanosoma cruzi* in a rural area of Colombia.
 
 ```{r clean env cha, include = FALSE, echo = TRUE, message=FALSE}
 rm(list = ls(pattern = "cha"))
 ```
+
 ## References
