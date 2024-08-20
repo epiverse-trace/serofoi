@@ -107,6 +107,7 @@ get_foi_index <- function(
 #' @return List with default values of stan data for sampling
 set_stan_data_defaults <- function(
     stan_data,
+    is_log_foi = FALSE,
     is_seroreversion = FALSE
 ) {
   config_file <- system.file("extdata", "config.yml", package = "serofoi")
@@ -117,10 +118,28 @@ set_stan_data_defaults <- function(
     foi_min = prior_default$min,
     foi_max = prior_default$max,
     foi_mean = prior_default$mean,
-    foi_sd = prior_default$sd,
-    foi_sigma_rw_loc = prior_default$location,
-    foi_sigma_rw_sc = prior_default$scale
+    foi_sd = prior_default$sd
   )
+  # Add sigma defaults depending on scale
+  if (is_log_foi) {
+    # Normal distribution defaults
+    foi_defaults <- c(
+      foi_defaults,
+      list(
+        foi_sigma_rw_loc = prior_default$mean,
+        foi_sigma_rw_sc = prior_default$sd
+      )
+    )
+  } else {
+    # Cauchy distribution defaults
+    foi_defaults <- c(
+      foi_defaults,
+      list(
+        foi_sigma_rw_loc = prior_default$location,
+        foi_sigma_rw_sc = prior_default$scale
+      )
+    )
+  }
   stan_data <- c(
     stan_data,
     foi_defaults
@@ -167,7 +186,10 @@ build_stan_data <- function(
     sample_size = serosurvey$sample_size,
     age_groups = serosurvey$age_group
   ) %>%
-    set_stan_data_defaults(is_seroreversion = is_seroreversion)
+    set_stan_data_defaults(
+      is_log_foi = is_log_foi,
+      is_seroreversion = is_seroreversion
+      )
 
   if (is.null(foi_index)) {
     foi_index_default <- get_foi_index(serosurvey = serosurvey, group_size = 1)
