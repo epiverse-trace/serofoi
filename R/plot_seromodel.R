@@ -128,7 +128,6 @@ plot_serosurvey <- function(
         n_seropositive = sum(.data$n_seropositive)
       ) %>%
       dplyr::mutate(
-        survey_year = unique(serosurvey$survey_year),
         age_min = as.integer(gsub("[[]|\\,.*", "\\1", .data$age_interval)) + 1,
         age_max = as.integer(gsub(".*\\,|[]]", "\\1", .data$age_interval))
       ) %>%
