@@ -13,7 +13,7 @@
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="https://epiverse-trace.github.io/blueprints/logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,7 +25,7 @@
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/foi_models.html">An introduction to force-of-infection models</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/foi_models.html">An Introduction To Force Of Infection Models</a></li>
     <li><a class="dropdown-item" href="../articles/simulating_serosurveys.html">Simulating Serosurveys</a></li>
     <li><a class="dropdown-item" href="../articles/use_cases.html">Real-Life Use Cases For Serofoi</a></li>
   </ul></li>
@@ -70,7 +70,8 @@
 
 <dl><dt id="arg-serosurvey">serosurvey<a class="anchor" aria-label="anchor" href="#arg-serosurvey"></a></dt>
 <dd><dl><dt><code>survey_year</code></dt>
-<dd><p>Year in which the survey took place</p></dd>
+<dd><p>Year in which the survey took place
+(only needed to plot time models)</p></dd>
 
 <dt><code>age_min</code></dt>
 <dd><p>Floor value of the average between age_min and age_max</p></dd>
@@ -109,6 +110,26 @@ Otherwise, age groups are kept as originally input.</p></dd>
     <p>ggplot object with seroprevalence plot</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Chikungunya example serosurvey</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">chik2015</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_serosurvey</span><span class="op">(</span><span class="va">chik2015</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="plot_serosurvey-1.png" alt="" width="768" height="576"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># VEEV example serosurvey</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">veev2012</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_serosurvey</span><span class="op">(</span><span class="va">veev2012</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="plot_serosurvey-2.png" alt="" width="768" height="576"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Chagas disease example serosurvey</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">chagas2012</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_serosurvey</span><span class="op">(</span><span class="va">chagas2012</span>, bin_serosurvey <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>(age_min - age_max) is not an integer multiple of step.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>     The last age interval will be truncated to [76,77]</span>
+<span class="r-plt img"><img src="plot_serosurvey-3.png" alt="" width="768" height="576"></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
