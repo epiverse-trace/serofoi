@@ -10,7 +10,8 @@ set_foi_init(foi_init, is_log_foi, foi_index)
 \item{is_log_foi}{Boolean to set logarithmic scale in the FOI}
 
 \item{foi_index}{Integer vector specifying the age-groups for which
-force-of-infection values will be estimated}
+force-of-infection values will be estimated. It can be specified by
+means of \link{get_foi_index}}
 }
 \description{
 Sets initialization function for sampling

@@ -8,7 +8,8 @@ get_foi_index(serosurvey, group_size)
 }
 \arguments{
 \item{serosurvey}{\describe{
-\item{\code{survey_year}}{Year in which the survey took place}
+\item{\code{survey_year}}{Year in which the survey took place
+(only needed to plot time models)}
 \item{\code{age_min}}{Floor value of the average between age_min and age_max}
 \item{\code{age_max}}{The size of the sample}
 \item{\code{sample_size}}{Number of samples for each age group}
@@ -22,6 +23,12 @@ Integer vector with the indexes numerating each year/age
 (depending on the model).
 }
 \description{
-The max value of the force-of-infection indexes correspond to
-the number of foi values to be estimated when sampling.
+Generates a list of integers indexing together the time/age intervals
+for which FOI values will be estimated in \link{fit_seromodel}.
+The max value in \code{foi_index}  correspond to the number of FOI values to
+be estimated when sampling.
+}
+\examples{
+data(chagas2012)
+foi_index <- get_foi_index(chagas2012, group_size = 25)
 }

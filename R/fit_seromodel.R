@@ -49,7 +49,8 @@ set_foi_init <- function(
 #'
 #' @param serosurvey
 #' \describe{
-#'   \item{`survey_year`}{Year in which the survey took place}
+#'   \item{`survey_year`}{Year in which the survey took place
+#'         (only needed to plot time models)}
 #'   \item{`age_min`}{Floor value of the average between age_min and age_max}
 #'   \item{`age_max`}{The size of the sample}
 #'   \item{`sample_size`}{Number of samples for each age group}
