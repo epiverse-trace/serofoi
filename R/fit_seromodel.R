@@ -85,6 +85,13 @@ set_foi_init <- function(
 #' @param ... Additional parameters for [rstan][rstan::sampling]
 #' @returns stan_fit object with force-of-infection and seroreversion
 #' (when applicable) samples
+#' @examples
+#' data(veev2012)
+#' seromodel <- fit_seromodel(
+#' serosurvey = veev2012,
+#'   model_type = "time",
+#'   foi_index = get_foi_index(veev2012, group_size = 30)
+#' )
 #' @export
 fit_seromodel <- function(
   serosurvey,
