@@ -14,7 +14,14 @@ summarise_loo_estimate(
 \item{seromodel}{stan_fit object obtained from sampling a model
 with \link{fit_seromode}}
 
-\item{par_loo_estimate}{Name of the loo estimate to be extracted.}
+\item{par_loo_estimate}{Name of the loo estimate to be extracted.
+Available options are:
+\describe{
+\item{\code{"elpd_loo"}}{Expected log pointwise predictive density}
+\item{\code{"p_loo"}}{Effective number of parameters}
+\item{\code{"looic"}}{Leave-one-out cross-validation information criteria}
+}
+For additional information refer to \link[loo:loo]{loo}.}
 
 \item{loo_estimate_digits}{Number of loo estimate digits}
 }
