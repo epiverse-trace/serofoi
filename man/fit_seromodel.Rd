@@ -19,7 +19,8 @@ fit_seromodel(
 }
 \arguments{
 \item{serosurvey}{\describe{
-\item{\code{survey_year}}{Year in which the survey took place}
+\item{\code{survey_year}}{Year in which the survey took place
+(only needed to plot time models)}
 \item{\code{age_min}}{Floor value of the average between age_min and age_max}
 \item{\code{age_max}}{The size of the sample}
 \item{\code{sample_size}}{Number of samples for each age group}
@@ -41,13 +42,14 @@ the helper functions. Currently available options are:
 force-of-infection. Currently available options are:
 \describe{
 \item{\link{sf_normal}}{Function to set normal distribution prior.
-Available for time models in the log-scale.}
+Available for time models in the log-scale}
 \item{\link{sf_cauchy}}{Function to set Cauchy distribution prior.
 Available for time models in regular scale.}
 }}
 
 \item{foi_index}{Integer vector specifying the age-groups for which
-force-of-infection values will be estimated}
+force-of-infection values will be estimated. It can be specified by
+means of \link{get_foi_index}}
 
 \item{is_seroreversion}{Boolean specifying whether to include
 seroreversion rate estimation in the model}
@@ -68,4 +70,12 @@ stan_fit object with force-of-infection and seroreversion
 }
 \description{
 Runs specified stan model for the force-of-infection
+}
+\examples{
+data(veev2012)
+seromodel <- fit_seromodel(
+serosurvey = veev2012,
+  model_type = "time",
+  foi_index = get_foi_index(veev2012, group_size = 30)
+)
 }

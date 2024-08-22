@@ -8,7 +8,8 @@ prepare_serosurvey_for_plotting(serosurvey, alpha = 0.05)
 }
 \arguments{
 \item{serosurvey}{\describe{
-\item{\code{survey_year}}{Year in which the survey took place}
+\item{\code{survey_year}}{Year in which the survey took place
+(only needed to plot time models)}
 \item{\code{age_min}}{Floor value of the average between age_min and age_max}
 \item{\code{age_max}}{The size of the sample}
 \item{\code{sample_size}}{Number of samples for each age group}

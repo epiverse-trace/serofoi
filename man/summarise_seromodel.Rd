@@ -19,7 +19,8 @@ summarise_seromodel(
 with \link{fit_seromode}}
 
 \item{serosurvey}{\describe{
-\item{\code{survey_year}}{Year in which the survey took place}
+\item{\code{survey_year}}{Year in which the survey took place
+(only needed to plot time models)}
 \item{\code{age_min}}{Floor value of the average between age_min and age_max}
 \item{\code{age_max}}{The size of the sample}
 \item{\code{sample_size}}{Number of samples for each age group}
@@ -28,7 +29,14 @@ with \link{fit_seromode}}
 
 \item{alpha}{1 - alpha indicates the credibility level to be used}
 
-\item{par_loo_estimate}{Name of the loo estimate to be extracted.}
+\item{par_loo_estimate}{Name of the loo estimate to be extracted.
+Available options are:
+\describe{
+\item{\code{"elpd_loo"}}{Expected log pointwise predictive density}
+\item{\code{"p_loo"}}{Effective number of parameters}
+\item{\code{"looic"}}{Leave-one-out cross-validation information criteria}
+}
+For additional information refer to \link[loo:loo]{loo}.}
 
 \item{loo_estimate_digits}{Number of loo estimate digits}
 

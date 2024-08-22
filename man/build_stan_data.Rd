@@ -17,7 +17,8 @@ build_stan_data(
 }
 \arguments{
 \item{serosurvey}{\describe{
-\item{\code{survey_year}}{Year in which the survey took place}
+\item{\code{survey_year}}{Year in which the survey took place
+(only needed to plot time models)}
 \item{\code{age_min}}{Floor value of the average between age_min and age_max}
 \item{\code{age_max}}{The size of the sample}
 \item{\code{sample_size}}{Number of samples for each age group}
@@ -34,7 +35,8 @@ the helper functions. Currently available options are:
 }}
 
 \item{foi_index}{Integer vector specifying the age-groups for which
-force-of-infection values will be estimated}
+force-of-infection values will be estimated. It can be specified by
+means of \link{get_foi_index}}
 
 \item{is_log_foi}{Boolean to set logarithmic scale in the FOI}
 
@@ -42,7 +44,7 @@ force-of-infection values will be estimated}
 force-of-infection. Currently available options are:
 \describe{
 \item{\link{sf_normal}}{Function to set normal distribution prior.
-Available for time models in the log-scale.}
+Available for time models in the log-scale}
 \item{\link{sf_cauchy}}{Function to set Cauchy distribution prior.
 Available for time models in regular scale.}
 }}
