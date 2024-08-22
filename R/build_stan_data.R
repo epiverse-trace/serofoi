@@ -67,6 +67,9 @@ sf_none <- function() {
 #' @param group_size Age groups size
 #' @return Integer vector with the indexes numerating each year/age
 #' (depending on the model).
+#' @examples
+#' data(chagas2012)
+#' foi_index <- get_foi_index(chagas2012, group_size = 25)
 #' @export
 get_foi_index <- function(
   serosurvey,
