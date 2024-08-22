@@ -67,12 +67,13 @@ set_foi_init <- function(
 #' force-of-infection. Currently available options are:
 #' \describe{
 #'  \item{[sf_normal]}{Function to set normal distribution prior.
-#'                     Available for time models in the log-scale.}
+#'                     Available for time models in the log-scale}
 #'  \item{[sf_cauchy]}{Function to set Cauchy distribution prior.
 #'                     Available for time models in regular scale.}
 #' }
 #' @param foi_index Integer vector specifying the age-groups for which
-#' force-of-infection values will be estimated
+#' force-of-infection values will be estimated. It can be specified by
+#' means of [get_foi_index]
 #' @param is_seroreversion Boolean specifying whether to include
 #' seroreversion rate estimation in the model
 #' @param seroreversion_prior seroreversion distribution specified by means of
