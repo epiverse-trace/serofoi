@@ -2,6 +2,13 @@
 #'
 #' @inheritParams extract_central_estimates
 #' @param par_loo_estimate Name of the loo estimate to be extracted.
+#' Available options are:
+#' \describe{
+#'   \item{`"elpd_loo"`}{Expected log pointwise predictive density}
+#'   \item{`"p_loo"`}{Effective number of parameters}
+#'   \item{`"looic"`}{Leave-one-out cross-validation information criteria}
+#' }
+#' For additional information refer to [loo][loo::loo].
 #' @param loo_estimate_digits Number of loo estimate digits
 #' @return Text summarising specified loo estimate
 #' @export

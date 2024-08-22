@@ -61,8 +61,10 @@ sf_none <- function() {
 
 #' Generates force-of-infection indexes for heterogeneous age groups
 #'
-#' The max value of the force-of-infection indexes correspond to
-#' the number of foi values to be estimated when sampling.
+#' Generates a list of integers indexing together the time/age intervals
+#' for which FOI values will be estimated in [fit_seromodel].
+#' The max value in `foi_index`  correspond to the number of FOI values to
+#' be estimated when sampling.
 #' @inheritParams fit_seromodel
 #' @param group_size Age groups size
 #' @return Integer vector with the indexes numerating each year/age
