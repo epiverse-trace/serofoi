@@ -22,7 +22,7 @@ transformed parameters {
 }
 
 model {
-  n_seropositive ~ binomial(sample_size, prob_infected);
+  n_seropositive ~ binomial(n_sample, prob_infected);
 
   // force of infection prior
   if (foi_prior_index == 0)

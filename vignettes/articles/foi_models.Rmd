@@ -92,10 +92,10 @@ Now that we can describe the proportion of seropositive individuals $P(t)$ by me
 ::: l-body-outset
 | Serocatalytic model | scale   | n_seropositive                        | FoI_1 prior                           | FoI_i, i>1               | sigma                   | mu                                    |
 | ------------------- | ------- | ------------------------------------- | ------------------------------------- | ------------------------ | ----------------------- | ------------------------------------- |
-| constant            | regular |  binomial(sample_size, prob_infected) | normal(mean, sd)<br>uniform(min, max) | \-                       | cauchy(mean, sd)            | normal(mean, sd)<br>uniform(min, max) |
-| age                 | regular |  binomial(sample_size, prob_infected) | normal(mean, sd)<br>uniform(min, max) | normal(FoI_{i-1}, sigma) | cauchy(mean, sd)            | normal(mean, sd)<br>uniform(min, max) |
-| time                | regular |  binomial(sample_size, prob_infected) | normal(mean, sd)<br>uniform(min, max) | normal(FoI_{i-1}, sigma) | cauchy(mean, sd)            | normal(mean, sd)<br>uniform(min, max) |
-| time                | log     |  binomial(sample_size, prob_infected) | normal(mean, sd)<br>uniform(min, max) | normal(FoI_{i-1}, sigma) | normal(location, scale) | normal(mean, sd)<br>uniform(min, max) |
+| constant            | regular |  binomial(n_sample, prob_infected) | normal(mean, sd)<br>uniform(min, max) | \-                       | cauchy(mean, sd)            | normal(mean, sd)<br>uniform(min, max) |
+| age                 | regular |  binomial(n_sample, prob_infected) | normal(mean, sd)<br>uniform(min, max) | normal(FoI_{i-1}, sigma) | cauchy(mean, sd)            | normal(mean, sd)<br>uniform(min, max) |
+| time                | regular |  binomial(n_sample, prob_infected) | normal(mean, sd)<br>uniform(min, max) | normal(FoI_{i-1}, sigma) | cauchy(mean, sd)            | normal(mean, sd)<br>uniform(min, max) |
+| time                | log     |  binomial(n_sample, prob_infected) | normal(mean, sd)<br>uniform(min, max) | normal(FoI_{i-1}, sigma) | normal(location, scale) | normal(mean, sd)<br>uniform(min, max) |
 :::
 Table 1. Available options.
 
@@ -120,7 +120,7 @@ foi_df <- data.frame(
 survey_features <- data.frame(
     age_min = seq(1, 50, 5),
     age_max = seq(5, 50, 5),
-    sample_size = rep(25, 10)
+    n_sample = rep(25, 10)
 )
 
 serosurvey_constant <- simulate_serosurvey(
@@ -182,7 +182,7 @@ foi_df <- data.frame(
 survey_features <- data.frame(
     age_min = seq(1, 50, 5),
     age_max = seq(5, 50, 5),
-    sample_size = rep(25, 10)
+    n_sample = rep(25, 10)
 )
 
 serosurvey_sw_dec <- simulate_serosurvey(
@@ -242,7 +242,7 @@ foi_df <- data.frame(
 survey_features <- data.frame(
     age_min = seq(1, 50, 5),
     age_max = seq(5, 50, 5),
-    sample_size = rep(25, 10)
+    n_sample = rep(25, 10)
 )
 
 serosurvey_large_epi <- simulate_serosurvey(

@@ -326,7 +326,7 @@ add_age_bins <- function(survey_features) {
 survey_by_individual_age <- function(survey_features, age_df) {
   age_df %>%
     left_join(survey_features, by = "group") %>%
-    rename(overall_sample_size = .data$sample_size)
+    rename(overall_sample_size = .data$n_sample)
 }
 
 #' Generate random sample sizes using multinomial sampling.
@@ -335,15 +335,15 @@ survey_by_individual_age <- function(survey_features, age_df) {
 #' multinomial sampling. It takes the total sample size and the number of age
 #' groups as input and returns a vector of sample sizes for each age group.
 #'
-#' @param sample_size The total sample size to be distributed among age groups.
+#' @param n_sample The total sample size to be distributed among age groups.
 #' @param n_ages The number of age groups.
 #'
 #' @return A vector containing random sample sizes for each age group.
-multinomial_sampling_group <- function(sample_size, n_ages) {
+multinomial_sampling_group <- function(n_sample, n_ages) {
   prob_value <- 1 / n_ages
   probs <- rep(prob_value, n_ages)
   sample_size_by_age <- as.vector(
-    rmultinom(1, sample_size, prob = probs)
+    rmultinom(1, n_sample, prob = probs)
   )
   return(sample_size_by_age)
 }
@@ -367,10 +367,10 @@ generate_random_sample_sizes <- function(survey_df_long) {
   for (interval_aux in na.omit(intervals)) {
     df_tmp <- survey_df_long %>%
       filter(.data$group == interval_aux)
-    sample_size <- df_tmp$overall_sample_size[1]
-    sample_size_by_age <- multinomial_sampling_group(sample_size, nrow(df_tmp))
+    n_sample <- df_tmp$overall_sample_size[1]
+    sample_size_by_age <- multinomial_sampling_group(n_sample, nrow(df_tmp))
     df_tmp <- df_tmp %>%
-      mutate(sample_size = sample_size_by_age)
+      mutate(n_sample = sample_size_by_age)
 
     if (is.null(df_new)) {
       df_new <- df_tmp
@@ -450,20 +450,20 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
     dplyr::mutate(
       n_seropositive = rbinom(
         nrow(probability_seropositive_by_age),
-        .data$sample_size,
+        .data$n_sample,
         .data$seropositivity)
       )
 
   grouped_df <- combined_df %>%
     dplyr::group_by(.data$age_min, .data$age_max) %>%
     dplyr::summarise(
-      sample_size = sum(.data$sample_size),
+      n_sample = sum(.data$n_sample),
       n_seropositive = sum(.data$n_seropositive),
       .groups = "drop"
     ) %>%
     left_join(
       survey_features,
-      by = c("age_min", "age_max", "sample_size")
+      by = c("age_min", "age_max", "n_sample")
     )
 
   return(grouped_df)
@@ -480,7 +480,7 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
 #' different years. It should have two columns: 'year' and 'foi'.
 #' @param survey_features A dataframe containing information about the binned
 #' age groups and sample sizes for each. It should contain columns:
-#' ['age_min', 'age_max', 'sample_size'].
+#' ['age_min', 'age_max', 'n_sample'].
 #' @param seroreversion_rate A non-negative value determining the rate of
 #' seroreversion (per year). Default is 0.
 #'
@@ -496,7 +496,7 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
 #' survey_features <- data.frame(
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
-#'   sample_size = c(1000, 2000, 1500))
+#'   n_sample = c(1000, 2000, 1500))
 #' serosurvey <- simulate_serosurvey_time_model(
 #' foi_df, survey_features)
 #' @export
@@ -545,7 +545,7 @@ simulate_serosurvey_time_model <- function(
 #' different ages. It should have two columns: 'age' and 'foi'.
 #' @param survey_features A dataframe containing information about the binned
 #' age groups and sample sizes for each. It should contain columns:
-#' ['age_min', 'age_max', 'sample_size'].
+#' ['age_min', 'age_max', 'n_sample'].
 #' @param seroreversion_rate A non-negative value determining the rate of
 #' seroreversion (per year). Default is 0.
 #'
@@ -561,7 +561,7 @@ simulate_serosurvey_time_model <- function(
 #' survey_features <- data.frame(
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
-#'   sample_size = c(1000, 2000, 1500))
+#'   n_sample = c(1000, 2000, 1500))
 #' serosurvey <- simulate_serosurvey_age_model(
 #' foi_df, survey_features)
 #' @export
@@ -610,7 +610,7 @@ simulate_serosurvey_age_model <- function(
 #' different ages. It should have two columns: 'year', 'age' and 'foi'.
 #' @param survey_features A dataframe containing information about the binned
 #' age groups and sample sizes for each. It should contain columns:
-#' ['age_min', 'age_max', 'sample_size'].
+#' ['age_min', 'age_max', 'n_sample'].
 #' @param seroreversion_rate A non-negative value determining the rate of
 #' seroreversion (per year). Default is 0.
 #'
@@ -627,7 +627,7 @@ simulate_serosurvey_age_model <- function(
 #' survey_features <- data.frame(
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
-#'   sample_size = c(1000, 2000, 1500))
+#'   n_sample = c(1000, 2000, 1500))
 #' serosurvey <- simulate_serosurvey_age_and_time_model(
 #' foi_df, survey_features)
 #' @export
@@ -683,7 +683,7 @@ simulate_serosurvey_age_and_time_model <- function( #nolint
 #' For age-and-time-varying models the columns should be ['age', 'time', 'foi'].
 #' @param survey_features A dataframe containing information about the binned
 #' age groups and sample sizes for each.
-#' It should contain columns: ['age_min', 'age_max', 'sample_size'].
+#' It should contain columns: ['age_min', 'age_max', 'n_sample'].
 #' @param seroreversion_rate A non-negative value determining the rate of
 #' seroreversion (per year). Default is 0.
 #'
@@ -699,7 +699,7 @@ simulate_serosurvey_age_and_time_model <- function( #nolint
 #' survey_features <- data.frame(
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
-#'   sample_size = c(1000, 2000, 1500))
+#'   n_sample = c(1000, 2000, 1500))
 #' serosurvey <- simulate_serosurvey(
 #' model = "time",
 #' foi = foi_df,
@@ -713,7 +713,7 @@ simulate_serosurvey_age_and_time_model <- function( #nolint
 #' survey_features <- data.frame(
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
-#'   sample_size = c(1000, 2000, 1500))
+#'   n_sample = c(1000, 2000, 1500))
 #' serosurvey <- simulate_serosurvey(
 #' model = "age",
 #' foi = foi_df,
@@ -728,7 +728,7 @@ simulate_serosurvey_age_and_time_model <- function( #nolint
 #' survey_features <- data.frame(
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
-#'   sample_size = c(1000, 2000, 1500))
+#'   n_sample = c(1000, 2000, 1500))
 #' serosurvey <- simulate_serosurvey(
 #' model = "age",
 #' foi = foi_df,
