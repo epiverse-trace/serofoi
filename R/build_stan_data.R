@@ -188,7 +188,7 @@ build_stan_data <- function(
     age_max = max(serosurvey$age_max),
     ages = seq(1, max(serosurvey$age_max), 1),
     n_seropositive = serosurvey$n_seropositive,
-    sample_size = serosurvey$sample_size,
+    n_sample = serosurvey$n_sample,
     age_groups = serosurvey$age_group
   ) %>%
     set_stan_data_defaults(

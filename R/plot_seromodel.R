@@ -7,7 +7,7 @@
 #' \describe{
 #'  \item{seroprev}{Seroprevalence computed as the proportion of positive
 #'                  cases `n_seropositive` in the number of samples
-#'                  `sample_size` for each age group}
+#'                  `n_sample` for each age group}
 #'  \item{seroprev_lower}{Lower limit of the binomial confidence interval
 #'                        of `seroprev`}
 #'  \item{seroprev_upper}{Upper limit of the binomial confidence interval
@@ -23,7 +23,7 @@ prepare_serosurvey_for_plotting <- function( #nolint
     cbind(
       Hmisc::binconf(
         serosurvey$n_seropositive,
-        serosurvey$sample_size,
+        serosurvey$n_sample,
         alpha = alpha,
         method = "exact",
         return.df = TRUE
@@ -136,7 +136,7 @@ plot_serosurvey <- function(
     serosurvey <- serosurvey %>%
       dplyr::group_by(.data$age_interval) %>%
       dplyr::summarise(
-        sample_size = sum(.data$sample_size),
+        n_sample = sum(.data$n_sample),
         n_seropositive = sum(.data$n_seropositive)
       ) %>%
       dplyr::mutate(
@@ -165,7 +165,7 @@ plot_serosurvey <- function(
     ggplot2::geom_point(
       ggplot2::aes(
         y = .data$seroprev,
-        size = .data$sample_size
+        size = .data$n_sample
       ),
       fill = "#7a0177", colour = "black", shape = 21
     ) +

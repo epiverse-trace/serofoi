@@ -53,7 +53,7 @@ set_foi_init <- function(
 #'         (only needed to plot time models)}
 #'   \item{`age_min`}{Floor value of the average between age_min and age_max}
 #'   \item{`age_max`}{The size of the sample}
-#'   \item{`sample_size`}{Number of samples for each age group}
+#'   \item{`n_sample`}{Number of samples for each age group}
 #'   \item{`n_seropositive`}{Number of positive samples for each age group}
 #' }
 #' @param model_type Type of the model. Either "constant", "age" or "time"
