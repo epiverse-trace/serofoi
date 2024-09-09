@@ -1,7 +1,7 @@
 Package: serofoi
 Title: Estimates the Force-of-Infection of a Given Pathogen from
     Population Based Seroprevalence Studies
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
     person("Zulma M.", "Cucunubá", , "zulma.cucunuba@javeriana.edu.co", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-8165-3198")),
@@ -15,9 +15,8 @@ Authors@R: c(
     person("Jaime A.", "Pavlich-Mariscal", role = "ctb",
            comment = c(ORCID = "0000-0002-3892-6680"))
   )
-Description: Estimate time-varying Force-of-Infection of a given pathogen
-    from population based seroprevalence studies using a bayesian
-    framework.
+Description: Estimate time or age varying Force-of-Infection from
+    population based seroprevalence studies using a bayesian framework.
 License: MIT + file LICENSE
 Depends: 
     R (>= 3.5.0)
