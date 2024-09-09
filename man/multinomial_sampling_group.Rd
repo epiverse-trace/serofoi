@@ -4,10 +4,10 @@
 \alias{multinomial_sampling_group}
 \title{Generate random sample sizes using multinomial sampling.}
 \usage{
-multinomial_sampling_group(sample_size, n_ages)
+multinomial_sampling_group(n_sample, n_ages)
 }
 \arguments{
-\item{sample_size}{The total sample size to be distributed among age groups.}
+\item{n_sample}{The total sample size to be distributed among age groups.}
 
 \item{n_ages}{The number of age groups.}
 }
