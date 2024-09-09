@@ -12,7 +12,7 @@ prepare_serosurvey_for_plotting(serosurvey, alpha = 0.05)
 (only needed to plot time models)}
 \item{\code{age_min}}{Floor value of the average between age_min and age_max}
 \item{\code{age_max}}{The size of the sample}
-\item{\code{sample_size}}{Number of samples for each age group}
+\item{\code{n_sample}}{Number of samples for each age group}
 \item{\code{n_seropositive}}{Number of positive samples for each age group}
 }}
 
@@ -23,7 +23,7 @@ serosurvey with additional columns:
 \describe{
 \item{seroprev}{Seroprevalence computed as the proportion of positive
 cases \code{n_seropositive} in the number of samples
-\code{sample_size} for each age group}
+\code{n_sample} for each age group}
 \item{seroprev_lower}{Lower limit of the binomial confidence interval
 of \code{seroprev}}
 \item{seroprev_upper}{Upper limit of the binomial confidence interval
