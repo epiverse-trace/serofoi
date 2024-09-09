@@ -31,7 +31,7 @@ transformed parameters {
 }
 
 model {
-  n_seropositive ~ binomial(sample_size, prob_infected);
+  n_seropositive ~ binomial(n_sample, prob_infected);
   sigma ~ cauchy(foi_sigma_rw_loc, foi_sigma_rw_sc);
 
   // force of infection prior

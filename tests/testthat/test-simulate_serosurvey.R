@@ -247,14 +247,14 @@ test_that("add_age_bins function works as expected", {
 test_that("survey_by_individual_age function works as expected", {
   # Test case 1: Check if overall sample size is calculated correctly for a single row dataframe
   age_df <- data.frame(age_min = 20, age_max = 30, group = "[20,30]")
-  survey_features <- data.frame(group = "[20,30]", sample_size = 100)
+  survey_features <- data.frame(group = "[20,30]", n_sample = 100)
   expected_df <- data.frame(age_min = 20, age_max = 30, group = "[20,30]", overall_sample_size = 100)
   actual_df <- survey_by_individual_age(survey_features, age_df)
   expect_equal(actual_df, expected_df)
 
   # Test case 2: Check if overall sample size is calculated correctly for multiple rows dataframe
   age_df <- data.frame(age_min = c(20, 30), age_max = c(31, 50), group = c("[20,30]", "[31,50]"))
-  survey_features <- data.frame(group = c("[20,30]", "[31,50]"), sample_size = c(100, 150))
+  survey_features <- data.frame(group = c("[20,30]", "[31,50]"), n_sample = c(100, 150))
   expected_df <- data.frame(age_min = c(20, 30), age_max = c(31, 50), group = c("[20,30]", "[31,50]"), overall_sample_size = c(100, 150))
   actual_df <- survey_by_individual_age(survey_features, age_df)
   expect_equal(actual_df, expected_df)
@@ -262,20 +262,20 @@ test_that("survey_by_individual_age function works as expected", {
 
 test_that("multinomial_sampling_group function works as expected", {
   # Test case 1: Check if sample sizes are generated correctly for a sample size of 100 and 5 age groups
-  sample_size <- 100
+  n_sample <- 100
   n_ages <- 5
   expected_length <- n_ages
-  actual_sample_sizes <- multinomial_sampling_group(sample_size, n_ages)
+  actual_sample_sizes <- multinomial_sampling_group(n_sample, n_ages)
   expect_length(actual_sample_sizes, expected_length)
-  expect_equal(sum(actual_sample_sizes), sample_size)
+  expect_equal(sum(actual_sample_sizes), n_sample)
 
   # Test case 2: Check if sample sizes are generated correctly for a sample size of 200 and 10 age groups
-  sample_size <- 200
+  n_sample <- 200
   n_ages <- 10
   expected_length <- n_ages
-  actual_sample_sizes <- multinomial_sampling_group(sample_size, n_ages)
+  actual_sample_sizes <- multinomial_sampling_group(n_sample, n_ages)
   expect_length(actual_sample_sizes, expected_length)
-  expect_equal(sum(actual_sample_sizes), sample_size)
+  expect_equal(sum(actual_sample_sizes), n_sample)
 })
 
 test_that("generate_random_sample_sizes function works as expected", {
@@ -289,11 +289,11 @@ test_that("generate_random_sample_sizes function works as expected", {
     dplyr::group_by(group) %>%
     dplyr::summarise(
       overall_sample_size = overall_sample_size[1],
-      sample_size = sum(sample_size)
+      n_sample = sum(n_sample)
     )
   expect_equal(
     group_df$overall_sample_size[1],
-    group_df$sample_size[1]
+    group_df$n_sample[1]
   )
 
   # Test case 2: Check if random sample sizes are generated correctly for two intervals
@@ -307,9 +307,9 @@ test_that("generate_random_sample_sizes function works as expected", {
     dplyr::group_by(group) %>%
     dplyr::summarise(
       overall_sample_size = overall_sample_size[1],
-      sample_size = sum(sample_size)
+      n_sample = sum(n_sample)
     )
-  expect_equal(group_df$sample_size, group_df$overall_sample_size)
+  expect_equal(group_df$n_sample, group_df$overall_sample_size)
 })
 
 test_that("sample_size_by_individual_age_random returns correct dataframe structure", {
@@ -318,7 +318,7 @@ test_that("sample_size_by_individual_age_random returns correct dataframe struct
   survey_features <- data.frame(
     age_min = c(1, 3, 15),
     age_max = c(2, 14, 20),
-    sample_size = c(1000, 2000, 1500)
+    n_sample = c(1000, 2000, 1500)
   )
   actual_df <- sample_size_by_individual_age_random(survey_features)
   expect_equal(nrow(actual_df), max(survey_features$age_max))
@@ -327,9 +327,9 @@ test_that("sample_size_by_individual_age_random returns correct dataframe struct
     dplyr::group_by(group) %>%
     dplyr::summarise(
       overall_sample_size = overall_sample_size[1],
-      sample_size = sum(sample_size)
+      n_sample = sum(n_sample)
     )
-  expect_equal(group_df$sample_size, group_df$overall_sample_size)
+  expect_equal(group_df$n_sample, group_df$overall_sample_size)
 
   # Test with sample survey_features data: non-contiguous age bins
   # TODO: doesn't work as age_bins construction too simple currently.
@@ -337,7 +337,7 @@ test_that("sample_size_by_individual_age_random returns correct dataframe struct
   survey_features <- data.frame(
     age_min = c(1, 7, 18),
     age_max = c(2, 16, 20),
-    sample_size = c(1000, 2000, 1500)
+    n_sample = c(1000, 2000, 1500)
   )
   actual_df <- sample_size_by_individual_age_random(survey_features)
   expect_equal(nrow(actual_df), 15)
@@ -346,7 +346,7 @@ test_that("sample_size_by_individual_age_random returns correct dataframe struct
 
 test_that("simulate_serosurvey_time_model function works as expected", {
   # Test case 1: Check if the output dataframe has the correct structure
-  sample_sizes <- c(1000, 2000, 1500)
+  n_samples <- c(1000, 2000, 1500)
   foi_df <- data.frame(
     year=seq(1990, 2009, 1)
   ) %>%
@@ -354,11 +354,11 @@ test_that("simulate_serosurvey_time_model function works as expected", {
   survey_features <- data.frame(
     age_min = c(1, 3, 15),
     age_max = c(2, 14, 20),
-    sample_size = sample_sizes)
+    n_sample = n_samples)
   actual_df <- simulate_serosurvey_time_model(foi_df, survey_features)
   expect_true("age_min" %in% colnames(actual_df))
   expect_true("age_max" %in% colnames(actual_df))
-  expect_true("sample_size" %in% colnames(actual_df))
+  expect_true("n_sample" %in% colnames(actual_df))
   expect_true("n_seropositive" %in% colnames(actual_df))
 
   # Test case 2: Check if the output dataframe has the correct number of rows
@@ -393,7 +393,7 @@ test_that("simulate_serosurvey_time_model input validation", {
   survey_features <- data.frame(
     age_min = c(1, 3, 15),
     age_max = c(2, 14, 20),
-    sample_size = c(1000, 2000, 1500)
+    n_sample = c(1000, 2000, 1500)
   )
 
   # Test with valid inputs
@@ -405,7 +405,7 @@ test_that("simulate_serosurvey_time_model input validation", {
 
   # Test with non-dataframe survey_features dataframe
   expect_error(simulate_serosurvey_time_model(foi_df, list()),
-               "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
+               "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'n_sample'.")
 
   # Test with misspelt columns in foi dataframe
   expect_error(simulate_serosurvey_time_model(data.frame(years = c(1990), foi = c(0.1)), survey_features),
@@ -417,7 +417,7 @@ test_that("simulate_serosurvey_time_model input validation", {
 
   # Test with missing columns in survey_features dataframe
   expect_error(simulate_serosurvey_time_model(foi_df, data.frame(age_min = c(1))),
-               "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
+               "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'n_sample'.")
 
   # Test with non-numeric seroreversion_rate
   expect_error(simulate_serosurvey_time_model(foi_df, survey_features, "seroreversion"),
@@ -431,7 +431,7 @@ test_that("simulate_serosurvey_time_model input validation", {
 
 test_that("simulate_serosurvey_age_model function works as expected", {
   # Test case 1: Check if the output dataframe has the correct structure
-  sample_sizes <- c(1000, 2000, 1500)
+  n_samples <- c(1000, 2000, 1500)
   foi_df <- data.frame(
     age=seq(1, 20, 1)
   ) %>%
@@ -439,11 +439,11 @@ test_that("simulate_serosurvey_age_model function works as expected", {
   survey_features <- data.frame(
     age_min = c(1, 3, 15),
     age_max = c(2, 14, 20),
-    sample_size = sample_sizes)
+    n_sample = n_samples)
   actual_df <- simulate_serosurvey_age_model(foi_df, survey_features)
   expect_true("age_min" %in% colnames(actual_df))
   expect_true("age_max" %in% colnames(actual_df))
-  expect_true("sample_size" %in% colnames(actual_df))
+  expect_true("n_sample" %in% colnames(actual_df))
   expect_true("n_seropositive" %in% colnames(actual_df))
 
   # Test case 2: Check if the output dataframe has the correct number of rows
@@ -478,7 +478,7 @@ test_that("simulate_serosurvey_age_model input validation", {
   survey_features <- data.frame(
     age_min = c(1, 3, 15),
     age_max = c(2, 14, 20),
-    sample_size = c(1000, 2000, 1500)
+    n_sample = c(1000, 2000, 1500)
   )
 
   # Test with valid inputs
@@ -490,7 +490,7 @@ test_that("simulate_serosurvey_age_model input validation", {
 
   # Test with non-dataframe survey_features dataframe
   expect_error(simulate_serosurvey_age_model(foi_df, list()),
-               "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
+               "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'n_sample'.")
 
   # Test with misspelt columns in foi dataframe
   expect_error(simulate_serosurvey_age_model(data.frame(ages = c(1), foi = c(0.1)), survey_features),
@@ -502,7 +502,7 @@ test_that("simulate_serosurvey_age_model input validation", {
 
   # Test with missing columns in survey_features dataframe
   expect_error(simulate_serosurvey_age_model(foi_df, data.frame(age_min = c(1))),
-               "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
+               "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'n_sample'.")
 
   # Test with non-numeric seroreversion_rate
   expect_error(simulate_serosurvey_age_model(foi_df, survey_features, "seroreversion"),
@@ -515,7 +515,7 @@ test_that("simulate_serosurvey_age_model input validation", {
 
 test_that("simulate_serosurvey_age_and_time_model function works as expected", {
   # Test case 1: Check if the output dataframe has the correct structure
-  sample_sizes <- c(1000, 2000, 1500)
+  n_samples <- c(1000, 2000, 1500)
   foi_df <- tidyr::expand_grid(
     year = seq(1990, 2009, 1),
     age = seq(1, 20, 1)
@@ -524,11 +524,11 @@ test_that("simulate_serosurvey_age_and_time_model function works as expected", {
   survey_features <- data.frame(
     age_min = c(1, 3, 15),
     age_max = c(2, 14, 20),
-    sample_size = sample_sizes)
+    n_sample = n_samples)
   actual_df <- simulate_serosurvey_age_and_time_model(foi_df, survey_features)
   expect_true("age_min" %in% colnames(actual_df))
   expect_true("age_max" %in% colnames(actual_df))
-  expect_true("sample_size" %in% colnames(actual_df))
+  expect_true("n_sample" %in% colnames(actual_df))
   expect_true("n_seropositive" %in% colnames(actual_df))
 
   # Test case 2: Check if the output dataframe has the correct number of rows
@@ -565,7 +565,7 @@ test_that("simulate_serosurvey_age_and_time_model input validation", {
   survey_features <- data.frame(
     age_min = c(1, 3, 15),
     age_max = c(2, 14, 20),
-    sample_size = c(1000, 2000, 1500)
+    n_sample = c(1000, 2000, 1500)
   )
 
   # Test with valid inputs
@@ -577,7 +577,7 @@ test_that("simulate_serosurvey_age_and_time_model input validation", {
 
   # Test with non-dataframe survey_features dataframe
   expect_error(simulate_serosurvey_age_and_time_model(foi_df, list()),
-               "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
+               "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'n_sample'.")
 
   # Test with misspelt columns in foi dataframe
   expect_error(simulate_serosurvey_age_and_time_model(data.frame(ages = c(1), foi = c(0.1)), survey_features),
@@ -595,7 +595,7 @@ test_that("simulate_serosurvey_age_and_time_model input validation", {
 
   # Test with missing columns in survey_features dataframe
   expect_error(simulate_serosurvey_age_and_time_model(foi_df, data.frame(age_min = c(1))),
-               "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'sample_size'.")
+               "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'n_sample'.")
 
   # Test with non-numeric seroreversion_rate
   expect_error(simulate_serosurvey_age_and_time_model(foi_df, survey_features, "seroreversion"),
@@ -616,10 +616,10 @@ test_that("simulate_serosurvey returns serosurvey data based on specified model"
   survey_features <- data.frame(
     age_min = c(1, 3, 15),
     age_max = c(2, 14, 20),
-    sample_size = c(1000, 2000, 1500)
+    n_sample = c(1000, 2000, 1500)
   )
   serosurvey <- simulate_serosurvey("age", foi_df, survey_features)
-  expect_true(all(names(serosurvey) %in% c("age_min", "age_max", "sample_size", "n_seropositive")))
+  expect_true(all(names(serosurvey) %in% c("age_min", "age_max", "n_sample", "n_seropositive")))
 
   # Test with 'time' model
   foi_df <- data.frame(
@@ -627,7 +627,7 @@ test_that("simulate_serosurvey returns serosurvey data based on specified model"
     foi = runif(20, 0.05, 0.15)
   )
   serosurvey <- simulate_serosurvey("time", foi_df, survey_features)
-  expect_true(all(names(serosurvey) %in% c("age_min", "age_max", "sample_size", "n_seropositive")))
+  expect_true(all(names(serosurvey) %in% c("age_min", "age_max", "n_sample", "n_seropositive")))
 
   # Test with 'age-time' model
   foi_df <- tidyr::expand_grid(
@@ -637,7 +637,7 @@ test_that("simulate_serosurvey returns serosurvey data based on specified model"
     mutate(foi=rnorm(20 * 20, 0.1, 0.001))
 
   serosurvey <- simulate_serosurvey("age-time", foi_df, survey_features)
-  expect_true(all(names(serosurvey) %in% c("age_min", "age_max", "sample_size", "n_seropositive")))
+  expect_true(all(names(serosurvey) %in% c("age_min", "age_max", "n_sample", "n_seropositive")))
 })
 
 test_that("simulate_serosurvey handles invalid model inputs", {
@@ -649,7 +649,7 @@ test_that("simulate_serosurvey handles invalid model inputs", {
   survey_features <- data.frame(
     age_min = c(1, 3, 15),
     age_max = c(2, 14, 20),
-    sample_size = c(1000, 2000, 1500)
+    n_sample = c(1000, 2000, 1500)
   )
   expect_error(simulate_serosurvey("invalid_model", foi_df, survey_features),
                "model must be one of 'age', 'time', or 'age-time'.")

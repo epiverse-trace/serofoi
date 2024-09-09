@@ -3,7 +3,7 @@ validate_serosurvey <- function(serosurvey) {
   col_types <- list(
     age_min = "numeric",
     age_max = "numeric",
-    sample_size = "numeric",
+    n_sample = "numeric",
     n_seropositive = "numeric"
   )
 
@@ -42,11 +42,11 @@ validate_survey_features <- function(survey_features) {
 
   if (!is.data.frame(survey_features) ||
       !all(
-        c("age_min", "age_max", "sample_size") %in% names(survey_features))
+        c("age_min", "age_max", "n_sample") %in% names(survey_features))
       ) {
     stop(
       "survey_features must be a dataframe with columns ",
-      "'age_min', 'age_max', and 'sample_size'."
+      "'age_min', 'age_max', and 'n_sample'."
       )
   }
 
