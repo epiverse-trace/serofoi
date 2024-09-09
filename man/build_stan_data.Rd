@@ -21,7 +21,7 @@ build_stan_data(
 (only needed to plot time models)}
 \item{\code{age_min}}{Floor value of the average between age_min and age_max}
 \item{\code{age_max}}{The size of the sample}
-\item{\code{sample_size}}{Number of samples for each age group}
+\item{\code{n_sample}}{Number of samples for each age group}
 \item{\code{n_seropositive}}{Number of positive samples for each age group}
 }}
 

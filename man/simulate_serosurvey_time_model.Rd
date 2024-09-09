@@ -12,7 +12,7 @@ different years. It should have two columns: 'year' and 'foi'.}
 
 \item{survey_features}{A dataframe containing information about the binned
 age groups and sample sizes for each. It should contain columns:
-\link{'age_min', 'age_max', 'sample_size'}.}
+\link{'age_min', 'age_max', 'n_sample'}.}
 
 \item{seroreversion_rate}{A non-negative value determining the rate of
 seroreversion (per year). Default is 0.}
@@ -37,7 +37,7 @@ mutate(foi = rnorm(length(year), 0.1, 0.01))
 survey_features <- data.frame(
   age_min = c(1, 3, 15),
   age_max = c(2, 14, 20),
-  sample_size = c(1000, 2000, 1500))
+  n_sample = c(1000, 2000, 1500))
 serosurvey <- simulate_serosurvey_time_model(
 foi_df, survey_features)
 }

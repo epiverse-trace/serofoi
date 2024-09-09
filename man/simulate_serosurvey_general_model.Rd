@@ -21,7 +21,7 @@ birth cohort.}
 
 \item{survey_features}{A dataframe containing information about the binned
 age groups and sample sizes for each.
-It should contain columns: \link{'age_min', 'age_max', 'sample_size'}.}
+It should contain columns: \link{'age_min', 'age_max', 'n_sample'}.}
 }
 \value{
 A dataframe with simulated serosurvey data, including age group
