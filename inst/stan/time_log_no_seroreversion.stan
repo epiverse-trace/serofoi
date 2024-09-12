@@ -54,7 +54,6 @@ generated quantities{
   vector[age_max] foi_expanded;
 
   for(i in 1:age_max) {
-    int time_index = age_max - i + 1;
     foi_expanded[i] = foi_vector[foi_index[i]];
   }
 
