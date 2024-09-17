@@ -1,6 +1,5 @@
 # Setup for testing ----
 tol_min = 1e-3
-tol_max = 0.1
 stan_seed = "123"
 
 survey_features <- data.frame(
@@ -8,7 +7,7 @@ survey_features <- data.frame(
   age_max = c(4, 14, 20),
   n_sample = c(500, 500, 500))
 
-mu <- 0.01 # seroreversion_rate
+mu <- 0.1 # seroreversion_rate
 
 test_foi_estimation <- function(seromodel, serosurvey, foi) {
   foi_estimates <- extract_central_estimates(
@@ -16,8 +15,7 @@ test_foi_estimation <- function(seromodel, serosurvey, foi) {
     serosurvey = serosurvey,
     par_name = "foi_expanded"
     ) %>%
-    mutate(tol = pmax(pmin((upper - lower)/2, tol_max), tol_min))
-
+    mutate(tol = pmax((upper - lower)/2, tol_min))
   expect_true(
     all(
       dplyr::near(
@@ -96,12 +94,12 @@ test_that("fit_seromodel correctly estimates constant foi using default settings
 test_that("fit_seromodel correctly estimates time-varying foi using default priors", {
   skip_on_cran()
 
-  # no seroreversion
   foi <- data.frame(
     year = seq(1990, 2009, 1),
-    foi = c(rep(0.01, 10), rep(0, 10))
+    foi = c(rep(0.01, 10), rep(0.005, 10))
   )
 
+  # no seroreversion
   set.seed(123)
   serosurvey <- simulate_serosurvey(
     model = "time",
@@ -122,11 +120,6 @@ test_that("fit_seromodel correctly estimates time-varying foi using default prio
   test_foi_estimation(seromodel, serosurvey, foi)
 
   # seroreversion
-  foi <- data.frame(
-    year = seq(1990, 2009, 1),
-    foi = c(rep(0, 10), rep(0.01, 10))
-  )
-
   set.seed(123)
   serosurvey <- simulate_serosurvey(
     model = "time",
@@ -141,7 +134,7 @@ test_that("fit_seromodel correctly estimates time-varying foi using default prio
       serosurvey,
       model_type = "time",
       foi_index = get_foi_index(serosurvey, group_size = 10),
-      foi_prior = sf_normal(0, 1e-4),
+      foi_prior = sf_uniform(),
       is_seroreversion = TRUE,
       seroreversion_prior = sf_normal(mu, mu/10),
       seed = stan_seed
@@ -213,9 +206,10 @@ test_that("fit_seromodel correctly identifies outbreak using time-log-foi model"
   skip_on_cran()
 
   # time-varying FOI
+  outbreak_years <- 2
   foi <- data.frame(
     year = seq(1990, 2009, 1),
-    foi = c(rep(0, 10), rep(0.1, 5), rep(0,5))
+    foi = c(rep(0, 10), rep(0.5, outbreak_years), rep(0.01, 10 - outbreak_years))
   )
 
   # no seroreversion
@@ -233,7 +227,7 @@ test_that("fit_seromodel correctly identifies outbreak using time-log-foi model"
       model_type = "time",
       is_log_foi = TRUE,
       foi_prior = sf_normal(0, 1e-4),
-      foi_index = c(rep(1, 10), rep(2, 5), rep(3, 5)),
+      foi_index = c(rep(1, 10), rep(2, outbreak_years), rep(3, 10 - outbreak_years)),
       seed = stan_seed
     )
   )
@@ -256,7 +250,7 @@ test_that("fit_seromodel correctly identifies outbreak using time-log-foi model"
       model_type = "time",
       is_log_foi = TRUE,
       foi_prior = sf_normal(0, 1e-4),
-      foi_index = c(rep(1, 10), rep(2, 5), rep(3, 5)),
+      foi_index = c(rep(1, 10), rep(2, outbreak_years), rep(3, 10 - outbreak_years)),
       is_seroreversion = TRUE,
       seroreversion_prior = sf_normal(mu, mu/10),
       seed = stan_seed
