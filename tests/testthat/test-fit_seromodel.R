@@ -4,9 +4,9 @@ tol_max = 0.1
 stan_seed = "123"
 
 survey_features <- data.frame(
-  age_min = c(1, 3, 15),
-  age_max = c(2, 14, 20),
-  n_sample = c(1000, 2000, 1500))
+  age_min = c(1, 5, 15),
+  age_max = c(4, 14, 20),
+  n_sample = c(500, 500, 500))
 
 mu <- 0.01 # seroreversion_rate
 
