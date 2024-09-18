@@ -793,7 +793,7 @@ test_that("probability_seropositive_general_model_by_age reduces to age- and tim
     construct_A,
     calculate_seropositivity_function,
     initial_conditions,
-    max_age=length(lambda),
+    max_age = nrow(foi_df_time),
     u,
     v
   )
