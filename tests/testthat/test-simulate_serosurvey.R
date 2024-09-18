@@ -483,7 +483,7 @@ test_that("simulate_serosurvey_age_model input validation", {
   expect_silent(simulate_serosurvey_age_model(foi_df, survey_features))
 
   # Test with non-dataframe foi dataframe
-  expect_error(simulate_serosurvey_age_model(list(), survey_features),
+  expect_error(simulate_serosurvey_age_model(foi = list(), survey_features),
                "foi must be a dataframe with columns foi and age.")
 
   # Test with non-dataframe survey_features dataframe
