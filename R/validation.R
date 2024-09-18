@@ -72,9 +72,9 @@ validate_foi_df <- function(foi_df, cnames_additional) {
       message_end <- paste0(
         ", ", paste(cnames_additional, collapse = " and "), "."
         )
-      message_beginning <- "foi must be a dataframe with columns foi"
-      stop(glue::glue("{message_beginning}", "{message_end}"))
     }
+    message_beginning <- "foi must be a dataframe with columns foi"
+    stop(glue::glue("{message_beginning}", "{message_end}"))
   }
 }
 
