@@ -490,9 +490,9 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
 #' @examples
 #' # specify FOIs for each year
 #' foi_df <- data.frame(
-#'   year = seq(1990, 2009, 1)
-#' ) %>%
-#' mutate(foi = rnorm(length(year), 0.1, 0.01))
+#'   year = seq(1990, 2009, 1),
+#'   foi = rnorm(20, 0.1, 0.01)
+#' )
 #' survey_features <- data.frame(
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
@@ -555,9 +555,9 @@ simulate_serosurvey_time_model <- function(
 #' @examples
 #' # specify FOIs for each year
 #' foi_df <- data.frame(
-#'   age = seq(1, 20, 1)
-#' ) %>%
-#' mutate(foi = rnorm(length(year), 0.1, 0.01))
+#'   age = seq(1, 20, 1),
+#'   foi = rnorm(20, 0.1, 0.01)
+#' )
 #' survey_features <- data.frame(
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
@@ -619,11 +619,11 @@ simulate_serosurvey_age_model <- function(
 #' and other survey features.
 #' @examples
 #' # specify FOIs for each year
-#' foi_df <- data.frame(
+#' foi_df <- expand.grid(
 #'   year = seq(1990, 2009, 1),
 #'   age = seq(1, 20, 1)
-#' ) %>%
-#' mutate(foi = rnorm(20 * 20, 0.1, 0.01))
+#' )
+#' foi_df$foi <- rnorm(20 * 20, 0.1, 0.01)
 #' survey_features <- data.frame(
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
@@ -693,9 +693,9 @@ simulate_serosurvey_age_and_time_model <- function( #nolint
 #' @examples
 #' # time-varying model
 #' foi_df <- data.frame(
-#'   year = seq(1990, 2009, 1)
-#' ) %>%
-#' mutate(foi = rnorm(length(year), 0.1, 0.01))
+#'   year = seq(1990, 2009, 1),
+#'   foi = rnorm(20, 0.1, 0.01)
+#' )
 #' survey_features <- data.frame(
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
@@ -707,9 +707,9 @@ simulate_serosurvey_age_and_time_model <- function( #nolint
 #'
 #' # age-varying model
 #' foi_df <- data.frame(
-#'   age = seq(1, 20, 1)
-#' ) %>%
-#' mutate(foi = rnorm(length(year), 0.1, 0.01))
+#'   age = seq(1, 20, 1),
+#'   foi = rnorm(20, 0.1, 0.01)
+#' )
 #' survey_features <- data.frame(
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
@@ -723,14 +723,14 @@ simulate_serosurvey_age_and_time_model <- function( #nolint
 #' foi_df <- expand.grid(
 #'   year = seq(1990, 2009, 1),
 #'   age = seq(1, 20, 1)
-#' ) %>%
-#' mutate(foi = rnorm(20 * 20, 0.1, 0.01))
+#' )
+#' foi_df$foi <- rnorm(20 * 20, 0.1, 0.01)
 #' survey_features <- data.frame(
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
 #'   n_sample = c(1000, 2000, 1500))
 #' serosurvey <- simulate_serosurvey(
-#' model = "age",
+#' model = "age-time",
 #' foi = foi_df,
 #' survey_features = survey_features)
 #' @export
