@@ -38,9 +38,9 @@ through multinomial sampling.
 \examples{
 # time-varying model
 foi_df <- data.frame(
-  year = seq(1990, 2009, 1)
-) \%>\%
-mutate(foi = rnorm(length(year), 0.1, 0.01))
+  year = seq(1990, 2009, 1),
+  foi = rnorm(20, 0.1, 0.01)
+)
 survey_features <- data.frame(
   age_min = c(1, 3, 15),
   age_max = c(2, 14, 20),
@@ -52,9 +52,9 @@ survey_features = survey_features)
 
 # age-varying model
 foi_df <- data.frame(
-  age = seq(1, 20, 1)
-) \%>\%
-mutate(foi = rnorm(length(year), 0.1, 0.01))
+  age = seq(1, 20, 1),
+  foi = rnorm(20, 0.1, 0.01)
+)
 survey_features <- data.frame(
   age_min = c(1, 3, 15),
   age_max = c(2, 14, 20),
@@ -68,14 +68,14 @@ survey_features = survey_features)
 foi_df <- expand.grid(
   year = seq(1990, 2009, 1),
   age = seq(1, 20, 1)
-) \%>\%
-mutate(foi = rnorm(20 * 20, 0.1, 0.01))
+)
+foi_df$foi <- rnorm(20 * 20, 0.1, 0.01)
 survey_features <- data.frame(
   age_min = c(1, 3, 15),
   age_max = c(2, 14, 20),
   n_sample = c(1000, 2000, 1500))
 serosurvey <- simulate_serosurvey(
-model = "age",
+model = "age-time",
 foi = foi_df,
 survey_features = survey_features)
 }

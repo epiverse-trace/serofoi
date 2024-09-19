@@ -35,11 +35,11 @@ bin through multinomial sampling.
 }
 \examples{
 # specify FOIs for each year
-foi_df <- data.frame(
+foi_df <- expand.grid(
   year = seq(1990, 2009, 1),
   age = seq(1, 20, 1)
-) \%>\%
-mutate(foi = rnorm(20 * 20, 0.1, 0.01))
+)
+foi_df$foi <- rnorm(20 * 20, 0.1, 0.01)
 survey_features <- data.frame(
   age_min = c(1, 3, 15),
   age_max = c(2, 14, 20),
