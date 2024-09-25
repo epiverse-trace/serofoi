@@ -107,3 +107,28 @@ validate_survey_and_foi_consistency_age_time <- function( #nolint
       "not exceed max age in survey_features."
       )
 }
+
+validate_foi_index <- function(
+  foi_index,
+  serosurvey,
+  model_type
+) {
+  # Check model_type correspond to a valid model
+  stopifnot(
+    "model_type must be either 'time' or 'age'" =
+    model_type %in% c("time", "age")
+  )
+
+  # validate that foi_index has the right columns
+  if (model_type == "age") {
+    checkmate::assert_names(names(foi_index), must.include = "age")
+  } else if (model_type == "time") {
+    checkmate::assert_names(names(foi_index), must.include = "year")
+  }
+
+  # validate that foi_index has the right size
+  stopifnot(
+    "foi_index must be the right size" =
+    nrow(foi_index) == max(serosurvey$age_max)
+  )
+}
