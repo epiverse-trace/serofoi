@@ -76,6 +76,6 @@ data(veev2012)
 seromodel <- fit_seromodel(
 serosurvey = veev2012,
   model_type = "time",
-  foi_index = get_foi_index(veev2012, group_size = 30)
+  foi_index = get_foi_index(veev2012, group_size = 30, model_type = "time")
 )
 }
