@@ -48,21 +48,22 @@ seromodel_constant <- fit_seromodel(
   iter = 1000
 )
 
-
+foi_index <- get_foi_index(chik2015, group_size = 5, model_type = "time")
 seromodel_time <- fit_seromodel(
   serosurvey = chik2015,
   model_type = "time",
   foi_prior = sf_normal(0, 0.01),
-  foi_index = get_foi_index(chik2015, group_size = 5),
+  foi_index = foi_index,
   iter = 2500
 )
 
+foi_index <- get_foi_index(chik2015, group_size = 5, model_type = "time")
 seromodel_log_time <- fit_seromodel(
   serosurvey = chik2015,
   model_type = "time",
   foi_prior = sf_normal(0, 0.01),
   is_log_foi = TRUE,
-  foi_index = get_foi_index(chik2015, group_size = 5),
+  foi_index = foi_index,
   iter = 2000
 )
 
@@ -121,20 +122,22 @@ seromodel_constant <- fit_seromodel(
   iter = 1000
 )
 
+foi_index <- get_foi_index(veev2012, group_size = 5, model_type = "time")
 seromodel_time <- fit_seromodel(
   serosurvey = veev2012,
   model_type = "time",
   foi_prior = sf_normal(0, 0.1),
-  foi_index = get_foi_index(veev2012, group_size = 5),
+  foi_index = foi_index,
   iter = 2000
 )
 
+foi_index <- get_foi_index(veev2012, group_size = 5, model_type = "time")
 seromodel_log_time <- fit_seromodel(
   serosurvey = veev2012,
   model_type = "time",
   foi_prior = sf_normal(0, 0.1),
   is_log_foi = TRUE,
-  foi_index = get_foi_index(veev2012, group_size = 5),
+  foi_index = foi_index,
   iter = 2000
 )
 
@@ -191,10 +194,12 @@ seromodel_constant <- fit_seromodel(
   model_type = "constant",
   iter = 800
 )
+
+foi_index <- get_foi_index(chagas2012, group_size = 10, model_type = "time")
 seromodel_time <- fit_seromodel(
   serosurvey = chagas2012,
   model_type = "time",
-  foi_index = get_foi_index(chagas2012, group_size = 10),
+  foi_index = foi_index,
   iter = 1500
 )
 
