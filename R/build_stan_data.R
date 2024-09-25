@@ -217,7 +217,7 @@ build_stan_data <- function(
     set_stan_data_defaults(
       is_log_foi = is_log_foi,
       is_seroreversion = is_seroreversion
-      )
+    )
 
   if (model_type == "constant") {
     stan_data <- c(
@@ -235,7 +235,12 @@ build_stan_data <- function(
       list(foi_index = foi_index_default$foi_index)
     )
   } else {
-    # TODO: check that foi_index is the right size
+    validate_foi_index(
+      foi_index = foi_index,
+      serosurvey = serosurvey,
+      model_type = model_type
+    )
+
     stan_data <- c(
       stan_data,
       list(foi_index = foi_index$foi_index)
