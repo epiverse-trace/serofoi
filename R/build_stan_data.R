@@ -67,40 +67,63 @@ sf_none <- function() {
 #' be estimated when sampling.
 #' @inheritParams fit_seromodel
 #' @param group_size Age groups size
-#' @return Integer vector with the indexes numerating each year/age
-#' (depending on the model).
+#' @param model_type Type of the model. Either "age" or "time"
+#' @return Data frame with the indexes numerating each age/year (depending on
+#' the model). A single FOI value will be estimated for ages/years assigned
+#' with the same index
 #' @examples
 #' data(chagas2012)
-#' foi_index <- get_foi_index(chagas2012, group_size = 25)
+#' foi_index <- get_foi_index(chagas2012, group_size = 25, model_type = "time")
 #' @export
 get_foi_index <- function(
   serosurvey,
-  group_size
+  group_size,
+  model_type
   ) {
-    checkmate::assert_int(
-      group_size,
-      lower = 1,
-      upper = max(serosurvey$age_max)
-      )
+  # Check model_type correspond to a valid model
+  stopifnot(
+    "model_type must be either 'time' or 'age'" =
+    model_type %in% c("time", "age")
+  )
 
-    foi_index <- unlist(
-      purrr::map(
-        seq(
-          1,
-          max(serosurvey$age_max) / group_size,
-          1),
-        rep,
-        times = group_size
-      )
+  # Check group_size dimension is in the right range
+  checkmate::assert_int(
+    group_size,
+    lower = 1,
+    upper = max(serosurvey$age_max)
     )
 
-    foi_index <- c(
-      foi_index,
-      rep(
-        max(foi_index),
-        max(serosurvey$age_max) - length(foi_index)
-      )
+  foi_indexes <- unlist(
+    purrr::map(
+      seq(
+        1,
+        max(serosurvey$age_max) / group_size,
+        1),
+      rep,
+      times = group_size
     )
+  )
+
+  foi_indexes <- c(
+    foi_indexes,
+    rep(
+      max(foi_indexes),
+      max(serosurvey$age_max) - length(foi_indexes)
+    )
+  )
+
+  if (model_type == "time") {
+    survey_year <- unique(serosurvey$survey_year)
+    foi_index <- data.frame(
+      year = seq(survey_year - max(serosurvey$age_max), survey_year - 1),
+      foi_index = foi_indexes
+    )
+  } else if (model_type == "age") {
+    foi_index <- data.frame(
+      age = seq(1, max(serosurvey$age_max), 1),
+      foi_index = foi_indexes
+    )
+  }
 
   return(foi_index)
 }
@@ -196,17 +219,26 @@ build_stan_data <- function(
       is_seroreversion = is_seroreversion
       )
 
-  if (is.null(foi_index)) {
-    foi_index_default <- get_foi_index(serosurvey = serosurvey, group_size = 1)
+  if (model_type == "constant") {
     stan_data <- c(
       stan_data,
-      list(foi_index = foi_index_default)
+      list(foi_index = rep(1, max(serosurvey$age_max)))
+    )
+  } else if (is.null(foi_index) && model_type != "constant") {
+    foi_index_default <- get_foi_index(
+      serosurvey = serosurvey,
+      group_size = 1,
+      model_type = model_type
+    )
+    stan_data <- c(
+      stan_data,
+      list(foi_index = foi_index_default$foi_index)
     )
   } else {
     # TODO: check that foi_index is the right size
     stan_data <- c(
       stan_data,
-      list(foi_index = foi_index)
+      list(foi_index = foi_index$foi_index)
     )
   }
   config_file <- system.file("extdata", "config.yml", package = "serofoi")

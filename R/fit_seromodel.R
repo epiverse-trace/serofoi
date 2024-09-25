@@ -92,7 +92,7 @@ set_foi_init <- function(
 #' seromodel <- fit_seromodel(
 #' serosurvey = veev2012,
 #'   model_type = "time",
-#'   foi_index = get_foi_index(veev2012, group_size = 30)
+#'   foi_index = get_foi_index(veev2012, group_size = 30, model_type = "time")
 #' )
 #' @export
 fit_seromodel <- function(
