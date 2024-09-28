@@ -1,6 +1,30 @@
 library(testthat)
 library(ggplot2)
 library(rlang)
+library(purrr)
+
+extract_plot_data <- function(plot) {
+  list(
+    classes = class(plot),
+    layers = extract_layers(plot$layers),
+    coordinates = list(
+      limits = plot$coordinates$limits
+    ),
+    labels = plot$labels
+  )
+}
+
+extract_layers <- function(layers) {
+  map(layers, function(layer) {
+    # Extract mappings
+    list(
+      mapping =
+        map(layer$mapping, function(x) {
+          quo_name(get_expr(x))
+        })
+    )
+  })
+}
 
 
 create_expected_serosurvey <- function(actual_serosurvey) {
@@ -8,59 +32,91 @@ create_expected_serosurvey <- function(actual_serosurvey) {
     add_age_group_to_serosurvey()))
 }
 
-expect_correct_serosurvey_plot <- function(actual_serosurvey, expected_serosurvey, plot) {
-  # Test that the output is a ggplot object
-  expect_s3_class(plot, "ggplot")
-
-  # Test that the correct data is used
-  expect_equal(plot$data, expected_serosurvey)
-
-  # Checks that the right columns are used for ymin and yman in the error bars
-  expect_equal(quo_name(get_expr(plot$layers[[1]]$mapping$ymin)), "seroprev_lower")
-  expect_equal(quo_name(get_expr(plot$layers[[1]]$mapping$ymax)), "seroprev_upper")
-  expect_equal(quo_name(get_expr(plot$layers[[2]]$mapping$y)), "seroprev")
-  expect_equal(quo_name(get_expr(plot$layers[[2]]$mapping$size)), "n_sample")
-
-  # Check that the plot uses the correct coordinate limits
-  expect_equal(
-    plot$coordinates$limits$x,
-    c(min(expected_serosurvey$age_min), max(expected_serosurvey$age_max))
-  )
-  expect_equal(
-    plot$coordinates$limits$y,
-    c(min(expected_serosurvey$seroprev_lower), max(expected_serosurvey$seroprev_upper))
-  )
-
-  # Test labels
-  expect_equal(plot$labels$y, "Seroprevalence")
-  expect_equal(plot$labels$x, "Age")
-}
 
 test_that("plot_serosurvey creates a ggplot with correct structure", {
   data(veev2012)
 
   actual_serosurvey <- veev2012
 
+  actual_plot <- extract_plot_data(plot_serosurvey(actual_serosurvey))
+
   expected_serosurvey <- create_expected_serosurvey(actual_serosurvey)
 
-  plot <- plot_serosurvey(actual_serosurvey)
+  expected_plot <- list(
+    classes = c("gg", "ggplot"),
+    layers = list(
+      list(
+        mapping = list(
+          ymin = "seroprev_lower",
+          ymax = "seroprev_upper"
+        )
+      ),
+      list(
+        mapping = list(
+          y = "seroprev",
+          size = "n_sample"
+        )
+      )
+    ),
+    coordinates = list(
+      limits = list(
+        x = c(min(expected_serosurvey$age_min), max(expected_serosurvey$age_max)),
+        y = c(min(expected_serosurvey$seroprev_lower), max(expected_serosurvey$seroprev_upper))
+      )
+    ),
+    labels = list(
+      x = "Age",
+      y = "Seroprevalence",
+      ymin = "seroprev_lower",
+      ymax = "seroprev_upper",
+      size = "n_sample"
+    )
+  )
 
-  expect_correct_serosurvey_plot(actual_serosurvey, expected_serosurvey, plot)
+  expect_equal(expected_plot, actual_plot)
 })
 
 
 
-# test_that("plot_serosurvey creates a binned ggplot with correct structure", {
-#   data(veev2012)
+test_that("plot_serosurvey creates a binned ggplot with correct structure", {
+  data(veev2012)
 
-#   actual_serosurvey <- veev2012
+  actual_serosurvey <- veev2012
 
-#   expected_serosurvey <- create_expected_serosurvey(actual_serosurvey)
+  actual_plot <- extract_plot_data(plot_serosurvey(actual_serosurvey, bin_serosurvey = TRUE, bin_step = 10))
 
-#   plot <- plot_serosurvey(actual_serosurvey, bin_serosurvey = TRUE, bin_step = 10)
+  expected_serosurvey <- create_expected_serosurvey(actual_serosurvey)
 
-#   expect_correct_serosurvey_plot(actual_serosurvey, expected_serosurvey, plot)
+  expected_plot <- list(
+    classes = c("gg", "ggplot"),
+    layers = list(
+      list(
+        mapping = list(
+          ymin = "seroprev_lower",
+          ymax = "seroprev_upper"
+        )
+      ),
+      list(
+        mapping = list(
+          y = "seroprev",
+          size = "n_sample"
+        )
+      )
+    ),
+    coordinates = list(
+      limits = list(
+        x = c(2, max(expected_serosurvey$age_max)),
+        y = c(min(expected_serosurvey$seroprev_lower), max(expected_serosurvey$seroprev_upper))
+      )
+    ),
+    labels = list(
+      x = "Age",
+      y = "Seroprevalence",
+      ymin = "seroprev_lower",
+      ymax = "seroprev_upper",
+      size = "n_sample"
+    )
+  )
 
-#   expect_equal(plot$data$n_sample, tapply(expected_serosurvey$n_sample, expected_serosurvey$age_group, sum))
-# })
-
+  expect_equal(expected_plot, actual_plot)
+})
