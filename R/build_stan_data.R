@@ -63,14 +63,19 @@ sf_none <- function() {
 #'
 #' Generates a list of integers indexing together the time/age intervals
 #' for which FOI values will be estimated in [fit_seromodel].
-#' The max value in `foi_index`  correspond to the number of FOI values to
+#' The max value in `foi_index`  corresponds to the number of FOI values to
 #' be estimated when sampling.
+#' The serofoi approach to fitting serological data currently supposes that FOI
+#' is piecewise-constant across either groups of years or ages, and this
+#' function creates a Data Frame that communicates this grouping to the
+#' Stan model
 #' @inheritParams fit_seromodel
 #' @param group_size Age groups size
 #' @param model_type Type of the model. Either "age" or "time"
-#' @return Data frame with the indexes numerating each age/year (depending on
-#' the model). A single FOI value will be estimated for ages/years assigned
-#' with the same index
+#' @return A Data Frame which describes the grouping of years or ages
+#' (dependent on model) into pieces within which the FOI is assumed constant
+#' when performing model fitting. A single FOI value will be estimated for
+#' ages/years assigned with the same index
 #' @examples
 #' data(chagas2012)
 #' foi_index <- get_foi_index(chagas2012, group_size = 25, model_type = "time")
