@@ -2,6 +2,12 @@ library(ggplot2)
 library(rlang)
 library(purrr)
 
+
+# Dear Code Reviewer: If I'm reinventing the wheel with these functions, 
+# please let me know in the PR comments :)
+
+
+
 # Utility functions to extract relevant data from the plot, for comparison in each test
 extract_plot_data <- function(plot) {
   list(
