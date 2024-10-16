@@ -21,6 +21,7 @@ create_prepared_serosurvey <- function(actual_serosurvey) {
 
 
 test_that("plot_serosurvey creates a ggplot with correct structure", {
+  skip_on_cran()
   actual_plot <- extract_plot_data(plot_serosurvey(serosurvey))
 
   prepared_serosurvey <- create_prepared_serosurvey(serosurvey)
@@ -57,6 +58,7 @@ test_that("plot_serosurvey creates a ggplot with correct structure", {
 
 
 test_that("plot_serosurvey creates a binned ggplot with correct structure", {
+  skip_on_cran()
   actual_plot <- extract_plot_data(plot_serosurvey(serosurvey, bin_serosurvey = TRUE, bin_step = 10))
 
   prepared_serosurvey <- create_prepared_serosurvey(serosurvey)
@@ -95,6 +97,7 @@ test_that("plot_serosurvey creates a binned ggplot with correct structure", {
 })
 
 test_that("plot_summary creates a ggplot with correct structure", {
+  skip_on_cran()
   loo_estimate_digits <- 1
   central_estimate_digits <- 2
   seroreversion_digits <- 2
@@ -151,8 +154,9 @@ test_that("plot_summary creates a ggplot with correct structure", {
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
 })
 
-
 test_that("plot_seromodel creates a ggplot with correct structure", {
+  skip_on_cran()
+
   plot <- plot_seromodel(
     seromodel = seromodel,
     serosurvey = serosurvey
