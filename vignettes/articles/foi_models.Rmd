@@ -197,11 +197,14 @@ mutate(survey_year = 2050)
 The simulated  dataset `foi_sim_sw_dec` contains information about 250 samples of individuals between 1 and 50 years old (5 samples per age) with age groups of 5 years length. The following code shows how to implement the slow time-varying normal model to this simulated serosurvey:
 
 ```{r tv_normal model, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
-
+foi_index <- data.frame(
+  year = seq(2000, 2049),
+  foi_index = rep(c(1, 2, 3), c(25, 10, 15))
+)
 seromodel_time_normal <- fit_seromodel(
   serosurvey = serosurvey_sw_dec,
   model_type = "time",
-  foi_index = rep(c(1, 2, 3), c(25, 10, 15)),
+  foi_index = foi_index,
   iter = 1500
 )
 plot_seromodel(
@@ -257,11 +260,15 @@ mutate(survey_year = 2050)
 The simulated serosurvey tests 250 individuals between 1 and 50 years old by the year 2050. The implementation of the fast epidemic model can be obtained running the following lines of code:
 
 ```{r tv_normal_log model, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
+foi_index <- data.frame(
+  year = seq(2000, 2049),
+  foi_index = rep(c(1, 2, 3), c(30, 5, 15))
+)
 seromodel_log_time_normal <- fit_seromodel(
   serosurvey = serosurvey_large_epi,
   model_type = "time",
   is_log_foi = TRUE,
-  foi_index = rep(c(1, 2, 3), c(30, 5, 15)),
+  foi_index = foi_index,
   iter = 2000
 )
 
@@ -296,10 +303,14 @@ plot_constant <- plot_seromodel(
   size_text = 6
 )
 
+foi_index <- data.frame(
+  year = seq(2000, 2049),
+  foi_index = rep(c(1, 2, 3), c(30, 5, 15))
+)
 seromodel_time_normal <- fit_seromodel(
   serosurvey = serosurvey_large_epi,
   model_type = "time",
-  foi_index = rep(c(1, 2, 3), c(30, 5, 15)),
+  foi_index = foi_index,
   iter = 2000
 )
 plot_time_normal <- plot_seromodel(

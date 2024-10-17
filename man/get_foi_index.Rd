@@ -4,7 +4,7 @@
 \alias{get_foi_index}
 \title{Generates force-of-infection indexes for heterogeneous age groups}
 \usage{
-get_foi_index(serosurvey, group_size)
+get_foi_index(serosurvey, group_size, model_type)
 }
 \arguments{
 \item{serosurvey}{\describe{
@@ -17,18 +17,26 @@ get_foi_index(serosurvey, group_size)
 }}
 
 \item{group_size}{Age groups size}
+
+\item{model_type}{Type of the model. Either "age" or "time"}
 }
 \value{
-Integer vector with the indexes numerating each year/age
-(depending on the model).
+A Data Frame which describes the grouping of years or ages
+(dependent on model) into pieces within which the FOI is assumed constant
+when performing model fitting. A single FOI value will be estimated for
+ages/years assigned with the same index
 }
 \description{
 Generates a list of integers indexing together the time/age intervals
 for which FOI values will be estimated in \link{fit_seromodel}.
-The max value in \code{foi_index}  correspond to the number of FOI values to
+The max value in \code{foi_index}  corresponds to the number of FOI values to
 be estimated when sampling.
+The serofoi approach to fitting serological data currently supposes that FOI
+is piecewise-constant across either groups of years or ages, and this
+function creates a Data Frame that communicates this grouping to the
+Stan model
 }
 \examples{
 data(chagas2012)
-foi_index <- get_foi_index(chagas2012, group_size = 25)
+foi_index <- get_foi_index(chagas2012, group_size = 25, model_type = "time")
 }
