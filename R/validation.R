@@ -126,9 +126,17 @@ validate_foi_index <- function(
     checkmate::assert_names(names(foi_index), must.include = "year")
   }
 
-  # validate that foi_index has the right size
+  # Check that foi_index has the right properties
   stopifnot(
+    # validate that foi_index has the right size
     "foi_index must be the right size" =
-    nrow(foi_index) == max(serosurvey$age_max)
+    nrow(foi_index) == max(serosurvey$age_max),
+    # validate that foi_index contains consecutive indexes
+    "foi_index$foi_index must contain consecutive indexes" =
+    # 0 validates that indexes do not decrease for consecutive chunks
+    # 1 validates that there are not missing indexes
+    all(diff(foi_index$foi_index) %in% c(0, 1))
   )
+
+  return(foi_index)
 }
