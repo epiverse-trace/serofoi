@@ -75,7 +75,8 @@ test_that("fit_seromodel correctly estimates constant foi using default settings
     foi = foi,
     survey_features = survey_features,
     seroreversion_rate = mu
-  )
+  ) %>%
+  mutate(survey_year = 2050)
   set.seed(Sys.time())
 
   seromodel <- suppressWarnings(
@@ -105,14 +106,16 @@ test_that("fit_seromodel correctly estimates time-varying foi using default prio
     model = "time",
     foi = foi,
     survey_features = survey_features
-  )
+  ) %>%
+  mutate(survey_year = 2050)
   set.seed(Sys.time())
 
+  foi_index <- get_foi_index(serosurvey, group_size = 10, model_type = "time")
   seromodel <- suppressWarnings(
     fit_seromodel(
       serosurvey,
       model_type = "time",
-      foi_index = get_foi_index(serosurvey, group_size = 10),
+      foi_index = foi_index,
       seed = stan_seed
       )
     )
@@ -126,14 +129,16 @@ test_that("fit_seromodel correctly estimates time-varying foi using default prio
     foi = foi,
     survey_features = survey_features,
     seroreversion_rate = mu
-  )
+  ) %>%
+  mutate(survey_year = 2050)
   set.seed(Sys.time())
 
+  foi_index <- get_foi_index(serosurvey, group_size = 10, model_type = "time")
   seromodel <- suppressWarnings(
     fit_seromodel(
       serosurvey,
       model_type = "time",
-      foi_index = get_foi_index(serosurvey, group_size = 10),
+      foi_index = foi_index,
       foi_prior = sf_uniform(),
       is_seroreversion = TRUE,
       seroreversion_prior = sf_normal(mu, mu/10),
@@ -164,11 +169,12 @@ test_that("fit_seromodel correctly estimates age-varying foi", {
   )
   set.seed(Sys.time())
 
+  foi_index <- get_foi_index(serosurvey, group_size = 10, model_type = "age")
   seromodel <- suppressWarnings(
     fit_seromodel(
       serosurvey,
       model_type = "age",
-      foi_index = get_foi_index(serosurvey, group_size = 10),
+      foi_index = foi_index,
       seed = stan_seed
     )
   )
@@ -185,11 +191,12 @@ test_that("fit_seromodel correctly estimates age-varying foi", {
   )
   set.seed(Sys.time())
 
+  foi_index <- get_foi_index(serosurvey, group_size = 10, model_type = "age")
   seromodel <- suppressWarnings(
     fit_seromodel(
       serosurvey,
       model_type = "age",
-      foi_index = get_foi_index(serosurvey, group_size = 10),
+      foi_index = foi_index,
       foi_prior = sf_normal(0, 1e-4),
       is_seroreversion = TRUE,
       seroreversion_prior = sf_normal(mu, mu/10),
@@ -221,13 +228,21 @@ test_that("fit_seromodel correctly identifies outbreak using time-log-foi model"
   )
   set.seed(Sys.time())
 
+  foi_index <- data.frame(
+    year = foi$year,
+    foi_index = c(
+      rep(1, 10),
+      rep(2, outbreak_years),
+      rep(3, 10 - outbreak_years)
+    )
+  )
   seromodel <- suppressWarnings(
     fit_seromodel(
       serosurvey,
       model_type = "time",
       is_log_foi = TRUE,
       foi_prior = sf_normal(0, 1e-4),
-      foi_index = c(rep(1, 10), rep(2, outbreak_years), rep(3, 10 - outbreak_years)),
+      foi_index = foi_index,
       seed = stan_seed
     )
   )
@@ -241,16 +256,25 @@ test_that("fit_seromodel correctly identifies outbreak using time-log-foi model"
     foi = foi,
     survey_features = survey_features,
     seroreversion_rate = mu
-  )
+  ) %>%
+  mutate(survey_year = 2050)
   set.seed(Sys.time())
 
+  foi_index <- data.frame(
+    year = foi$year,
+    foi_index = c(
+      rep(1, 10),
+      rep(2, outbreak_years),
+      rep(3, 10 - outbreak_years)
+    )
+  )
   seromodel <- suppressWarnings(
     fit_seromodel(
       serosurvey,
       model_type = "time",
       is_log_foi = TRUE,
       foi_prior = sf_normal(0, 1e-4),
-      foi_index = c(rep(1, 10), rep(2, outbreak_years), rep(3, 10 - outbreak_years)),
+      foi_index = foi_index,
       is_seroreversion = TRUE,
       seroreversion_prior = sf_normal(mu, mu/10),
       seed = stan_seed
