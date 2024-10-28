@@ -235,7 +235,10 @@ build_stan_data <- function(
       group_size = 1,
       model_type = model_type
     ) %>%
-    validate_foi_index()
+    validate_foi_index(
+      serosurvey = serosurvey,
+      model_type = model_type
+    )
 
     stan_data <- c(
       stan_data,
