@@ -127,7 +127,24 @@ test_that("plot_summary creates a ggplot with correct structure", {
 
   actual_plot <- extract_plot_data(plot)
 
-  expected_data <- data.frame(
+    summary <- summarise_seromodel(
+        seromodel = seromodel,
+        serosurvey = serosurvey,
+        loo_estimate_digits = loo_estimate_digits,
+        central_estimate_digits = central_estimate_digits,
+        rhat_digits = rhat_digits
+    )
+
+    expected_data <- data.frame(
+    row = c(5, 4, 3, 2, 1),
+    text = c(
+        paste0("model_name: ", summary$model_name),
+        paste0("elpd_loo: ", summary$elpd_loo),
+        paste0("foi: ", summary$foi),
+        paste0("foi_rhat: ", summary$foi_rhat),
+        paste0("converged: ", summary$converged)
+        )
+    )
     row = c(5, 4, 3, 2, 1),
     text = c(
       "model_name: constant_no_seroreversion",
