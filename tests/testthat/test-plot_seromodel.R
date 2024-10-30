@@ -43,7 +43,9 @@ test_that("plot_serosurvey creates a ggplot with correct structure", {
         ), geom_params = list(na.rm = FALSE)
       )
     ),
-    coordinates = list(limits = list(x = c(1, 60), y = c(
+    coordinates = list(limits = list(
+        x = c(min(serosurvey$age_min), max(serosurvey$age_max)),
+        y = c(min(prepared_serosurvey$seroprev_lower), max(prepared_serosurvey$seroprev_upper))
       0.3,
       1
     ))),
