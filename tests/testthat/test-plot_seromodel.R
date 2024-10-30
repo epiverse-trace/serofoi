@@ -270,6 +270,10 @@ test_that("plot_foi_estimates creates a ggplot with correct structure", {
 
   seromodel_age <- fit_seromodel(
     serosurvey = serosurvey,
+    model_type = "age",
+    foi_index = get_foi_index(serosurvey, group_size = 10)
+  )
+    serosurvey = serosurvey,
     model_type = "age"
   )
 
