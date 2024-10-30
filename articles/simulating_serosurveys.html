@@ -27,7 +27,7 @@
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="https://epiverse-trace.github.io/blueprints/logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,11 +114,11 @@ individual one-year group ages are sampled and the sample size in each
 age is the same:
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>15</mn></mrow><annotation encoding="application/x-tex">n=15</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sample_size</span> <span class="op">&lt;-</span> <span class="fl">15</span></span>
+<code class="sourceCode R"><span><span class="va">n_sample</span> <span class="op">&lt;-</span> <span class="fl">15</span></span>
 <span><span class="va">survey_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  age_min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">max_age</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  age_max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">max_age</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  sample_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">sample_size</span>, <span class="va">max_age</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  n_sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">n_sample</span>, <span class="va">max_age</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>We then put these pieces together and simulate a serosurvey. Either a
 time-varying FOI model or an age-varying FOI model would produce the
 same results here since they are equivalent when the FOI is
@@ -135,7 +135,7 @@ constant.</p>
 <span><span class="co">#&gt; Columns: 4</span></span>
 <span><span class="co">#&gt; $ age_min        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, …</span></span>
 <span><span class="co">#&gt; $ age_max        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, …</span></span>
-<span><span class="co">#&gt; $ sample_size    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,…</span></span>
+<span><span class="co">#&gt; $ n_sample       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,…</span></span>
 <span><span class="co">#&gt; $ n_seropositive <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 0, 3, 2, 1, 0, 4, 4, 4, 7, 7, 9, 5, 4, 8, 8, 10, 9, 12,…</span></span></code></pre></div>
 <p>Now, we can plot the proportions of those seropositive, including the
 posterior 95% percentiles (when assuming a flat prior), and plot it
@@ -337,11 +337,11 @@ We also illustrate how serosurveys with wider age-bins can be generated
 by choosing 5-year bins.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">max_age</span> <span class="op">&lt;-</span> <span class="fl">80</span></span>
-<span><span class="va">sample_size</span> <span class="op">&lt;-</span> <span class="fl">50</span></span>
+<span><span class="va">n_sample</span> <span class="op">&lt;-</span> <span class="fl">50</span></span>
 <span><span class="va">survey_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  age_min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">max_age</span>, <span class="fl">5</span><span class="op">)</span>,</span>
 <span>  age_max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="va">max_age</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>sample_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">sample_size</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">age_min</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>n_sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">n_sample</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">age_min</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">serosurvey</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_serosurvey.html">simulate_serosurvey</a></span><span class="op">(</span></span>
 <span>  model <span class="op">=</span> <span class="st">"age-time"</span>,</span>
@@ -580,7 +580,7 @@ in the above expression.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

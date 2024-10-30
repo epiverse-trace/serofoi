@@ -27,7 +27,7 @@
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="https://epiverse-trace.github.io/blueprints/logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -248,7 +248,7 @@ available models are summarised in table 1:</p>
 <tr class="odd">
 <td>constant</td>
 <td>regular</td>
-<td>binomial(sample_size, prob_infected)</td>
+<td>binomial(n_sample, prob_infected)</td>
 <td>normal(mean, sd)<br>uniform(min, max)</td>
 <td>-</td>
 <td>cauchy(mean, sd)</td>
@@ -257,7 +257,7 @@ available models are summarised in table 1:</p>
 <tr class="even">
 <td>age</td>
 <td>regular</td>
-<td>binomial(sample_size, prob_infected)</td>
+<td>binomial(n_sample, prob_infected)</td>
 <td>normal(mean, sd)<br>uniform(min, max)</td>
 <td>normal(FoI_{i-1}, sigma)</td>
 <td>cauchy(mean, sd)</td>
@@ -266,7 +266,7 @@ available models are summarised in table 1:</p>
 <tr class="odd">
 <td>time</td>
 <td>regular</td>
-<td>binomial(sample_size, prob_infected)</td>
+<td>binomial(n_sample, prob_infected)</td>
 <td>normal(mean, sd)<br>uniform(min, max)</td>
 <td>normal(FoI_{i-1}, sigma)</td>
 <td>cauchy(mean, sd)</td>
@@ -275,7 +275,7 @@ available models are summarised in table 1:</p>
 <tr class="even">
 <td>time</td>
 <td>log</td>
-<td>binomial(sample_size, prob_infected)</td>
+<td>binomial(n_sample, prob_infected)</td>
 <td>normal(mean, sd)<br>uniform(min, max)</td>
 <td>normal(FoI_{i-1}, sigma)</td>
 <td>normal(location, scale)</td>
@@ -322,7 +322,7 @@ the data simulation functions of <strong><em>serofoi</em></strong>:</p>
 <span><span class="va">survey_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    age_min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>,</span>
 <span>    age_max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>,</span>
-<span>    sample_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span>    n_sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">serosurvey_constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_serosurvey.html">simulate_serosurvey</a></span><span class="op">(</span></span>
@@ -403,7 +403,7 @@ the data simulation functions of <strong><em>serofoi</em></strong>:</p>
 <span><span class="va">survey_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    age_min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>,</span>
 <span>    age_max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>,</span>
-<span>    sample_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span>    n_sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">serosurvey_sw_dec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_serosurvey.html">simulate_serosurvey</a></span><span class="op">(</span></span>
@@ -418,11 +418,14 @@ information about 250 samples of individuals between 1 and 50 years old
 code shows how to implement the slow time-varying normal model to this
 simulated serosurvey:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<code class="sourceCode R"><span><span class="va">foi_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2000</span>, <span class="fl">2049</span><span class="op">)</span>,</span>
+<span>  foi_index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">10</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="va">seromodel_time_normal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
 <span>  serosurvey <span class="op">=</span> <span class="va">serosurvey_sw_dec</span>,</span>
 <span>  model_type <span class="op">=</span> <span class="st">"time"</span>,</span>
-<span>  foi_index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">10</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  foi_index <span class="op">=</span> <span class="va">foi_index</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">1500</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot_seromodel.html">plot_seromodel</a></span><span class="op">(</span></span>
@@ -466,7 +469,7 @@ epidemic occurred between 2030 and 2035:</p>
 <span><span class="va">survey_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    age_min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>,</span>
 <span>    age_max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>,</span>
-<span>    sample_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span>    n_sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">serosurvey_large_epi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_serosurvey.html">simulate_serosurvey</a></span><span class="op">(</span></span>
@@ -479,11 +482,15 @@ epidemic occurred between 2030 and 2035:</p>
 old by the year 2050. The implementation of the fast epidemic model can
 be obtained running the following lines of code:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">seromodel_log_time_normal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">foi_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2000</span>, <span class="fl">2049</span><span class="op">)</span>,</span>
+<span>  foi_index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">5</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">seromodel_log_time_normal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span></span>
 <span>  serosurvey <span class="op">=</span> <span class="va">serosurvey_large_epi</span>,</span>
 <span>  model_type <span class="op">=</span> <span class="st">"time"</span>,</span>
 <span>  is_log_foi <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  foi_index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">5</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  foi_index <span class="op">=</span> <span class="va">foi_index</span>,</span>
 <span>  iter <span class="op">=</span> <span class="fl">2000</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -550,7 +557,7 @@ complete, there is no further need for local compilation.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

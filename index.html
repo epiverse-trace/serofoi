@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Estimates the Force-of-Infection of a given pathogen from population based seroprevalence studies • serofoi</title>
+<title>Estimates the Force-of-Infection of a given pathogen from population-based seroprevalence studies • serofoi</title>
 <script src="lightswitch.js"></script><script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Estimates the Force-of-Infection of a given pathogen from population based seroprevalence studies">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Estimates the Force-of-Infection of a given pathogen from population-based seroprevalence studies">
 <meta name="description" content="R package to estimate time-varying Force-of-Infection of a given pathogen from population based seroprevalence studies using a bayesian framework.">
 <meta property="og:description" content="R package to estimate time-varying Force-of-Infection of a given pathogen from population based seroprevalence studies using a bayesian framework.">
 <meta property="og:image" content="https://epiverse-trace.github.io/serofoi/logo.png">
@@ -30,7 +30,7 @@
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="https://epiverse-trace.github.io/blueprints/logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="index.html">serofoi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,9 +86,8 @@
 </h2>
 <p>You can install the <strong>development version</strong> of <strong><em>serofoi</em></strong> from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://mc-stan.org/rstan/" class="external-link">"rstan"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rstan"</span>, repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org/"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"epiverse-trace/serofoi"</span>, ref <span class="op">=</span> <span class="st">"dev-full-refac"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://pak.r-lib.org/" class="external-link">"pak"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"epiverse-trace/serofoi"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
@@ -98,15 +97,16 @@
 <code class="sourceCode R"><span><span class="co"># Load example dataset chagas2012 included with the package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">chagas2012</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">chagas2012</span>, <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   survey_year sample_size n_seropositive age_min age_max</span></span>
-<span><span class="co">#&gt; 1        2012          34              0       1       1</span></span>
-<span><span class="co">#&gt; 2        2012          25              0       2       2</span></span>
-<span><span class="co">#&gt; 3        2012          35              1       3       3</span></span>
-<span><span class="co">#&gt; 4        2012          29              0       4       4</span></span>
-<span><span class="co">#&gt; 5        2012          36              0       5       5</span></span></code></pre></div>
+<span><span class="co">#&gt;       survey total counts age_min age_max tsur country  test         antibody</span></span>
+<span><span class="co">#&gt; 1 COL-035-93    34      0       1       1 2012     COL ELISA IgG anti-T.cruzi</span></span>
+<span><span class="co">#&gt; 2 COL-035-93    25      0       2       2 2012     COL ELISA IgG anti-T.cruzi</span></span>
+<span><span class="co">#&gt; 3 COL-035-93    35      1       3       3 2012     COL ELISA IgG anti-T.cruzi</span></span>
+<span><span class="co">#&gt; 4 COL-035-93    29      0       4       4 2012     COL ELISA IgG anti-T.cruzi</span></span>
+<span><span class="co">#&gt; 5 COL-035-93    36      0       5       5 2012     COL ELISA IgG anti-T.cruzi</span></span></code></pre></div>
 <p>The function <code>prepare_serodata</code> will prepare the entry data for the use of the modelling module; this function computes the sample size, the years of birth and the binomial confidence interval for each age group in the provided dataset. A visualisation of the prepared seroprevalence data can be obtained using the function plot_seroprev:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/plot_serosurvey.html">plot_serosurvey</a></span><span class="op">(</span><span class="va">chagas2012</span>, size_text <span class="op">=</span> <span class="fl">6</span>, bin_serosurvey <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">serodata_test</span> <span class="op">&lt;-</span> <span class="fu">prepare_serodata</span><span class="op">(</span><span class="va">chagas2012</span><span class="op">)</span></span>
+<span><span class="fu">plot_seroprev</span><span class="op">(</span><span class="va">serodata_test</span>, size_text <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-data_test-1.png" width="50%" style="display: block; margin: auto;"></p>
 <div class="section level3">
 <h3 id="contributions">Contributions<a class="anchor" aria-label="anchor" href="#contributions"></a>
@@ -222,7 +222,7 @@ Cucunubá, Zulma M, Pierre Nouvellet, Lesong Conteh, Mauricio Javier Vera, Victo
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

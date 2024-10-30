@@ -19,7 +19,7 @@ distribution of a sample size within an age bin through multinomial sampling."><
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="https://epiverse-trace.github.io/blueprints/logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@ different ages. It should have two columns: 'age' and 'foi'.</p></dd>
 <dt id="arg-survey-features">survey_features<a class="anchor" aria-label="anchor" href="#arg-survey-features"></a></dt>
 <dd><p>A dataframe containing information about the binned
 age groups and sample sizes for each. It should contain columns:
-'age_min', 'age_max', 'sample_size'.</p></dd>
+'age_min', 'age_max', 'n_sample'.</p></dd>
 
 
 <dt id="arg-seroreversion-rate">seroreversion_rate<a class="anchor" aria-label="anchor" href="#arg-seroreversion-rate"></a></dt>
@@ -99,17 +99,15 @@ and other survey features.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># specify FOIs for each year</span></span></span>
 <span class="r-in"><span><span class="va">foi_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">20</span>, <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
-<span class="r-in"><span><span class="fu">mutate</span><span class="op">(</span>foi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span>, <span class="fl">0.1</span>, <span class="fl">0.01</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in data.frame(age = seq(1, 20, 1)) %&gt;% mutate(foi = rnorm(length(year),     0.1, 0.01)):</span> could not find function "%&gt;%"</span>
+<span class="r-in"><span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">20</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  foi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">0.1</span>, <span class="fl">0.01</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">survey_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  age_min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">15</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  age_max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">14</span>, <span class="fl">20</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  sample_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">2000</span>, <span class="fl">1500</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  n_sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">2000</span>, <span class="fl">1500</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">serosurvey</span> <span class="op">&lt;-</span> <span class="fu">simulate_serosurvey_age_model</span><span class="op">(</span></span></span>
 <span class="r-in"><span><span class="va">foi_df</span>, <span class="va">survey_features</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'foi_df' not found</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -121,7 +119,7 @@ and other survey features.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer></div>

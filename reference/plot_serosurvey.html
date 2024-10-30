@@ -13,7 +13,7 @@
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="https://epiverse-trace.github.io/blueprints/logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,7 +79,7 @@
 <dt><code>age_max</code></dt>
 <dd><p>The size of the sample</p></dd>
 
-<dt><code>sample_size</code></dt>
+<dt><code>n_sample</code></dt>
 <dd><p>Number of samples for each age group</p></dd>
 
 <dt><code>n_seropositive</code></dt>
@@ -126,7 +126,7 @@ Otherwise, age groups are kept as originally input.</p></dd>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">chagas2012</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">plot_serosurvey</span><span class="op">(</span><span class="va">chagas2012</span>, bin_serosurvey <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>(age_min - age_max) is not an integer multiple of step.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>     The last age interval will be truncated to [76,77]</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>     The last age interval will be truncated to [76,79]</span>
 <span class="r-plt img"><img src="plot_serosurvey-3.png" alt="" width="768" height="576"></span>
 </code></pre></div>
     </div>
@@ -139,7 +139,7 @@ Otherwise, age groups are kept as originally input.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer></div>
