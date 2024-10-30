@@ -306,7 +306,12 @@ test_that("plot_rhats creates a ggplot with correct structure", {
       geom_params = list(na.rm = FALSE)
     )
   ), coordinates = list(
-    limits = list(x = NULL, y = c(1, 1.02683136788855))
+    limits = list(
+        x = NULL,
+        y = c(
+            min(1.0, min(rhats_df$rhat)),
+            max(1.02, max(rhats_df$rhat))
+            )
   ), labels = list(
     y = "Convergence (r-hats)", x = "Age", yintercept = "yintercept"
   ))
