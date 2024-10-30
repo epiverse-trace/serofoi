@@ -288,7 +288,7 @@ test_that("plot_foi_estimates creates a ggplot with correct structure", {
     )), list(mapping = list(
       y = "median"
     ), geom_params = list(na.rm = FALSE, orientation = NA))),
-    coordinates = list(limits = list(x = NULL, y = c(0, 0.179333524440058))), labels = list(
+    coordinates = list(limits = list(x = NULL, y = c(0, foi_max))), labels = list(
       x = "Age", y = "Force-of-Infection", ymin = "lower",
       ymax = "upper"
     )
