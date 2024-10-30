@@ -255,7 +255,7 @@ test_that("plot_seroprevalence_estimates creates a ggplot with correct structure
         na.rm = FALSE, orientation = NA, outline.type = "both"
       ))
     ),
-    coordinates = list(limits = list(x = c(0, 60), y = NULL)),
+    coordinates = list(limits = list(x = 0, max(serosurvey$age_max)), y = NULL)),
     labels = list(
       x = "Age", y = "Seroprevalence", ymin = "seroprev_lower",
       ymax = "seroprev_upper", size = "n_sample"
