@@ -224,10 +224,14 @@ The number of iterations required may depend on the number of years, reflected b
 
 ## Model 3. Time-varying FoI - Fast Epidemic Model
 The *time-varying fast epidemic model* is parametrized in such a way that the initial FoI value in the forward random walk is sampled in the logarithmic scale. In this case, the priors for subsequent FOIs are:
+
 $$
-\log\left(\lambda(t)\right) \sim \mathcal{N}(\log(\lambda(t-1)), \sigma) \\
-\sigma \sim \mathcal{N} (0, 1)
+\begin{aligned}
+  \log\left(\lambda(t)\right) &\sim \mathcal{N}(\log(\lambda(t-1)), \sigma) \\
+  \sigma &\sim \mathcal{N} (0, 1)
+\end{aligned}
 $$
+
 This is done in order to capture fast changes in the *FoI* trend. 
 
 To test the `log_time` model we simulate a serosurvey conducted in 2050 emulating a hypothetical situation where a three-year epidemic occurred between 2030 and 2035:
