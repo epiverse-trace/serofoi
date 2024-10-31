@@ -84,29 +84,31 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the <strong>development version</strong> of <strong><em>serofoi</em></strong> from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the <strong>development version</strong> of <strong><em>serofoi</em></strong> from <a href="https://github.com/" class="external-link">GitHub</a> running:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://pak.r-lib.org/" class="external-link">"pak"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"epiverse-trace/serofoi"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"epiverse-trace/serofoi@dev"</span><span class="op">)</span></span></code></pre></div>
+<p>or:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"epiverse-trace/serofoi"</span>, ref <span class="op">=</span> <span class="st">"dev"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
 <p><strong><em>serofoi</em></strong> provides a minimal serosurvey dataset, <code>serodata</code>, that can be used to test out the package.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load example dataset chagas2012 included with the package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">chagas2012</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">chagas2012</span>, <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       survey total counts age_min age_max tsur country  test         antibody</span></span>
-<span><span class="co">#&gt; 1 COL-035-93    34      0       1       1 2012     COL ELISA IgG anti-T.cruzi</span></span>
-<span><span class="co">#&gt; 2 COL-035-93    25      0       2       2 2012     COL ELISA IgG anti-T.cruzi</span></span>
-<span><span class="co">#&gt; 3 COL-035-93    35      1       3       3 2012     COL ELISA IgG anti-T.cruzi</span></span>
-<span><span class="co">#&gt; 4 COL-035-93    29      0       4       4 2012     COL ELISA IgG anti-T.cruzi</span></span>
-<span><span class="co">#&gt; 5 COL-035-93    36      0       5       5 2012     COL ELISA IgG anti-T.cruzi</span></span></code></pre></div>
+<span><span class="co">#&gt;   survey_year n_sample n_seropositive age_min age_max</span></span>
+<span><span class="co">#&gt; 1        2015      144             63      40      59</span></span>
+<span><span class="co">#&gt; 2        2015      148             69      60      79</span></span>
+<span><span class="co">#&gt; 3        2015       45             17       1      19</span></span>
+<span><span class="co">#&gt; 4        2015      109             55      20      39</span></span></code></pre></div>
 <p>The function <code>prepare_serodata</code> will prepare the entry data for the use of the modelling module; this function computes the sample size, the years of birth and the binomial confidence interval for each age group in the provided dataset. A visualisation of the prepared seroprevalence data can be obtained using the function plot_seroprev:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">serodata_test</span> <span class="op">&lt;-</span> <span class="fu">prepare_serodata</span><span class="op">(</span><span class="va">chagas2012</span><span class="op">)</span></span>
-<span><span class="fu">plot_seroprev</span><span class="op">(</span><span class="va">serodata_test</span>, size_text <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/plot_serosurvey.html">plot_serosurvey</a></span><span class="op">(</span><span class="va">chagas2012</span>, size_text <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-data_test-1.png" width="50%" style="display: block; margin: auto;"></p>
 <div class="section level3">
 <h3 id="contributions">Contributions<a class="anchor" aria-label="anchor" href="#contributions"></a>

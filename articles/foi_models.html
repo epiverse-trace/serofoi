@@ -447,12 +447,15 @@ maximum age-class sampled.</p>
 <p>The <em>time-varying fast epidemic model</em> is parametrized in such
 a way that the initial FoI value in the forward random walk is sampled
 in the logarithmic scale. In this case, the priors for subsequent FOIs
-are: <span class="math display">$$
-\log\left(\lambda(t)\right) \sim \mathcal{N}(\log(\lambda(t-1)), \sigma)
-\\
-\sigma \sim \mathcal{N} (0, 1)
-$$</span> This is done in order to capture fast changes in the
-<em>FoI</em> trend.</p>
+are:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mtd><mtd columnalign="left" style="text-align: left"><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>λ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>σ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>σ</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">
+\begin{aligned}
+  \log\left(\lambda(t)\right) &amp;\sim \mathcal{N}(\log(\lambda(t-1)), \sigma) \\
+  \sigma &amp;\sim \mathcal{N} (0, 1)
+\end{aligned}
+</annotation></semantics></math></p>
+<p>This is done in order to capture fast changes in the <em>FoI</em>
+trend.</p>
 <p>To test the <code>log_time</code> model we simulate a serosurvey
 conducted in 2050 emulating a hypothetical situation where a three-year
 epidemic occurred between 2030 and 2035:</p>
