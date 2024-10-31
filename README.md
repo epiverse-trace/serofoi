@@ -35,11 +35,18 @@ Initiative](https://data.org/initiatives/epiverse/).
 ## Installation
 
 You can install the **development version** of ***serofoi*** from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/) running:
 
 ``` r
 if(!require("pak")) install.packages("pak")
-pak::pak("epiverse-trace/serofoi")
+pak::pak("epiverse-trace/serofoi@dev")
+```
+
+or:
+
+``` r
+if(!require("remotes")) install.packages("remotes")
+remotes::install_github("epiverse-trace/serofoi", ref = "dev")
 ```
 
 ## Quick start
@@ -51,12 +58,11 @@ can be used to test out the package.
 # Load example dataset chagas2012 included with the package
 data(chagas2012)
 head(chagas2012, 5)
-#>       survey total counts age_min age_max tsur country  test         antibody
-#> 1 COL-035-93    34      0       1       1 2012     COL ELISA IgG anti-T.cruzi
-#> 2 COL-035-93    25      0       2       2 2012     COL ELISA IgG anti-T.cruzi
-#> 3 COL-035-93    35      1       3       3 2012     COL ELISA IgG anti-T.cruzi
-#> 4 COL-035-93    29      0       4       4 2012     COL ELISA IgG anti-T.cruzi
-#> 5 COL-035-93    36      0       5       5 2012     COL ELISA IgG anti-T.cruzi
+#>   survey_year n_sample n_seropositive age_min age_max
+#> 1        2015      144             63      40      59
+#> 2        2015      148             69      60      79
+#> 3        2015       45             17       1      19
+#> 4        2015      109             55      20      39
 ```
 
 The function `prepare_serodata` will prepare the entry data for the use
@@ -66,8 +72,7 @@ in the provided dataset. A visualisation of the prepared seroprevalence
 data can be obtained using the function plot_seroprev:
 
 ``` r
-serodata_test <- prepare_serodata(chagas2012)
-plot_seroprev(serodata_test, size_text = 15)
+plot_serosurvey(chagas2012, size_text = 15)
 ```
 
 <img src="man/figures/README-data_test-1.png" width="50%" style="display: block; margin: auto;" />

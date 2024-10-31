@@ -36,13 +36,17 @@ coverage](https://codecov.io/gh/epiverse-trace/serofoi/branch/dev/graph/badge.sv
 
 ## Installation
 
-You can install the **development version** of ***serofoi*** from [GitHub](https://github.com/) with:
+You can install the **development version** of ***serofoi*** from [GitHub](https://github.com/) running:
 
 ``` r
 if(!require("pak")) install.packages("pak")
-pak::pak("epiverse-trace/serofoi")
+pak::pak("epiverse-trace/serofoi@dev")
 ```
-
+or:
+``` r
+if(!require("remotes")) install.packages("remotes")
+remotes::install_github("epiverse-trace/serofoi", ref = "dev")
+```
 ## Quick start
 
 ```{r cleaning, include = FALSE, echo = TRUE}
@@ -60,8 +64,7 @@ head(chagas2012, 5)
 The function `prepare_serodata` will prepare the entry data for the use of the modelling module; this function computes the sample size, the years of birth and the binomial confidence interval for each age group in the provided dataset. A visualisation of the prepared seroprevalence data can be obtained using the function plot_seroprev:
 
 ```{r data_test, include = TRUE, out.fig.height="30%", out.width="50%", fig.align="center", message=FALSE, warning=FALSE}
-serodata_test <- prepare_serodata(chagas2012)
-plot_seroprev(serodata_test, size_text = 15)
+plot_serosurvey(chagas2012, size_text = 15)
 ```
 
 ### Contributions
