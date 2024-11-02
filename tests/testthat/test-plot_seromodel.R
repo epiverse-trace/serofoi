@@ -5,11 +5,21 @@ library(purrr)
 
 # NOTE: If the variable `expected_plot` needs to be updated because of changes in the plots
 # You can use dput(extract_plot_data(plot)) to obtain the current structure of the plot
+skip_on_cran()
 
 # Common data
 data(veev2012)
 serosurvey <- veev2012
+seromodel_constant <- fit_seromodel(
+  serosurvey = serosurvey
+)
 
+
+seromodel_age <- fit_seromodel(
+  serosurvey = serosurvey,
+  model_type = "age",
+  foi_index = get_foi_index(serosurvey, group_size = 10)
+)
 
 create_prepared_serosurvey <- function(actual_serosurvey) {
   return(prepare_serosurvey_for_plotting(actual_serosurvey %>%
@@ -20,9 +30,7 @@ create_prepared_serosurvey <- function(actual_serosurvey) {
 test_that("plot_serosurvey creates a ggplot with correct structure", {
   skip_on_cran()
 
-  seromodel <- fit_seromodel(
-    serosurvey = serosurvey
-  )
+
   actual_plot <- extract_plot_data(plot_serosurvey(serosurvey))
 
   prepared_serosurvey <- create_prepared_serosurvey(serosurvey)
@@ -44,11 +52,9 @@ test_that("plot_serosurvey creates a ggplot with correct structure", {
       )
     ),
     coordinates = list(limits = list(
-        x = c(min(serosurvey$age_min), max(serosurvey$age_max)),
-        y = c(min(prepared_serosurvey$seroprev_lower), max(prepared_serosurvey$seroprev_upper))
-      0.3,
-      1
-    ))),
+      x = c(min(serosurvey$age_min), max(serosurvey$age_max)),
+      y = c(min(prepared_serosurvey$seroprev_lower), max(prepared_serosurvey$seroprev_upper))
+    )),
     labels = list(
       x = "Age", y = "Seroprevalence", ymin = "seroprev_lower",
       ymax = "seroprev_upper", size = "n_sample"
@@ -61,12 +67,9 @@ test_that("plot_serosurvey creates a ggplot with correct structure", {
 
 
 test_that("plot_serosurvey creates a binned ggplot with correct structure", {
-  skip_on_cran()
+  bin_step <- 10
 
-  seromodel <- fit_seromodel(
-    serosurvey = serosurvey
-  )
-  actual_plot <- extract_plot_data(plot_serosurvey(serosurvey, bin_serosurvey = TRUE, bin_step = 10))
+  actual_plot <- extract_plot_data(plot_serosurvey(serosurvey, bin_serosurvey = TRUE, bin_step = bin_step))
 
   prepared_serosurvey <- create_prepared_serosurvey(serosurvey)
 
@@ -104,11 +107,8 @@ test_that("plot_serosurvey creates a binned ggplot with correct structure", {
 })
 
 test_that("plot_summary creates a ggplot with correct structure", {
-  skip_on_cran()
+  seromodel <- seromodel_constant
 
-  seromodel <- fit_seromodel(
-    serosurvey = serosurvey
-  )
   loo_estimate_digits <- 1
   central_estimate_digits <- 2
   seroreversion_digits <- 2
@@ -127,33 +127,25 @@ test_that("plot_summary creates a ggplot with correct structure", {
 
   actual_plot <- extract_plot_data(plot)
 
-    summary <- summarise_seromodel(
-        seromodel = seromodel,
-        serosurvey = serosurvey,
-        loo_estimate_digits = loo_estimate_digits,
-        central_estimate_digits = central_estimate_digits,
-        rhat_digits = rhat_digits
-    )
+  summary <- summarise_seromodel(
+    seromodel = seromodel,
+    serosurvey = serosurvey,
+    loo_estimate_digits = loo_estimate_digits,
+    central_estimate_digits = central_estimate_digits,
+    rhat_digits = rhat_digits
+  )
 
-    expected_data <- data.frame(
+  expected_data <- data.frame(
     row = c(5, 4, 3, 2, 1),
     text = c(
-        paste0("model_name: ", summary$model_name),
-        paste0("elpd_loo: ", summary$elpd_loo),
-        paste0("foi: ", summary$foi),
-        paste0("foi_rhat: ", summary$foi_rhat),
-        paste0("converged: ", summary$converged)
-        )
-    )
-    row = c(5, 4, 3, 2, 1),
-    text = c(
-      "model_name: constant_no_seroreversion",
-      "elpd_loo: -23.9(se=12.2)",
-      "foi: 0.082(95% CI, 0.063-0.1)",
-      "foi_rhat: 1",
-      "converged: yes"
+      paste0("model_name: ", summary$model_name),
+      paste0("elpd_loo: ", summary$elpd_loo),
+      paste0("foi: ", summary$foi),
+      paste0("foi_rhat: ", summary$foi_rhat),
+      paste0("converged: ", summary$converged)
     )
   )
+
 
   expected_plot <- list(
     classes = c("gg", "ggplot"),
@@ -183,11 +175,8 @@ test_that("plot_summary creates a ggplot with correct structure", {
 })
 
 test_that("plot_seromodel creates a ggplot with correct structure", {
-  skip_on_cran()
+  seromodel <- seromodel_constant
 
-  seromodel <- fit_seromodel(
-    serosurvey = serosurvey
-  )
 
   plot <- plot_seromodel(
     seromodel = seromodel,
@@ -225,12 +214,7 @@ test_that("plot_seromodel creates a ggplot with correct structure", {
 
 
 test_that("plot_seroprevalence_estimates creates a ggplot with correct structure", {
-  skip_on_cran()
-
-  seromodel <- fit_seromodel(
-    serosurvey = serosurvey
-  )
-
+  seromodel <- seromodel_constant
 
   plot <- plot_seroprevalence_estimates(
     seromodel = seromodel,
@@ -255,7 +239,7 @@ test_that("plot_seroprevalence_estimates creates a ggplot with correct structure
         na.rm = FALSE, orientation = NA, outline.type = "both"
       ))
     ),
-    coordinates = list(limits = list(x = 0, max(serosurvey$age_max)), y = NULL)),
+    coordinates = list(limits = list(x = c(0, max(serosurvey$age_max)), y = NULL)),
     labels = list(
       x = "Age", y = "Seroprevalence", ymin = "seroprev_lower",
       ymax = "seroprev_upper", size = "n_sample"
@@ -266,21 +250,22 @@ test_that("plot_seroprevalence_estimates creates a ggplot with correct structure
 })
 
 test_that("plot_foi_estimates creates a ggplot with correct structure", {
-  skip_on_cran()
-
-  seromodel_age <- fit_seromodel(
-    serosurvey = serosurvey,
-    model_type = "age",
-    foi_index = get_foi_index(serosurvey, group_size = 10)
-  )
-    serosurvey = serosurvey,
-    model_type = "age"
-  )
-
+  seromodel <- seromodel_age
   plot <- plot_foi_estimates(
-    seromodel = seromodel_age,
-    serosurvey = serosurvey
+    seromodel = seromodel,
+    serosurvey = serosurvey,
+    foi_max = NULL,
+    alpha = 0.05
   )
+
+  foi_central_estimates <- extract_central_estimates(
+    seromodel = seromodel,
+    serosurvey = serosurvey,
+    alpha = 0.05,
+    par_name = "foi_expanded"
+  )
+  foi_max <- max(foi_central_estimates$upper)
+
   actual_plot <- extract_plot_data(plot)
 
   expected_plot <- list(
@@ -302,22 +287,17 @@ test_that("plot_foi_estimates creates a ggplot with correct structure", {
 })
 
 test_that("plot_rhats creates a ggplot with correct structure", {
-  skip_on_cran()
-
-  seromodel_age <- fit_seromodel(
-    serosurvey = serosurvey,
-    model_type = "age",
-    foi_index = get_foi_index(serosurvey, group_size = 10)
-  )
-    serosurvey = serosurvey,
-    model_type = "age"
-  )
+  seromodel <- seromodel_age
 
   plot <- plot_rhats(
-    seromodel = seromodel_age,
-    serosurvey = serosurvey
+    seromodel = seromodel,
+    serosurvey = serosurvey,
+    par_name = "foi_expanded"
   )
   actual_plot <- extract_plot_data(plot)
+
+  rhats <- bayesplot::rhat(seromodel, "foi_expanded")
+
 
   expected_plot <- list(classes = c("gg", "ggplot"), layers = list(
     list(mapping = list(
@@ -332,11 +312,12 @@ test_that("plot_rhats creates a ggplot with correct structure", {
     )
   ), coordinates = list(
     limits = list(
-        x = NULL,
-        y = c(
-            min(1.0, min(rhats_df$rhat)),
-            max(1.02, max(rhats_df$rhat))
-            )
+      x = NULL,
+      y = c(
+        min(1.0, min(rhats)),
+        max(1.02, max(rhats))
+      )
+    )
   ), labels = list(
     y = "Convergence (r-hats)", x = "Age", yintercept = "yintercept"
   ))
