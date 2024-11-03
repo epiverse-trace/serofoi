@@ -18,7 +18,7 @@ seromodel_constant <- fit_seromodel(
 seromodel_age <- fit_seromodel(
   serosurvey = serosurvey,
   model_type = "age",
-  foi_index = get_foi_index(serosurvey, group_size = 10)
+  foi_index = get_foi_index(serosurvey, group_size = 10, model_type = "age")
 )
 
 create_prepared_serosurvey <- function(actual_serosurvey) {
