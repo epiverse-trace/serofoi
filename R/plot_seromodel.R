@@ -375,6 +375,7 @@ plot_foi_estimates <- function(
 #' @inheritParams plot_serosurvey
 #' @return ggplot object showing the r-hats of the model to be compared with the
 #' convergence criteria (horizontal dashed line)
+#' @export
 plot_rhats <- function(
   seromodel,
   serosurvey,
