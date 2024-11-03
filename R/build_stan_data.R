@@ -29,9 +29,6 @@ sf_uniform <- function(min = 0, max = 10) {
       " 0<=min<max"
     )
   }
-  if (min >= max) {
-    message("Uniform distribution only accepts min < max")
-  }
 
   return(list(min = min, max = max, name = "uniform"))
 }
