@@ -7,13 +7,12 @@ library(purrr)
 # You can use dput(extract_plot_data(plot)) to obtain the current structure of the plot
 skip_on_cran()
 
-# Common data
+# Common data ----
 data(veev2012)
 serosurvey <- veev2012
 seromodel_constant <- fit_seromodel(
   serosurvey = serosurvey
 )
-
 
 seromodel_age <- fit_seromodel(
   serosurvey = serosurvey,
@@ -26,10 +25,9 @@ create_prepared_serosurvey <- function(actual_serosurvey) {
     add_age_group_to_serosurvey()))
 }
 
-
+# Test plot_serosurvey ----
 test_that("plot_serosurvey creates a ggplot with correct structure", {
   skip_on_cran()
-
 
   actual_plot <- extract_plot_data(plot_serosurvey(serosurvey))
 
@@ -63,8 +61,6 @@ test_that("plot_serosurvey creates a ggplot with correct structure", {
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
 })
-
-
 
 test_that("plot_serosurvey creates a binned ggplot with correct structure", {
   bin_step <- 10
@@ -106,6 +102,7 @@ test_that("plot_serosurvey creates a binned ggplot with correct structure", {
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
 })
 
+# Test plot_summary ----
 test_that("plot_summary creates a ggplot with correct structure", {
   seromodel <- seromodel_constant
 
@@ -211,8 +208,7 @@ test_that("plot_seromodel creates a ggplot with correct structure", {
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
 })
-
-
+# Test plot_seroprevalence_estimates ----
 test_that("plot_seroprevalence_estimates creates a ggplot with correct structure", {
   seromodel <- seromodel_constant
 
@@ -249,6 +245,7 @@ test_that("plot_seroprevalence_estimates creates a ggplot with correct structure
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
 })
 
+# Test plot_foi_estimates ----
 test_that("plot_foi_estimates creates a ggplot with correct structure", {
   seromodel <- seromodel_age
   plot <- plot_foi_estimates(
@@ -286,6 +283,7 @@ test_that("plot_foi_estimates creates a ggplot with correct structure", {
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
 })
 
+# Test plot_rhats ----
 test_that("plot_rhats creates a ggplot with correct structure", {
   seromodel <- seromodel_age
 
