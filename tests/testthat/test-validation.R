@@ -69,6 +69,52 @@ test_that("validate_survey_features stops if age bins have overlapping bounds", 
   )
 })
 
+# Test validate_foi_index ----
+test_that("validate_foi_index throws an error for non-consecutive indexes", {
+  # Sample survey features for testing
+  survey_features <- data.frame(
+    age_min = c(1, 6, 11, 16, 21),
+    age_max = c(5, 10, 15, 20, 25),
+    survey_year = 2025
+  )
+
+  # Test validation works for invalid sizes
+  ## shorter
+  foi_index <- data.frame(
+    age = 1:20,
+    foi_index = c(rep(1, 10), rep(2, 10))
+  )
+  expect_error(
+    serofoi:::validate_foi_index(foi_index, survey_features, model_type = "age")
+  )
+  ## longer
+  foi_index <- data.frame(
+    age = 1:30,
+    foi_index = c(rep(1, 10), rep(2, 10), rep(3, 10))
+  )
+  expect_error(
+    serofoi:::validate_foi_index(foi_index, survey_features, model_type = "age")
+  )
+
+  # Test validation works for missing indexes
+  foi_index <- data.frame(
+    age = 1:25,
+    foi_index = c(rep(1, 10), rep(3, 15))
+  )
+  expect_error(
+    serofoi:::validate_foi_index(foi_index, survey_features, model_type = "age")
+  )
+
+  # Test that validation works decreasing indexes
+  foi_index <- data.frame(
+    age = 1:25,
+    foi_index = c(rep(1, 10), rep(2, 10), rep(1, 5))
+  )
+  expect_error(
+    serofoi:::validate_foi_index(foi_index, survey_features, model_type = "age")
+  )
+})
+
 # Test for validate_seroreversion_rate ----
 test_that("validate_seroreversion_rate stops if seroreversion_rate is negative", {
   # Case where seroreversion_rate is negative
