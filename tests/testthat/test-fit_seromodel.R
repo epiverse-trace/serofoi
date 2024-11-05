@@ -44,6 +44,31 @@ test_serorev_estimation <- function(seromodel, serosurvey, mu) {
   )
 }
 
+# Test for add_age_group_to_serosurvey ----
+test_that("add_age_group_to_serosurvey handles existing age_group column", {
+  # Case where serosurvey already has an age_group column
+  serosurvey_with_age_group <- dplyr::mutate(
+    survey_features,
+    age_group = c(2, 10, 18)
+    )
+
+  expect_message(
+    result <- add_age_group_to_serosurvey(serosurvey_with_age_group),
+    "Using `age_group` already present in serosurvey"
+  )
+
+  # Check that the existing age_group column is retained
+  expect_equal(result$age_group, serosurvey_with_age_group$age_group)
+})
+
+test_that("add_age_group_to_serosurvey creates age_group column if missing", {
+  result <- add_age_group_to_serosurvey(survey_features)
+
+  # Check that age_group column was created correctly
+  expected_age_group <- floor((survey_features$age_min + survey_features$age_max) / 2)
+  expect_equal(result$age_group, expected_age_group)
+})
+
 # Test fit_seromodel ----
 test_that("fit_seromodel correctly estimates constant foi using default settings", {
   skip_on_cran()
