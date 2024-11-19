@@ -263,7 +263,7 @@ sum_of_A <- function(t, tau, construct_A_fn, ...) {
 #' @param initial_conditions The initial state vector proportions for each
 #' birth cohort.
 #' @param max_age The maximum age to simulate seropositivity for.
-#'
+#' @param ... Additional parameters for [sum_of_A]
 #' @return A dataframe with columns 'age' and 'seropositivity'.
 #' @export
 probability_seropositive_general_model_by_age <- function( #nolint
@@ -343,7 +343,7 @@ multinomial_sampling_group <- function(n_sample, n_ages) {
   prob_value <- 1 / n_ages
   probs <- rep(prob_value, n_ages)
   sample_size_by_age <- as.vector(
-    rmultinom(1, n_sample, prob = probs)
+    stats::rmultinom(1, n_sample, prob = probs)
   )
   return(sample_size_by_age)
 }
@@ -364,7 +364,7 @@ generate_random_sample_sizes <- function(survey_df_long) {
 
   df_new <- NULL
   intervals <- unique(survey_df_long$group)
-  for (interval_aux in na.omit(intervals)) {
+  for (interval_aux in stats::na.omit(intervals)) {
     df_tmp <- survey_df_long %>%
       filter(.data$group == interval_aux)
     n_sample <- df_tmp$overall_sample_size[1]
@@ -448,7 +448,7 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
   combined_df <- probability_seropositive_by_age %>%
     dplyr::left_join(sample_size_by_age_random, by = "age") %>%
     dplyr::mutate(
-      n_seropositive = rbinom(
+      n_seropositive = stats::rbinom(
         nrow(probability_seropositive_by_age),
         .data$n_sample,
         .data$seropositivity)
@@ -782,7 +782,7 @@ simulate_serosurvey <- function(
 #'
 #' @export
 simulate_serosurvey_general_model <- function( #nolint
-  construct_A_function,
+  construct_A_fn,
   calculate_seropositivity_function, #nolint
   initial_conditions,
   survey_features,
@@ -793,7 +793,7 @@ simulate_serosurvey_general_model <- function( #nolint
   validate_survey_features(survey_features)
 
   probability_serop_by_age <- probability_seropositive_general_model_by_age(
-    construct_A_function,
+    construct_A_fn,
     calculate_seropositivity_function,
     initial_conditions,
     max(survey_features$age_max),

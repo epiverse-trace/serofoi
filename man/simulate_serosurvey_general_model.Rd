@@ -5,7 +5,7 @@
 \title{Simulate serosurvey data based on general serocatalytic model.}
 \usage{
 simulate_serosurvey_general_model(
-  construct_A_function,
+  construct_A_fn,
   calculate_seropositivity_function,
   initial_conditions,
   survey_features,
@@ -13,6 +13,9 @@ simulate_serosurvey_general_model(
 )
 }
 \arguments{
+\item{construct_A_fn}{A function that constructs a matrix that defines the
+multiplier term in the linear ODE system.}
+
 \item{calculate_seropositivity_function}{A function which takes the state
 vector and returns the seropositive fraction.}
 
@@ -22,6 +25,8 @@ birth cohort.}
 \item{survey_features}{A dataframe containing information about the binned
 age groups and sample sizes for each.
 It should contain columns: \link{'age_min', 'age_max', 'n_sample'}.}
+
+\item{...}{Additional parameters for \link{sum_of_A}}
 }
 \value{
 A dataframe with simulated serosurvey data, including age group

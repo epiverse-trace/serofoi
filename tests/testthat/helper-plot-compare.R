@@ -1,9 +1,8 @@
 library(ggplot2)
-library(rlang)
 library(purrr)
 
 
-# Dear Code Reviewer: If I'm reinventing the wheel with these functions, 
+# Dear Code Reviewer: If I'm reinventing the wheel with these functions,
 # please let me know in the PR comments :)
 
 
@@ -29,7 +28,7 @@ extract_layers <- function(layers) {
           NULL
         } else {
           map(layer$mapping, \(x) {
-            quo_name(get_expr(x))
+            quo_name(rlang::get_expr(x))
           })
         },
       geom_params =
@@ -44,23 +43,23 @@ extract_layers <- function(layers) {
 
 # Custom function to compare lists with tolerance for numeric values
 compare_lists_with_tolerance <- function(list1, list2, tol, path = "") {
-  
+
   # Check if both are lists
   if (is.list(list1) && is.list(list2)) {
     # Compare lengths
     if (length(list1) != length(list2)) {
       stop(sprintf("Different lengths at %s: length %d vs %d", path, length(list1), length(list2)))
     }
-    
+
     # Compare each element recursively
     for (name in names(list1)) {
       new_path <- paste0(path, "$", name)
-      
+
       # Check if name exists in both lists
       if (!name %in% names(list2)) {
         stop(sprintf("Name '%s' missing in second list at %s", name, new_path))
       }
-      
+
       # Recursively compare elements
       if (!compare_lists_with_tolerance(list1[[name]], list2[[name]], tol = tol, path = new_path)) {
         return(FALSE)
@@ -68,7 +67,7 @@ compare_lists_with_tolerance <- function(list1, list2, tol, path = "") {
     }
     return(TRUE)
   }
-  
+
   # If numeric, compare with tolerance
   if (is.numeric(list1) && is.numeric(list2)) {
     if (!all(abs(list1 - list2) <= tol)) {
@@ -76,7 +75,7 @@ compare_lists_with_tolerance <- function(list1, list2, tol, path = "") {
     }
     return(TRUE)
   }
-  
+
   # Otherwise, compare directly
   if (!identical(list1, list2)) {
     stop(sprintf("Mismatch at %s: %s vs %s", path, list1, list2))

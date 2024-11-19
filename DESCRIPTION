@@ -57,7 +57,8 @@ Imports:
     tibble,
     Matrix,
     glue,
-    config
+    config,
+    stats
 LinkingTo: 
     BH (>= 1.66.0),
     Rcpp (>= 0.12.0),
@@ -70,7 +71,8 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0),
     vdiffr,
-    spelling
+    spelling,
+    rlang
 Config/testthat/edition: 3
 Config/Needs/website:
     epiverse-trace/epiversetheme
