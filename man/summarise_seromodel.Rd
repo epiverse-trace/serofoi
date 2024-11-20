@@ -41,6 +41,8 @@ For additional information refer to \link[loo:loo]{loo}.}
 \item{loo_estimate_digits}{Number of loo estimate digits}
 
 \item{central_estimate_digits}{Number of central estimate digits}
+
+\item{rhat_digits}{Number of rhat estimate digits}
 }
 \value{
 A list summarising the specified model
