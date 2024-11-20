@@ -51,6 +51,9 @@ Available for time models in regular scale.}
 force-of-infection values will be estimated. It can be specified by
 means of \link{get_foi_index}}
 
+\item{foi_init}{Initialization function for sampling. If null, default is chosen
+depending on the foi-scale of the model}
+
 \item{is_seroreversion}{Boolean specifying whether to include
 seroreversion rate estimation in the model}
 

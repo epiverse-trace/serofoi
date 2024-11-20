@@ -53,6 +53,10 @@ Otherwise, age groups are kept as originally input.}
 
 \item{central_estimate_digits}{Number of central estimate digits}
 
+\item{seroreversion_digits}{Number of seroreversion rate digits}
+
+\item{rhat_digits}{Number of rhat estimate digits}
+
 \item{size_text}{Size of text for plotting (\code{base_size} in
 \link[ggplot2:ggtheme]{ggplot2})}
 }

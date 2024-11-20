@@ -23,6 +23,8 @@ vector and returns the seropositive fraction.}
 birth cohort.}
 
 \item{max_age}{The maximum age to simulate seropositivity for.}
+
+\item{...}{Additional parameters for \link{sum_of_A}}
 }
 \value{
 A dataframe with columns 'age' and 'seropositivity'.
