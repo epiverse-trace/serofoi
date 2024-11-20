@@ -14,13 +14,6 @@ package version 2.26.22. https://mc-stan.org
 
 #' @keywords internal
 }
-\seealso{
-Useful links:
-\itemize{
-  \item \url{https://trace-lac.github.io/serofoi/}
-}
-
-}
 \author{
 \strong{Maintainer}: Zulma M. Cucunubá \email{zulma.cucunuba@javeriana.edu.co} (\href{https://orcid.org/0000-0002-8165-3198}{ORCID})
 
@@ -29,6 +22,13 @@ Authors:
   \item Nicolás T. Domínguez \email{ex-ntorres@javeriana.edu.co} (\href{https://orcid.org/0009-0002-8484-1298}{ORCID})
   \item Ben Lambert
   \item Pierre Nouvellet
+}
+
+Other contributors:
+\itemize{
+  \item Miguel Gámez [contributor]
+  \item Geraldine Gómez (\href{https://orcid.org/0009-0007-8701-0568}{ORCID}) [contributor]
+  \item Jaime A. Pavlich-Mariscal (\href{https://orcid.org/0000-0002-3892-6680}{ORCID}) [contributor]
 }
 
 }
