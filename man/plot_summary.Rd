@@ -30,6 +30,8 @@ with \link{fit_seromode}}
 
 \item{central_estimate_digits}{Number of central estimate digits}
 
+\item{rhat_digits}{Number of rhat estimate digits}
+
 \item{size_text}{Size of text for plotting (\code{base_size} in
 \link[ggplot2:ggtheme]{ggplot2})}
 }
