@@ -29,7 +29,7 @@ extract_layers <- function(layers) {
           NULL
         } else {
           map(layer$mapping, \(x) {
-            quo_name(get_expr(x))
+            quo_name(rlang::get_expr(x))
           })
         },
       geom_params =
