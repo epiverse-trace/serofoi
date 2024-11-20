@@ -7,10 +7,9 @@
 sf_cauchy(location = 0, scale = 1)
 }
 \arguments{
-\item{scale}{Scale
-of the normal distribution}
+\item{location}{Location of the Cauchy distribution}
 
-\item{sd}{Standard deviation of the normal distribution}
+\item{scale}{Scale of the Cauchy distribution}
 }
 \value{
 List with specified statistics and name of the model
