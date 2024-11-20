@@ -35,9 +35,8 @@ sf_uniform <- function(min = 0, max = 10) {
 
 #' Sets Cauchy distribution parameters for sampling
 #'
-#' @param scale Scale
-#'  of the normal distribution
-#' @param sd Standard deviation of the normal distribution
+#' @param location Location of the Cauchy distribution
+#' @param scale Scale of the Cauchy distribution
 #' @return List with specified statistics and name of the model
 #' @export
 sf_cauchy <- function(location = 0, scale = 1) {

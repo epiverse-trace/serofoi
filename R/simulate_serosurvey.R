@@ -263,7 +263,7 @@ sum_of_A <- function(t, tau, construct_A_fn, ...) {
 #' @param initial_conditions The initial state vector proportions for each
 #' birth cohort.
 #' @param max_age The maximum age to simulate seropositivity for.
-#'
+#' @param ... Additional parameters for [sum_of_A]
 #' @return A dataframe with columns 'age' and 'seropositivity'.
 #' @export
 probability_seropositive_general_model_by_age <- function( #nolint
@@ -782,7 +782,7 @@ simulate_serosurvey <- function(
 #'
 #' @export
 simulate_serosurvey_general_model <- function( #nolint
-  construct_A_function,
+  construct_A_fn,
   calculate_seropositivity_function, #nolint
   initial_conditions,
   survey_features,
@@ -793,7 +793,7 @@ simulate_serosurvey_general_model <- function( #nolint
   validate_survey_features(survey_features)
 
   probability_serop_by_age <- probability_seropositive_general_model_by_age(
-    construct_A_function,
+    construct_A_fn,
     calculate_seropositivity_function,
     initial_conditions,
     max(survey_features$age_max),

@@ -71,6 +71,7 @@ summarise_central_estimate <- function(
 #' @inheritParams extract_central_estimates
 #' @inheritParams summarise_loo_estimate
 #' @inheritParams summarise_central_estimate
+#' @param rhat_digits Number of rhat estimate digits
 #' @return A list summarising the specified model
 #' \describe{
 #'  \item{`model_name`}{Name of the model}
