@@ -16,6 +16,8 @@ add_age_group_to_serosurvey <- function(serosurvey) {
 #' Sets initialization function for sampling
 #'
 #' @inheritParams fit_seromodel
+#' @param foi_init Initialization function for sampling. If null, default is chosen
+#' depending on the foi-scale of the model
 #' @export
 set_foi_init <- function(
   foi_init,
@@ -75,6 +77,7 @@ set_foi_init <- function(
 #' @param foi_index Integer vector specifying the age-groups for which
 #' force-of-infection values will be estimated. It can be specified by
 #' means of [get_foi_index]
+#' @inheritParams set_foi_init
 #' @param is_seroreversion Boolean specifying whether to include
 #' seroreversion rate estimation in the model
 #' @param seroreversion_prior seroreversion distribution specified by means of
