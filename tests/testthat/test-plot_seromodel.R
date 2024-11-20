@@ -1,6 +1,5 @@
 library(testthat)
 library(ggplot2)
-library(rlang)
 library(purrr)
 
 # NOTE: If the variable `expected_plot` needs to be updated because of changes in the plots
