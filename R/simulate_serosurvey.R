@@ -343,7 +343,7 @@ multinomial_sampling_group <- function(n_sample, n_ages) {
   prob_value <- 1 / n_ages
   probs <- rep(prob_value, n_ages)
   sample_size_by_age <- as.vector(
-    rmultinom(1, n_sample, prob = probs)
+    stats::rmultinom(1, n_sample, prob = probs)
   )
   return(sample_size_by_age)
 }
@@ -364,7 +364,7 @@ generate_random_sample_sizes <- function(survey_df_long) {
 
   df_new <- NULL
   intervals <- unique(survey_df_long$group)
-  for (interval_aux in na.omit(intervals)) {
+  for (interval_aux in stats::na.omit(intervals)) {
     df_tmp <- survey_df_long %>%
       filter(.data$group == interval_aux)
     n_sample <- df_tmp$overall_sample_size[1]
@@ -448,7 +448,7 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
   combined_df <- probability_seropositive_by_age %>%
     dplyr::left_join(sample_size_by_age_random, by = "age") %>%
     dplyr::mutate(
-      n_seropositive = rbinom(
+      n_seropositive = stats::rbinom(
         nrow(probability_seropositive_by_age),
         .data$n_sample,
         .data$seropositivity)
