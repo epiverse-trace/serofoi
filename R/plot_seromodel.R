@@ -491,6 +491,7 @@ plot_summary <- function(
 #' @inheritParams plot_seroprevalence_estimates
 #' @inheritParams plot_foi_estimates
 #' @inheritParams plot_rhats
+#' @param seroreversion_digits Number of seroreversion rate digits
 #' @return seromodel summary plot
 #' @export
 plot_seromodel <- function(
