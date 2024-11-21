@@ -34,8 +34,8 @@ prepare_serosurvey_for_plotting <- function( #nolint
       seroprev_lower = "Lower",
       seroprev_upper = "Upper"
     ) |>
-    dplyr::arrange(age_group) |>
-    dplyr::relocate(age_group)
+    dplyr::arrange(.data$age_group) |>
+    dplyr::relocate(.data$age_group)
 }
 
 #' Construct age-group variable from age column
@@ -136,14 +136,14 @@ plot_serosurvey <- function(
     )
 
     serosurvey <- serosurvey |>
-      dplyr::group_by(age_interval) |>
+      dplyr::group_by(.data$age_interval) |>
       dplyr::summarise(
-        n_sample = sum(n_sample),
-        n_seropositive = sum(n_seropositive)
+        n_sample = sum(.data$n_sample),
+        n_seropositive = sum(.data$n_seropositive)
       ) |>
       dplyr::mutate(
-        age_min = as.integer(gsub("[[]|\\,.*", "\\1", age_interval)) + 1,
-        age_max = as.integer(gsub(".*\\,|[]]", "\\1", age_interval))
+        age_min = as.integer(gsub("[[]|\\,.*", "\\1", .data$age_interval)) + 1,
+        age_max = as.integer(gsub(".*\\,|[]]", "\\1", .data$age_interval))
       ) |>
       add_age_group_to_serosurvey()
   }

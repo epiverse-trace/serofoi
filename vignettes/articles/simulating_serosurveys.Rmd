@@ -79,9 +79,10 @@ plot_serosurvey(serosurvey_constant) +
 We now consider a pathogen which has an FOI that varies throughout the age of individuals. We assume the FOI declines strongly throughout childhood.
 
 ```{r, fig.align="center"}
+ages <- seq(1, max_age, 1)
 foi_age_varying <- data.frame(
-  age = seq(1, max_age, 1),
-  foi = 0.1 * exp(-0.1 * age)
+  age = ages,
+  foi = 0.1 * exp(-0.1 * ages)
 )
 
 foi_age_varying |>

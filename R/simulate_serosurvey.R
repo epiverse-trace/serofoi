@@ -329,7 +329,7 @@ survey_by_individual_age <- function(survey_features, age_df) {
     age_df, survey_features,
     by = "group"
   ) |>
-  rename(overall_sample_size = n_sample)
+  rename(overall_sample_size = .data$n_sample)
 
   return(overal_sample_sizes)
 }
@@ -456,15 +456,15 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
     dplyr::mutate(
       n_seropositive = stats::rbinom(
         nrow(probability_seropositive_by_age),
-        n_sample,
-        seropositivity)
+        .data$n_sample,
+        .data$seropositivity)
       )
 
   grouped_df <- combined_df |>
-    dplyr::group_by(age_min, age_max) |>
+    dplyr::group_by(.data$age_min, .data$age_max) |>
     dplyr::summarise(
-      n_sample = sum(n_sample),
-      n_seropositive = sum(n_seropositive),
+      n_sample = sum(.data$n_sample),
+      n_seropositive = sum(.data$n_seropositive),
       .groups = "drop"
     ) |>
     dplyr::left_join(
