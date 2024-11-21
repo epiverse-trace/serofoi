@@ -9,14 +9,14 @@ skip_on_cran()
 # Common data ----
 data(veev2012)
 serosurvey <- veev2012
-seromodel_constant <- fit_seromodel(
-  serosurvey = serosurvey
-)
+seromodel_constant <- suppressWarnings(fit_seromodel(serosurvey = serosurvey))
 
-seromodel_age <- fit_seromodel(
-  serosurvey = serosurvey,
-  model_type = "age",
-  foi_index = get_foi_index(serosurvey, group_size = 10, model_type = "age")
+seromodel_age <- suppressWarnings(
+  fit_seromodel(
+    serosurvey = serosurvey,
+    model_type = "age",
+    foi_index = get_foi_index(serosurvey, group_size = 10, model_type = "age")
+  )
 )
 
 create_prepared_serosurvey <- function(actual_serosurvey) {
@@ -64,7 +64,12 @@ test_that("plot_serosurvey creates a ggplot with correct structure", {
 test_that("plot_serosurvey creates a binned ggplot with correct structure", {
   bin_step <- 10
 
-  actual_plot <- extract_plot_data(plot_serosurvey(serosurvey, bin_serosurvey = TRUE, bin_step = bin_step))
+  expect_warning(
+    actual_plot <- extract_plot_data(
+      plot_serosurvey(serosurvey, bin_serosurvey = TRUE, bin_step = bin_step)
+      ),
+    "The last age interval will be truncated"
+  )
 
   prepared_serosurvey <- create_prepared_serosurvey(serosurvey)
 
@@ -111,24 +116,30 @@ test_that("plot_summary creates a ggplot with correct structure", {
   rhat_digits <- 2
   size_text <- 11
 
-  plot <- plot_summary(
-    seromodel = seromodel,
-    serosurvey = serosurvey,
-    loo_estimate_digits = loo_estimate_digits,
-    central_estimate_digits = central_estimate_digits,
-    rhat_digits = rhat_digits,
-    size_text = size_text
+  expect_warning(
+    plot <- plot_summary(
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      loo_estimate_digits = loo_estimate_digits,
+      central_estimate_digits = central_estimate_digits,
+      rhat_digits = rhat_digits,
+      size_text = size_text
+    ),
+    "Some Pareto k diagnostic values are too high"
   )
   actual_data <- plot$data
 
   actual_plot <- extract_plot_data(plot)
 
-  summary <- summarise_seromodel(
-    seromodel = seromodel,
-    serosurvey = serosurvey,
-    loo_estimate_digits = loo_estimate_digits,
-    central_estimate_digits = central_estimate_digits,
-    rhat_digits = rhat_digits
+  expect_warning(
+    summary <- summarise_seromodel(
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      loo_estimate_digits = loo_estimate_digits,
+      central_estimate_digits = central_estimate_digits,
+      rhat_digits = rhat_digits
+    ),
+    "Some Pareto k diagnostic values are too high"
   )
 
   expected_data <- data.frame(
@@ -173,10 +184,12 @@ test_that("plot_summary creates a ggplot with correct structure", {
 test_that("plot_seromodel creates a ggplot with correct structure", {
   seromodel <- seromodel_constant
 
-
-  plot <- plot_seromodel(
-    seromodel = seromodel,
-    serosurvey = serosurvey
+  expect_warning(
+    plot <- plot_seromodel(
+      seromodel = seromodel,
+      serosurvey = serosurvey
+    ),
+    "Some Pareto k diagnostic values are too high"
   )
   actual_plot <- extract_plot_data(plot)
 
