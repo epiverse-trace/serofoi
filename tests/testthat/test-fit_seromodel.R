@@ -14,7 +14,7 @@ test_foi_estimation <- function(seromodel, serosurvey, foi) {
     seromodel = seromodel,
     serosurvey = serosurvey,
     par_name = "foi_expanded"
-    ) %>%
+    ) |>
     mutate(tol = pmax((upper - lower)/2, tol_min))
   expect_true(
     all(
@@ -32,7 +32,7 @@ test_serorev_estimation <- function(seromodel, serosurvey, mu) {
     seromodel = seromodel,
     serosurvey = serosurvey,
     par_name = "seroreversion_rate"
-  ) %>%
+  ) |>
     mutate(tol = pmax((upper - lower)/2, tol_min))
 
   expect_true(
@@ -47,7 +47,7 @@ test_serorev_estimation <- function(seromodel, serosurvey, mu) {
 # Test for add_age_group_to_serosurvey ----
 test_that("add_age_group_to_serosurvey handles existing age_group column", {
   # Case where serosurvey already has an age_group column
-  serosurvey_with_age_group <- dplyr::mutate(
+  serosurvey_with_age_group <- mutate(
     survey_features,
     age_group = c(2, 10, 18)
     )
@@ -100,7 +100,7 @@ test_that("fit_seromodel correctly estimates constant foi using default settings
     foi = foi,
     survey_features = survey_features,
     seroreversion_rate = mu
-  ) %>%
+  ) |>
   mutate(survey_year = 2050)
   set.seed(Sys.time())
 
@@ -131,7 +131,7 @@ test_that("fit_seromodel correctly estimates time-varying foi using default prio
     model = "time",
     foi = foi,
     survey_features = survey_features
-  ) %>%
+  ) |>
   mutate(survey_year = 2050)
   set.seed(Sys.time())
 
@@ -154,7 +154,7 @@ test_that("fit_seromodel correctly estimates time-varying foi using default prio
     foi = foi,
     survey_features = survey_features,
     seroreversion_rate = mu
-  ) %>%
+  ) |>
   mutate(survey_year = 2050)
   set.seed(Sys.time())
 
@@ -281,7 +281,7 @@ test_that("fit_seromodel correctly identifies outbreak using time-log-foi model"
     foi = foi,
     survey_features = survey_features,
     seroreversion_rate = mu
-  ) %>%
+  ) |>
   mutate(survey_year = 2050)
   set.seed(Sys.time())
 

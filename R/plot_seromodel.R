@@ -19,7 +19,7 @@ prepare_serosurvey_for_plotting <- function( #nolint
   alpha = 0.05
   ) {
 
-  serosurvey <- serosurvey %>%
+  serosurvey <- serosurvey |>
     cbind(
       Hmisc::binconf(
         serosurvey$n_seropositive,
@@ -28,14 +28,14 @@ prepare_serosurvey_for_plotting <- function( #nolint
         method = "exact",
         return.df = TRUE
       )
-    ) %>%
+    ) |>
     dplyr::rename(
       seroprev = "PointEst",
       seroprev_lower = "Lower",
       seroprev_upper = "Upper"
-    ) %>%
-    dplyr::arrange(.data$age_group) %>%
-    dplyr::relocate(.data$age_group)
+    ) |>
+    dplyr::arrange(age_group) |>
+    dplyr::relocate(age_group)
 }
 
 #' Construct age-group variable from age column
@@ -76,10 +76,12 @@ get_age_intervals <- function(serosurvey, step) {
   lim_breaks <- c(limits_low, age_max)
 
   # define age groups closed to the left and closed to the right
-  survey_features <- data.frame(
-    age_min = limits_low,
-    age_max = limits_low + step - 1
-  ) %>% add_age_bins()
+  survey_features <- add_age_bins(
+    data.frame(
+      age_min = limits_low,
+      age_max = limits_low + step - 1
+    )
+  )
 
   serosurvey$age_interval <- cut(
       x = serosurvey$age_group,
@@ -121,7 +123,7 @@ plot_serosurvey <- function(
     bin_serosurvey = FALSE,
     bin_step = 5
     ) {
-  serosurvey <- validate_serosurvey(serosurvey = serosurvey) %>%
+  serosurvey <- validate_serosurvey(serosurvey = serosurvey) |>
     add_age_group_to_serosurvey()
 
   if (bin_serosurvey) {
@@ -133,16 +135,16 @@ plot_serosurvey <- function(
       step = bin_step
     )
 
-    serosurvey <- serosurvey %>%
-      dplyr::group_by(.data$age_interval) %>%
+    serosurvey <- serosurvey |>
+      dplyr::group_by(age_interval) |>
       dplyr::summarise(
-        n_sample = sum(.data$n_sample),
-        n_seropositive = sum(.data$n_seropositive)
-      ) %>%
+        n_sample = sum(n_sample),
+        n_seropositive = sum(n_seropositive)
+      ) |>
       dplyr::mutate(
-        age_min = as.integer(gsub("[[]|\\,.*", "\\1", .data$age_interval)) + 1,
-        age_max = as.integer(gsub(".*\\,|[]]", "\\1", .data$age_interval))
-      ) %>%
+        age_min = as.integer(gsub("[[]|\\,.*", "\\1", age_interval)) + 1,
+        age_max = as.integer(gsub(".*\\,|[]]", "\\1", age_interval))
+      ) |>
       add_age_group_to_serosurvey()
   }
 
@@ -202,8 +204,9 @@ extract_central_estimates <- function(
   alpha = 0.05,
   par_name = "foi_vector"
 ) {
-  samples <- rstan::extract(seromodel, par_name)[[1]] %>%
-    as.matrix() #to deal with 1-time estimates
+  samples <- as.matrix( #to deal with 1-time estimates
+    rstan::extract(seromodel, par_name)[[1]]
+  )
   central_estimates <- data.frame(
     median = apply(samples, 2, quantile, 0.5),
     lower = apply(samples, 2, quantile, alpha),
@@ -234,15 +237,15 @@ plot_seroprevalence_estimates <- function(
     lower = 0.0,
     upper = 0.0,
     age = 0
-  ) %>%
+  ) |>
   rbind(
     extract_central_estimates(
       seromodel = seromodel,
       serosurvey = serosurvey,
       alpha = alpha,
       par_name = "prob_infected_expanded"
-  ) %>%
-    mutate(age = seq(1, max(serosurvey$age_max)))
+  ) |>
+    dplyr::mutate(age = seq(1, max(serosurvey$age_max)))
   )
 
   seroprevalence_plot <- plot_serosurvey(
@@ -253,7 +256,7 @@ plot_seroprevalence_estimates <- function(
     ) +
     ggplot2::geom_line(
       data = seroprevalence_central_estimates,
-      ggplot2::aes(x = .data$age, y = median),
+      ggplot2::aes(x = .data$age, y = .data$median),
       colour = "#7a0177"
     ) +
     ggplot2::geom_ribbon(
@@ -311,13 +314,15 @@ plot_foi_estimates <- function(
   if (startsWith(model_name, "age")) {
     xlab <- "Age"
     ages <- 1:max(serosurvey$age_max)
-    foi_central_estimates <- mutate(
+    foi_central_estimates <- dplyr::mutate(
       foi_central_estimates,
       age = ages
     )
     if (!is.null(foi_df)) {
-      foi_central_estimates <- foi_central_estimates %>%
-        left_join(foi_df, by = "age")
+      foi_central_estimates <- dplyr::left_join(
+        foi_central_estimates, foi_df,
+        by = "age"
+      )
     }
     foi_plot <- ggplot2::ggplot(
       data = foi_central_estimates, ggplot2::aes(x = .data$age)
@@ -327,13 +332,15 @@ plot_foi_estimates <- function(
     xlab <- "Year"
     ages <- rev(1:max(serosurvey$age_max))
     years <- unique(serosurvey$survey_year) - ages
-    foi_central_estimates <- mutate(
+    foi_central_estimates <- dplyr::mutate(
       foi_central_estimates,
       year = years
     )
     if (!is.null(foi_df)) {
-      foi_central_estimates <- foi_central_estimates %>%
-        left_join(foi_df, by = "year")
+      foi_central_estimates <-  dplyr::left_join(
+        foi_central_estimates, foi_df,
+        by = "year"
+      )
     }
     foi_plot <- ggplot2::ggplot(
       data = foi_central_estimates, ggplot2::aes(x = .data$year)
@@ -454,14 +461,15 @@ plot_summary <- function(
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
-  summary_table <- summarise_seromodel(
-    seromodel = seromodel,
-    serosurvey = serosurvey,
-    loo_estimate_digits = loo_estimate_digits,
-    central_estimate_digits = central_estimate_digits,
-    rhat_digits = rhat_digits
-    ) %>%
-    t() #convert summary to table
+  summary_table <- t( #convert summary to table
+    summarise_seromodel(
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      loo_estimate_digits = loo_estimate_digits,
+      central_estimate_digits = central_estimate_digits,
+      rhat_digits = rhat_digits
+    )
+  )
 
   summary_df <- data.frame(
     row = rev(seq_len(NCOL(summary_table))),

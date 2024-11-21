@@ -15,7 +15,7 @@ test_that("validate_serosurvey throws an error for invalid input", {
   )
 
   # Define an invalid serosurvey data frame with incorrect column types
-  incorrect_type_serosurvey <-  dplyr::mutate(
+  incorrect_type_serosurvey <-  mutate(
     missing_column_serosurvey,
     n_seropositive = c("10", "30", "70")
     )

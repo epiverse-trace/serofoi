@@ -20,7 +20,7 @@ seromodel_age <- fit_seromodel(
 )
 
 create_prepared_serosurvey <- function(actual_serosurvey) {
-  return(prepare_serosurvey_for_plotting(actual_serosurvey %>%
+  return(prepare_serosurvey_for_plotting(actual_serosurvey |>
     add_age_group_to_serosurvey()))
 }
 

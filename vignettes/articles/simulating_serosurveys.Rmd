@@ -32,7 +32,7 @@ foi_constant <- data.frame(
   foi = rep(0.05, max_age)
 )
 
-foi_constant %>%
+foi_constant |>
   ggplot(aes(x = age, y = foi)) +
   geom_line()
 ```
@@ -80,11 +80,11 @@ We now consider a pathogen which has an FOI that varies throughout the age of in
 
 ```{r, fig.align="center"}
 foi_age_varying <- data.frame(
-  age = seq(1, max_age, 1)
-) %>%
-  mutate(foi = 0.1 * exp(-0.1 * age))
+  age = seq(1, max_age, 1),
+  foi = 0.1 * exp(-0.1 * age)
+)
 
-foi_age_varying %>%
+foi_age_varying |>
   ggplot(aes(x = age, y = foi)) +
   geom_line()
 ```
@@ -105,29 +105,29 @@ Below, we see that the FOI for the age-dependent FOI pathogen increases rapidly 
 ```{r, fig.align="center"}
 # combine with constant FOI survey
 serosurvey_combined <- rbind(
-  serosurvey_constant %>%
-    mutate(model_type = "constant FOI") %>%
+  serosurvey_constant |>
+    mutate(model_type = "constant FOI") |>
   left_join(
     probability_seropositive_by_age(
       model = "age",
       foi = foi_constant,
       seroreversion_rate = 0
-      ) %>%
+      ) |>
       rename(age_min = age),
     by = "age_min"
     ),
-  serosurvey_age_dep %>%
-    mutate(model_type = "age-dependent FOI") %>%
+  serosurvey_age_dep |>
+    mutate(model_type = "age-dependent FOI") |>
       left_join(
           probability_seropositive_by_age(
           model = "age",
           foi = foi_age_varying,
           seroreversion_rate = 0
-      ) %>%
+      ) |>
         rename(age_min = age),
       by = "age_min"
       )
-  )  %>%
+  )  |>
   mutate(model_type = as.factor(model_type))
 
 plot_serosurvey(serosurvey = serosurvey_combined) +
@@ -161,7 +161,7 @@ foi_spiky <- data.frame(
 )
 
 # plot
-foi_spiky %>%
+foi_spiky |>
   ggplot(aes(x = year, y = foi)) +
   geom_line()
 ```
@@ -207,7 +207,7 @@ foi_df_time <- data.frame(
 )
 
 # plot
-foi_df_time %>%
+foi_df_time |>
   ggplot(aes(x = year, y = foi)) +
   geom_line()
 ```
@@ -224,7 +224,7 @@ foi_df_age <- data.frame(
 )
 
 # plot
-foi_df_age %>%
+foi_df_age |>
   ggplot(aes(x = age, y = foi)) +
   geom_line()
 ```
@@ -234,24 +234,24 @@ To create the overall FOI (which is a function of both time and age), we create 
 foi_age_time <- expand.grid(
   year = foi_df_time$year,
   age = foi_df_age$age
-) %>%
-  left_join(foi_df_age, by = "age") %>%
-  rename(foi_age = foi) %>%
-  left_join(foi_df_time, by = "year") %>%
-  rename(foi_time = foi) %>%
-  mutate(foi = foi_age * foi_time) %>%
+) |>
+  left_join(foi_df_age, by = "age") |>
+  rename(foi_age = foi) |>
+  left_join(foi_df_time, by = "year") |>
+  rename(foi_time = foi) |>
+  mutate(foi = foi_age * foi_time) |>
   select(-c("foi_age", "foi_time"))
 ```
 
 ```{r, fig.align="center", echo=FALSE}
 # plot a few birth years
 select_birth_years <- c(1955, 1965, 1975, 1985, 1995, 2005, 2015)
-foi_age_time %>%
-  mutate(birth_year = year - age) %>%
-  filter(birth_year >= 1945) %>%
-  arrange(birth_year, age) %>%
-  filter(birth_year %in% select_birth_years) %>%
-  mutate(birth_year = as.factor(birth_year)) %>%
+foi_age_time |>
+  mutate(birth_year = year - age) |>
+  filter(birth_year >= 1945) |>
+  arrange(birth_year, age) |>
+  filter(birth_year %in% select_birth_years) |>
+  mutate(birth_year = as.factor(birth_year)) |>
   ggplot(aes(x = year, y = foi, colour = birth_year)) +
   geom_line()
 ```
@@ -262,7 +262,7 @@ max_age <- 80
 n_sample <- 50
 survey_features <- data.frame(
   age_min = seq(1, max_age, 5),
-  age_max = seq(5, max_age, 5)) %>%
+  age_max = seq(5, max_age, 5)) |>
   mutate(n_sample = rep(n_sample, length(age_min)))
 
 serosurvey <- simulate_serosurvey(
@@ -304,29 +304,29 @@ serosurvey_serorevert <- simulate_serosurvey(
 ```{r, fig.align="center"}
 # combine with constant FOI survey
 serosurvey_combined <- rbind(
-  serosurvey %>%
-    mutate(model_type = "non-seroreverting") %>%
+  serosurvey |>
+    mutate(model_type = "non-seroreverting") |>
   left_join(
     probability_seropositive_by_age(
       model = "age-time",
       foi = foi_age_time,
       seroreversion_rate = 0
-      ) %>%
+      ) |>
       rename(age_min = age),
     by = "age_min"
     ),
-  serosurvey_serorevert %>%
-    mutate(model_type = "seroreverting") %>%
+  serosurvey_serorevert |>
+    mutate(model_type = "seroreverting") |>
       left_join(
           probability_seropositive_by_age(
           model = "age-time",
           foi = foi_age_time,
           seroreversion_rate = 0.01
-      ) %>%
+      ) |>
         rename(age_min = age),
       by = "age_min"
       )
-  ) %>%
+  ) |>
   mutate(model_type = as.factor(model_type))
 
 # plot both
@@ -425,7 +425,7 @@ seropositive_hiv <- probability_seropositive_general_model_by_age(
     u,
     v
   )
-seropositive_hiv %>%
+seropositive_hiv |>
   ggplot(aes(x = age, y = seropositivity)) +
   geom_line() +
   scale_y_continuous(labels = scales::percent) +

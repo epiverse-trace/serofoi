@@ -156,12 +156,13 @@ probability_seropositive_age_and_time_model_by_age <- function( #nolint
   seroreversion_rate
 ) {
 
-  foi_matrix <- foi %>%
+  foi_matrix <-  as.matrix(
     tidyr::pivot_wider(
+      foi,
       values_from = foi,
-      names_from = c(.data$year)) %>%
-    tibble::column_to_rownames("age") %>%
-    as.matrix()
+      names_from = c(.data$year)) |>
+    tibble::column_to_rownames("age")
+  )
 
   years <- unique(foi$year)
   n_years <- length(years)
@@ -172,8 +173,9 @@ probability_seropositive_age_and_time_model_by_age <- function( #nolint
   # solves ODE exactly within pieces
   for (i in seq_along(years)) { # birth cohorts
     probability_previous <- 0
-    foi_matrix_subset <- foi_matrix[1:(n_ages - i + 1), i:n_ages] %>%
-      as.matrix() # only to handle single element matrix case
+    foi_matrix_subset <- as.matrix( # only to handle single element matrix case
+      foi_matrix[1:(n_ages - i + 1), i:n_ages]
+    )
     foi_diag <- diag(foi_matrix_subset)
     for (j in 1:(n_years - i + 1)) { # exposure during lifetime
       foi_tmp <- foi_diag[j]
@@ -277,7 +279,7 @@ probability_seropositive_general_model_by_age <- function( #nolint
   probabilities <- vector(length = max_age)
   for (i in seq_along(probabilities)) {
     A_sum <- sum_of_A(max_age, max_age - i, construct_A_fn, ...)
-    Y <- Matrix::expm(A_sum) %>% as.matrix() %*% initial_conditions
+    Y <- as.matrix(Matrix::expm(A_sum)) %*% initial_conditions
     probabilities[i] <- calculate_seropositivity_function(Y)
   }
 
@@ -308,8 +310,7 @@ add_age_bins <- function(survey_features) {
     age_max <- survey_features$age_max[i]
     intervals[i] <- paste0("[", age_min, ",", age_max, "]")
   }
-  survey_features <- survey_features %>%
-    mutate(group = intervals)
+  survey_features <-  dplyr::mutate(survey_features, group = intervals)
   return(survey_features)
 }
 
@@ -324,9 +325,13 @@ add_age_bins <- function(survey_features) {
 #' survey_features and age_df.
 #' This dataframe has columns including 'age' and 'overall_sample_size'.
 survey_by_individual_age <- function(survey_features, age_df) {
-  age_df %>%
-    left_join(survey_features, by = "group") %>%
-    rename(overall_sample_size = .data$n_sample)
+  overal_sample_sizes <- dplyr::left_join(
+    age_df, survey_features,
+    by = "group"
+  ) |>
+  rename(overall_sample_size = n_sample)
+
+  return(overal_sample_sizes)
 }
 
 #' Generate random sample sizes using multinomial sampling.
@@ -366,11 +371,10 @@ generate_random_sample_sizes <- function(survey_df_long) {
   intervals <- unique(survey_df_long$group)
   for (interval_aux in stats::na.omit(intervals)) {
     df_tmp <- survey_df_long %>%
-      filter(.data$group == interval_aux)
+      dplyr::filter(.data$group == interval_aux)
     n_sample <- df_tmp$overall_sample_size[1]
     sample_size_by_age <- multinomial_sampling_group(n_sample, nrow(df_tmp))
-    df_tmp <- df_tmp %>%
-      mutate(n_sample = sample_size_by_age)
+    df_tmp <- dplyr::mutate(df_tmp, n_sample = sample_size_by_age)
 
     if (is.null(df_new)) {
       df_new <- df_tmp
@@ -445,23 +449,25 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
     survey_features
 ) {
 
-  combined_df <- probability_seropositive_by_age %>%
-    dplyr::left_join(sample_size_by_age_random, by = "age") %>%
+  combined_df <- dplyr::left_join(
+      probability_seropositive_by_age, sample_size_by_age_random,
+      by = "age"
+    ) |>
     dplyr::mutate(
       n_seropositive = stats::rbinom(
         nrow(probability_seropositive_by_age),
-        .data$n_sample,
-        .data$seropositivity)
+        n_sample,
+        seropositivity)
       )
 
-  grouped_df <- combined_df %>%
-    dplyr::group_by(.data$age_min, .data$age_max) %>%
+  grouped_df <- combined_df |>
+    dplyr::group_by(age_min, age_max) |>
     dplyr::summarise(
-      n_sample = sum(.data$n_sample),
-      n_seropositive = sum(.data$n_seropositive),
+      n_sample = sum(n_sample),
+      n_seropositive = sum(n_seropositive),
       .groups = "drop"
-    ) %>%
-    left_join(
+    ) |>
+    dplyr::left_join(
       survey_features,
       by = c("age_min", "age_max", "n_sample")
     )
