@@ -34,8 +34,8 @@ prepare_serosurvey_for_plotting <- function( #nolint
       seroprev_lower = "Lower",
       seroprev_upper = "Upper"
     ) |>
-    dplyr::arrange(age_group) |>
-    dplyr::relocate(age_group)
+    dplyr::arrange(.data$age_group) |>
+    dplyr::relocate(.data$age_group)
 }
 
 #' Construct age-group variable from age column
