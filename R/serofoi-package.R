@@ -7,6 +7,7 @@
 #' @useDynLib serofoi, .registration = TRUE
 #' @import methods
 #' @import Rcpp
+#' @import dplyr
 #' @importFrom rstan sampling
 #' @importFrom graphics text
 #' @importFrom rstantools rstan_config
