@@ -28,13 +28,13 @@ prepare_serosurvey_for_plotting <- function( #nolint
       method = "exact",
       return.df = TRUE
     )
-  ) %>%
+  ) |>
     dplyr::rename(
       seroprev = "PointEst",
       seroprev_lower = "Lower",
       seroprev_upper = "Upper"
-    ) %>%
-    dplyr::arrange(.data$age_group) %>%
+    ) |>
+    dplyr::arrange(.data$age_group) |>
     dplyr::relocate(.data$age_group)
 
   return(serosurvey)
@@ -136,15 +136,15 @@ plot_serosurvey <- function(
       step = bin_step
     )
 
-    serosurvey <- dplyr::group_by(serosurvey, .data$age_interval) %>%
+    serosurvey <- dplyr::group_by(serosurvey, .data$age_interval) |>
       dplyr::summarise(
         n_sample = sum(.data$n_sample),
         n_seropositive = sum(.data$n_seropositive)
-      ) %>%
+      ) |>
       dplyr::mutate(
         age_min = as.integer(gsub("[[]|\\,.*", "\\1", .data$age_interval)) + 1,
         age_max = as.integer(gsub(".*\\,|[]]", "\\1", .data$age_interval))
-      ) %>%
+      ) |>
       add_age_group_to_serosurvey()
   }
 
@@ -237,14 +237,14 @@ plot_seroprevalence_estimates <- function(
     lower = 0.0,
     upper = 0.0,
     age = 0
-  ) %>%
+  ) |>
   rbind(
     extract_central_estimates(
       seromodel = seromodel,
       serosurvey = serosurvey,
       alpha = alpha,
       par_name = "prob_infected_expanded"
-  ) %>%
+  ) |>
     dplyr::mutate(age = seq(1, max(serosurvey$age_max)))
   )
 
