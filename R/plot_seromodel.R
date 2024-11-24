@@ -34,8 +34,8 @@ prepare_serosurvey_for_plotting <- function( #nolint
       seroprev_lower = "Lower",
       seroprev_upper = "Upper"
     ) |>
-    dplyr::arrange(age_group) |>
-    dplyr::relocate(age_group)
+    dplyr::arrange(.data$age_group) |>
+    dplyr::relocate(.data$age_group)
 
   return(serosurvey)
 }
@@ -136,14 +136,14 @@ plot_serosurvey <- function(
       step = bin_step
     )
 
-    serosurvey <- dplyr::group_by(serosurvey, age_interval) |>
+    serosurvey <- dplyr::group_by(serosurvey, .data$age_interval) |>
       dplyr::summarise(
-        n_sample = sum(n_sample),
-        n_seropositive = sum(n_seropositive)
+        n_sample = sum(.data$n_sample),
+        n_seropositive = sum(.data$n_seropositive)
       ) |>
       dplyr::mutate(
-        age_min = as.integer(gsub("[[]|\\,.*", "\\1", age_interval)) + 1,
-        age_max = as.integer(gsub(".*\\,|[]]", "\\1", age_interval))
+        age_min = as.integer(gsub("[[]|\\,.*", "\\1", .data$age_interval)) + 1,
+        age_max = as.integer(gsub(".*\\,|[]]", "\\1", .data$age_interval))
       ) |>
       add_age_group_to_serosurvey()
   }
@@ -155,19 +155,19 @@ plot_serosurvey <- function(
 
   seroprev_plot <- ggplot2::ggplot(
     data = serosurvey,
-    ggplot2::aes(x = age_group)
+    ggplot2::aes(x = "age_group")
   ) +
     ggplot2::geom_errorbar(
       ggplot2::aes(
-        ymin = seroprev_lower,
-        ymax = seroprev_upper
+        ymin = "seroprev_lower",
+        ymax = "seroprev_upper"
       ),
       width = 0.1
     ) +
     ggplot2::geom_point(
       ggplot2::aes(
-        y = .data$seroprev,
-        size = .data$n_sample
+        y = "seroprev",
+        size = "n_sample"
       ),
       fill = "#7a0177", colour = "black", shape = 21
     ) +
@@ -256,12 +256,12 @@ plot_seroprevalence_estimates <- function(
     ) +
     ggplot2::geom_line(
       data = seroprevalence_central_estimates,
-      ggplot2::aes(x = age, y = median),
+      ggplot2::aes(x = "age", y = "median"),
       colour = "#7a0177"
     ) +
     ggplot2::geom_ribbon(
       data = seroprevalence_central_estimates,
-      ggplot2::aes(x = age, ymin = lower, ymax = upper),
+      ggplot2::aes(x = "age", ymin = "lower", ymax = "upper"),
       fill = "#c994c7", alpha = 0.5
     ) +
     ggplot2::coord_cartesian(
@@ -325,7 +325,7 @@ plot_foi_estimates <- function(
       )
     }
     foi_plot <- ggplot2::ggplot(
-      data = foi_central_estimates, ggplot2::aes(x = .data$age)
+      data = foi_central_estimates, ggplot2::aes(x = "age")
     )
   } else if (startsWith(model_name, "time")) {
     checkmate::assert_names(names(serosurvey), must.include = "survey_year")
@@ -343,21 +343,21 @@ plot_foi_estimates <- function(
       )
     }
     foi_plot <- ggplot2::ggplot(
-      data = foi_central_estimates, ggplot2::aes(x = year)
+      data = foi_central_estimates, ggplot2::aes(x = "year")
     )
   }
 
   foi_plot <- foi_plot +
     ggplot2::geom_ribbon(
       ggplot2::aes(
-        ymin = lower,
-        ymax = upper
+        ymin = "lower",
+        ymax = "upper"
       ),
       fill = "#41b6c4",
       alpha = 0.5
     ) +
     ggplot2::geom_line(
-      ggplot2::aes(y = median),
+      ggplot2::aes(y = "median"),
       colour = "#253494"
     ) +
     ggplot2::theme_bw(size_text) +
@@ -368,7 +368,7 @@ plot_foi_estimates <- function(
   if (!is.null(foi_df)) {
     foi_plot <- foi_plot +
       ggplot2::geom_line(
-        ggplot2::aes(y = foi),
+        ggplot2::aes(y = "foi"),
         colour = "#b30909"
       )
   }
@@ -408,7 +408,7 @@ plot_rhats <- function(
     )
 
     rhats_plot <- ggplot2::ggplot(
-      data = rhats_df, ggplot2::aes(x = age)
+      data = rhats_df, ggplot2::aes(x = "age")
     )
   } else if (startsWith(model_name, "time")) {
     checkmate::assert_names(names(serosurvey), must.include = "survey_year")
@@ -421,7 +421,7 @@ plot_rhats <- function(
     )
 
     rhats_plot <- ggplot2::ggplot(
-      data = rhats_df, ggplot2::aes(x = year)
+      data = rhats_df, ggplot2::aes(x = "year")
     )
   }
 
@@ -430,8 +430,8 @@ plot_rhats <- function(
       yintercept = 1.01,
       linetype = "dashed"
     ) +
-    ggplot2::geom_line(ggplot2::aes(y = rhat)) +
-    ggplot2::geom_point(ggplot2::aes(y = rhat)) +
+    ggplot2::geom_line(ggplot2::aes(y = "rhat")) +
+    ggplot2::geom_point(ggplot2::aes(y = "rhat")) +
     ggplot2::coord_cartesian(
       ylim = c(
         min(1.0, min(rhats_df$rhat)),
