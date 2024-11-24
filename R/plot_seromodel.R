@@ -319,7 +319,7 @@ plot_foi_estimates <- function(
       age = ages
     )
     if (!is.null(foi_df)) {
-      foi_central_estimates <- left_join(
+      foi_central_estimates <- dplyr::left_join(
         foi_central_estimates, foi_df,
         by = "age"
       )
@@ -337,7 +337,7 @@ plot_foi_estimates <- function(
       year = years
     )
     if (!is.null(foi_df)) {
-      foi_central_estimates <- left_join(
+      foi_central_estimates <- dplyr::left_join(
         foi_central_estimates, foi_df,
         by = "year"
       )

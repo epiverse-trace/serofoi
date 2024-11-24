@@ -326,11 +326,11 @@ add_age_bins <- function(survey_features) {
 #' survey_features and age_df.
 #' This dataframe has columns including 'age' and 'overall_sample_size'.
 survey_by_individual_age <- function(survey_features, age_df) {
-  overall_sample_size_df <- left_join(
+  overall_sample_size_df <- dplyr::left_join(
       age_df, survey_features,
       by = "group"
     ) |>
-    rename(overall_sample_size = .data$n_sample)
+    dplyr::rename(overall_sample_size = .data$n_sample)
 
   return(overall_sample_size_df)
 }
@@ -385,7 +385,7 @@ generate_random_sample_sizes <- function(survey_df_long) {
     if (is.null(df_new)) {
       df_new <- df_tmp
     } else {
-      df_new <- bind_rows(df_new, df_tmp)
+      df_new <- dplyr::bind_rows(df_new, df_tmp)
     }
   }
   return(df_new)
@@ -475,7 +475,7 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
     n_seropositive = sum(.data$n_seropositive),
     .groups = "drop"
   ) |>
-  left_join(
+  dplyr::left_join(
     survey_features,
     by = c("age_min", "age_max", "n_sample")
   )
