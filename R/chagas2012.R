@@ -4,7 +4,7 @@
 #' Trypanosoma cruzi infection in rural areas of Colombia corresponding
 #' to a serosurvey conducted in 2012 for a rural indigenous community
 #' known to have long-term endemic transmission, where some control
-#' interventions have taken place over the years. 
+#' interventions have taken place over the years.
 #'
 #' @docType data
 #'
