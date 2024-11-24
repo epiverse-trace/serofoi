@@ -7,7 +7,7 @@ add_age_group_to_serosurvey <- function(serosurvey) {
   } else {
     serosurvey <- dplyr::mutate(
       serosurvey,
-      age_group = floor((.data$age_min + .data$age_max) / 2)
+      age_group = floor((age_min + age_max) / 2)
     )
   }
   return(serosurvey)

@@ -373,7 +373,7 @@ generate_random_sample_sizes <- function(survey_df_long) {
   for (interval_aux in stats::na.omit(intervals)) {
     df_tmp <- dplyr::filter(
       survey_df_long,
-      .data$group == interval_aux
+      group == interval_aux
     )
     n_sample <- df_tmp$overall_sample_size[1]
     sample_size_by_age <- multinomial_sampling_group(n_sample, nrow(df_tmp))
@@ -462,17 +462,17 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
     dplyr::mutate(
       n_seropositive = stats::rbinom(
         nrow(probability_seropositive_by_age),
-        .data$n_sample,
-        .data$seropositivity)
+        n_sample,
+        seropositivity)
     )
 
   grouped_df <- dplyr::group_by(
     combined_df,
-    .data$age_min, .data$age_max
+    age_min, age_max
   ) |>
   dplyr::summarise(
-    n_sample = sum(.data$n_sample),
-    n_seropositive = sum(.data$n_seropositive),
+    n_sample = sum(n_sample),
+    n_seropositive = sum(n_seropositive),
     .groups = "drop"
   ) |>
   dplyr::left_join(
