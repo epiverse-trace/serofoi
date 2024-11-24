@@ -160,7 +160,7 @@ probability_seropositive_age_and_time_model_by_age <- function( #nolint
     tidyr::pivot_wider(
       foi,
       values_from = foi,
-      names_from = c(.data$year)
+      names_from = c(year)
     ) |>
     tibble::column_to_rownames("age")
   )
@@ -330,7 +330,7 @@ survey_by_individual_age <- function(survey_features, age_df) {
       age_df, survey_features,
       by = "group"
     ) |>
-    dplyr::rename(overall_sample_size = .data$n_sample)
+    dplyr::rename(overall_sample_size = n_sample)
 
   return(overall_sample_size_df)
 }
