@@ -161,7 +161,7 @@ probability_seropositive_age_and_time_model_by_age <- function( #nolint
       foi,
       values_from = foi,
       names_from = c(.data$year)
-    ) %>%
+    ) |>
     tibble::column_to_rownames("age")
   )
 
@@ -329,7 +329,7 @@ survey_by_individual_age <- function(survey_features, age_df) {
   overall_sample_size_df <- left_join(
       age_df, survey_features,
       by = "group"
-    ) %>%
+    ) |>
     rename(overall_sample_size = .data$n_sample)
 
   return(overall_sample_size_df)
@@ -458,7 +458,7 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
   combined_df <- dplyr::left_join(
       probability_seropositive_by_age, sample_size_by_age_random,
       by = "age"
-    ) %>%
+    ) |>
     dplyr::mutate(
       n_seropositive = stats::rbinom(
         nrow(probability_seropositive_by_age),
@@ -469,12 +469,12 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
   grouped_df <- dplyr::group_by(
     combined_df,
     .data$age_min, .data$age_max
-  ) %>%
+  ) |>
   dplyr::summarise(
     n_sample = sum(.data$n_sample),
     n_seropositive = sum(.data$n_seropositive),
     .groups = "drop"
-  ) %>%
+  ) |>
   left_join(
     survey_features,
     by = c("age_min", "age_max", "n_sample")
