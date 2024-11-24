@@ -15,7 +15,7 @@ test_foi_estimation <- function(seromodel, serosurvey, foi) {
     serosurvey = serosurvey,
     par_name = "foi_expanded"
     ) |>
-    mutate(tol = pmax((upper - lower)/2, tol_min))
+    dplyr::mutate(tol = pmax((upper - lower)/2, tol_min))
   expect_true(
     all(
       dplyr::near(
@@ -33,7 +33,7 @@ test_serorev_estimation <- function(seromodel, serosurvey, mu) {
     serosurvey = serosurvey,
     par_name = "seroreversion_rate"
   ) |>
-    mutate(tol = pmax((upper - lower)/2, tol_min))
+    dplyr::mutate(tol = pmax((upper - lower)/2, tol_min))
 
   expect_true(
     dplyr::near(
@@ -101,7 +101,7 @@ test_that("fit_seromodel correctly estimates constant foi using default settings
     survey_features = survey_features,
     seroreversion_rate = mu
   ) |>
-  mutate(survey_year = 2050)
+  dplyr::mutate(survey_year = 2050)
   set.seed(Sys.time())
 
   seromodel <- suppressWarnings(
@@ -132,7 +132,7 @@ test_that("fit_seromodel correctly estimates time-varying foi using default prio
     foi = foi,
     survey_features = survey_features
   ) |>
-  mutate(survey_year = 2050)
+  dplyr::mutate(survey_year = 2050)
   set.seed(Sys.time())
 
   foi_index <- get_foi_index(serosurvey, group_size = 10, model_type = "time")
@@ -155,7 +155,7 @@ test_that("fit_seromodel correctly estimates time-varying foi using default prio
     survey_features = survey_features,
     seroreversion_rate = mu
   ) |>
-  mutate(survey_year = 2050)
+  dplyr::mutate(survey_year = 2050)
   set.seed(Sys.time())
 
   foi_index <- get_foi_index(serosurvey, group_size = 10, model_type = "time")
@@ -282,7 +282,7 @@ test_that("fit_seromodel correctly identifies outbreak using time-log-foi model"
     survey_features = survey_features,
     seroreversion_rate = mu
   ) |>
-  mutate(survey_year = 2050)
+  dplyr::mutate(survey_year = 2050)
   set.seed(Sys.time())
 
   foi_index <- data.frame(
