@@ -7,8 +7,8 @@
 set_foi_init(foi_init, is_log_foi, foi_index)
 }
 \arguments{
-\item{foi_init}{Initialization function for sampling. If null, default is chosen
-depending on the foi-scale of the model}
+\item{foi_init}{Initialization function for sampling. If null, default is
+chosen depending on the foi-scale of the model}
 
 \item{is_log_foi}{Boolean to set logarithmic scale in the FOI}
 

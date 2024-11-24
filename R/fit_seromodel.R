@@ -16,8 +16,8 @@ add_age_group_to_serosurvey <- function(serosurvey) {
 #' Sets initialization function for sampling
 #'
 #' @inheritParams fit_seromodel
-#' @param foi_init Initialization function for sampling. If null, default is chosen
-#' depending on the foi-scale of the model
+#' @param foi_init Initialization function for sampling. If null, default is
+#' chosen depending on the foi-scale of the model
 #' @export
 set_foi_init <- function(
   foi_init,
