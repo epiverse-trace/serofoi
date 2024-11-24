@@ -23,8 +23,10 @@ summarise_loo_estimate <- function(
     seromodel,
     pars = c(parameter_name = "log_likelihood")
   )
-  loo_estimate <- loo_fit$estimates[par_loo_estimate, ] %>%
-    round(loo_estimate_digits)
+  loo_estimate <- round(
+    loo_fit$estimates[par_loo_estimate, ],
+    loo_estimate_digits
+  )
 
   loo_estimate_summary <- paste0(loo_estimate[1], "(se=", loo_estimate[2], ")")
 
@@ -114,8 +116,7 @@ summarise_seromodel <- function(
       central_estimate_digits = central_estimate_digits
     )
 
-    foi_rhat <- bayesplot::rhat(seromodel, "foi") %>%
-      signif(rhat_digits)
+    foi_rhat <- signif(bayesplot::rhat(seromodel, "foi"), rhat_digits)
 
     check_convergence <- c(
       check_convergence,
@@ -147,11 +148,13 @@ summarise_seromodel <- function(
       central_estimate_digits = central_estimate_digits
     )
 
-    seroreversion_rate_rhat <- bayesplot::rhat(
-      seromodel,
-      "seroreversion_rate"
-      ) %>%
-      signif(rhat_digits)
+    seroreversion_rate_rhat <- signif(
+      bayesplot::rhat(
+        seromodel,
+        "seroreversion_rate"
+      ),
+      rhat_digits
+    )
 
     check_convergence <- c(
       check_convergence,
