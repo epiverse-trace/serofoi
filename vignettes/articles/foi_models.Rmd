@@ -127,7 +127,7 @@ serosurvey_constant <- simulate_serosurvey(
   "time",
   foi_df,
   survey_features
-) %>%
+) |>
 mutate(survey_year = 2050)
 ```
 
@@ -189,7 +189,7 @@ serosurvey_sw_dec <- simulate_serosurvey(
   "time",
   foi_df,
   survey_features
-) %>%
+) |>
 mutate(survey_year = 2050)
 
 ```
@@ -256,7 +256,7 @@ serosurvey_large_epi <- simulate_serosurvey(
   survey_features = survey_features,
   foi_df,
   model = "time"
-) %>%
+) |>
 mutate(survey_year = 2050)
 
 ```

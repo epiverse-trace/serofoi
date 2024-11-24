@@ -173,15 +173,15 @@ test_that("probability_seropositive_age_and_time_model_by_age works as expected"
   foi <- tidyr::expand_grid(
     u=us,
     v=vs
-  ) %>%
-    mutate(foi=u * v) %>%
+  ) |>
+    mutate(foi=u * v) |>
     pull(foi)
 
   foi_df <- tidyr::expand_grid(
     year=c(1990, 1991, 1992),
     age=c(1, 2, 3)
-  ) %>%
-    mutate(foi = foi) %>%
+  ) |>
+    mutate(foi = foi) |>
     arrange(year)
 
   prob_df <- serofoi:::probability_seropositive_age_and_time_model_by_age(
@@ -193,7 +193,7 @@ test_that("probability_seropositive_age_and_time_model_by_age works as expected"
     tidyr::pivot_wider(
       foi_df,
       values_from = foi,
-      names_from = c(year)) %>%
+      names_from = c(year)) |>
     tibble::column_to_rownames("age")
   )
 
@@ -290,7 +290,7 @@ test_that("generate_random_sample_sizes function works as expected", {
   group_df <- dplyr::group_by(
     actual_df,
     group
-  ) %>%
+  ) |>
     dplyr::summarise(
       overall_sample_size = overall_sample_size[1],
       n_sample = sum(n_sample)
@@ -310,7 +310,7 @@ test_that("generate_random_sample_sizes function works as expected", {
   group_df <- dplyr::group_by(
     actual_df,
     group
-  ) %>%
+  ) |>
     dplyr::summarise(
       overall_sample_size = overall_sample_size[1],
       n_sample = sum(n_sample)
@@ -332,7 +332,7 @@ test_that("sample_size_by_individual_age_random returns correct dataframe struct
   group_df <- dplyr::group_by(
     actual_df,
     group
-  ) %>%
+  ) |>
     dplyr::summarise(
       overall_sample_size = overall_sample_size[1],
       n_sample = sum(n_sample)
@@ -525,7 +525,7 @@ test_that("simulate_serosurvey_age_and_time_model function works as expected", {
   foi_df <- tidyr::expand_grid(
     year = seq(1990, 2009, 1),
     age = seq(1, 20, 1)
-  ) %>%
+  ) |>
     mutate(foi = rnorm(20 * 20, 0.1, 0.001))
   survey_features <- data.frame(
     age_min = c(1, 3, 15),
@@ -546,7 +546,7 @@ test_that("simulate_serosurvey_age_and_time_model function works as expected", {
   foi_df_1 <- tidyr::expand_grid(
     year = seq(1990, 2009, 1),
     age = seq(1, 20, 1)
-  ) %>%
+  ) |>
     mutate(foi = rnorm(20 * 20, 10.1, 0.001))
   actual_df_1 <- simulate_serosurvey_age_and_time_model(foi_df_1, survey_features)
   expect_true(all(actual_df_1$n_seropositive >= actual_df$n_seropositive))
@@ -565,7 +565,7 @@ test_that("simulate_serosurvey_age_and_time_model input validation", {
   foi_df <- tidyr::expand_grid(
     year = seq(1990, 2009, 1),
     age = seq(1, 20, 1)
-  ) %>%
+  ) |>
     mutate(foi = rnorm(20 * 20, 0.1, 0.001))
 
   survey_features <- data.frame(
@@ -638,7 +638,7 @@ test_that("simulate_serosurvey returns serosurvey data based on specified model"
   foi_df <- tidyr::expand_grid(
     year = seq(1990, 2009, 1),
     age = seq(1, 20, 1)
-  ) %>%
+  ) |>
     mutate(foi = rnorm(20 * 20, 0.1, 0.001))
 
   serosurvey <- simulate_serosurvey("age-time", foi_df, survey_features)
@@ -809,15 +809,15 @@ test_that("probability_seropositive_general_model_by_age reduces to age- and tim
   foi_df <- expand.grid(
     year=foi_df_time$year,
     age=foi_df_age$age
-  ) %>%
-    left_join(foi_df_age, by = "age") %>%
-    rename(foi_age = foi) %>%
-    left_join(foi_df_time, by = "year") %>%
-    rename(foi_time = foi) %>%
-    mutate(foi = foi_age * foi_time) %>%
-    select(-c("foi_age", "foi_time")) %>%
-    mutate(birth_year = year - age) %>%
-    filter(birth_year >= 1955) %>%
+  ) |>
+    left_join(foi_df_age, by = "age") |>
+    rename(foi_age = foi) |>
+    left_join(foi_df_time, by = "year") |>
+    rename(foi_time = foi) |>
+    mutate(foi = foi_age * foi_time) |>
+    select(-c("foi_age", "foi_time")) |>
+    mutate(birth_year = year - age) |>
+    filter(birth_year >= 1955) |>
     arrange(birth_year, age)
 
   seropositive_true <- probability_seropositive_by_age(
