@@ -256,7 +256,7 @@ plot_seroprevalence_estimates <- function(
     ) +
     ggplot2::geom_line(
       data = seroprevalence_central_estimates,
-      ggplot2::aes(x = .data$age, y = median),
+      ggplot2::aes(x = .data$age, y = .data$median),
       colour = "#7a0177"
     ) +
     ggplot2::geom_ribbon(
@@ -478,14 +478,14 @@ plot_summary <- function(
 
   summary_plot <- ggplot2::ggplot(
     summary_df,
-    ggplot2::aes(x = 1, y = row)) +
+    ggplot2::aes(x = 1, y = .data$row)) +
     ggplot2::scale_y_continuous(
       limits = c(0, nrow(summary_df) + 1),
       breaks = NULL
     ) +
     ggplot2::theme_void() +
     ggplot2::geom_text(
-      ggplot2::aes(label = text),
+      ggplot2::aes(label = .data$text),
       fontface = "bold",
       size = size_text / 2.5
     )
