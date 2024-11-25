@@ -208,9 +208,9 @@ extract_central_estimates <- function(
     rstan::extract(seromodel, par_name)[[1]]
   )
   central_estimates <- data.frame(
-    median = apply(samples, 2, quantile, 0.5),
-    lower = apply(samples, 2, quantile, alpha),
-    upper = apply(samples, 2, quantile, 1 - alpha)
+    median = apply(samples, 2, stats::quantile, 0.5),
+    lower = apply(samples, 2, stats::quantile, alpha),
+    upper = apply(samples, 2, stats::quantile, 1 - alpha)
   )
 
   return(central_estimates)
