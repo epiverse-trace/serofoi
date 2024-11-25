@@ -14,6 +14,8 @@
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/add_age_bins.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/add_age_group_to_serosurvey.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/build_stan_data.html</loc></url>
+<url><loc>https://epiverse-trace.github.io/serofoi/reference/chagas2012.html</loc></url>
+<url><loc>https://epiverse-trace.github.io/serofoi/reference/chik2015.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/extract_central_estimates.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/fit_seromodel.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/generate_random_sample_sizes.html</loc></url>
@@ -52,5 +54,6 @@
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/summarise_loo_estimate.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/summarise_seromodel.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/survey_by_individual_age.html</loc></url>
+<url><loc>https://epiverse-trace.github.io/serofoi/reference/veev2012.html</loc></url>
 </urlset>
 

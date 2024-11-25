@@ -60,7 +60,7 @@ a piecewise-linear ordinary differential equation system.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">simulate_serosurvey_general_model</span><span class="op">(</span></span>
-<span>  <span class="va">construct_A_function</span>,</span>
+<span>  <span class="va">construct_A_fn</span>,</span>
 <span>  <span class="va">calculate_seropositivity_function</span>,</span>
 <span>  <span class="va">initial_conditions</span>,</span>
 <span>  <span class="va">survey_features</span>,</span>
@@ -72,7 +72,12 @@ a piecewise-linear ordinary differential equation system.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-calculate-seropositivity-function">calculate_seropositivity_function<a class="anchor" aria-label="anchor" href="#arg-calculate-seropositivity-function"></a></dt>
+<dl><dt id="arg-construct-a-fn">construct_A_fn<a class="anchor" aria-label="anchor" href="#arg-construct-a-fn"></a></dt>
+<dd><p>A function that constructs a matrix that defines the
+multiplier term in the linear ODE system.</p></dd>
+
+
+<dt id="arg-calculate-seropositivity-function">calculate_seropositivity_function<a class="anchor" aria-label="anchor" href="#arg-calculate-seropositivity-function"></a></dt>
 <dd><p>A function which takes the state
 vector and returns the seropositive fraction.</p></dd>
 
@@ -86,6 +91,10 @@ birth cohort.</p></dd>
 <dd><p>A dataframe containing information about the binned
 age groups and sample sizes for each.
 It should contain columns: 'age_min', 'age_max', 'n_sample'.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>Additional parameters for sum_of_A</p></dd>
 
 </dl></div>
     <div class="section level2">
