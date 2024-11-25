@@ -160,7 +160,7 @@ probability_seropositive_age_and_time_model_by_age <- function( #nolint
     tidyr::pivot_wider(
       foi,
       values_from = foi,
-      names_from = year
+      names_from = dplyr::all_of("year")
     ) |>
     tibble::column_to_rownames("age")
   )

@@ -35,7 +35,7 @@ prepare_serosurvey_for_plotting <- function( #nolint
       seroprev_upper = "Upper"
     ) |>
     dplyr::arrange(.data$age_group) |>
-    dplyr::relocate(age_group)
+    dplyr::relocate(rlang::sym("age_group"))
 
   return(serosurvey)
 }
