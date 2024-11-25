@@ -19,6 +19,23 @@ seromodel_age <- fit_seromodel(
   foi_index = get_foi_index(serosurvey, group_size = 10, model_type = "age")
 )
 
+seromodel_time <- fit_seromodel(
+  serosurvey = serosurvey,
+  model_type = "time",
+  foi_index = get_foi_index(serosurvey, group_size = 10, model_type = "time")
+)
+
+
+age_foi_df <- data.frame(
+  age = seq(1, 20, 1),
+  foi = rnorm(20, 0.1, 0.01)
+)
+
+time_foi_df <- data.frame(
+  year = seq(1990, 2009, 1),
+  foi = rnorm(20, 0.1, 0.01)
+)
+
 create_prepared_serosurvey <- function(actual_serosurvey) {
   return(prepare_serosurvey_for_plotting(actual_serosurvey %>%
     add_age_group_to_serosurvey()))
@@ -207,6 +224,98 @@ test_that("plot_seromodel creates a ggplot with correct structure", {
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
 })
+
+
+
+
+test_that("plot_seromodel with age foi creates a ggplot with correct structure", {
+  seromodel <- seromodel_age
+
+
+  plot <- plot_seromodel(
+    seromodel = seromodel,
+    serosurvey = serosurvey,
+    foi_df = age_foi_df
+  )
+  actual_plot <- extract_plot_data(plot)
+
+  expected_plot <- list(classes = c("gg", "ggplot"), layers = list(
+    list(
+      mapping = NULL,
+      geom_params = list(
+        xmin = 0, xmax = 1, ymin = 0.75, ymax = 1,
+        scale = 1, clip = "inherit", halign = 0.5, valign = 0.5
+      )
+    ),
+    list(mapping = NULL, geom_params = list(
+      xmin = 0, xmax = 1,
+      ymin = 0.5, ymax = 0.75, scale = 1, clip = "inherit",
+      halign = 0.5, valign = 0.5
+    )), list(mapping = NULL, geom_params = list(
+      xmin = 0, xmax = 1, ymin = 0.25, ymax = 0.5, scale = 1,
+      clip = "inherit", halign = 0.5, valign = 0.5
+    )), list(
+      mapping = NULL, geom_params = list(
+        xmin = 0, xmax = 1,
+        ymin = 0, ymax = 0.25, scale = 1, clip = "inherit",
+        halign = 0.5, valign = 0.5
+      )
+    )
+  ), coordinates = list(
+    limits = list(x = c(0, 1), y = c(0, 1))
+  ), labels = list())
+
+  expect_lists_equal_with_tolerance(expected_plot, actual_plot)
+})
+
+
+
+
+
+test_that("plot_seromodel with time foi creates a ggplot with correct structure", {
+  seromodel <- seromodel_time
+
+
+  plot <- plot_seromodel(
+    seromodel = seromodel,
+    serosurvey = serosurvey,
+    foi_df = time_foi_df
+  )
+  actual_plot <- extract_plot_data(plot)
+
+  expected_plot <- list(classes = c("gg", "ggplot"), layers = list(
+    list(
+      mapping = NULL,
+      geom_params = list(
+        xmin = 0, xmax = 1, ymin = 0.75, ymax = 1,
+        scale = 1, clip = "inherit", halign = 0.5, valign = 0.5
+      )
+    ),
+    list(mapping = NULL, geom_params = list(
+      xmin = 0, xmax = 1,
+      ymin = 0.5, ymax = 0.75, scale = 1, clip = "inherit",
+      halign = 0.5, valign = 0.5
+    )), list(mapping = NULL, geom_params = list(
+      xmin = 0, xmax = 1, ymin = 0.25, ymax = 0.5, scale = 1,
+      clip = "inherit", halign = 0.5, valign = 0.5
+    )), list(
+      mapping = NULL, geom_params = list(
+        xmin = 0, xmax = 1,
+        ymin = 0, ymax = 0.25, scale = 1, clip = "inherit",
+        halign = 0.5, valign = 0.5
+      )
+    )
+  ), coordinates = list(
+    limits = list(x = c(0, 1), y = c(0, 1))
+  ), labels = list())
+
+  expect_lists_equal_with_tolerance(expected_plot, actual_plot)
+})
+
+
+
+
+
 # Test plot_seroprevalence_estimates ----
 test_that("plot_seroprevalence_estimates creates a ggplot with correct structure", {
   seromodel <- seromodel_constant
