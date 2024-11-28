@@ -329,7 +329,7 @@ the data simulation functions of <strong><em>serofoi</em></strong>:</p>
 <span>  <span class="st">"time"</span>,</span>
 <span>  <span class="va">foi_df</span>,</span>
 <span>  <span class="va">survey_features</span></span>
-<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span><span class="fu">mutate</span><span class="op">(</span>survey_year <span class="op">=</span> <span class="fl">2050</span><span class="op">)</span></span></code></pre></div>
 <p>The simulated dataset <code>serosurvey_constant</code> contains
 information about 250 samples of individuals between 1 and 50 years old
@@ -410,7 +410,7 @@ the data simulation functions of <strong><em>serofoi</em></strong>:</p>
 <span>  <span class="st">"time"</span>,</span>
 <span>  <span class="va">foi_df</span>,</span>
 <span>  <span class="va">survey_features</span></span>
-<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span><span class="fu">mutate</span><span class="op">(</span>survey_year <span class="op">=</span> <span class="fl">2050</span><span class="op">)</span></span></code></pre></div>
 <p>The simulated dataset <code>foi_sim_sw_dec</code> contains
 information about 250 samples of individuals between 1 and 50 years old
@@ -479,7 +479,7 @@ epidemic occurred between 2030 and 2035:</p>
 <span>  survey_features <span class="op">=</span> <span class="va">survey_features</span>,</span>
 <span>  <span class="va">foi_df</span>,</span>
 <span>  model <span class="op">=</span> <span class="st">"time"</span></span>
-<span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span><span class="fu">mutate</span><span class="op">(</span>survey_year <span class="op">=</span> <span class="fl">2050</span><span class="op">)</span></span></code></pre></div>
 <p>The simulated serosurvey tests 250 individuals between 1 and 50 years
 old by the year 2050. The implementation of the fast epidemic model can
