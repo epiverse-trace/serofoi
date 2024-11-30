@@ -214,7 +214,7 @@ build_stan_data <- function(
     n_seropositive = serosurvey$n_seropositive,
     n_sample = serosurvey$n_sample,
     age_groups = serosurvey$age_group
-  ) %>%
+  ) |>
     set_stan_data_defaults(
       is_log_foi = is_log_foi,
       is_seroreversion = is_seroreversion
@@ -230,7 +230,7 @@ build_stan_data <- function(
       serosurvey = serosurvey,
       group_size = 1,
       model_type = model_type
-    ) %>%
+    ) |>
     validate_foi_index(
       serosurvey = serosurvey,
       model_type = model_type
