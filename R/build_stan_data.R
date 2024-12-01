@@ -3,6 +3,8 @@
 #' @param mean Mean of the normal distribution
 #' @param sd Standard deviation of the normal distribution
 #' @return List with specified statistics and name of the model
+#' @examples
+#' my_prior <- sf_normal()
 #' @export
 sf_normal <- function(mean = 0, sd = 1) {
   # Restricting normal inputs to be non-negative
@@ -20,6 +22,8 @@ sf_normal <- function(mean = 0, sd = 1) {
 #' @param min Minimum value of the random variable of the uniform distribution
 #' @param max Maximum value of the random variable of the uniform distribution
 #' @return List with specified statistics and name of the model
+#' @examples
+#' my_prior <- sf_uniform()
 #' @export
 sf_uniform <- function(min = 0, max = 10) {
   # Restricting uniform inputs to be non-negative
@@ -38,6 +42,8 @@ sf_uniform <- function(min = 0, max = 10) {
 #' @param location Location of the Cauchy distribution
 #' @param scale Scale of the Cauchy distribution
 #' @return List with specified statistics and name of the model
+#' @examples
+#' my_prior <- sf_cauchy()
 #' @export
 sf_cauchy <- function(location = 0, scale = 1) {
   # Restricting normal inputs to be non-negative
