@@ -39,7 +39,7 @@ time_foi_df <- data.frame(
 )
 
 create_prepared_serosurvey <- function(actual_serosurvey) {
-  prepared_serosurvey <- prepare_serosurvey_for_plotting(
+  prepared_serosurvey <- serofoi:::prepare_serosurvey_for_plotting(
     add_age_group_to_serosurvey(actual_serosurvey)
   )
   return(prepared_serosurvey)
