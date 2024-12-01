@@ -13,7 +13,6 @@
 #'  \item{seroprev_upper}{Upper limit of the binomial confidence interval
 #'                        of `seroprev`}
 #' }
-#' @export
 prepare_serosurvey_for_plotting <- function( #nolint
   serosurvey,
   alpha = 0.05
