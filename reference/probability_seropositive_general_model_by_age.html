@@ -100,6 +100,56 @@ birth cohort.</p></dd>
     <p>A dataframe with columns 'age' and 'seropositivity'.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># define age- and time-specific multipliers</span></span></span>
+<span class="r-in"><span><span class="va">foi_df_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1946</span>, <span class="fl">2025</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  foi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">40</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">foi_df_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  age <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">80</span>,</span></span>
+<span class="r-in"><span>  foi <span class="op">=</span> <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">dlnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">80</span>, meanlog <span class="op">=</span> <span class="fl">3.5</span>, sdlog <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">u</span> <span class="op">&lt;-</span> <span class="va">foi_df_age</span><span class="op">$</span><span class="va">foi</span></span></span>
+<span class="r-in"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="va">foi_df_time</span><span class="op">$</span><span class="va">foi</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># function to construct A matrix for one piece</span></span></span>
+<span class="r-in"><span><span class="va">construct_A</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">tau</span>, <span class="va">u</span>, <span class="va">v</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">u_bar</span> <span class="op">&lt;-</span> <span class="va">u</span><span class="op">[</span><span class="va">t</span> <span class="op">-</span> <span class="va">tau</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">v_bar</span> <span class="op">&lt;-</span> <span class="va">v</span><span class="op">[</span><span class="va">t</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, ncol <span class="op">=</span> <span class="fl">12</span>, nrow <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">A</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/row.html" class="external-link">row</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span> <span class="op">==</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/col.html" class="external-link">col</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span>  <span class="va">A</span><span class="op">[</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="va">u_bar</span> <span class="op">*</span> <span class="va">v_bar</span></span></span>
+<span class="r-in"><span>  <span class="va">A</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">u_bar</span> <span class="op">*</span> <span class="va">v_bar</span></span></span>
+<span class="r-in"><span>  <span class="va">A</span><span class="op">[</span><span class="fl">12</span>, <span class="fl">12</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">A</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># determines the sum of seropositive compartments of those still alive</span></span></span>
+<span class="r-in"><span><span class="va">calculate_seropositivity_fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">Y</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">11</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">Y</span><span class="op">[</span><span class="fl">12</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># initial conditions in 12D state vector</span></span></span>
+<span class="r-in"><span><span class="va">initial_conditions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">12</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">initial_conditions</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># calculate probability</span></span></span>
+<span class="r-in"><span><span class="va">seropositive_hiv</span> <span class="op">&lt;-</span> <span class="fu">probability_seropositive_general_model_by_age</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">construct_A</span>,</span></span>
+<span class="r-in"><span>  <span class="va">calculate_seropositivity_fn</span>,</span></span>
+<span class="r-in"><span>  <span class="va">initial_conditions</span>,</span></span>
+<span class="r-in"><span>  max_age <span class="op">=</span> <span class="fl">80</span>,</span></span>
+<span class="r-in"><span>  <span class="va">u</span>,</span></span>
+<span class="r-in"><span>  <span class="va">v</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
