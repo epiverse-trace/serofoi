@@ -196,6 +196,14 @@ plot_serosurvey <- function(
 #'  \item{`lower`}{Lower quantile `alpha`}
 #'  \item{`upper`}{Upper quantile `1 - alpha`}
 #' }
+#' @examples
+#' data(veev2012)
+#' seromodel <- fit_seromodel(veev2012, iter = 100)
+#' central_estimates <- extract_central_estimates(
+#'   seromodel,
+#'   veev2012,
+#'   par_name = "foi"
+#' )
 #' @export
 extract_central_estimates <- function(
   seromodel,
@@ -220,6 +228,10 @@ extract_central_estimates <- function(
 #' @inheritParams extract_central_estimates
 #' @inheritParams plot_serosurvey
 #' @returns ggplot object with seroprevalence estimates and serosurveys plots
+#' @examples
+#' data(veev2012)
+#' seromodel <- fit_seromodel(veev2012, iter = 100)
+#' plot_seroprevalence_estimates(seromodel, veev2012)
 #' @export
 plot_seroprevalence_estimates <- function(
   seromodel,
@@ -282,6 +294,19 @@ plot_seroprevalence_estimates <- function(
 #' @inheritParams plot_serosurvey
 #' @param foi_max Max force-of-infection value for plotting
 #' @return ggplot object with estimated force-of-infection
+#' @examples
+#' data(chagas2012)
+#' seromodel <- fit_seromodel(
+#'   serosurvey = chagas2012,
+#'   model_type = "time",
+#'   foi_index = data.frame(
+#'     year = 1935:2011,
+#'     foi_index = c(rep(1, 46), rep(2, 31))
+#'   ),
+#'   iter = 100,
+#'   chains = 2
+#' )
+#' plot_foi_estimates(seromodel, chagas2012)
 #' @export
 plot_foi_estimates <- function(
   seromodel,
@@ -381,6 +406,19 @@ plot_foi_estimates <- function(
 #' @inheritParams plot_serosurvey
 #' @return ggplot object showing the r-hats of the model to be compared with the
 #' convergence criteria (horizontal dashed line)
+#' @examples
+#' data(chagas2012)
+#' seromodel <- fit_seromodel(
+#'   serosurvey = chagas2012,
+#'   model_type = "time",
+#'   foi_index = data.frame(
+#'     year = 1935:2011,
+#'     foi_index = c(rep(1, 46), rep(2, 31))
+#'   ),
+#'   iter = 100,
+#'   chains = 2
+#' )
+#' plot_rhats(seromodel, chagas2012)
 #' @export
 plot_rhats <- function(
   seromodel,
@@ -449,6 +487,10 @@ plot_rhats <- function(
 #' @inheritParams summarise_seromodel
 #' @inheritParams plot_serosurvey
 #' @return ggplot object with a summary of the specified model
+#' @examples
+#' data(veev2012)
+#' seromodel <- fit_seromodel(veev2012, iter = 100)
+#' plot_summary(seromodel, veev2012)
 #' @export
 plot_summary <- function(
   seromodel,
@@ -500,6 +542,10 @@ plot_summary <- function(
 #' @inheritParams plot_rhats
 #' @param seroreversion_digits Number of seroreversion rate digits
 #' @return seromodel summary plot
+#' @examples
+#' data(veev2012)
+#' seromodel <- fit_seromodel(veev2012, iter = 100)
+#' plot_seromodel(seromodel, veev2012)
 #' @export
 plot_seromodel <- function(
   seromodel,
