@@ -217,6 +217,14 @@ probability_seropositive_age_and_time_model_by_age <- function( #nolint
 #'                           seroreversion (per year). Default is 0.
 #'
 #' @return A dataframe with columns 'age' and 'seropositivity'.
+#' @examples
+#' probability_seropositive_by_age(
+#'   model = "age",
+#'   foi = data.frame(
+#'     age = 1:80,
+#'     foi = rep(0.01, 80)
+#'   )
+#' )
 #' @export
 probability_seropositive_by_age <- function( #nolint
   model,
@@ -268,6 +276,53 @@ sum_of_A <- function(t, tau, construct_A_fn, ...) {
 #' @param max_age The maximum age to simulate seropositivity for.
 #' @param ... Additional parameters for [sum_of_A]
 #' @return A dataframe with columns 'age' and 'seropositivity'.
+#' @examples
+#' # define age- and time-specific multipliers
+#' foi_df_time <- data.frame(
+#'   year = seq(1946, 2025, 1),
+#'   foi = c(rep(0, 40), rep(1, 40))
+#' )
+#'
+#' foi_df_age <- data.frame(
+#'   age = 1:80,
+#'   foi = 2 * dlnorm(1:80, meanlog = 3.5, sdlog = 0.5)
+#' )
+#'
+#' u <- foi_df_age$foi
+#' v <- foi_df_time$foi
+#'
+#' # function to construct A matrix for one piece
+#' construct_A <- function(t, tau, u, v) {
+#'   u_bar <- u[t - tau]
+#'   v_bar <- v[t]
+#'
+#'   A <- diag(-1, ncol = 12, nrow = 12)
+#'   A[row(A) == (col(A) + 1)] <- 1
+#'   A[1, 1] <- -u_bar * v_bar
+#'   A[2, 1] <- u_bar * v_bar
+#'   A[12, 12] <- 0
+#'
+#'   A
+#' }
+#'
+#' # determines the sum of seropositive compartments of those still alive
+#' calculate_seropositivity_fn <- function(Y) {
+#'   sum(Y[2:11]) / (1 - Y[12])
+#' }
+#'
+#' # initial conditions in 12D state vector
+#' initial_conditions <- rep(0, 12)
+#' initial_conditions[1] <- 1
+#'
+#' # calculate probability
+#' seropositive_hiv <- probability_seropositive_general_model_by_age(
+#'   construct_A,
+#'   calculate_seropositivity_fn,
+#'   initial_conditions,
+#'   max_age = 80,
+#'   u,
+#'   v
+#' )
 #' @export
 probability_seropositive_general_model_by_age <- function( #nolint
   construct_A_fn,
@@ -794,6 +849,44 @@ simulate_serosurvey <- function(
 #' information, overall sample sizes, the number of seropositive individuals,
 #' and other survey features.
 #'
+#' @examples
+#' foi_df_time <- data.frame(
+#'   year = seq(1946, 2025, 1),
+#'   foi = c(rep(0, 40), rep(1, 40))
+#' )
+#'
+#' foi_df_age <- data.frame(
+#'   age = 1:80,
+#'   foi = 2 * dlnorm(1:80, meanlog = 3.5, sdlog = 0.5)
+#' )
+#'
+#' # generate age and time dependent FOI from multipliers
+#' foi_age_time <- expand.grid(
+#'   year = foi_df_time$year,
+#'   age = foi_df_age$age
+#' ) |>
+#'   dplyr::left_join(foi_df_age, by = "age") |>
+#'   dplyr::rename(foi_age = foi) |>
+#'   dplyr::left_join(foi_df_time, by = "year") |>
+#'   dplyr::rename(foi_time = foi) |>
+#'   dplyr::mutate(foi = foi_age * foi_time) |>
+#'   dplyr::select(-c("foi_age", "foi_time"))
+#'
+#' # create survey features for simulating
+#' max_age <- 80
+#' n_sample <- 50
+#' survey_features <- data.frame(
+#'   age_min = seq(1, max_age, 5),
+#'   age_max = seq(5, max_age, 5)) |>
+#'   dplyr::mutate(n_sample = rep(n_sample, length(age_min))
+#'   )
+#'
+#' # simulate survey from age and time FOI
+#' serosurvey <- simulate_serosurvey(
+#'   model = "age-time",
+#'   foi = foi_age_time,
+#'   survey_features = survey_features
+#' )
 #' @export
 simulate_serosurvey_general_model <- function( #nolint
   construct_A_fn,
