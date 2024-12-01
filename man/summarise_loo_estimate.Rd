@@ -31,3 +31,8 @@ Text summarising specified loo estimate
 \description{
 Extract specified loo estimate
 }
+\examples{
+data(veev2012)
+seromodel <- fit_seromodel(veev2012, iter = 100)
+summarise_loo_estimate(seromodel)
+}

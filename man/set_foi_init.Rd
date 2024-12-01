@@ -19,3 +19,12 @@ means of \link{get_foi_index}}
 \description{
 Sets initialization function for sampling
 }
+\examples{
+data(chagas2012)
+foi_index <- get_foi_index(chagas2012, group_size = 5, model_type = "age")
+foi_init <- set_foi_init(
+  foi_init = NULL,
+  is_log_foi = FALSE,
+  foi_index = foi_index
+)
+}

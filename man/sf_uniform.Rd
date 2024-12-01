@@ -17,3 +17,6 @@ List with specified statistics and name of the model
 \description{
 Sets uniform distribution parameters for sampling
 }
+\examples{
+my_prior <- sf_uniform()
+}
