@@ -37,3 +37,42 @@ and other survey features.
 This simulation method assumes only that the model system can be written as
 a piecewise-linear ordinary differential equation system.
 }
+\examples{
+foi_df_time <- data.frame(
+  year = seq(1946, 2025, 1),
+  foi = c(rep(0, 40), rep(1, 40))
+)
+
+foi_df_age <- data.frame(
+  age = 1:80,
+  foi = 2 * dlnorm(1:80, meanlog = 3.5, sdlog = 0.5)
+)
+
+# generate age and time dependent FOI from multipliers
+foi_age_time <- expand.grid(
+  year = foi_df_time$year,
+  age = foi_df_age$age
+) |>
+  dplyr::left_join(foi_df_age, by = "age") |>
+  dplyr::rename(foi_age = foi) |>
+  dplyr::left_join(foi_df_time, by = "year") |>
+  dplyr::rename(foi_time = foi) |>
+  dplyr::mutate(foi = foi_age * foi_time) |>
+  dplyr::select(-c("foi_age", "foi_time"))
+
+# create survey features for simulating
+max_age <- 80
+n_sample <- 50
+survey_features <- data.frame(
+  age_min = seq(1, max_age, 5),
+  age_max = seq(5, max_age, 5)) |>
+  dplyr::mutate(n_sample = rep(n_sample, length(age_min))
+  )
+
+# simulate survey from age and time FOI
+serosurvey <- simulate_serosurvey(
+  model = "age-time",
+  foi = foi_age_time,
+  survey_features = survey_features
+)
+}

@@ -75,10 +75,14 @@ stan_fit object with force-of-infection and seroreversion
 Runs specified stan model for the force-of-infection
 }
 \examples{
-data(veev2012)
+data(chagas2012)
 seromodel <- fit_seromodel(
-serosurvey = veev2012,
+  serosurvey = chagas2012,
   model_type = "time",
-  foi_index = get_foi_index(veev2012, group_size = 30, model_type = "time")
+  foi_index = data.frame(
+    year = 1935:2011,
+    foi_index = c(rep(1, 46), rep(2, 31))
+  ),
+  iter = 100
 )
 }

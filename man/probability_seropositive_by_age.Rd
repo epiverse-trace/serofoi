@@ -27,3 +27,12 @@ This function generates seropositivity probabilities based on either a
 time-varying FOI model, an age-varying FOI model, or an age-and-time-varying
 FOI model. In all cases, it is possible to optionally include seroreversion.
 }
+\examples{
+probability_seropositive_by_age(
+  model = "age",
+  foi = data.frame(
+    age = 1:80,
+    foi = rep(0.01, 80)
+  )
+)
+}

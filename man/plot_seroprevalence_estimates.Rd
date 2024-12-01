@@ -44,3 +44,8 @@ ggplot object with seroprevalence estimates and serosurveys plots
 \description{
 Plot seroprevalence estimates on top of the serosurvey
 }
+\examples{
+data(veev2012)
+seromodel <- fit_seromodel(veev2012, iter = 100)
+plot_seroprevalence_estimates(seromodel, veev2012)
+}

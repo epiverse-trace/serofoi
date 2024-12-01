@@ -58,3 +58,8 @@ A list summarising the specified model
 \description{
 Summarise specified model
 }
+\examples{
+data(veev2012)
+seromodel <- fit_seromodel(veev2012, iter = 100)
+summarise_seromodel(seromodel, veev2012)
+}
