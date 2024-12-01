@@ -18,6 +18,14 @@ add_age_group_to_serosurvey <- function(serosurvey) {
 #' @inheritParams fit_seromodel
 #' @param foi_init Initialization function for sampling. If null, default is
 #' chosen depending on the foi-scale of the model
+#' @examples
+#' data(chagas2012)
+#' foi_index <- get_foi_index(chagas2012, group_size = 5, model_type = "age")
+#' foi_init <- set_foi_init(
+#'   foi_init = NULL,
+#'   is_log_foi = FALSE,
+#'   foi_index = foi_index
+#' )
 #' @export
 set_foi_init <- function(
   foi_init,
@@ -91,11 +99,15 @@ set_foi_init <- function(
 #' @returns stan_fit object with force-of-infection and seroreversion
 #' (when applicable) samples
 #' @examples
-#' data(veev2012)
+#' data(chagas2012)
 #' seromodel <- fit_seromodel(
-#' serosurvey = veev2012,
+#'   serosurvey = chagas2012,
 #'   model_type = "time",
-#'   foi_index = get_foi_index(veev2012, group_size = 30, model_type = "time")
+#'   foi_index = data.frame(
+#'     year = 1935:2011,
+#'     foi_index = c(rep(1, 46), rep(2, 31))
+#'   ),
+#'   iter = 100
 #' )
 #' @export
 fit_seromodel <- function(
