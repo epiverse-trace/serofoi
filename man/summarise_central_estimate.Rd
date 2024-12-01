@@ -38,3 +38,13 @@ Text summarising specified central estimate
 \description{
 Summarise central estimate
 }
+\examples{
+data(veev2012)
+seromodel <- fit_seromodel(veev2012, iter = 100)
+summarise_central_estimate(
+  seromodel,
+  veev2012,
+  alpha = 0.05,
+  par_name = "foi"
+  )
+}

@@ -66,3 +66,8 @@ seromodel summary plot
 \description{
 Visualise results of the provided model
 }
+\examples{
+data(veev2012)
+seromodel <- fit_seromodel(veev2012, iter = 100)
+plot_seromodel(seromodel, veev2012)
+}

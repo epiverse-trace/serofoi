@@ -45,3 +45,17 @@ ggplot object with estimated force-of-infection
 \description{
 Plots force-of-infection central estimates
 }
+\examples{
+data(chagas2012)
+seromodel <- fit_seromodel(
+  serosurvey = chagas2012,
+  model_type = "time",
+  foi_index = data.frame(
+    year = 1935:2011,
+    foi_index = c(rep(1, 46), rep(2, 31))
+  ),
+  iter = 100,
+  chains = 2
+)
+plot_foi_estimates(seromodel, chagas2012)
+}

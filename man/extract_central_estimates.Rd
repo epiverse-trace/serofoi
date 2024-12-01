@@ -40,3 +40,12 @@ A dataframe with the following columns
 \description{
 Extracts central estimates from stan_fit object for specified parameter
 }
+\examples{
+data(veev2012)
+seromodel <- fit_seromodel(veev2012, iter = 100)
+central_estimates <- extract_central_estimates(
+  seromodel,
+  veev2012,
+  par_name = "foi"
+)
+}
