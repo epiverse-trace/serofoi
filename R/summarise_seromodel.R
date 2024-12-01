@@ -11,6 +11,10 @@
 #' For additional information refer to [loo][loo::loo].
 #' @param loo_estimate_digits Number of loo estimate digits
 #' @return Text summarising specified loo estimate
+#' @examples
+#' data(veev2012)
+#' seromodel <- fit_seromodel(veev2012, iter = 100)
+#' summarise_loo_estimate(seromodel)
 #' @export
 summarise_loo_estimate <- function(
     seromodel,
@@ -38,6 +42,15 @@ summarise_loo_estimate <- function(
 #' @inheritParams extract_central_estimates
 #' @param central_estimate_digits Number of central estimate digits
 #' @return Text summarising specified central estimate
+#' @examples
+#' data(veev2012)
+#' seromodel <- fit_seromodel(veev2012, iter = 100)
+#' summarise_central_estimate(
+#'   seromodel,
+#'   veev2012,
+#'   alpha = 0.05,
+#'   par_name = "foi"
+#'   )
 #' @export
 summarise_central_estimate <- function(
     seromodel,
@@ -83,6 +96,10 @@ summarise_central_estimate <- function(
 #'  \item{`seroreversion_rate`}{Estimated seroreversion rate}
 #'  \item{`seroreversion_rate_rhat`}{Seroreversion rate rhat value}
 #' }
+#' @examples
+#' data(veev2012)
+#' seromodel <- fit_seromodel(veev2012, iter = 100)
+#' summarise_seromodel(seromodel, veev2012)
 #' @export
 summarise_seromodel <- function(
     seromodel,
