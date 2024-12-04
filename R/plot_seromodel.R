@@ -172,7 +172,8 @@ plot_serosurvey <- function(
     ) +
     ggplot2::coord_cartesian(
       xlim = c(min(serosurvey$age_min), max(serosurvey$age_max)),
-      ylim = c(min_prev, max_prev)
+      ylim = c(min_prev, max_prev),
+      default = TRUE
     ) +
     ggplot2::theme_bw(size_text) +
     ggplot2::theme(legend.position = "none") +
@@ -276,7 +277,8 @@ plot_seroprevalence_estimates <- function(
       fill = "#c994c7", alpha = 0.5
     ) +
     ggplot2::coord_cartesian(
-      xlim = c(0, max(serosurvey$age_max))
+      xlim = c(0, max(serosurvey$age_max)),
+      default = TRUE
     )
 
   return(seroprevalence_plot)
@@ -385,7 +387,7 @@ plot_foi_estimates <- function(
       colour = "#253494"
     ) +
     ggplot2::theme_bw(size_text) +
-    ggplot2::coord_cartesian(ylim = c(0, foi_max)) +
+    ggplot2::coord_cartesian(ylim = c(0, foi_max), default = TRUE) +
     ggplot2::ylab("Force-of-Infection") +
     ggplot2::xlab(xlab)
 
@@ -473,7 +475,8 @@ plot_rhats <- function(
       ylim = c(
         min(1.0, min(rhats_df$rhat)),
         max(1.02, max(rhats_df$rhat))
-      )
+      ),
+      default = TRUE
     ) +
     ggplot2::theme_bw(size_text) +
     ggplot2::xlab(xlab) +
