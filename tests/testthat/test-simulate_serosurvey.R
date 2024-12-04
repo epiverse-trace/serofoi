@@ -815,17 +815,42 @@ test_that("probability_seropositive_general_model_by_age reduces to age- and tim
     dplyr::left_join(foi_df_time, by = "year") |>
     dplyr::rename(foi_time = foi) |>
     dplyr::mutate(foi = foi_age * foi_time) |>
-    dplyr::select(-c("foi_age", "foi_time")) |>
-    dplyr::mutate(birth_year = year - age) |>
-    dplyr::filter(birth_year >= 1955) |>
-    dplyr::arrange(birth_year, age)
+    dplyr::select(-c("foi_age", "foi_time"))
 
   seropositive_true <- probability_seropositive_by_age(
     model = "age-time",
-    foi = dplyr::select(foi_df, -birth_year),
+    foi = foi_df,
     seroreversion_rate = 0
   )
 
   expect_equal(seropositive_true, seropositive_linear_system)
+
+  # simulate survey from age and time FOI
+  survey_features <- data.frame(
+    age_min = seq(1, 70, 10),
+    age_max = seq(10, 70, 10),
+    n_sample = 1e9)
+
+  serosurvey <- simulate_serosurvey_general_model(
+    construct_A,
+    calculate_seropositivity_function,
+    initial_conditions,
+    survey_features,
+    u,
+    v
+  )
+  seropositive_true_age_group <- base::colSums(matrix(
+    seropositive_linear_system$seropositivity, 10
+    )) / 10
+
+  expect_true(
+    all(
+      dplyr::near(
+        serosurvey$seropositive,
+        seropositive_true_age_group,
+        tol = 1e-4
+      )
+    )
+  )
 
 })
