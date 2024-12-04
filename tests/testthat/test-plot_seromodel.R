@@ -9,8 +9,20 @@ skip_on_cran()
 # Common data ----
 data(veev2012)
 serosurvey <- veev2012
-seromodel_constant <- fit_seromodel(
-  serosurvey = serosurvey
+
+suppressWarnings(
+  seromodel_constant <- fit_seromodel(
+    serosurvey = serosurvey,
+    iter = 20
+  )
+)
+
+suppressWarnings(
+  seromodel_constant_serorev <- fit_seromodel(
+    serosurvey = serosurvey,
+    is_seroreversion = TRUE,
+    seroreversion_prior = sf_normal(0, 1e-4)
+  )
 )
 
 suppressWarnings(
@@ -137,7 +149,7 @@ test_that("plot_serosurvey creates a binned ggplot with correct structure", {
 
 # Test plot_summary ----
 test_that("plot_summary creates a ggplot with correct structure", {
-  seromodel <- seromodel_constant
+  seromodel <- seromodel_constant_serorev
 
   loo_estimate_digits <- 1
   central_estimate_digits <- 2
@@ -173,16 +185,17 @@ test_that("plot_summary creates a ggplot with correct structure", {
   )
 
   expected_data <- data.frame(
-    row = c(5, 4, 3, 2, 1),
+    row = c(7, 6, 5, 4, 3, 2, 1),
     text = c(
       paste0("model_name: ", summary$model_name),
       paste0("elpd_loo: ", summary$elpd_loo),
       paste0("foi: ", summary$foi),
       paste0("foi_rhat: ", summary$foi_rhat),
+      paste0("seroreversion_rate: ", summary$seroreversion_rate),
+      paste0("seroreversion_rate_rhat: ", summary$seroreversion_rate_rhat),
       paste0("converged: ", summary$converged)
     )
   )
-
 
   expected_plot <- list(
     classes = c("gg", "ggplot"),
@@ -301,12 +314,15 @@ test_that("plot_seromodel with age foi creates a ggplot with correct structure",
 test_that("plot_seromodel with time foi creates a ggplot with correct structure", {
   seromodel <- seromodel_time
 
-
-  plot <- plot_seromodel(
-    seromodel = seromodel,
-    serosurvey = serosurvey,
-    foi_df = time_foi_df
+  expect_warning(
+    plot <- plot_seromodel(
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      foi_df = time_foi_df
+    ),
+    "Some Pareto k diagnostic values are too high"
   )
+
   actual_plot <- extract_plot_data(plot)
 
   expected_plot <- list(classes = c("gg", "ggplot"), layers = list(
