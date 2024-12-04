@@ -268,14 +268,18 @@ test_that("plot_seromodel creates a ggplot with correct structure", {
 
 
 test_that("plot_seromodel with age foi creates a ggplot with correct structure", {
+  old_opts <- options()
   seromodel <- seromodel_age
 
-
-  plot <- plot_seromodel(
-    seromodel = seromodel,
-    serosurvey = serosurvey,
-    foi_df = age_foi_df
+  expect_warning(
+    plot <- plot_seromodel(
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      foi_df = age_foi_df
+    ),
+    "Some Pareto k diagnostic values are too high"
   )
+
   actual_plot <- extract_plot_data(plot)
 
   expected_plot <- list(classes = c("gg", "ggplot"), layers = list(
@@ -305,6 +309,8 @@ test_that("plot_seromodel with age foi creates a ggplot with correct structure",
   ), labels = list())
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
+
+  options(old_opts)
 })
 
 
