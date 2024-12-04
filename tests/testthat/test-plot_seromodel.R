@@ -21,21 +21,30 @@ suppressWarnings(
   )
 )
 
-seromodel_time <- fit_seromodel(
-  serosurvey = serosurvey,
-  model_type = "time",
-  foi_index = get_foi_index(serosurvey, group_size = 10, model_type = "time")
+age_foi_df <- data.frame(
+  age = seq(1, 60, 1),
+  foi = extract_central_estimates(
+    seromodel_age,
+    serosurvey,
+    par_name = "foi_expanded"
+  ) |> dplyr::pull(median)
 )
 
-
-age_foi_df <- data.frame(
-  age = seq(1, 20, 1),
-  foi = rnorm(20, 0.1, 0.01)
+suppressWarnings(
+  seromodel_time <- fit_seromodel(
+    serosurvey = serosurvey,
+    model_type = "time",
+    foi_index = get_foi_index(serosurvey, group_size = 10, model_type = "time")
+  )
 )
 
 time_foi_df <- data.frame(
-  year = seq(1990, 2009, 1),
-  foi = rnorm(20, 0.1, 0.01)
+  year = seq(1952, 2011, 1),
+  foi = extract_central_estimates(
+    seromodel_time,
+    serosurvey,
+    par_name = "foi_expanded"
+  ) |> dplyr::pull(median)
 )
 
 create_prepared_serosurvey <- function(actual_serosurvey) {
