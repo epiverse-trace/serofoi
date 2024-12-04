@@ -23,29 +23,30 @@ Depends:
 Imports:
     bayesplot,
     checkmate,
+    config,
     cowplot,
     dplyr,
     ggplot2,
+    glue,
+    graphics,
     Hmisc,
     loo,
+    Matrix,
     methods,
     purrr,
-    tidyr,
-    tibble,
-    Matrix,
-    glue,
-    config,
-    stats,
     Rcpp (>= 0.12.0),
     rstan (>= 2.18.1),
-    rstantools (>= 2.3.1)
+    rstantools (>= 2.3.1),
+    stats,
+    tibble,
+    tidyr
 Suggests: 
     knitr,
+    rlang,
     rmarkdown,
+    scales,
     spelling,
-    testthat (>= 3.0.0),
-    vdiffr,
-    rlang
+    testthat (>= 3.0.0)
 LinkingTo: 
     BH (>= 1.66.0),
     Rcpp (>= 0.12.0),
@@ -55,8 +56,7 @@ LinkingTo:
     StanHeaders (>= 2.18.0)
 VignetteBuilder: 
     knitr
-Additional_repositories:
-    https://mc-stan.org/r-packages/
+Additional_repositories:https://mc-stan.org/r-packages/
 Biarch: true
 Config/Needs/website: epiverse-trace/epiversetheme
 Config/testthat/edition: 3
