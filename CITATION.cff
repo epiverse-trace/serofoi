@@ -9,7 +9,7 @@ type: software
 license: MIT
 title: 'serofoi: Estimates the Force-of-Infection of a Given Pathogen from Population
   Based Seroprevalence Studies'
-version: 0.1.0
+version: 1.0.2
 abstract: Estimate time-varying Force-of-Infection of a given pathogen from population
   based seroprevalence studies using a bayesian framework.
 authors:
