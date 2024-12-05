@@ -705,11 +705,12 @@ test_that("probability_seropositive_general_model_by_age reduces to time-varying
 
   expect_equal(seropositive_true, seropositive_linear_system)
 
+  options(old_opts)
 })
 
 test_that("probability_seropositive_general_model_by_age reduces to age-varying model under
           appropriate limits", {
-
+  old_opts <- options()
   # simple age-varying FOI model
   construct_A <- function(t, tau, lambda) {
     A <- matrix(0, ncol = 2, nrow = 2)
@@ -752,10 +753,12 @@ test_that("probability_seropositive_general_model_by_age reduces to age-varying 
 
   expect_equal(seropositive_true, seropositive_linear_system)
 
+  options(old_opts)
 })
 
 test_that("probability_seropositive_general_model_by_age reduces to age- and time-varying model under
           appropriate limits", {
+  old_opts <- options()
 
   # age- and time-varying FOI model
   construct_A <- function(t, tau, u, v) {
@@ -857,4 +860,5 @@ test_that("probability_seropositive_general_model_by_age reduces to age- and tim
     )
   )
 
+  options(old_opts)
 })
