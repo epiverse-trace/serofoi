@@ -10,6 +10,7 @@ skip_on_cran()
 data(veev2012)
 serosurvey <- veev2012
 
+# Fit models for testing
 suppressWarnings(
   seromodel_constant <- fit_seromodel(
     serosurvey = serosurvey,
@@ -21,7 +22,8 @@ suppressWarnings(
   seromodel_constant_serorev <- fit_seromodel(
     serosurvey = serosurvey,
     is_seroreversion = TRUE,
-    seroreversion_prior = sf_normal(0, 1e-4)
+    seroreversion_prior = sf_normal(0, 1e-4),
+    iter = 200
   )
 )
 
@@ -29,34 +31,18 @@ suppressWarnings(
   seromodel_age <- fit_seromodel(
     serosurvey = serosurvey,
     model_type = "age",
-    foi_index = get_foi_index(serosurvey, group_size = 10, model_type = "age")
+    foi_index = get_foi_index(serosurvey, group_size = 20, model_type = "age"),
+    iter = 400
   )
-)
-
-age_foi_df <- data.frame(
-  age = seq(1, 60, 1),
-  foi = extract_central_estimates(
-    seromodel_age,
-    serosurvey,
-    par_name = "foi_expanded"
-  ) |> dplyr::pull(median)
 )
 
 suppressWarnings(
   seromodel_time <- fit_seromodel(
     serosurvey = serosurvey,
     model_type = "time",
-    foi_index = get_foi_index(serosurvey, group_size = 10, model_type = "time")
+    foi_index = get_foi_index(serosurvey, group_size = 20, model_type = "time"),
+    iter = 400
   )
-)
-
-time_foi_df <- data.frame(
-  year = seq(1952, 2011, 1),
-  foi = extract_central_estimates(
-    seromodel_time,
-    serosurvey,
-    par_name = "foi_expanded"
-  ) |> dplyr::pull(median)
 )
 
 create_prepared_serosurvey <- function(actual_serosurvey) {
@@ -271,6 +257,15 @@ test_that("plot_seromodel with age foi creates a ggplot with correct structure",
   old_opts <- options()
   seromodel <- seromodel_age
 
+  age_foi_df <- data.frame(
+    age = seq(1, 60, 1),
+    foi = extract_central_estimates(
+      seromodel,
+      serosurvey,
+      par_name = "foi_expanded"
+    ) |> dplyr::pull(median)
+  )
+
   expect_warning(
     plot <- plot_seromodel(
       seromodel = seromodel,
@@ -319,6 +314,15 @@ test_that("plot_seromodel with age foi creates a ggplot with correct structure",
 
 test_that("plot_seromodel with time foi creates a ggplot with correct structure", {
   seromodel <- seromodel_time
+
+  time_foi_df <- data.frame(
+    year = seq(1952, 2011, 1),
+    foi = extract_central_estimates(
+      seromodel,
+      serosurvey,
+      par_name = "foi_expanded"
+    ) |> dplyr::pull(median)
+  )
 
   expect_warning(
     plot <- plot_seromodel(
