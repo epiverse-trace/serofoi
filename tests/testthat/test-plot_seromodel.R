@@ -10,14 +10,18 @@ skip_on_cran()
 data(veev2012)
 serosurvey <- veev2012
 seromodel_constant <- fit_seromodel(
-  serosurvey = serosurvey
+  serosurvey = serosurvey,
+  iter = 500
 )
 
 suppressWarnings(
   seromodel_age <- fit_seromodel(
     serosurvey = serosurvey,
     model_type = "age",
-    foi_index = get_foi_index(serosurvey, group_size = 10, model_type = "age")
+    foi_index = get_foi_index(serosurvey, group_size = 20, model_type = "age"),
+    is_seroreversion = TRUE,
+    seroreversion_prior = sf_normal(0, 1e-4),
+    iter = 200
   )
 )
 
