@@ -662,48 +662,48 @@ test_that("simulate_serosurvey handles invalid model inputs", {
 
 test_that("probability_seropositive_general_model_by_age reduces to time-varying model under
           appropriate limits", {
+  old_opts <- options()
+  # simple time-varying FOI model
+  construct_A <- function(t, tau, lambda) {
+    A <- matrix(0, ncol = 2, nrow = 2)
+    A[1, 1] <- -lambda[t]
+    A[2, 1] <- lambda[t]
+    A
+  }
 
-    # simple time-varying FOI model
-    construct_A <- function(t, tau, lambda) {
-      A <- matrix(0, ncol = 2, nrow = 2)
-      A[1, 1] <- -lambda[t]
-      A[2, 1] <- lambda[t]
-      A
-    }
+  # determines the sum of seropositive compartments of those still alive
+  calculate_seropositivity_function <- function(Y) {
+    Y[2]
+  }
 
-    # determines the sum of seropositive compartments of those still alive
-    calculate_seropositivity_function <- function(Y) {
-      Y[2]
-    }
+  # initial conditions in 12D state vector
+  initial_conditions <- rep(0, 2)
+  initial_conditions[1] <- 1
 
-    # initial conditions in 12D state vector
-    initial_conditions <- rep(0, 2)
-    initial_conditions[1] <- 1
+  # random FOIs
+  lambda <- runif(70, 0, 0.01)
 
-    # random FOIs
-    lambda <- runif(70, 0, 0.01)
+  # solve linear system of ODEs
+  seropositive_linear_system <- probability_seropositive_general_model_by_age(
+    construct_A,
+    calculate_seropositivity_function,
+    initial_conditions,
+    max_age=length(lambda),
+    lambda
+  )
 
-    # solve linear system of ODEs
-    seropositive_linear_system <- probability_seropositive_general_model_by_age(
-      construct_A,
-      calculate_seropositivity_function,
-      initial_conditions,
-      max_age=length(lambda),
-      lambda
-    )
+  foi_df <- data.frame(
+    year=seq_along(lambda),
+    foi=lambda
+  )
 
-    foi_df <- data.frame(
-      year=seq_along(lambda),
-      foi=lambda
-    )
+  seropositive_true <- probability_seropositive_by_age(
+    model = "time",
+    foi = foi_df,
+    seroreversion_rate = 0
+  )
 
-    seropositive_true <- probability_seropositive_by_age(
-      model = "time",
-      foi = foi_df,
-      seroreversion_rate = 0
-    )
-
-    expect_equal(seropositive_true, seropositive_linear_system)
+  expect_equal(seropositive_true, seropositive_linear_system)
 
 })
 
@@ -838,7 +838,11 @@ test_that("probability_seropositive_general_model_by_age reduces to age- and tim
     survey_features,
     u,
     v
-  )
+  ) |>
+    dplyr::mutate(
+      seropositivity = n_seropositive / n_sample
+    )
+
   seropositive_true_age_group <- base::colSums(matrix(
     seropositive_linear_system$seropositivity, 10
     )) / 10
@@ -846,7 +850,7 @@ test_that("probability_seropositive_general_model_by_age reduces to age- and tim
   expect_true(
     all(
       dplyr::near(
-        serosurvey$seropositive,
+        serosurvey$seropositivity,
         seropositive_true_age_group,
         tol = 1e-4
       )
