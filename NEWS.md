@@ -1,51 +1,45 @@
-# serofoi development version
+# serofoi 1.0.2
 
-## Documentation
+## New features
 
-* Datasets `simdata_*` were removed from the package and replaced by corresponding code to simulate data in vignettes (see [#184](https://github.com/epiverse-trace/serofoi/pull/184)).
+* **Serological surveys simulation functionalities**
+  * Introduce enhanced data simulation functionalities to support a broader range of use cases for serosurvey analysis.
+  * Add a dedicated vignette for data simulation to guide users on simulating data for serosurveys.
+
+* **Enables the implementation of a wide variety of new models**
+  * Add forward random walk age-varying models with uniform and normal priors.
+  * Improves previous implementation of forward random walk time-varying models.
+  * Enables prior distributions specifications by means of package specific functions like `sf_normal()` and `sf_uniform()`.
+  * Support for seroreversion rate estimation for all models with uniform and normal priors.
 
 ## Breaking changes
 
-* Update R-hat convergence threshold to $\hat{R} < 1.01$ ([Vehtari, Aki, et al. 2021](https://projecteuclid.org/journals/bayesian-analysis/volume-16/issue-2/Rank-Normalization-Folding-and-Localization--An-Improved-R%cb%86-for/10.1214/20-BA1221.full))
-
-* Add `av_normal` model without seroreversion.
-
-* Allow for uniform prior parameters specification for `constant` model $\sim U(a, b)$
-
-* Change initial prior parameters input specification in `fit_seromodel`. Now they are specified by means 
-parameter `foi_parameter` as follows:
-
-```
-# constant model
-foi_model <- "constant"
-foi_parameter <- list(
-  foi_a = 0.01,
-  foi_b = 0.1
-)
-
-# normal models
-foi_model <- "tv_normal" # "tv_normal_log" or "av_normal"
-foi_parameters <- list(
-  foi_location = 0.1,
-  foi_scale = 0.05
-)
-
-# running the model
-seromodel <- fit_seromodel(
-  serodata = serodata,
-  foi_model = foi_model,
-  foi_parameters = foi_parameters
-)
-```
-
-Note that the meaning of the parameters may vary depending on the model.
-
+* Replaced old modelling and visualization functions, making Bayesian model selection and specification more flexible.
+* New models and functionalities include constant, time-varying, and age-varying models, as well as options for estimating seroreversion rates.
+* Updated the R-hat convergence threshold for model convergence diagnostics to R-hat<1.01,
+following [Vehtari et al. (2021)](https://projecteuclid.org/journals/bayesian-analysis/volume-16/issue-2/Rank-Normalization-Folding-and-Localization--An-Improved-R%cb%86-for/10.1214/20-BA1221.full).
 
 ## Minor changes
 
-* Add input validation for `plot_rhats`.
+* Remove the `simdata_*` datasets from the package and replaced them with code-based simulation in vignettes.
+* Add missing examples to exported functions
+* Add missing documentation entries
 
-* The x-axis label in `plot_foi` and `plot_rhats` is `"age"` or `"year"` depending on the model type.
+## Internal changes
+
+* **Unit testing**
+  * Added unit tests for key package functionalities, including:
+    - `fit_seromodel()` function (#213).
+    - Visualization functionalities (#215).
+    - `build_stan_data` and related functions (#232).
+    - Validation functions (#235).
+  * Test coverage increased to 100%
+
+* **Refactorization of simulation examples**
+  * Replaced static simulated datasets in tests and vignettes with dynamic examples using data simulation functions.
+
+* **Documentation improvements**
+  * Enhanced documentation for new functionalities and updated vignettes to reflect recent changes.
 
 # serofoi 0.1.0
 
