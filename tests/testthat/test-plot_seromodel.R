@@ -9,9 +9,12 @@ skip_on_cran()
 # Common data ----
 data(veev2012)
 serosurvey <- veev2012
-seromodel_constant <- fit_seromodel(
-  serosurvey = serosurvey,
-  iter = 500
+
+suppressWarnings(
+  seromodel_constant <- fit_seromodel(
+    serosurvey = serosurvey,
+    iter = 500
+  )
 )
 
 suppressWarnings(
@@ -29,7 +32,8 @@ suppressWarnings(
   seromodel_time <- fit_seromodel(
     serosurvey = serosurvey,
     model_type = "time",
-    foi_index = get_foi_index(serosurvey, group_size = 10, model_type = "time")
+    foi_index = get_foi_index(serosurvey, group_size = 10, model_type = "time"),
+    iter = 200
   )
 )
 
@@ -252,11 +256,15 @@ test_that("plot_seromodel with age foi creates a ggplot with correct structure",
     ) |> dplyr::pull(median)
   )
 
-  plot <- plot_seromodel(
-    seromodel = seromodel,
-    serosurvey = serosurvey,
-    foi_df = age_foi_df
+  expect_warning(
+    plot <- plot_seromodel(
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      foi_df = age_foi_df
+    ),
+    "Some Pareto k diagnostic values are too high"
   )
+
   actual_plot <- extract_plot_data(plot)
 
   expected_plot <- list(classes = c("gg", "ggplot"), layers = list(
@@ -304,11 +312,15 @@ test_that("plot_seromodel with time foi creates a ggplot with correct structure"
     ) |> dplyr::pull(median)
   )
 
-  plot <- plot_seromodel(
-    seromodel = seromodel,
-    serosurvey = serosurvey,
-    foi_df = time_foi_df
+  expect_warning(
+    plot <- plot_seromodel(
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      foi_df = time_foi_df
+    ),
+    "Some Pareto k diagnostic values are too high"
   )
+
   actual_plot <- extract_plot_data(plot)
 
   expected_plot <- list(classes = c("gg", "ggplot"), layers = list(
