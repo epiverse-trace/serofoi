@@ -47,6 +47,7 @@ create_prepared_serosurvey <- function(actual_serosurvey) {
 # Test plot_serosurvey ----
 test_that("plot_serosurvey creates a ggplot with correct structure", {
   skip_on_cran()
+  set.seed(123)
 
   actual_plot <- extract_plot_data(plot_serosurvey(serosurvey))
 
@@ -79,9 +80,12 @@ test_that("plot_serosurvey creates a ggplot with correct structure", {
   )
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
+  set.seed(Sys.time())
 })
 
 test_that("plot_serosurvey creates a binned ggplot with correct structure", {
+  set.seed(123)
+
   bin_step <- 10
 
   expect_warning(
@@ -123,10 +127,14 @@ test_that("plot_serosurvey creates a binned ggplot with correct structure", {
   )
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
+
+  set.seed(Sys.time())
 })
 
 # Test plot_summary ----
 test_that("plot_summary creates a ggplot with correct structure", {
+  set.seed(123)
+
   seromodel <- seromodel_constant
 
   loo_estimate_digits <- 1
@@ -199,9 +207,13 @@ test_that("plot_summary creates a ggplot with correct structure", {
     all(map2_lgl(expected_data$text, actual_data$text, \(x, y) adist(x, y) / nchar(x) < 0.2))
   })
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
+
+  set.seed(Sys.time())
 })
 
 test_that("plot_seromodel creates a ggplot with correct structure", {
+  set.seed(123)
+
   seromodel <- seromodel_constant
 
   expect_warning(
@@ -239,12 +251,16 @@ test_that("plot_seromodel creates a ggplot with correct structure", {
   )
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
+
+  set.seed(Sys.time())
 })
 
 
 
 
 test_that("plot_seromodel with age foi creates a ggplot with correct structure", {
+  set.seed(123)
+
   seromodel <- seromodel_age
 
   age_foi_df <- data.frame(
@@ -294,6 +310,8 @@ test_that("plot_seromodel with age foi creates a ggplot with correct structure",
   ), labels = list())
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
+
+  set.seed(Sys.time())
 })
 
 
@@ -301,6 +319,8 @@ test_that("plot_seromodel with age foi creates a ggplot with correct structure",
 
 
 test_that("plot_seromodel with time foi creates a ggplot with correct structure", {
+  set.seed(123)
+
   seromodel <- seromodel_time
 
   time_foi_df <- data.frame(
@@ -350,6 +370,8 @@ test_that("plot_seromodel with time foi creates a ggplot with correct structure"
   ), labels = list())
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
+
+  set.seed(Sys.time())
 })
 
 
@@ -358,6 +380,8 @@ test_that("plot_seromodel with time foi creates a ggplot with correct structure"
 
 # Test plot_seroprevalence_estimates ----
 test_that("plot_seroprevalence_estimates creates a ggplot with correct structure", {
+  set.seed(123)
+
   seromodel <- seromodel_constant
 
   plot <- plot_seroprevalence_estimates(
@@ -391,10 +415,14 @@ test_that("plot_seroprevalence_estimates creates a ggplot with correct structure
   )
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
+
+  set.seed(Sys.time())
 })
 
 # Test plot_foi_estimates ----
 test_that("plot_foi_estimates creates a ggplot with correct structure", {
+  set.seed(123)
+
   seromodel <- seromodel_age
   plot <- plot_foi_estimates(
     seromodel = seromodel,
@@ -429,10 +457,14 @@ test_that("plot_foi_estimates creates a ggplot with correct structure", {
   )
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
+
+  set.seed(Sys.time())
 })
 
 # Test plot_rhats ----
 test_that("plot_rhats creates a ggplot with correct structure", {
+  set.seed(123)
+
   seromodel <- seromodel_age
 
   plot <- plot_rhats(
@@ -469,4 +501,6 @@ test_that("plot_rhats creates a ggplot with correct structure", {
   ))
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
+
+  set.seed(Sys.time())
 })
