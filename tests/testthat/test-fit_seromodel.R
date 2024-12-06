@@ -24,8 +24,7 @@ test_foi_estimation <- function(seromodel, serosurvey, foi) {
         tol = foi_estimates$tol
       )
     )
-  )
-}
+  )}
 
 test_serorev_estimation <- function(seromodel, serosurvey, mu) {
   mu_estimate <- extract_central_estimates(
@@ -41,8 +40,7 @@ test_serorev_estimation <- function(seromodel, serosurvey, mu) {
       mu_estimate$median,
       tol = mu_estimate$tol
     )
-  )
-}
+  )}
 
 # Test for add_age_group_to_serosurvey ----
 test_that("add_age_group_to_serosurvey handles existing age_group column", {
@@ -114,8 +112,7 @@ test_that("fit_seromodel correctly estimates constant foi using default settings
 
   test_foi_estimation(seromodel, serosurvey, foi)
   test_serorev_estimation(seromodel, serosurvey, mu)
-  }
-)
+  })
 
 test_that("fit_seromodel correctly estimates time-varying foi using default priors", {
   skip_on_cran()
@@ -173,8 +170,7 @@ test_that("fit_seromodel correctly estimates time-varying foi using default prio
 
   test_foi_estimation(seromodel, serosurvey, foi)
   test_serorev_estimation(seromodel, serosurvey, mu)
-  }
-)
+  })
 
 test_that("fit_seromodel correctly estimates age-varying foi", {
   skip_on_cran()
@@ -231,8 +227,7 @@ test_that("fit_seromodel correctly estimates age-varying foi", {
 
   test_foi_estimation(seromodel, serosurvey, foi)
   test_serorev_estimation(seromodel, serosurvey, mu)
-  }
-)
+  })
 
 test_that("fit_seromodel correctly identifies outbreak using time-log-foi model", {
   skip_on_cran()
@@ -308,6 +303,5 @@ test_that("fit_seromodel correctly identifies outbreak using time-log-foi model"
 
   test_foi_estimation(seromodel, serosurvey, foi)
   test_serorev_estimation(seromodel, serosurvey, mu)
-  }
-)
+  })
 
