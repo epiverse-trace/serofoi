@@ -1,5 +1,6 @@
 
 test_that("probability_exact_age_varying calculates probabilities correctly", {
+  old_opts <- options()
   set.seed(123)
   # Test with simple input
   ages <- c(1, 2, 3)
@@ -50,9 +51,11 @@ test_that("probability_exact_age_varying calculates probabilities correctly", {
   )
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("probability_exact_time_varying calculates probabilities correctly", {
+  old_opts <- options()
   set.seed(123)
   # Test with constant FOI
   years <- c(1, 2, 3)
@@ -98,9 +101,11 @@ test_that("probability_exact_time_varying calculates probabilities correctly", {
   )
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("probability_seropositive_time_model_by_age works", {
+  old_opts <- options()
   set.seed(123)
 
   foi <- data.frame(
@@ -137,9 +142,11 @@ test_that("probability_seropositive_time_model_by_age works", {
   expect_true(all(prob_df_1$seropositivity < prob_df$seropositivity))
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("probability_seropositive_age_model_by_age works", {
+  old_opts <- options()
   set.seed(123)
 
   foi <- data.frame(
@@ -176,9 +183,11 @@ test_that("probability_seropositive_age_model_by_age works", {
   expect_true(all(prob_df_1$seropositivity < prob_df$seropositivity))
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("probability_seropositive_age_and_time_model_by_age works as expected", {
+  old_opts <- options()
   set.seed(123)
 
   us <- c(0.1, 0.2, 0.3)
@@ -243,9 +252,11 @@ test_that("probability_seropositive_age_and_time_model_by_age works as expected"
   )
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("add_age_bins function works as expected", {
+  old_opts <- options()
   set.seed(123)
   # Test case 1: Check if intervals are created correctly for a single row dataframe
   survey_features <- data.frame(age_min = 20, age_max = 30)
@@ -262,9 +273,11 @@ test_that("add_age_bins function works as expected", {
   expect_equal(actual_intervals, expected_intervals)
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("survey_by_individual_age function works as expected", {
+  old_opts <- options()
   set.seed(123)
   # Test case 1: Check if overall sample size is calculated correctly for a single row dataframe
   age_df <- data.frame(age_min = 20, age_max = 30, group = "[20,30]")
@@ -281,9 +294,11 @@ test_that("survey_by_individual_age function works as expected", {
   expect_equal(actual_df, expected_df)
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("multinomial_sampling_group function works as expected", {
+  old_opts <- options()
   set.seed(123)
   # Test case 1: Check if sample sizes are generated correctly for a sample size of 100 and 5 age groups
   n_sample <- 100
@@ -302,9 +317,11 @@ test_that("multinomial_sampling_group function works as expected", {
   expect_equal(sum(actual_sample_sizes), n_sample)
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("generate_random_sample_sizes function works as expected", {
+  old_opts <- options()
   set.seed(123)
   # Test case 1: Check if random sample sizes are generated correctly for a single interval
   survey_df <- data.frame(
@@ -343,9 +360,11 @@ test_that("generate_random_sample_sizes function works as expected", {
   expect_equal(group_df$n_sample, group_df$overall_sample_size)
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("sample_size_by_individual_age_random returns correct dataframe structure", {
+  old_opts <- options()
   set.seed(123)
   # Test with sample survey_features data: contiguous age bins
   survey_features <- data.frame(
@@ -378,9 +397,11 @@ test_that("sample_size_by_individual_age_random returns correct dataframe struct
   expect_equal(nrow(actual_df), 15)
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("simulate_serosurvey_time_model function works as expected", {
+  old_opts <- options()
   set.seed(123)
   # Test case 1: Check if the output dataframe has the correct structure
   n_samples <- c(1000, 2000, 1500)
@@ -420,9 +441,11 @@ test_that("simulate_serosurvey_time_model function works as expected", {
   expect_true(all(actual_df_2$n_seropositive <= actual_df$n_seropositive))
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("simulate_serosurvey_time_model input validation", {
+  old_opts <- options()
   set.seed(123)
 
   foi_df <- data.frame(
@@ -468,9 +491,11 @@ test_that("simulate_serosurvey_time_model input validation", {
                "seroreversion_rate must be a non-negative numeric value.")
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("simulate_serosurvey_age_model function works as expected", {
+  old_opts <- options()
   set.seed(123)
   # Test case 1: Check if the output dataframe has the correct structure
   n_samples <- c(1000, 2000, 1500)
@@ -510,9 +535,11 @@ test_that("simulate_serosurvey_age_model function works as expected", {
   expect_true(all(actual_df_2$n_seropositive <= actual_df$n_seropositive))
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("simulate_serosurvey_age_model input validation", {
+  old_opts <- options()
   set.seed(123)
 
   foi_df <- data.frame(
@@ -558,9 +585,11 @@ test_that("simulate_serosurvey_age_model input validation", {
                "seroreversion_rate must be a non-negative numeric value.")
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("simulate_serosurvey_age_and_time_model function works as expected", {
+  old_opts <- options()
   set.seed(123)
   # Test case 1: Check if the output dataframe has the correct structure
   n_samples <- c(1000, 2000, 1500)
@@ -602,9 +631,11 @@ test_that("simulate_serosurvey_age_and_time_model function works as expected", {
   expect_true(all(actual_df_2$n_seropositive <= actual_df$n_seropositive))
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("simulate_serosurvey_age_and_time_model input validation", {
+  old_opts <- options()
   set.seed(123)
 
   foi_df <- tidyr::expand_grid(
@@ -657,9 +688,11 @@ test_that("simulate_serosurvey_age_and_time_model input validation", {
                "seroreversion_rate must be a non-negative numeric value.")
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("simulate_serosurvey returns serosurvey data based on specified model", {
+  old_opts <- options()
   set.seed(123)
   # Test with 'age' model
   foi_df <- data.frame(
@@ -693,9 +726,11 @@ test_that("simulate_serosurvey returns serosurvey data based on specified model"
   expect_true(all(names(serosurvey) %in% c("age_min", "age_max", "n_sample", "n_seropositive")))
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("simulate_serosurvey handles invalid model inputs", {
+  old_opts <- options()
   set.seed(123)
   # Test with invalid model
   foi_df <- data.frame(
@@ -711,10 +746,12 @@ test_that("simulate_serosurvey handles invalid model inputs", {
                "model must be one of 'age', 'time', or 'age-time'.")
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("probability_seropositive_general_model_by_age reduces to time-varying model under
           appropriate limits", {
+  old_opts <- options()
   set.seed(123)
 
   # simple time-varying FOI model
@@ -760,10 +797,12 @@ test_that("probability_seropositive_general_model_by_age reduces to time-varying
   expect_equal(seropositive_true, seropositive_linear_system)
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("probability_seropositive_general_model_by_age reduces to age-varying model under
           appropriate limits", {
+  old_opts <- options()
   set.seed(123)
 
   # simple age-varying FOI model
@@ -809,10 +848,12 @@ test_that("probability_seropositive_general_model_by_age reduces to age-varying 
   expect_equal(seropositive_true, seropositive_linear_system)
 
   set.seed(Sys.time())
+  options(old_opts)
 })
 
 test_that("probability_seropositive_general_model_by_age reduces to age- and time-varying model under
           appropriate limits", {
+  old_opts <- options()
   set.seed(123)
 
   # age- and time-varying FOI model
@@ -916,4 +957,5 @@ test_that("probability_seropositive_general_model_by_age reduces to age- and tim
   )
 
   set.seed(Sys.time())
+  options(old_opts)
 })
