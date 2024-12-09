@@ -50,6 +50,59 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.2" id="serofoi-102">serofoi 1.0.2<a class="anchor" aria-label="anchor" href="#serofoi-102"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-0-2">New features<a class="anchor" aria-label="anchor" href="#new-features-1-0-2"></a></h3>
+<ul><li>
+<strong>Serological surveys simulation functionalities</strong>
+<ul><li>Introduce enhanced data simulation functionalities to support a broader range of use cases for serosurvey analysis.</li>
+<li>Add a dedicated vignette for data simulation to guide users on simulating data for serosurveys.</li>
+</ul></li>
+<li>
+<strong>Enables the implementation of a wide variety of new models</strong>
+<ul><li>Add forward random walk age-varying models with uniform and normal priors.</li>
+<li>Improves previous implementation of forward random walk time-varying models.</li>
+<li>Enables prior distributions specifications by means of package specific functions like <code><a href="../reference/sf_normal.html">sf_normal()</a></code> and <code><a href="../reference/sf_uniform.html">sf_uniform()</a></code>.</li>
+<li>Support for seroreversion rate estimation for all models with uniform and normal priors.</li>
+</ul></li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-1-0-2">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-1-0-2"></a></h3>
+<ul><li>Replaced old modelling and visualization functions, making Bayesian model selection and specification more flexible.</li>
+<li>New models and functionalities include constant, time-varying, and age-varying models, as well as options for estimating seroreversion rates.</li>
+<li>Updated the R-hat convergence threshold for model convergence diagnostics to R-hat&lt;1.01, following <a href="https://projecteuclid.org/journals/bayesian-analysis/volume-16/issue-2/Rank-Normalization-Folding-and-Localization--An-Improved-R%cb%86-for/10.1214/20-BA1221.full" class="external-link">Vehtari et al. (2021)</a>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-changes-1-0-2">Minor changes<a class="anchor" aria-label="anchor" href="#minor-changes-1-0-2"></a></h3>
+<ul><li>Remove the <code>simdata_*</code> datasets from the package and replaced them with code-based simulation in vignettes.</li>
+<li>Add missing examples to exported functions</li>
+<li>Add missing documentation entries</li>
+</ul></div>
+<div class="section level3">
+<h3 id="internal-changes-1-0-2">Internal changes<a class="anchor" aria-label="anchor" href="#internal-changes-1-0-2"></a></h3>
+<ul><li>
+<strong>Unit testing</strong>
+<ul><li>Added unit tests for key package functionalities, including:
+<ul><li>
+<code><a href="../reference/fit_seromodel.html">fit_seromodel()</a></code> function (#213).</li>
+<li>Visualization functionalities (#215).</li>
+<li>
+<code>build_stan_data</code> and related functions (#232).</li>
+<li>Validation functions (#235).</li>
+</ul></li>
+<li>Test coverage increased to 100%</li>
+</ul></li>
+<li>
+<strong>Refactorization of simulation examples</strong>
+<ul><li>Replaced static simulated datasets in tests and vignettes with dynamic examples using data simulation functions.</li>
+</ul></li>
+<li>
+<strong>Documentation improvements</strong>
+<ul><li>Enhanced documentation for new functionalities and updated vignettes to reflect recent changes.</li>
+</ul></li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="serofoi-010">serofoi 0.1.0<a class="anchor" aria-label="anchor" href="#serofoi-010"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-1-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0"></a></h3>
