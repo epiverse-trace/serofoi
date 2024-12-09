@@ -64,7 +64,7 @@ head(chagas2012, 5)
 The function `prepare_serodata` will prepare the entry data for the use of the modelling module; this function computes the sample size, the years of birth and the binomial confidence interval for each age group in the provided dataset. A visualisation of the prepared seroprevalence data can be obtained using the function plot_seroprev:
 
 ```{r data_test, include = TRUE, out.fig.height="30%", out.width="50%", fig.align="center", message=FALSE, warning=FALSE}
-plot_serosurvey(chagas2012, size_text = 15)
+plot_serosurvey(chagas2012, bin_serosurvey = TRUE, size_text = 15)
 ```
 
 ### Contributions

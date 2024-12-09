@@ -59,10 +59,11 @@ can be used to test out the package.
 data(chagas2012)
 head(chagas2012, 5)
 #>   survey_year n_sample n_seropositive age_min age_max
-#> 1        2015      144             63      40      59
-#> 2        2015      148             69      60      79
-#> 3        2015       45             17       1      19
-#> 4        2015      109             55      20      39
+#> 1        2012       34              0       1       1
+#> 2        2012       25              0       2       2
+#> 3        2012       35              1       3       3
+#> 4        2012       29              0       4       4
+#> 5        2012       36              0       5       5
 ```
 
 The function `prepare_serodata` will prepare the entry data for the use
@@ -72,7 +73,7 @@ in the provided dataset. A visualisation of the prepared seroprevalence
 data can be obtained using the function plot_seroprev:
 
 ``` r
-plot_serosurvey(chagas2012, size_text = 15)
+plot_serosurvey(chagas2012, bin_serosurvey = TRUE, size_text = 15)
 ```
 
 <img src="man/figures/README-data_test-1.png" width="50%" style="display: block; margin: auto;" />
