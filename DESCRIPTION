@@ -1,7 +1,7 @@
 Package: serofoi
 Title: Estimates the Force-of-Infection of a Given Pathogen from
     Population Based Seroprevalence Studies
-Version: 1.0.1
+Version: 1.0.2
 Authors@R: c(
     person("Zulma M.", "Cucunubá", , "zulma.cucunuba@javeriana.edu.co", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-8165-3198")),
