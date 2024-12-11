@@ -1,0 +1,456 @@
+---
+title: "Simulating Serosurveys"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message = FALSE, warning=FALSE}
+library(serofoi)
+library(ggplot2)
+library(dplyr)
+```
+
+```{r ggplot theme, include=FALSE}
+theme_set(theme_bw())
+```
+
+
+In this vignette, we show how it is possible to simulate serosurveys using the `simulate_serosurvey` function. This function separates two aspects: the serocatalytic model used to simulate population-wide seropositivity throughout individuals' lives; and the features of the particular serological survey that are being used to uncover these dynamics.
+
+## Constant FOI
+We start by assuming that a disease has a constant force-of-infection (FOI) over time.
+
+```{r, fig.align="center"}
+max_age <- 80
+foi_constant <- data.frame(
+  age = seq(1, max_age, 1),
+  foi = rep(0.05, max_age)
+)
+
+ggplot(foi_constant, aes(x = age, y = foi)) +
+  geom_line()
+```
+
+We suppose that we carry out a serological survey which randomly samples the population. For simplicity, to start, we imagine that all individual one-year group ages are sampled and the sample size in each age is the same: $n=15$.
+
+```{r}
+n_sample <- 15
+survey_features <- data.frame(
+  age_min = seq(1, max_age, 1),
+  age_max = seq(1, max_age, 1),
+  n_sample = rep(n_sample, max_age))
+```
+
+We then put these pieces together and simulate a serosurvey. Either a time-varying FOI model or an age-varying FOI model would produce the same results here since they are equivalent when the FOI is constant.
+```{r}
+serosurvey_constant <- simulate_serosurvey(
+  model = "age",
+  foi = foi_constant,
+  survey_features = survey_features
+)
+
+glimpse(serosurvey_constant)
+```
+
+Now, we can plot the proportions of those seropositive, including the posterior 95% percentiles (when assuming a flat prior), and plot it along the true seropositivities (line blue):
+
+```{r, fig.align="center"}
+plot_serosurvey(serosurvey_constant) +
+  geom_line(
+    data = probability_seropositive_by_age(
+      model = "age",
+      foi = foi_constant,
+      seroreversion_rate = 0
+      ),
+    aes(x = age, y = seropositivity),
+    color = "blue",
+    linewidth = 1
+  ) +
+  scale_y_continuous(labels = scales::percent)
+```
+
+## Age-varying FOI
+We now consider a pathogen which has an FOI that varies throughout the age of individuals. We assume the FOI declines strongly throughout childhood.
+
+```{r, fig.align="center"}
+ages <- seq(1, max_age, 1)
+foi_age_varying <- data.frame(
+  age = ages,
+  foi = 0.1 * exp(-0.1 * ages)
+)
+
+ggplot(foi_age_varying, aes(x = age, y = foi)) +
+  geom_line()
+```
+
+We use the same survey design as before and simulate a serological survey.
+
+```{r, fig.align="center"}
+serosurvey_age_dep <- simulate_serosurvey(
+  model = "age",
+  foi = foi_age_varying,
+  survey_features = survey_features
+)
+
+```
+
+Below, we see that the FOI for the age-dependent FOI pathogen increases rapidly during the earliest years then plateaus in later adulthood as the FOI effectively becomes negligible.
+
+```{r, fig.align="center"}
+# combine with constant FOI survey
+serosurvey_combined <- rbind(
+  serosurvey_constant |>
+    mutate(model_type = "constant FOI") |>
+  left_join(
+    probability_seropositive_by_age(
+      model = "age",
+      foi = foi_constant,
+      seroreversion_rate = 0
+      ) |>
+      rename(age_min = age),
+    by = "age_min"
+    ),
+  serosurvey_age_dep |>
+    mutate(model_type = "age-dependent FOI") |>
+      left_join(
+          probability_seropositive_by_age(
+          model = "age",
+          foi = foi_age_varying,
+          seroreversion_rate = 0
+      ) |>
+        rename(age_min = age),
+      by = "age_min"
+      )
+  )  |>
+  mutate(model_type = as.factor(model_type))
+
+plot_serosurvey(serosurvey = serosurvey_combined) +
+  geom_line(
+    data = serosurvey_combined,
+    aes(x = age_min, y = seropositivity),
+    color = "blue",
+    linewidth = 1
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  ylab("Seropositivity") +
+  xlab("Age") +
+  facet_wrap(~model_type)
+```
+
+## Time-dependent FOI
+We now consider a pathogen where the FOI varies only over calendar time. We imagine a pathogen that has a 'spiky' FOI, characteristic of an epidemic disease.
+
+```{r, fig.align="center"}
+foi_spiky <- data.frame(
+  year = seq(1946, 2025, 1),
+  foi = c(
+    rep(0, 10),
+    rep(0.1, 2),
+    rep(0, 20),
+    rep(0.2, 1),
+    rep(0, 15),
+    rep(0.1, 2),
+    rep(0, 30)
+    )
+)
+
+# plot
+ggplot(foi_spiky, aes(x = year, y = foi)) +
+  geom_line()
+```
+
+The same serological survey design then produces a serological profile with distinct patterning.
+```{r}
+serosurvey_spiky <- simulate_serosurvey(
+  model = "time",
+  foi = foi_spiky,
+  survey_features = survey_features
+)
+```
+
+Again, we can plot the true seropositivities, which highlights the jumps in seropositivity corresponding to cohorts born either side of epidemics:
+
+```{r, fig.align="center"}
+# plot shows jumps in seropositivity
+plot_serosurvey(serosurvey_spiky) +
+  geom_line(
+    data = probability_seropositive_by_age(
+      model = "time",
+      foi = foi_spiky,
+      seroreversion_rate = 0
+      ),
+    aes(x = age, y = seropositivity),
+    color = "blue",
+    linewidth = 1
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  ylab("Seropositivity") +
+  xlab("Age")
+```
+
+## Age-and-time-dependent FOI
+Many pathogens may have a transmission strength that varies according to both age and time. An example of this could be for a sexually transmitted disease where transmission follows a characteristic age-specific pattern, peaking in the early 20s. Here, we imagine such a disease which has relatively recently invaded a population.
+  
+We imagine the time-specific multiplier of FOI follows the below variation.
+```{r, fig.align="center"}
+foi_time <- c(rep(0, 40), rep(1, 40))
+foi_df_time <- data.frame(
+  year = seq(1946, 2025, 1),
+  foi = foi_time
+)
+
+# plot
+ggplot(foi_df_time, aes(x = year, y = foi)) +
+  geom_line()
+```
+
+We create a pattern of age-structured FOI multipliers which peaks in those of early 20s.
+```{r, fig.align="center"}
+ages <- seq(1, 80, 1)
+foi_age <- 2 * dlnorm(
+  ages, meanlog = 3.5, sdlog = 0.5)
+
+foi_df_age <- data.frame(
+  age = ages,
+  foi = foi_age
+)
+
+# plot
+ggplot(foi_df_age, aes(x = age, y = foi)) +
+  geom_line()
+```
+
+To create the overall FOI (which is a function of both time and age), we create the product of the time- and age-dependent parts of it.
+```{r}
+foi_age_time <- expand.grid(
+  year = foi_df_time$year,
+  age = foi_df_age$age
+) |>
+  left_join(foi_df_age, by = "age") |>
+  rename(foi_age = foi) |>
+  left_join(foi_df_time, by = "year") |>
+  rename(foi_time = foi) |>
+  mutate(foi = foi_age * foi_time) |>
+  select(-c("foi_age", "foi_time"))
+```
+
+```{r, fig.align="center", echo=FALSE}
+# plot a few birth years
+select_birth_years <- c(1955, 1965, 1975, 1985, 1995, 2005, 2015)
+foi_age_time |>
+  mutate(birth_year = year - age) |>
+  filter(birth_year >= 1945) |>
+  arrange(birth_year, age) |>
+  filter(birth_year %in% select_birth_years) |>
+  mutate(birth_year = as.factor(birth_year)) |>
+  ggplot(aes(x = year, y = foi, colour = birth_year)) +
+  geom_line()
+```
+
+We now simulate a serosurvey assuming these historical FOIs generated the population-wide seropositivities in 2025; we make the sample sizes larger to be able to clearly visualise the patterns in seropositivity. We also illustrate how serosurveys with wider age-bins can be generated by choosing 5-year bins.
+```{r}
+max_age <- 80
+n_sample <- 50
+survey_features <- data.frame(
+  age_min = seq(1, max_age, 5),
+  age_max = seq(5, max_age, 5)) |>
+  mutate(n_sample = rep(n_sample, length(age_min)))
+
+serosurvey <- simulate_serosurvey(
+  model = "age-time",
+  foi = foi_age_time,
+  survey_features = survey_features
+)
+```
+
+```{r, fig.align="center"}
+# plot
+plot_serosurvey(serosurvey) +
+  geom_line(
+    data = probability_seropositive_by_age(
+      model = "age-time",
+      foi = foi_age_time,
+      seroreversion_rate = 0
+      ),
+    aes(x = age, y = seropositivity),
+    color = "blue",
+    linewidth = 1
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  ylab("Seropositivity") +
+  xlab("Age")
+```
+
+We compare this with a closely related pathogen which exhibits seroreversion -- a process by which individuals lose their antibody detectability over time. Owing to its seroreversion, this pathogen produces a seropositivity profile that peaks at a slightly lower level than previously.
+```{r}
+# generate serosurvey for a seroreverting pathogen
+serosurvey_serorevert <- simulate_serosurvey(
+  model = "age-time",
+  foi = foi_age_time,
+  survey_features = survey_features,
+  seroreversion_rate = 0.01
+)
+```
+
+```{r, fig.align="center"}
+# combine with constant FOI survey
+serosurvey_combined <- rbind(
+  serosurvey |>
+    mutate(model_type = "non-seroreverting") |>
+  left_join(
+    probability_seropositive_by_age(
+      model = "age-time",
+      foi = foi_age_time,
+      seroreversion_rate = 0
+      ) |>
+      rename(age_min = age),
+    by = "age_min"
+    ),
+  serosurvey_serorevert |>
+    mutate(model_type = "seroreverting") |>
+      left_join(
+          probability_seropositive_by_age(
+          model = "age-time",
+          foi = foi_age_time,
+          seroreversion_rate = 0.01
+      ) |>
+        rename(age_min = age),
+      by = "age_min"
+      )
+  ) |>
+  mutate(model_type = as.factor(model_type))
+
+# plot both
+plot_serosurvey(serosurvey = serosurvey_combined) +
+  geom_line(
+    data = serosurvey_combined,
+    aes(x = age_min, y = seropositivity),
+    color = "blue",
+    linewidth = 1
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  ylab("Seropositivity") +
+  xlab("Age") +
+  facet_wrap(~model_type)
+```
+
+# Simulating from a general serological model
+We now illustrate an example age- and time-dependent FOI model for representing the prevalence of HIV (in the absence of treatment). In the absence of treatment, HIV invariably ends in death, and death usually occurs after the onset of AIDS which occurs typically many years after infection. This means that the time from infection to death has a characteristic waiting time, which year we model as being around 10 years long.
+
+Our model considers a single susceptible group, $S^{\tau}(t)$ indexed by their birth year, $\tau$, and calendar time, $t$. There are then a series of consecutive seropositive states, $X_i^{\tau}(t)$, for $i\in[1,10]$; then finally a dead state, $D^{\tau}(t)$. By distributing the seropositive population across a range of states, this model effectively institutes a delay from infection until death. Our model takes the following form:
+
+\begin{equation}\label{eq:serocatalytic_hiv}
+    \begin{aligned}
+        \frac{dS^{\tau}(t)}{dt} &= -u(t-\tau)v(t) S^{\tau}(t)\\
+        \frac{dX_1^{\tau}(t)}{dt} &= u(t-\tau)v(t) S^{\tau}(t) - X_1^{\tau}(t)\\
+        \frac{dX_i^{\tau}(t)}{dt} &= X_{i-1}^{\tau}(t) - X_{i}^{\tau}(t), \quad \forall i \in [2,10],\\
+        \frac{dD^{\tau}(t)}{dt} &= X_{10},
+    \end{aligned}
+\end{equation}
+
+where $S^{\tau}(0)=1$ and all other compartments have initial conditions set to zero. We assume that $u(.)$ and $v(.)$ are piecewise-constant with one-year pieces, with their values the same as those from the sexually transmitted disease example above.
+
+This model does not fit neatly into our other classes of serocatalytic models, and, more generally, we cannot produce specific methods for any foreseeable model structure. But it is possible to find a general strategy for solving such models by rewriting them as piecewise-linear systems of ordinary differential equations.
+
+Since the system is linear, we can write it as a vector differential equation by defining $\boldsymbol{Y}^{\tau}(t):=[S^{\tau}(t),X_1^{\tau}(t),...,X_{10}^{\tau}(t),D^{\tau}(t)]'$ as a vector of states and $\bar{\boldsymbol{A}}_{t,\tau}$ as a matrix of constants that are fixed for a given year and year of birth:
+
+\begin{equation}
+    \bar{\boldsymbol{A}}_{t,\tau} := \begin{bmatrix}
+-\bar u(t-\tau) \bar v(t) & 0 & \cdots \\
+\bar u(t-\tau) \bar v(t) & -1 & 0 & \cdots\\
+0 & 1 & -1 & 0 & \cdots\\
+0 & 0 & 1 & -1 & 0 & \cdots\\
+\vdots & \vdots & \ddots & \ddots & \ddots & \ddots\\
+0 & \cdots & & 0 & 1 & 0
+\end{bmatrix}.
+\end{equation}
+
+Using this matrix, we can write and solve the system of equations:
+
+\begin{equation}
+    \frac{d\boldsymbol{Y}^{\tau}(t)}{dt} = \bar{\boldsymbol{A}}_{t,\tau} \boldsymbol{Y}^{\tau}(t) \implies \boldsymbol{Y}^{\tau}(t+1) = \exp(\bar{\boldsymbol{A}}_{t,\tau}) \boldsymbol{Y}^{\tau}(t).
+\end{equation}
+
+where we have used matrix exponentials to find the solution because the individual algebraic expressions are unwieldy with this many compartments. This matrix form means that a general solution for the system can be written down as follows:
+
+\begin{equation}
+    \boldsymbol{Y}^{\tau}(t) = \exp\left(\sum_{t'=1}^{t}\bar{\boldsymbol{A}}_{t',\tau}\right) \boldsymbol{Y}^{\tau}(0).
+\end{equation}
+
+We now illustrate how such a system can be solved and used to simulate a serosurvey using `serofoi`. The key to this is writing a method for constructing the matrix $\boldsymbol{A}_{t',\tau}$ in the above expression.
+
+```{r, fig.align="center"}
+# use same age- and time-specific multipliers
+u <- foi_df_age$foi
+v <- foi_df_time$foi
+
+# function to construct A matrix for one piece
+construct_A <- function(t, tau, u, v) {
+  u_bar <- u[t - tau]
+  v_bar <- v[t]
+
+  A <- diag(-1, ncol = 12, nrow = 12)
+  A[row(A) == (col(A) + 1)] <- 1
+  A[1, 1] <- -u_bar * v_bar
+  A[2, 1] <- u_bar * v_bar
+  A[12, 12] <- 0
+
+  A
+}
+
+# determines the sum of seropositive compartments of those still alive
+calculate_seropositivity_fn <- function(Y) {
+  sum(Y[2:11]) / (1 - Y[12])
+}
+
+# initial conditions in 12D state vector
+initial_conditions <- rep(0, 12)
+initial_conditions[1] <- 1
+
+# solve
+seropositive_hiv <- probability_seropositive_general_model_by_age(
+    construct_A,
+    calculate_seropositivity_fn,
+    initial_conditions,
+    max_age = 80,
+    u,
+    v
+  )
+
+ggplot(seropositive_hiv, aes(x = age, y = seropositivity)) +
+  geom_line() +
+  scale_y_continuous(labels = scales::percent) +
+  ylab("Seropositivity") +
+  xlab("Age")
+```
+
+We can also simulate a serosurvey assuming the above model.
+```{r}
+serosurvey <- simulate_serosurvey_general_model(
+    construct_A,
+    calculate_seropositivity_fn,
+    initial_conditions,
+    survey_features,
+    u,
+    v
+)
+```
+
+```{r, fig.align="center"}
+# plot
+plot_serosurvey(serosurvey) +
+  geom_line(
+    data = seropositive_hiv,
+    aes(x = age, y = seropositivity),
+    color = "blue",
+    linewidth = 1
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  ylab("Seropositivity") +
+  xlab("Age")
+```

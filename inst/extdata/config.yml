@@ -1,0 +1,18 @@
+default:
+  priors: 
+    indexes: 
+      uniform: 0
+      normal: 1
+    defaults:
+      prior_index: 1
+      # uniform distribution
+      min: 0
+      max: 10
+      # normal distribution
+      mean: 0
+      sd: 1
+      # cauchy
+      location: 0
+      scale: 1
+      # init
+      init: 0.1

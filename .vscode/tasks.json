@@ -1,0 +1,43 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "R",
+			"code": [
+				"devtools::install_deps(upgrade=TRUE)"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "none",
+				"isDefault": true
+			},
+			"label": "R: upgrade deps"
+		},
+		{
+			"type": "R",
+			"code": [
+				"devtools::test_active_file(\"${file}\")"
+			],
+			"problemMatcher": [
+				"$testthat"
+			],
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"label": "R: Test Active File"
+		},
+		{
+			"type": "R",
+			"code": [
+				"devtools::check(manual=FALSE, cran = TRUE, error_on=c('error'))"
+			],
+			"problemMatcher": [],
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"label": "R Package: Check Strict"
+		}
+	]
+}
