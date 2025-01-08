@@ -316,7 +316,9 @@ plot_foi_estimates <- function(
   alpha = 0.05,
   foi_df = NULL,
   foi_max = NULL,
-  size_text = 11
+  size_text = 11,
+  plot_constant = FALSE,
+  x_axis = NA
 ) {
   # TODO: Add checks for foi_df (size, colnames, etc.)
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
@@ -337,23 +339,29 @@ plot_foi_estimates <- function(
   if (is.null(foi_max))
     foi_max <- max(foi_central_estimates$upper)
 
-  if (startsWith(model_name, "age")) {
+  if (startsWith(model_name, "age") || (plot_constant && (x_axis == "age"))) {
     xlab <- "Age"
     ages <- 1:max(serosurvey$age_max)
     foi_central_estimates <- dplyr::mutate(
       foi_central_estimates,
       age = ages
     )
+
     if (!is.null(foi_df)) {
       foi_central_estimates <- dplyr::left_join(
         foi_central_estimates, foi_df,
         by = "age"
       )
     }
+
     foi_plot <- ggplot2::ggplot(
       data = foi_central_estimates, ggplot2::aes(x = .data$age)
     )
-  } else if (startsWith(model_name, "time")) {
+
+  } else if (
+    startsWith(model_name, "time") ||
+    (plot_constant && x_axis == "time")
+    ) {
     checkmate::assert_names(names(serosurvey), must.include = "survey_year")
     xlab <- "Year"
     ages <- rev(1:max(serosurvey$age_max))
@@ -425,8 +433,9 @@ plot_foi_estimates <- function(
 plot_rhats <- function(
   seromodel,
   serosurvey,
-  par_name = "foi_expanded",
-  size_text = 11
+  size_text = 11,
+  plot_constant = FALSE,
+  x_axis = NA
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
@@ -436,9 +445,9 @@ plot_rhats <- function(
     startsWith(model_name, "age") | startsWith(model_name, "time")
   )
 
-  rhats <- bayesplot::rhat(seromodel, par_name)
+  rhats <- bayesplot::rhat(seromodel, "foi_expanded")
 
-  if (startsWith(model_name, "age")) {
+  if (startsWith(model_name, "age") || (plot_constant && (x_axis == "age"))) {
     xlab <- "Age"
     ages <- 1:max(serosurvey$age_max)
     rhats_df <- data.frame(
@@ -449,7 +458,10 @@ plot_rhats <- function(
     rhats_plot <- ggplot2::ggplot(
       data = rhats_df, ggplot2::aes(x = .data$age)
     )
-  } else if (startsWith(model_name, "time")) {
+  } else if (
+    startsWith(model_name, "time") ||
+    (plot_constant && x_axis == "time")
+    ) {
     checkmate::assert_names(names(serosurvey), must.include = "survey_year")
     xlab <- "Year"
     ages <- rev(1:max(serosurvey$age_max))
@@ -482,7 +494,7 @@ plot_rhats <- function(
     ggplot2::xlab(xlab) +
     ggplot2::ylab("Convergence (r-hats)")
 
-    return(rhats_plot)
+  return(rhats_plot)
 }
 
 #' Plots model summary
@@ -501,23 +513,22 @@ plot_summary <- function(
   loo_estimate_digits = 1,
   central_estimate_digits = 2,
   rhat_digits = 2,
-  size_text = 11
+  size_text = 11,
+  plot_constant = FALSE
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
-  summary_table <- t( #convert summary to table
-    summarise_seromodel(
-      seromodel = seromodel,
-      serosurvey = serosurvey,
-      loo_estimate_digits = loo_estimate_digits,
-      central_estimate_digits = central_estimate_digits,
-      rhat_digits = rhat_digits
-      )
+  summary_list <- summarise_seromodel(
+    seromodel = seromodel,
+    serosurvey = serosurvey,
+    loo_estimate_digits = loo_estimate_digits,
+    central_estimate_digits = central_estimate_digits,
+    rhat_digits = rhat_digits
   )
 
   summary_df <- data.frame(
-    row = rev(seq_len(NCOL(summary_table))),
-    text = paste0(colnames(summary_table), ": ", summary_table[1, ])
+    row = rev(seq_len(NCOL(t(summary_list)))),
+    text = paste0(colnames(t(summary_list)), ": ", summary_list)
   )
 
   summary_plot <- ggplot2::ggplot(
@@ -562,7 +573,9 @@ plot_seromodel <- function(
   central_estimate_digits = 2,
   seroreversion_digits = 2,
   rhat_digits = 2,
-  size_text = 11
+  size_text = 11,
+  plot_constant = FALSE,
+  x_axis = NA
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
@@ -572,7 +585,8 @@ plot_seromodel <- function(
     loo_estimate_digits = loo_estimate_digits,
     central_estimate_digits = central_estimate_digits,
     rhat_digits = rhat_digits,
-    size_text = size_text
+    size_text = size_text,
+    plot_constant = plot_constant
   )
 
   seroprev_plot <- plot_seroprevalence_estimates(
@@ -589,28 +603,29 @@ plot_seromodel <- function(
     seroprev_plot
   )
 
-  model_name <- seromodel@model_name
-  if (!startsWith(model_name, "constant")) {
-    foi_plot <- plot_foi_estimates(
-      seromodel,
-      serosurvey,
-      alpha = alpha,
-      foi_df = foi_df,
-      foi_max = foi_max,
-      size_text
-    )
+  foi_plot <- plot_foi_estimates(
+    seromodel,
+    serosurvey,
+    alpha = alpha,
+    foi_df = foi_df,
+    foi_max = foi_max,
+    size_text,
+    plot_constant = plot_constant,
+    x_axis = x_axis
+  )
 
-    rhats_plot <- plot_rhats(
-      seromodel = seromodel,
-      serosurvey = serosurvey,
-      size_text = size_text
-    )
+  rhats_plot <- plot_rhats(
+    seromodel = seromodel,
+    serosurvey = serosurvey,
+    size_text = size_text,
+    plot_constant = plot_constant,
+    x_axis = x_axis
+  )
 
-    plot_list <- c(
-      plot_list,
-      list(foi_plot, rhats_plot)
-    )
-  }
+  plot_list <- c(
+    plot_list,
+    list(foi_plot, rhats_plot)
+  )
 
   seromodel_plot <- cowplot::plot_grid(plotlist = plot_list, ncol = 1)
   return(seromodel_plot)
