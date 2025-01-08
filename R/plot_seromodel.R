@@ -288,6 +288,7 @@ plot_seroprevalence_estimates <- function(
 #'
 #' @inheritParams extract_central_estimates
 #' @inheritParams fit_seromodel
+#' @inheritParams plot_rhats
 #' @param foi_df Dataframe with columns
 #' \describe{
 #'  \item{`year`/`age`}{Year/Age (depending on the model)}
@@ -429,8 +430,11 @@ plot_foi_estimates <- function(
 
 #' Plot r-hats convergence criteria for the specified model
 #'
-#' @inheritParams extract_central_estimates
 #' @inheritParams plot_serosurvey
+#' @inheritParams plot_summary
+#' @param xlab_constant either `"time"` or `"age"`. Specifies time axis values and
+#' label for constant model additional plots. Only relevant when
+#' `seromodel@model_name == "constant"`
 #' @return ggplot object showing the r-hats of the model to be compared with the
 #' convergence criteria (horizontal dashed line)
 #' @examples
@@ -535,6 +539,9 @@ plot_rhats <- function(
 #'
 #' @inheritParams summarise_seromodel
 #' @inheritParams plot_serosurvey
+#' @param plot_constant boolean specifying whether to plot single FOI estimate
+#' and its corresponding rhat value instead of showing this information in the
+#' summary. Only relevant when `seromodel@model_name == "constant"`)
 #' @return ggplot object with a summary of the specified model
 #' @examples
 #' data(veev2012)

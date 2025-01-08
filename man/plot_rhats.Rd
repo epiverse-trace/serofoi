@@ -4,7 +4,13 @@
 \alias{plot_rhats}
 \title{Plot r-hats convergence criteria for the specified model}
 \usage{
-plot_rhats(seromodel, serosurvey, par_name = "foi_expanded", size_text = 11)
+plot_rhats(
+  seromodel,
+  serosurvey,
+  size_text = 11,
+  plot_constant = FALSE,
+  x_axis = NA
+)
 }
 \arguments{
 \item{seromodel}{stan_fit object obtained from sampling a model
@@ -19,11 +25,16 @@ with \link{fit_seromode}}
 \item{\code{n_seropositive}}{Number of positive samples for each age group}
 }}
 
-\item{par_name}{String specifying the parameter to be extracted
-from \code{seromodel}}
-
 \item{size_text}{Size of text for plotting (\code{base_size} in
 \link[ggplot2:ggtheme]{ggplot2})}
+
+\item{plot_constant}{boolean specifying whether to plot single FOI estimate
+and its corresponding rhat value instead of showing this information in the
+summary. Only relevant when \code{seromodel@model_name == "constant"})}
+
+\item{xlab_constant}{either \code{"time"} or \code{"age"}. Specifies time axis values and
+label for constant model additional plots. Only relevant when
+\code{seromodel@model_name == "constant"}}
 }
 \value{
 ggplot object showing the r-hats of the model to be compared with the
