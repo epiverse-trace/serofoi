@@ -325,8 +325,25 @@ plot_foi_estimates <- function(
 
   model_name <- seromodel@model_name
   stopifnot(
-    "seromodel@name should start with either 'age' or 'time'" =
-    startsWith(model_name, "age") | startsWith(model_name, "time")
+    "seromodel@name should start with either 'age', 'time' or 'constant' " =
+      startsWith(model_name, "age") | startsWith(model_name, "time") |
+      startsWith(model_name, "constant")
+  )
+
+  error_msg_plot_constant <- paste0(
+    "Constant models estimate a single FOI value. To visualise it, ",
+    "specify plot_constant and x_axis accordingly."
+  )
+  error_msg_x_axis <- paste0(
+    "x_axis specification as either 'age' or 'time' when plotting ",
+    "constant FOI estimates is required to avoid ambiguity"
+  )
+  validate_plot_constant(
+    plot_constant = plot_constant,
+    x_axis = x_axis,
+    model_name = model_name,
+    error_msg_plot_constant = error_msg_plot_constant,
+    error_msg_x_axis = error_msg_x_axis
   )
 
   foi_central_estimates <- extract_central_estimates(
@@ -441,8 +458,25 @@ plot_rhats <- function(
 
   model_name <- seromodel@model_name
   stopifnot(
-    "seromodel@name should start with either 'age' or 'time'" =
-    startsWith(model_name, "age") | startsWith(model_name, "time")
+    "seromodel@name should start with either 'age', 'time' or 'constant' " =
+    startsWith(model_name, "age") | startsWith(model_name, "time") |
+    startsWith(model_name, "constant")
+  )
+
+  error_msg_plot_constant <- paste0(
+    "Constant models estimate a single FOI value. To visualise its ",
+    "rhat estimate specify plot_constant and x_axis accordingly."
+  )
+  error_msg_x_axis <- paste0(
+    "x_axis specification as either 'age' or 'time' when plotting rhat ",
+    "estimates of constant models is required to avoid ambiguity"
+  )
+  validate_plot_constant(
+    plot_constant = plot_constant,
+    x_axis = x_axis,
+    model_name = model_name,
+    error_msg_plot_constant = error_msg_plot_constant,
+    error_msg_x_axis = error_msg_x_axis
   )
 
   rhats <- bayesplot::rhat(seromodel, "foi_expanded")
@@ -525,6 +559,19 @@ plot_summary <- function(
     central_estimate_digits = central_estimate_digits,
     rhat_digits = rhat_digits
   )
+
+  if (plot_constant) {
+    if (startsWith(seromodel@model_name, "constant")) {
+      drop <- c("foi", "foi_rhat")
+      summary_list <- summary_list[!(names(summary_list) %in% drop)]
+    } else {
+      error_msg <- paste0(
+        "plot_constant is only relevant when ",
+        "`seromodel@model_name == 'constant'`"
+      )
+      stop(error_msg)
+    }
+  }
 
   summary_df <- data.frame(
     row = rev(seq_len(NCOL(t(summary_list)))),
