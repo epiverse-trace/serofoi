@@ -1,3 +1,5 @@
+# TODO: Add documentation and return calls to validation functions
+
 validate_serosurvey <- function(serosurvey) {
   # Check that necessary columns are present
   col_types <- list(
@@ -139,4 +141,31 @@ validate_foi_index <- function(
   )
 
   return(foi_index)
+}
+
+validate_plot_constant <- function(
+    plot_constant,
+    x_axis,
+    model_name,
+    error_msg_plot_constant,
+    error_msg_x_axis
+) {
+  if (plot_constant) {
+    if (!startsWith(model_name, "constant")) {
+      error_msg <- paste0(
+        "plot_constant is only relevant when ",
+        "`seromodel@model_name == 'constant'`"
+      )
+      stop(error_msg)
+    }
+    if (!(x_axis %in% c("age", "time"))) {
+      stop(error_msg_x_axis)
+    }
+  } else {
+    if (startsWith(model_name, "constant")) {
+      stop(error_msg_plot_constant)
+    }
+  }
+
+  return(TRUE)
 }
