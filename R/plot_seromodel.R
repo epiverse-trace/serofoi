@@ -427,7 +427,7 @@ plot_foi_estimates <- function(
 #'
 #' @inheritParams plot_serosurvey
 #' @inheritParams plot_summary
-#' @param xlab_constant either `"time"` or `"age"`. Specifies time axis values
+#' @param x_axis either `"time"` or `"age"`. Specifies time axis values
 #' label for constant model additional plots. Only relevant when
 #'and `seromodel@model_name == "constant"`
 #' @return ggplot object showing the r-hats of the model to be compared with the

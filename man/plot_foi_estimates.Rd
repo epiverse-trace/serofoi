@@ -44,6 +44,10 @@ with \link{fit_seromode}}
 \item{plot_constant}{boolean specifying whether to plot single FOI estimate
 and its corresponding rhat value instead of showing this information in the
 summary. Only relevant when \code{seromodel@model_name == "constant"})}
+
+\item{x_axis}{either \code{"time"} or \code{"age"}. Specifies time axis values
+label for constant model additional plots. Only relevant when
+and \code{seromodel@model_name == "constant"}}
 }
 \value{
 ggplot object with estimated force-of-infection
