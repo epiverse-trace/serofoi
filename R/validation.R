@@ -147,7 +147,6 @@ validate_plot_constant <- function(
     plot_constant,
     x_axis,
     model_name,
-    error_msg_plot_constant,
     error_msg_x_axis
 ) {
   if (plot_constant) {
@@ -160,10 +159,6 @@ validate_plot_constant <- function(
     }
     if (!(x_axis %in% c("age", "time"))) {
       stop(error_msg_x_axis)
-    }
-  } else {
-    if (startsWith(model_name, "constant")) {
-      stop(error_msg_plot_constant)
     }
   }
 

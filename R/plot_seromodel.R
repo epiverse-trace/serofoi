@@ -331,10 +331,6 @@ plot_foi_estimates <- function(
       startsWith(model_name, "constant")
   )
 
-  error_msg_plot_constant <- paste0(
-    "Constant models estimate a single FOI value. To visualise it, ",
-    "specify plot_constant and x_axis accordingly."
-  )
   error_msg_x_axis <- paste0(
     "x_axis specification as either 'age' or 'time' when plotting ",
     "constant FOI estimates is required to avoid ambiguity"
@@ -343,7 +339,6 @@ plot_foi_estimates <- function(
     plot_constant = plot_constant,
     x_axis = x_axis,
     model_name = model_name,
-    error_msg_plot_constant = error_msg_plot_constant,
     error_msg_x_axis = error_msg_x_axis
   )
 
@@ -467,10 +462,6 @@ plot_rhats <- function(
     startsWith(model_name, "constant")
   )
 
-  error_msg_plot_constant <- paste0(
-    "Constant models estimate a single FOI value. To visualise its ",
-    "rhat estimate specify plot_constant and x_axis accordingly."
-  )
   error_msg_x_axis <- paste0(
     "x_axis specification as either 'age' or 'time' when plotting rhat ",
     "estimates of constant models is required to avoid ambiguity"
@@ -479,7 +470,6 @@ plot_rhats <- function(
     plot_constant = plot_constant,
     x_axis = x_axis,
     model_name = model_name,
-    error_msg_plot_constant = error_msg_plot_constant,
     error_msg_x_axis = error_msg_x_axis
   )
 
