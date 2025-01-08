@@ -135,6 +135,7 @@ test_that("plot_summary creates a ggplot with correct structure", {
   rhat_digits <- 2
   size_text <- 11
 
+  # showing single estimate in summary
   expect_warning(
     plot <- plot_summary(
       seromodel = seromodel,
@@ -193,6 +194,71 @@ test_that("plot_summary creates a ggplot with correct structure", {
     labels = list(x = "x", y = "row", label = "text")
   )
 
+
+  # Checks that the actual plot data are at most 20% disimilar to the expected data
+  # using Levenshtein distance (adist)
+  expect_true({
+    all(map2_lgl(expected_data$text, actual_data$text, \(x, y) adist(x, y) / nchar(x) < 0.2))
+  })
+  expect_lists_equal_with_tolerance(expected_plot, actual_plot)
+
+  # not showing single estimate in summary
+  expect_warning(
+    plot <- plot_summary(
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      loo_estimate_digits = loo_estimate_digits,
+      central_estimate_digits = central_estimate_digits,
+      rhat_digits = rhat_digits,
+      size_text = size_text,
+      plot_constant = TRUE
+    ),
+    "Some Pareto k diagnostic values are too high"
+  )
+
+  actual_data <- plot$data
+
+  actual_plot <- extract_plot_data(plot)
+
+  expect_warning(
+    summary <- summarise_seromodel(
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      loo_estimate_digits = loo_estimate_digits,
+      central_estimate_digits = central_estimate_digits,
+      rhat_digits = rhat_digits
+    ),
+    "Some Pareto k diagnostic values are too high"
+  )
+
+  expected_data <- data.frame(
+    row = c(3, 2, 1),
+    text = c(
+      paste0("model_name: ", summary$model_name),
+      paste0("elpd_loo: ", summary$elpd_loo),
+      paste0("converged: ", summary$converged)
+    )
+  )
+
+  expected_plot <- list(
+    classes = c("gg", "ggplot"),
+    layers = list(list(
+      mapping = list(
+        label = "text"
+      ),
+      geom_params = list(
+        parse = FALSE, check_overlap = FALSE,
+        size.unit = "mm", na.rm = FALSE
+      )
+    )),
+    coordinates = list(
+      limits = list(
+        x = NULL, y = NULL
+      )
+    ),
+    labels = list(x = "x", y = "row", label = "text")
+  )
+
   # Checks that the actual plot data are at most 20% disimilar to the expected data
   # using Levenshtein distance (adist)
   expect_true({
@@ -201,6 +267,23 @@ test_that("plot_summary creates a ggplot with correct structure", {
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
 })
 
+test_that("plot_summary handles inconsistent parameters correctly", {
+  seromodel <- seromodel_time
+
+  expect_error(
+    summary <- expect_warning(
+      plot_summary(
+        seromodel = seromodel,
+        serosurvey = serosurvey,
+        plot_constant = TRUE
+      ),
+      "Some Pareto k diagnostic values are too high"
+    ),
+    "plot_constant is only relevant when `seromodel@model_name == 'constant'`"
+  )
+})
+
+# Test plot_seromodel ----
 test_that("plot_seromodel creates a ggplot with correct structure", {
   seromodel <- seromodel_constant
 
@@ -437,8 +520,7 @@ test_that("plot_rhats creates a ggplot with correct structure", {
 
   plot <- plot_rhats(
     seromodel = seromodel,
-    serosurvey = serosurvey,
-    par_name = "foi_expanded"
+    serosurvey = serosurvey
   )
   actual_plot <- extract_plot_data(plot)
 
