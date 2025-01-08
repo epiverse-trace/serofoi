@@ -163,3 +163,46 @@ test_that("validate_survey_and_foi_consistency_age_time throws error if max age 
     "maximum age implicit in foi_df should not exceed max age in survey_features"
   )
 })
+
+# Test for validate_plot_constant ----
+test_that("validate_plot_constant works as expected", {
+  # Valid cases
+  expect_true(
+    validate_plot_constant(
+      plot_constant = TRUE,
+      x_axis = "age",
+      model_name = "constant_model",
+      error_msg_x_axis = "x_axis must be either 'age' or 'time'."
+    )
+  )
+
+  expect_true(
+    validate_plot_constant(
+      plot_constant = FALSE,
+      x_axis = "time",
+      model_name = "time_varying_model",
+      error_msg_x_axis = "x_axis must be either 'age' or 'time'."
+    )
+  )
+
+  # Invalid cases
+  expect_error(
+    validate_plot_constant(
+      plot_constant = TRUE,
+      x_axis = "invalid_axis",
+      model_name = "constant_model",
+      error_msg_x_axis = "x_axis must be either 'age' or 'time'."
+    ),
+    "x_axis must be either 'age' or 'time'."
+  )
+
+  expect_error(
+    validate_plot_constant(
+      plot_constant = TRUE,
+      x_axis = "age",
+      model_name = "time_varying_model",
+      error_msg_x_axis = "x_axis must be either 'age' or 'time'."
+    ),
+    "plot_constant is only relevant when `seromodel@model_name == 'constant'`"
+  )
+})
