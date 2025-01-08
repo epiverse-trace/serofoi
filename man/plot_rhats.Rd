@@ -32,9 +32,9 @@ with \link{fit_seromode}}
 and its corresponding rhat value instead of showing this information in the
 summary. Only relevant when \code{seromodel@model_name == "constant"})}
 
-\item{xlab_constant}{either \code{"time"} or \code{"age"}. Specifies time axis values and
+\item{xlab_constant}{either \code{"time"} or \code{"age"}. Specifies time axis values
 label for constant model additional plots. Only relevant when
-\code{seromodel@model_name == "constant"}}
+and \code{seromodel@model_name == "constant"}}
 }
 \value{
 ggplot object showing the r-hats of the model to be compared with the
