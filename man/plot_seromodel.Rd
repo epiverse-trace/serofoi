@@ -16,7 +16,9 @@ plot_seromodel(
   central_estimate_digits = 2,
   seroreversion_digits = 2,
   rhat_digits = 2,
-  size_text = 11
+  size_text = 11,
+  plot_constant = FALSE,
+  x_axis = NA
 )
 }
 \arguments{
@@ -59,6 +61,10 @@ Otherwise, age groups are kept as originally input.}
 
 \item{size_text}{Size of text for plotting (\code{base_size} in
 \link[ggplot2:ggtheme]{ggplot2})}
+
+\item{plot_constant}{boolean specifying whether to plot single FOI estimate
+and its corresponding rhat value instead of showing this information in the
+summary. Only relevant when \code{seromodel@model_name == "constant"})}
 }
 \value{
 seromodel summary plot

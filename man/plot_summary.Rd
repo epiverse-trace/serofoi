@@ -10,7 +10,8 @@ plot_summary(
   loo_estimate_digits = 1,
   central_estimate_digits = 2,
   rhat_digits = 2,
-  size_text = 11
+  size_text = 11,
+  plot_constant = FALSE
 )
 }
 \arguments{
@@ -34,6 +35,10 @@ with \link{fit_seromode}}
 
 \item{size_text}{Size of text for plotting (\code{base_size} in
 \link[ggplot2:ggtheme]{ggplot2})}
+
+\item{plot_constant}{boolean specifying whether to plot single FOI estimate
+and its corresponding rhat value instead of showing this information in the
+summary. Only relevant when \code{seromodel@model_name == "constant"})}
 }
 \value{
 ggplot object with a summary of the specified model
