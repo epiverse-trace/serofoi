@@ -623,6 +623,18 @@ plot_seromodel <- function(
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
+  model_name <- seromodel@model_name
+  error_msg_x_axis <- paste0(
+    "x_axis specification as either 'age' or 'time' when plotting ",
+    "FOI and rhat estimates of constant models is required to avoid ambiguity"
+  )
+  validate_plot_constant(
+    plot_constant = plot_constant,
+    x_axis = x_axis,
+    model_name = model_name,
+    error_msg_x_axis = error_msg_x_axis
+  )
+
   summary_plot <- plot_summary(
     seromodel = seromodel,
     serosurvey = serosurvey,
@@ -647,29 +659,34 @@ plot_seromodel <- function(
     seroprev_plot
   )
 
-  foi_plot <- plot_foi_estimates(
-    seromodel,
-    serosurvey,
-    alpha = alpha,
-    foi_df = foi_df,
-    foi_max = foi_max,
-    size_text,
-    plot_constant = plot_constant,
-    x_axis = x_axis
-  )
+  # This condition (!p | q) is equivalent to !(p & !q)
+  # This is to preserve the default behavior for single FOI estimation for
+  # constant models
+  if (!startsWith(model_name, "constant") || plot_constant) {
+    foi_plot <- plot_foi_estimates(
+      seromodel,
+      serosurvey,
+      alpha = alpha,
+      foi_df = foi_df,
+      foi_max = foi_max,
+      size_text,
+      plot_constant = plot_constant,
+      x_axis = x_axis
+    )
 
-  rhats_plot <- plot_rhats(
-    seromodel = seromodel,
-    serosurvey = serosurvey,
-    size_text = size_text,
-    plot_constant = plot_constant,
-    x_axis = x_axis
-  )
+    rhats_plot <- plot_rhats(
+      seromodel = seromodel,
+      serosurvey = serosurvey,
+      size_text = size_text,
+      plot_constant = plot_constant,
+      x_axis = x_axis
+    )
 
-  plot_list <- c(
-    plot_list,
-    list(foi_plot, rhats_plot)
-  )
+    plot_list <- c(
+      plot_list,
+      list(foi_plot, rhats_plot)
+    )
+  }
 
   seromodel_plot <- cowplot::plot_grid(plotlist = plot_list, ncol = 1)
   return(seromodel_plot)
