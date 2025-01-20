@@ -64,7 +64,6 @@ LinkingTo:
     StanHeaders (>= 2.18.0)
 VignetteBuilder: 
     knitr
-Additional_repositories:https://mc-stan.org/r-packages/
 Biarch: true
 Config/Needs/website: epiverse-trace/epiversetheme
 Config/testthat/edition: 3
