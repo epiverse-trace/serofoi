@@ -25,7 +25,7 @@ prepare_serosurvey_for_plotting <- function( #nolint
     binconf = purrr::pmap(
       .l = serosurvey,
       .f = purrr::lift_vd(..f = function(dat) {
-        ci <- binom.test(
+        ci <- stats::binom.test(
           x = dat["n_seropositive"],
           n = dat["n_sample"],
           p = dat["seroprev"],
