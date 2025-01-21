@@ -22,12 +22,9 @@ prepare_serosurvey_for_plotting <- function( #nolint
   serosurvey$seroprev <- serosurvey$n_seropositive / serosurvey$n_sample
   serosurvey <- mutate(
     serosurvey,
-    seroprev = n_seropositive / n_sample,
     binconf = purrr::pmap(
       .l = serosurvey,
-      .f = purrr::lift_vd(..f = function(dat)
-      {
-        # browser()
+      .f = purrr::lift_vd(..f = function(dat) {
         ci <- binom.test(
           x = dat["n_seropositive"],
           n = dat["n_sample"],
