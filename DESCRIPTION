@@ -13,9 +13,14 @@ Authors@R: c(
            comment = c(ORCID = "0009-0007-8701-0568")),
     person("Jaime A.", "Pavlich-Mariscal", role = "ctb",
            comment = c(ORCID = "0000-0002-3892-6680")),
+    person("Hugo", "Gruson", role = "ctb",
+           comment = c(ORCID = "0000-0002-4094-1476")),
+    person("David Santiago", "Quevedo", role = "ctb",
+           comment = c(ORCID = "0000-0003-1583-4262")),
+    person("Miguel", "Gámez", role = "ctb"),
     person("Sumali", "Bajaj", role = "ctb"),
     person("Everlyn", "Kamau", role = "ctb"),
-    person("Miguel", "Gámez", role = "ctb"),
+    person("Richard", "Creswell", role = "ctb"),
     person("International Development Research Center (IDRC)", role = "fnd"),
     person("Pontificia Universidad Javeriana", role = "cph")
   )
