@@ -20,7 +20,7 @@ prepare_serosurvey_for_plotting <- function( #nolint
   # The binomial confidence interval calculation is based on:
   # https://forum.posit.co/t/apply-binomial-test-for-each-row-in-a-data-table/32112/2 #nolint
   serosurvey$seroprev <- serosurvey$n_seropositive / serosurvey$n_sample
-  serosurvey <- mutate(
+  serosurvey <- dplyr::mutate(
     serosurvey,
     binconf = purrr::pmap(
       .l = serosurvey,
