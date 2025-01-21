@@ -21,14 +21,14 @@ extract_plot_data <- function(plot) {
 }
 
 extract_layers <- function(layers) {
-  map(layers, function(layer) {
+  purrr::map(layers, function(layer) {
     # Extract mappings
     list(
       mapping =
         if (is.null(layer$mapping)) {
           NULL
         } else {
-          map(layer$mapping, \(x) {
+          purrr::map(layer$mapping, \(x) {
             quo_name(rlang::get_expr(x))
           })
         },
