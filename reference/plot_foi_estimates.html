@@ -62,7 +62,9 @@
 <span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>  foi_df <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  foi_max <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  size_text <span class="op">=</span> <span class="fl">11</span></span>
+<span>  size_text <span class="op">=</span> <span class="fl">11</span>,</span>
+<span>  plot_constant <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  x_axis <span class="op">=</span> <span class="cn">NA</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -119,6 +121,18 @@ with fit_seromode</p></dd>
 <dd><p>Size of text for plotting (<code>base_size</code> in
 ggplot2)</p></dd>
 
+
+<dt id="arg-plot-constant">plot_constant<a class="anchor" aria-label="anchor" href="#arg-plot-constant"></a></dt>
+<dd><p>boolean specifying whether to plot single FOI estimate
+and its corresponding rhat value instead of showing this information in the
+summary. Only relevant when <code>seromodel@model_name == "constant"</code>)</p></dd>
+
+
+<dt id="arg-x-axis">x_axis<a class="anchor" aria-label="anchor" href="#arg-x-axis"></a></dt>
+<dd><p>either <code>"time"</code> or <code>"age"</code>. Specifies time axis values
+label for constant model additional plots. Only relevant when
+and <code>seromodel@model_name == "constant"</code></p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -141,8 +155,8 @@ ggplot2)</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SAMPLING FOR MODEL 'time_no_seroreversion' NOW (CHAIN 1).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 0.000591 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 5.91 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Gradient evaluation took 0.000409 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.09 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Adjust your expectations accordingly!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
@@ -167,15 +181,15 @@ ggplot2)</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 90 / 100 [ 90%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: Iteration: 100 / 100 [100%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 0.435 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.443 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.878 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:  Elapsed Time: 0.281 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.294 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1:                0.575 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 1: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SAMPLING FOR MODEL 'time_no_seroreversion' NOW (CHAIN 2).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Gradient evaluation took 0.000589 seconds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.89 seconds.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Gradient evaluation took 0.000429 seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.29 seconds.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Adjust your expectations accordingly!</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
@@ -200,9 +214,9 @@ ggplot2)</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 90 / 100 [ 90%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: Iteration: 100 / 100 [100%]  (Sampling)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:  Elapsed Time: 0.378 seconds (Warm-up)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                0.455 seconds (Sampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                0.833 seconds (Total)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:  Elapsed Time: 0.247 seconds (Warm-up)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                0.301 seconds (Sampling)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2:                0.548 seconds (Total)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Chain 2: </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The largest R-hat is 1.13, indicating chains have not mixed.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> Running the chains for more iterations may help. See</span>
