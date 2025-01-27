@@ -470,3 +470,34 @@ test_that("plot_rhats creates a ggplot with correct structure", {
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
 })
+
+
+test_that("Test that binomial confidence intervals coincide with Hmisc snapshot", {
+  # Prepare serological data accordinng to the current method
+  serodata <- serofoi:::prepare_serosurvey_for_plotting(
+    serofoi:::add_age_group_to_serosurvey(chagas2012))
+
+  # Compare with old Hmisc::binconf snapshot
+  serodata_hmisc <- readRDS(file.path("testdata", "prepared_serodata_hmisc.RDS"))
+
+  expect_true(
+    all(
+      dplyr::near(
+        serodata_hmisc$seroprev,
+        serodata$seroprev,
+        tol = 1e-6
+      ),
+      dplyr::near(
+        serodata_hmisc$seroprev_lower,
+        serodata$seroprev_lower,
+        tol = 1e-6
+      ),
+      dplyr::near(
+        serodata_hmisc$seroprev_upper,
+        serodata$seroprev_upper,
+        tol = 1e-6
+      )
+    )
+  )
+
+})
