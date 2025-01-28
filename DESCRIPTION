@@ -29,7 +29,6 @@ Imports:
     ggplot2,
     glue,
     graphics,
-    Hmisc,
     loo,
     Matrix,
     methods,
