@@ -154,18 +154,6 @@ references:
     orcid: https://orcid.org/0000-0002-9335-7468
   year: '2024'
 - type: software
-  title: Hmisc
-  abstract: 'Hmisc: Harrell Miscellaneous'
-  notes: Imports
-  url: https://hbiostat.org/R/Hmisc/
-  repository: https://CRAN.R-project.org/package=Hmisc
-  authors:
-  - family-names: Harrell Jr
-    given-names: Frank E
-    email: fh@fharrell.com
-    orcid: https://orcid.org/0000-0002-8271-5493
-  year: '2024'
-- type: software
   title: loo
   abstract: 'loo: Efficient Leave-One-Out Cross-Validation and WAIC for Bayesian Models'
   notes: Imports
