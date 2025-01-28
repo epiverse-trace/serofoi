@@ -20,22 +20,29 @@ prepare_serosurvey_for_plotting <- function( #nolint
   # The binomial confidence interval calculation is based on:
   # https://forum.posit.co/t/apply-binomial-test-for-each-row-in-a-data-table/32112/2 #nolint
   serosurvey$seroprev <- serosurvey$n_seropositive / serosurvey$n_sample
-  serosurvey <- dplyr::mutate(
-    serosurvey,
-    binconf = purrr::pmap(
-      .l = serosurvey,
-      .f = purrr::lift_vd(..f = function(dat) {
-        ci <- stats::binom.test(
-          x = dat["n_seropositive"],
-          n = dat["n_sample"],
-          p = dat["seroprev"],
-          conf.level = 1 - alpha)$conf.int
-        names(x = ci) <- c("seroprev_lower", "seroprev_upper")
-        return(ci)
-      })
-    )
-  ) |>
-  tidyr::unnest_wider(.data$binconf) |>
+
+  get_seroprev_binconf <- function(seropositive, sample, seroprevalence) {
+    ci <- stats::binom.test(
+      x = seropositive,
+      n = sample,
+      p = seroprevalence,
+      conf.level = 1 - alpha
+    )$conf.int
+    names(ci) <- c("seroprev_lower", "seroprev_upper")
+    return(ci)
+  }
+
+  serosurvey <- serosurvey |>
+    dplyr::rowwise() |>
+    dplyr::mutate(
+      binconf = list(get_seroprev_binconf(
+        seropositive = .data$n_seropositive,
+        sample = .data$n_sample,
+        seroprevalence = .data$seroprev
+      )
+    )) |>
+    dplyr::ungroup() |>
+    tidyr::unnest_wider(.data$binconf) |>
     dplyr::arrange(.data$age_group) |>
     dplyr::relocate(!!dplyr::sym("age_group"))
 
