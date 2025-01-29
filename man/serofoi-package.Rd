@@ -26,9 +26,16 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item Miguel Gámez [contributor]
   \item Geraldine Gómez (\href{https://orcid.org/0009-0007-8701-0568}{ORCID}) [contributor]
   \item Jaime A. Pavlich-Mariscal (\href{https://orcid.org/0000-0002-3892-6680}{ORCID}) [contributor]
+  \item Hugo Gruson (\href{https://orcid.org/0000-0002-4094-1476}{ORCID}) [contributor]
+  \item David Santiago Quevedo (\href{https://orcid.org/0000-0003-1583-4262}{ORCID}) [contributor]
+  \item Miguel Gámez [contributor]
+  \item Sumali Bajaj [contributor]
+  \item Everlyn Kamau [contributor]
+  \item Richard Creswell [contributor]
+  \item International Development Research Center (IDRC) [funder]
+  \item Pontificia Universidad Javeriana [copyright holder]
 }
 
 }
