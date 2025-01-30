@@ -1,6 +1,6 @@
 Package: serofoi
-Title: Estimates the Force-of-Infection of a Given Pathogen from
-    Population Based Seroprevalence Studies
+Title: Estimating the Force of Infection from Population Based Seroprevalence Studies using a Bayesian Framework
+Type: Package
 Version: 1.0.2
 Authors@R: c(
     person("Zulma M.", "Cucunubá", , "zulma.cucunuba@javeriana.edu.co", role = c("aut", "cre"),
@@ -15,8 +15,12 @@ Authors@R: c(
     person("Jaime A.", "Pavlich-Mariscal", role = "ctb",
            comment = c(ORCID = "0000-0002-3892-6680"))
   )
-Description: Estimate time or age varying Force-of-Infection from
-    population based seroprevalence studies using a bayesian framework.
+Description: Estimating the force of infection from time varying, age varying, or constant 
+    serocatalytic models from population based seroprevalence studies using a bayesian framework,
+    including data simulation functions enabling the generation of serological surveys based on this
+    models. This tool also provides a flexible prior specification syntax for the force of infection
+    and the seroreversion rate, as well as methods to assess model convergence and comparison 
+    criteria along with useful visualisation functions.
 License: MIT + file LICENSE
 URL: https://github.com/epiverse-trace/serofoi,
     https://epiverse-trace.github.io/serofoi/
