@@ -19,7 +19,7 @@ Description: Estimate time or age varying Force-of-Infection from
     population based seroprevalence studies using a bayesian framework.
 License: MIT + file LICENSE
 Depends: 
-    R (>= 3.5.0)
+    R (>= 4.1.0)
 Imports:
     bayesplot,
     checkmate,
