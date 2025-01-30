@@ -18,6 +18,9 @@ Authors@R: c(
 Description: Estimate time or age varying Force-of-Infection from
     population based seroprevalence studies using a bayesian framework.
 License: MIT + file LICENSE
+URL: https://github.com/epiverse-trace/serofoi,
+    https://epiverse-trace.github.io/serofoi/
+BugReports: https://github.com/epiverse-trace/serofoi/issues
 Depends: 
     R (>= 4.1.0)
 Imports:
