@@ -9,17 +9,26 @@ Authors@R: c(
            comment = c(ORCID = "0009-0002-8484-1298")),
     person("Ben", "Lambert", role = "aut"),
     person("Pierre", "Nouvellet", role = "aut"),
-    person("Miguel", "Gámez", role = "ctb"),
     person("Geraldine", "Gómez", role = "ctb",
            comment = c(ORCID = "0009-0007-8701-0568")),
     person("Jaime A.", "Pavlich-Mariscal", role = "ctb",
-           comment = c(ORCID = "0000-0002-3892-6680"))
+           comment = c(ORCID = "0000-0002-3892-6680")),
+    person("Hugo", "Gruson", role = "ctb",
+           comment = c(ORCID = "0000-0002-4094-1476")),
+    person("David Santiago", "Quevedo", role = "ctb",
+           comment = c(ORCID = "0000-0003-1583-4262")),
+    person("Miguel", "Gámez", role = "ctb"),
+    person("Sumali", "Bajaj", role = "ctb"),
+    person("Everlyn", "Kamau", role = "ctb"),
+    person("Richard", "Creswell", role = "ctb"),
+    person("International Development Research Center (IDRC)", role = "fnd"),
+    person("Pontificia Universidad Javeriana", role = "cph")
   )
-Description: Estimating the force of infection from time varying, age varying, or constant 
+Description: Estimating the force of infection from time varying, age varying, or constant
     serocatalytic models from population based seroprevalence studies using a bayesian framework,
     including data simulation functions enabling the generation of serological surveys based on this
     models. This tool also provides a flexible prior specification syntax for the force of infection
-    and the seroreversion rate, as well as methods to assess model convergence and comparison 
+    and the seroreversion rate, as well as methods to assess model convergence and comparison
     criteria along with useful visualisation functions.
 License: MIT + file LICENSE
 URL: https://github.com/epiverse-trace/serofoi,
