@@ -1,5 +1,5 @@
 Package: serofoi
-Title: Estimating the Force of Infection from Population Based Seroprevalence Studies using a Bayesian Framework
+Title: Bayesian Estimation of the Force of Infection from Serological Data
 Type: Package
 Version: 1.0.2
 Authors@R: c(
