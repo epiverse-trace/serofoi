@@ -1,7 +1,7 @@
   // prior index
   int foi_prior_index;
   // foi indexes (chunks)
-  int foi_index[age_max];
+  array[age_max] int foi_index;
   // uniform
   real<lower=0> foi_min;
   real<lower=foi_min> foi_max;

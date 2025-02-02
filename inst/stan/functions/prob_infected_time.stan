@@ -2,7 +2,7 @@ real prob_infected_time_model_single_age(
   int age,
   int age_max,
   vector foi_vector,
-  int[] foi_index,
+  array[] int foi_index,
   real seroreversion_rate
 ) {
   real prob = 0.0;
@@ -18,12 +18,12 @@ real prob_infected_time_model_single_age(
 }
 
 vector prob_infected_time_model(
-  int[] ages,
-	int n_ages,
-	int age_max,
-	vector foi_vector,
-	int[] foi_index,
-	real seroreversion_rate
+  array[] int ages,
+  int n_ages,
+  int age_max,
+  vector foi_vector,
+  array[] int foi_index,
+  real seroreversion_rate
 ) {
 	vector[n_ages] prob_infected;
 

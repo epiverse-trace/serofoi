@@ -7,14 +7,14 @@ real prob_infected_constant_model_single_age(
     real e_lower = exp(-(foi + seroreversion_rate));
 
     real prob = 0.0;
-    for(i in 1:age) { 
+    for(i in 1:age) {
     	prob = foi_over_both + e_lower * (prob - foi_over_both);
     }
     return prob;
 }
 
 vector prob_infected_constant_model(
-	int[] ages,
+	array[] int ages,
 	int n_ages,
 	real foi,
 	real seroreversion_rate
