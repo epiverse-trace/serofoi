@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Estimates the Force-of-Infection of a Given Pathogen from Population Based Seroprevalence Studies • serofoi</title>
+<title>Bayesian Estimation of the Force of Infection from Serological Data • serofoi</title>
 <script src="lightswitch.js"></script><script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Estimates the Force-of-Infection of a Given Pathogen from Population Based Seroprevalence Studies">
-<meta name="description" content="Estimate time or age varying Force-of-Infection from population based seroprevalence studies using a bayesian framework.">
-<meta property="og:description" content="Estimate time or age varying Force-of-Infection from population based seroprevalence studies using a bayesian framework.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Bayesian Estimation of the Force of Infection from Serological Data">
+<meta name="description" content="Estimating the force of infection from time varying, age varying, or constant serocatalytic models from population based seroprevalence studies using a bayesian framework, including data simulation functions enabling the generation of serological surveys based on this models. This tool also provides a flexible prior specification syntax for the force of infection and the seroreversion rate, as well as methods to assess model convergence and comparison criteria along with useful visualisation functions.">
+<meta property="og:description" content="Estimating the force of infection from time varying, age varying, or constant serocatalytic models from population based seroprevalence studies using a bayesian framework, including data simulation functions enabling the generation of serological surveys based on this models. This tool also provides a flexible prior specification syntax for the force of infection and the seroreversion rate, as well as methods to assess model convergence and comparison criteria along with useful visualisation functions.">
 <meta property="og:image" content="https://epiverse-trace.github.io/serofoi/logo.png">
 <!-- Google tag (gtag.js) --><script async src="https://www.googletagmanager.com/gtag/js?id=G-XZ471458FQ"></script><script>
   window.dataLayer = window.dataLayer || [];
@@ -55,6 +55,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/epiverse-trace/serofoi/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
@@ -164,7 +165,15 @@ Cucunubá, Zulma M, Pierre Nouvellet, Lesong Conteh, Mauricio Javier Vera, Victo
 </div>
 </div>
 
-  </main><aside class="col-md-3"><div class="license">
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/epiverse-trace/serofoi/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/epiverse-trace/serofoi/issues" class="external-link">Report a bug</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
@@ -182,12 +191,6 @@ Cucunubá, Zulma M, Pierre Nouvellet, Lesong Conteh, Mauricio Javier Vera, Victo
 </ul>
 </div>
 
-<div class="community">
-<h2 data-toc-skip>Community</h2>
-<ul class="list-unstyled">
-<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
-</ul>
-</div>
 
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
@@ -203,6 +206,7 @@ Cucunubá, Zulma M, Pierre Nouvellet, Lesong Conteh, Mauricio Javier Vera, Victo
 <li>Nicolás T. Domínguez <br><small class="roles"> Author </small> <a href="https://orcid.org/0009-0002-8484-1298" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Ben Lambert <br><small class="roles"> Author </small>  </li>
 <li>Pierre Nouvellet <br><small class="roles"> Author </small>  </li>
+<li>International Development Research Center (IDRC) <br><small class="roles"> Funder </small>  </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
@@ -222,7 +226,7 @@ Cucunubá, Zulma M, Pierre Nouvellet, Lesong Conteh, Mauricio Javier Vera, Victo
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Zulma M. Cucunubá, Nicolás T. Domínguez, Ben Lambert, Pierre Nouvellet.</p>
+  <p>Developed by Zulma M. Cucunubá, Nicolás T. Domínguez, Ben Lambert, Pierre Nouvellet, International Development Research Center (IDRC).</p>
 </div>
 
 <div class="pkgdown-footer-right">
