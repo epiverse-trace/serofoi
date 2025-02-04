@@ -1,3 +1,7 @@
+# serofoi (Development version)
+
+* Updated the stan code to use new syntax.
+
 # serofoi 1.0.2
 
 ## New features
