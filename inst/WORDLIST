@@ -9,8 +9,10 @@ Bajaj
 Basáñez
 Binom
 CMD
+Christl
 Codecov
 Conteh
+Cucunuba
 Dib
 Domínguez
 Epiverse
@@ -27,6 +29,7 @@ IDRC
 IgG
 IgM
 Javeriana
+Junjie
 Lesong
 Liscano
 Mariscal
@@ -47,6 +50,7 @@ Serosurveys
 Sumali
 Triatomine
 Trypanosoma
+Universidad
 VEEV
 Vehtari
 Yaneth
@@ -74,13 +78,17 @@ foi
 forall
 frac
 ggplot
+gh
+github
 hiv
 leq
 lifecycle
 mathcal
 mc
-numerating
+md
+medRxiv
 org
+packagename
 packagetemplate
 Pontificia
 prob
@@ -93,7 +101,6 @@ serocatalytic
 seromodel
 seropositives
 seropositivities
-seroprev
 seroreversion
 serosurvey
 serosurveys
@@ -102,5 +109,4 @@ stan
 textit
 triatomine
 u
-Universidad
 vdots
