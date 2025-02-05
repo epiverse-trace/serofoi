@@ -12,47 +12,52 @@ coverage](https://codecov.io/gh/epiverse-trace/serofoi/branch/dev/graph/badge.sv
 
 <!-- badges: end -->
 
-***serofoi*** is an R package to estimate the *Force-of-Infection (FoI)*
-of a given pathogen from age-disaggregated population-based
-cross-sectional serosurveys, using a Bayesian framework. The package
-provides a set of features for assessing model fitting, convergence and
-visualisation.
+*serofoi* is an R package to estimate the *Force-of-Infection (FoI)* of
+a given pathogen from age-disaggregated population-based cross-sectional
+serosurveys, using a Bayesian framework. The package provides a set of
+features for assessing model fitting, convergence and visualisation.
 
-***serofoi*** relies on the
+*serofoi* relies on the
 [`rstan`](https://mc-stan.org/users/interfaces/rstan) package, which
 provides an R interface for the Stan programming language for
-statistical Bayesian modelling. Particularly, ***serofoi*** relies on
-the use of a *Hamiltonian Monte Carlo (HMC)* algorithm implemented by
-*Stan for Markov chain Monte Carlo (MCMC)* sampling. The implemented
-methods are outlined in ([Cucunubá et al. 2017](#ref-cucunubá2017)) and
+statistical Bayesian modelling. Particularly, *serofoi* relies on the
+use of a *Hamiltonian Monte Carlo (HMC)* algorithm implemented by *Stan
+for Markov chain Monte Carlo (MCMC)* sampling. The implemented methods
+are outlined in ([Cucunubá et al. 2017](#ref-cucunubá2017)) and
 ([Carrera et al. 2020](#ref-carrera2020)) (see [FoI
 Models](https://epiverse-trace.github.io/serofoi/articles/foi_models.html)
-for further details)
+for further details). A compelling mathematical treatment of the
+implemented serocatalytic models can be found in ([Kamau et al.
+2025](#ref-kamau2025)).
 
-***serofoi*** is part of the [Epiverse
+*serofoi* is part of the [Epiverse
 Initiative](https://data.org/initiatives/epiverse/).
 
 ## Installation
 
-You can install the **development version** of ***serofoi*** from
-[GitHub](https://github.com/) running:
+You can install the **development version** of *serofoi* from
+[GitHub](https://github.com/epiverse-trace/serofoi) running:
 
 ``` r
 if(!require("pak")) install.packages("pak")
-pak::pak("epiverse-trace/serofoi@dev")
+pak::pak("epiverse-trace/serofoi")
 ```
 
 or:
 
 ``` r
 if(!require("remotes")) install.packages("remotes")
-remotes::install_github("epiverse-trace/serofoi", ref = "dev")
+remotes::install_github("epiverse-trace/serofoi")
 ```
 
 ## Quick start
 
-***serofoi*** provides a minimal serosurvey dataset, `serodata`, that
-can be used to test out the package.
+*serofoi* provides some minimal serosurvey datasets that can be used to
+test out the package. For instance, the dataset `chagas2012` contains
+seroprevalence measures of IgG antibodies against Trypanosoma cruzi
+infection corresponding to a serological survey conducted in Colombia
+during 2012 on a rural indigenous community that is known to present
+long-term endemic transmission
 
 ``` r
 # Load example dataset chagas2012 included with the package
@@ -66,17 +71,25 @@ head(chagas2012, 5)
 #> 5        2012       36              0       5       5
 ```
 
-The function `prepare_serodata` will prepare the entry data for the use
-of the modelling module; this function computes the sample size, the
-years of birth and the binomial confidence interval for each age group
-in the provided dataset. A visualisation of the prepared seroprevalence
-data can be obtained using the function plot_seroprev:
+A visualisation of the serological data can be obtained using the
+function `plot_serosurvey`:
 
 ``` r
 plot_serosurvey(chagas2012, bin_serosurvey = TRUE, size_text = 15)
 ```
 
 <img src="man/figures/README-data_test-1.png" width="50%" style="display: block; margin: auto;" />
+
+A constant force-of-infection model can easily be implemented by means
+of `fit_serodemol`:
+
+``` r
+seromodel <- fit_seromodel(serosurvey = chagas2012)
+```
+
+For further details on how to visualise the results and other available
+models, please refer to the [online
+documentation](https://epiverse-trace.github.io/serofoi/).
 
 ### Contributions
 
@@ -110,30 +123,25 @@ Contributors to the project include:
 
 ## Package vignettes
 
-More details on how to use ***serofoi*** can be found in the [online
-documentation](https://epiverse-trace.github.io/serofoi/) as package
-vignettes, under [**Get
-Started**](https://epiverse-trace.github.io/serofoi/articles/serofoi.html),
-[**An Introduction to FoI
-Models**](https://epiverse-trace.github.io/serofoi/articles/foi_models.html)
-and [**Real-life Use Cases for
-serofoi**](https://epiverse-trace.github.io/serofoi/articles/use_cases.html)
+More details on how to use *serofoi* can be found in the [online
+documentation as package
+vignettes](https://epiverse-trace.github.io/serofoi/), under “Articles”.
 
 ## Help
 
 To report a bug please open an
-[issue](https://github.com/epiverse-trace/serofoi/issues).
+[issue](https://github.com/epiverse-trace/serofoi/issues/new/choose).
 
 ## Contribute
 
-Contributions to ***serofoi*** are welcomed. Please follow the [package
+Contributions to *serofoi* are welcomed. Please follow the [package
 contributing
 guide](https://github.com/epiverse-trace/serofoi/blob/main/.github/CONTRIBUTING.md).
 
 ## Code of conduct
 
-Please note that the ***serofoi*** project is released with a
-[Contributor Code of
+Please note that the *serofoi* project is released with a [Contributor
+Code of
 Conduct](https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
 
@@ -161,6 +169,15 @@ and María Gloria Basáñez. 2017. “Modelling Historical Changes in the
 Force-of-Infection of Chagas Disease to Inform Control and Elimination
 Programmes: Application in Colombia.” *BMJ Global Health* 2 (3):
 e000345. <https://doi.org/10.1136/bmjgh-2017-000345>.
+
+</div>
+
+<div id="ref-kamau2025" class="csl-entry">
+
+Kamau, Everlyn, Junjie Chen, Sumali Bajaj, Nicolas Torres, Richard
+Creswell, Jaime A Pavlich-Mariscal, Christl Donnelly, Zulma Cucunuba,
+and Ben Lambert. 2025. “The Mathematics of Serocatalytic Models with
+Applications to Public Health Data.” *medRxiv*, 2025–01.
 
 </div>
 
