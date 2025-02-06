@@ -55,7 +55,7 @@ To assess how well the mathematical representation of the different *FoI* models
 
 Is common to assume that the *FoI* is constant in time. However this is not always the case; ***serofoi*** addresses this by enabling the possibility to implement different time-varying models for the *FoI* and offering tools to compare them to the constant case in order to decide what model fits a serological survey the best.
 
-The integrated dataset `chagas2012` provides a minimal example of the input of the package. The following code can be used to implementat and visualise a basic constant model:
+The integrated dataset `chagas2012` provides a minimal example of the input of the package. The following code can be used to implement and visualise a basic constant model:
 
 ```{r model_constant, fig.cap = "Basic constant model visualisation", include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center"}
 library(serofoi)
