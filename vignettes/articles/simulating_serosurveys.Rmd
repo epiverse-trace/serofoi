@@ -59,7 +59,7 @@ glimpse(serosurvey_constant)
 
 Now, we can plot the proportions of those seropositive, including the posterior 95% percentiles (when assuming a flat prior), and plot it along the true seropositivities (line blue):
 
-```{r, fig.align="center"}
+```{r, fig.align="center", fig.alt="Simulated and true proportion"}
 plot_serosurvey(serosurvey_constant) +
   geom_line(
     data = probability_seropositive_by_age(
@@ -145,7 +145,7 @@ plot_serosurvey(serosurvey = serosurvey_combined) +
 ## Time-dependent FOI
 We now consider a pathogen where the FOI varies only over calendar time. We imagine a pathogen that has a 'spiky' FOI, characteristic of an epidemic disease.
 
-```{r, fig.align="center"}
+```{r, fig.align="center", fig.alt="Spiky FoI"}
 foi_spiky <- data.frame(
   year = seq(1946, 2025, 1),
   foi = c(
@@ -175,7 +175,7 @@ serosurvey_spiky <- simulate_serosurvey(
 
 Again, we can plot the true seropositivities, which highlights the jumps in seropositivity corresponding to cohorts born either side of epidemics:
 
-```{r, fig.align="center"}
+```{r, fig.align="center", fig.alt="Plot showing jumps in seropositivity"}
 # plot shows jumps in seropositivity
 plot_serosurvey(serosurvey_spiky) +
   geom_line(
@@ -197,7 +197,7 @@ plot_serosurvey(serosurvey_spiky) +
 Many pathogens may have a transmission strength that varies according to both age and time. An example of this could be for a sexually transmitted disease where transmission follows a characteristic age-specific pattern, peaking in the early 20s. Here, we imagine such a disease which has relatively recently invaded a population.
   
 We imagine the time-specific multiplier of FOI follows the below variation.
-```{r, fig.align="center"}
+```{r, fig.align="center", fig.alt="Time-specific multiplier of the FOI"}
 foi_time <- c(rep(0, 40), rep(1, 40))
 foi_df_time <- data.frame(
   year = seq(1946, 2025, 1),
@@ -210,7 +210,7 @@ ggplot(foi_df_time, aes(x = year, y = foi)) +
 ```
 
 We create a pattern of age-structured FOI multipliers which peaks in those of early 20s.
-```{r, fig.align="center"}
+```{r, fig.align="center", fig.alt="Plot of age-structured FOI multipliers"}
 ages <- seq(1, 80, 1)
 foi_age <- 2 * dlnorm(
   ages, meanlog = 3.5, sdlog = 0.5)
@@ -239,7 +239,7 @@ foi_age_time <- expand.grid(
   select(-c("foi_age", "foi_time"))
 ```
 
-```{r, fig.align="center", echo=FALSE}
+```{r, fig.align="center", echo=FALSE, fig.alt="Plot a few birth years of time- and age-dependent FOI"}
 # plot a few birth years
 select_birth_years <- c(1955, 1965, 1975, 1985, 1995, 2005, 2015)
 foi_age_time |>
@@ -268,8 +268,7 @@ serosurvey <- simulate_serosurvey(
 )
 ```
 
-```{r, fig.align="center"}
-# plot
+```{r, fig.align="center", fig.alt="Plot serosurvey obtained simulating from time- and age-dependent FOI"}
 plot_serosurvey(serosurvey) +
   geom_line(
     data = probability_seropositive_by_age(
@@ -297,7 +296,7 @@ serosurvey_serorevert <- simulate_serosurvey(
 )
 ```
 
-```{r, fig.align="center"}
+```{r, fig.align="center", fig.alt="Plot comparing serosurveys with and without seroreversion"}
 # combine with constant FOI survey
 serosurvey_combined <- rbind(
   serosurvey |>
@@ -384,7 +383,7 @@ where we have used matrix exponentials to find the solution because the individu
 
 We now illustrate how such a system can be solved and used to simulate a serosurvey using `serofoi`. The key to this is writing a method for constructing the matrix $\boldsymbol{A}_{t',\tau}$ in the above expression.
 
-```{r, fig.align="center"}
+```{r, fig.align="center", fig.alt="Plot HIV seroprevalence example using the general model"}
 # use same age- and time-specific multipliers
 u <- foi_df_age$foi
 v <- foi_df_time$foi
@@ -441,7 +440,7 @@ serosurvey <- simulate_serosurvey_general_model(
 )
 ```
 
-```{r, fig.align="center"}
+```{r, fig.align="center", fig.alt="Plot HIV simulated serosurvey using the general model"}
 # plot
 plot_serosurvey(serosurvey) +
   geom_line(

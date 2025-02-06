@@ -1,4 +1,4 @@
-# serofoi (Development version)
+# serofoi (development version)
 
 * Updated the stan code to use new syntax.
 
