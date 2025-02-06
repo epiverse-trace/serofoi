@@ -63,11 +63,12 @@ head(chagas2012, 5)
 
 A visualisation of the serological data can be obtained using the function `plot_serosurvey`:
 
-```{r data_test, include = TRUE, out.fig.height="30%", out.width="50%", fig.align="center", message=FALSE, warning=FALSE}
+```{r data_test, fig.cap = "Seroprevalence plot for the chagas2012 dataset.", include = TRUE, out.fig.height="30%", out.width="50%", fig.align="center", message=FALSE, warning=FALSE}
 plot_serosurvey(chagas2012, bin_serosurvey = TRUE, size_text = 15)
 ```
+Here, the error bars correspond to the binomial confidence interval and the point size represents the sample size for each age group.
 
-A constant force-of-infection model can easily be implemented by means of `fit_serodemol`:
+A constant force-of-infection model can easily be implemented by means of `fit_seromodel`:
 
 ```{r constant_model, include = TRUE, eval = FALSE}
 seromodel <- fit_seromodel(serosurvey = chagas2012)

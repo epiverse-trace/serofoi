@@ -133,7 +133,7 @@ mutate(survey_year = 2050)
 
 The simulated dataset `serosurvey_constant` contains information about 250 samples of individuals between 1 and 50 years old (5 samples per age) with age groups of 5 years length. The following code shows how to implement the constant model to this simulated serosurvey:
 
-```{r constant model, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
+```{r constant model, fig.cap = "Figure 1. Constant serofoi model plot. Simulated (red) vs modelled (blue) FoI.", include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
 seromodel_constant <- fit_seromodel(
   serosurvey = serosurvey_constant,
   model_type = "constant",
@@ -146,7 +146,6 @@ plot_seromodel(
   size_text = 6
 )
 ```
-Figure 1. Constant serofoi model plot. Simulated (red) vs modelled (blue) *FoI*.
 
 ```{r clean env constant, include = FALSE, echo = TRUE, message=FALSE}
 rm(list = ls(pattern = "_constant"))
@@ -196,7 +195,7 @@ mutate(survey_year = 2050)
 
 The simulated  dataset `foi_sim_sw_dec` contains information about 250 samples of individuals between 1 and 50 years old (5 samples per age) with age groups of 5 years length. The following code shows how to implement the slow time-varying normal model to this simulated serosurvey:
 
-```{r tv_normal model, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
+```{r tv_normal model, fig.cap = "Figure 2. Slow time-varying serofoi model plot.  Simulated (red) vs modelled (blue) FoI.", include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
 foi_index <- data.frame(
   year = seq(2000, 2049),
   foi_index = rep(c(1, 2, 3), c(25, 10, 15))
@@ -214,7 +213,6 @@ plot_seromodel(
   size_text = 6
 )
 ```
-Figure 2. Slow time-varying serofoi model plot.  Simulated (red) vs modelled (blue) *FoI*. 
 
 ```{r clean env sw_dec, include = FALSE, echo = TRUE, message=FALSE}
 rm(list = ls(pattern = "_sw_dec|_normal"))
@@ -263,7 +261,7 @@ mutate(survey_year = 2050)
 
 The simulated serosurvey tests 250 individuals between 1 and 50 years old by the year 2050. The implementation of the fast epidemic model can be obtained running the following lines of code:
 
-```{r tv_normal_log model, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
+```{r tv_normal_log model, fig.cap = "Figure 3. *Time-varying fast epidemic serofoi model* plot. Simulated (red) vs modelled (blue) FoI.", include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
 foi_index <- data.frame(
   year = seq(2000, 2049),
   foi_index = rep(c(1, 2, 3), c(30, 5, 15))
@@ -283,8 +281,7 @@ plot_log_time_normal <- plot_seromodel(
   size_text = 6
 )
 plot(plot_log_time_normal)
-```
-Figure 3. *Time-varying fast epidemic serofoi model* plot. Simulated (red) vs modelled (blue) *FoI*. 
+``` 
 
 In Fig 3 we can see that the *fast epidemic serofoi model* is able to identify the large epidemic simulated on the `simdata_large_epi` dataset.
 
@@ -326,13 +323,12 @@ plot_time_normal <- plot_seromodel(
 ```
 Using the function `cowplot::plot_grid` we can visualise the results of the three models simultaneously:
 
-```{r model_comparison_plot, include = TRUE, echo = TRUE, errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center"}
+```{r model_comparison_plot, fig.cap = "Figure 4. Model comparison between the three serofoi models for a large-epidemic simulated dataset.", include = TRUE, echo = TRUE, errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center"}
 cowplot::plot_grid(
   plot_constant, plot_time_normal, plot_log_time_normal,
   nrow = 1, ncol = 3, labels = "AUTO"
 )
 ```
-Figure 4. Model comparison between the three serofoi models for a large-epidemic simulated dataset.
 
 A common criterion to decide what model fits the data the best is to choose the one with the larger `elpd`. According to this criterion, in this case the best model is the fast epidemic model, which is the only one that manages to identify the large epidemic (see the second row of panel C in Figure 4).
 

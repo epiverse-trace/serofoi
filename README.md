@@ -78,10 +78,20 @@ function `plot_serosurvey`:
 plot_serosurvey(chagas2012, bin_serosurvey = TRUE, size_text = 15)
 ```
 
-<img src="man/figures/README-data_test-1.png" width="50%" style="display: block; margin: auto;" />
+<div class="figure" style="text-align: center">
+
+<img src="man/figures/README-data_test-1.png" alt="Seroprevalence plot for the chagas2012 dataset." width="50%" />
+<p class="caption">
+Seroprevalence plot for the chagas2012 dataset.
+</p>
+
+</div>
+
+Here, the error bars correspond to the binomial confidence interval and
+the point size represents the sample size for each age group.
 
 A constant force-of-infection model can easily be implemented by means
-of `fit_serodemol`:
+of `fit_seromodel`:
 
 ``` r
 seromodel <- fit_seromodel(serosurvey = chagas2012)

@@ -37,7 +37,7 @@ To gain insights into the transmission dynamics of Chikungunya in the Americas, 
 
 serofoi was used to compare three potential scenarios of Chikungunya transmission: constant endemic, epidemic slow, and epidemic fast.  Figure 3 displays the comparison between the three serofoi models. The results reveal strong statistical support for model 3 (fast epidemic model) suggesting a sudden increase in the transmission of Chikungunya close to the year of the serosurvey (2015). The exact year is difficult to estimate due to the large level of aggregation of the data, which is divided into 20-year age groups. Nevertheless, these results are consistent with the empirical evidence from Dias et al. (2018), who used both interviews and IgM testing to show a similar increase in transmission during this period.
 
-```{r chik_fast, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center", fig.keep="all"}
+```{r chik_fast, fig.cap = "Figure 1. Constant and time-varying serocatalytic models implementation for Chikungunya virus transmission in an urban remote area of Brazil.", include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center", fig.keep="all"}
 # Load and prepare data
 data("chik2015")
 
@@ -89,7 +89,6 @@ plot_log_time <- plot_seromodel(
 
 cowplot::plot_grid(plot_constant, plot_time, plot_log_time, ncol = 3)
 ```
-Figure 1. ***serofoi*** models for FoI estimates of Chikungunya virus transmission in an urban remote area of Brazil.
 
 ```{r clean env chik, include = FALSE, echo = TRUE, message=FALSE}
 rm(list = ls(pattern = "chik"))
@@ -111,7 +110,7 @@ From [@carrera2020],  we use a dataset measuring IgG antibodies against *VEEV* i
 
 ***serofoi*** was used to compare three potential scenarios of *VEEV* transmission: *constant endemic*, *epidemic slow*, and *epidemic fast*. The results showed a significant increase in the estimated *Force-of-Infection (FoI)* in the region, indicating a rise in *VEEV* transmission. The study found that there was much higher statistical support for a time-varying rather than a constant scenario based on higher elpd and lower se values of the two time-varying models compared to the constant one (Figure 2). The results also suggest slightly (yet relevant) better support for model 3 (`log-time`), compared to model 2 (`time`), suggesting a recent increase in transmission in the study area.
 
-```{r veev_hidden, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center", fig.keep="all"}
+```{r veev_hidden, fig.cap = "Figure 2. Constant and time-varying serocatalytic models implementation for VEEV transmission in a rural remote area of Panama.", include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center", fig.keep="all"}
 # Load and prepare data
 data("veev2012")
 
@@ -163,7 +162,6 @@ plot_log_time <- plot_seromodel(
 
 cowplot::plot_grid(plot_constant, plot_time, plot_log_time, ncol = 3)
 ```
-Figure 2. ***serofoi*** models for *FoI* estimates of *Venezuelan Equine Encephalitis Virus (VEEV)* transmission in a rural remote area of Panama.
 
 ```{r clean env veev, include = FALSE, echo = TRUE, message=FALSE}
 rm(list = ls(pattern = "veev"))
@@ -184,7 +182,7 @@ Based on the data and analysis shown in [@cucunubá2017], we use one of the data
 
 Because Chagas is an endemic disease, we should use only the ***serofoi*** endemic models (1. `constant`, 2. `tv-normal`) on the `chagas2012` dataset and compare which model is better supported. The results are shown in Figure 3. We found that for this serosurvey, both ***serofoi*** models converged (based on R-hat values not crossing 1.01), but the comparison of the two models shows a relevant slow decreasing trend, which was consistent with model 2 - `tv-normal`. This model was statistically better supported based on the highest `elpd` and lowest `se` values compared to the constant model. These results suggest a slow, still relevant decrease in the *FoI* values over the last decades which may have been a consequence of some of the interventions or local environmental changes that have occurred in the study area over the years, up to the point (2012) when the serosurvey was conducted.
 
-```{r chagas_endemic, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center", fig.keep="all"}
+```{r chagas_endemic, fig.cap = "Figure 3. Endemic models implementation for Trypanosoma cruzi in a rural area of Colombia.", include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=5, fig.asp=1, fig.align="center", fig.keep="all"}
 # Load and prepare data
 data("chagas2012")
 
@@ -220,7 +218,6 @@ plot_time <- plot_seromodel(
 )
 cowplot::plot_grid(plot_constant, plot_time, ncol = 2)
 ```
-Figure 3. ***serofoi*** endemic models for *FoI* estimates of *Trypanosoma cruzi* in a rural area of Colombia.
 
 ```{r clean env cha, include = FALSE, echo = TRUE, message=FALSE}
 rm(list = ls(pattern = "cha"))
