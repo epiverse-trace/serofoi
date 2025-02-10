@@ -78,27 +78,30 @@
 <!-- badges: start -->
 
 <!-- badges: end -->
-<p><strong><em>serofoi</em></strong> is an R package to estimate the <em>Force-of-Infection (FoI)</em> of a given pathogen from age-disaggregated population-based cross-sectional serosurveys, using a Bayesian framework. The package provides a set of features for assessing model fitting, convergence and visualisation.</p>
-<p><strong><em>serofoi</em></strong> relies on the <a href="https://mc-stan.org/users/interfaces/rstan" class="external-link"><code>rstan</code></a> package, which provides an R interface for the Stan programming language for statistical Bayesian modelling. Particularly, <strong><em>serofoi</em></strong> relies on the use of a <em>Hamiltonian Monte Carlo (HMC)</em> algorithm implemented by <em>Stan for Markov chain Monte Carlo (MCMC)</em> sampling. The implemented methods are outlined in (<a href="#ref-cucunub%C3%A12017">Cucunubá et al. 2017</a>) and (<a href="#ref-carrera2020">Carrera et al. 2020</a>) (see <a href="https://epiverse-trace.github.io/serofoi/articles/foi_models.html">FoI Models</a> for further details)</p>
-<p><strong><em>serofoi</em></strong> is part of the <a href="https://data.org/initiatives/epiverse/" class="external-link">Epiverse Initiative</a>.</p>
+<p><em>serofoi</em> is an R package to estimate the <em>Force-of-Infection (FoI)</em> of a given pathogen from age-disaggregated population-based cross-sectional serosurveys, using a Bayesian framework. The package provides a set of features for assessing model fitting, convergence and visualisation.</p>
+<p><em>serofoi</em> relies on the <a href="https://mc-stan.org/users/interfaces/rstan" class="external-link"><code>rstan</code></a> package, which provides an R interface for the Stan programming language for statistical Bayesian modelling. Particularly, <em>serofoi</em> relies on the use of a <em>Hamiltonian Monte Carlo (HMC)</em> algorithm implemented by <em>Stan for Markov chain Monte Carlo (MCMC)</em> sampling. The implemented methods are outlined in (<a href="#ref-cucunub%C3%A12017">Cucunubá et al. 2017</a>) and (<a href="#ref-carrera2020">Carrera et al. 2020</a>) (see <a href="https://epiverse-trace.github.io/serofoi/articles/foi_models.html">FoI Models</a> for further details). A compelling mathematical treatment of the implemented serocatalytic models can be found in (<a href="#ref-kamau2025">Kamau et al. 2025</a>).</p>
+<p><em>serofoi</em> is part of the <a href="https://data.org/initiatives/epiverse/" class="external-link">Epiverse Initiative</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the <strong>development version</strong> of <strong><em>serofoi</em></strong> from <a href="https://github.com/" class="external-link">GitHub</a> running:</p>
+<p>You can install <em>serofoi</em> from CRAN using:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://pak.r-lib.org/" class="external-link">"pak"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"epiverse-trace/serofoi@dev"</span><span class="op">)</span></span></code></pre></div>
-<p>or:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"serofoi"</span><span class="op">)</span></span></code></pre></div>
+<p>You can install the <strong>development version</strong> of <em>serofoi</em> from <a href="https://github.com/epiverse-trace/serofoi" class="external-link">GitHub</a> running:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://pak.r-lib.org/" class="external-link">"pak"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"epiverse-trace/serofoi"</span><span class="op">)</span></span></code></pre></div>
+<p>or:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"epiverse-trace/serofoi"</span>, ref <span class="op">=</span> <span class="st">"dev"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"epiverse-trace/serofoi"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<p><strong><em>serofoi</em></strong> provides a minimal serosurvey dataset, <code>serodata</code>, that can be used to test out the package.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p><em>serofoi</em> provides some minimal serosurvey datasets that can be used to test out the package. For instance, the dataset <code>chagas2012</code> contains seroprevalence measures of IgG antibodies against Trypanosoma cruzi infection corresponding to a serological survey conducted in Colombia during 2012 on a rural indigenous community that is known to present long-term endemic transmission</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load example dataset chagas2012 included with the package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">chagas2012</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">chagas2012</span>, <span class="fl">5</span><span class="op">)</span></span>
@@ -108,10 +111,19 @@
 <span><span class="co">#&gt; 3        2012       35              1       3       3</span></span>
 <span><span class="co">#&gt; 4        2012       29              0       4       4</span></span>
 <span><span class="co">#&gt; 5        2012       36              0       5       5</span></span></code></pre></div>
-<p>The function <code>prepare_serodata</code> will prepare the entry data for the use of the modelling module; this function computes the sample size, the years of birth and the binomial confidence interval for each age group in the provided dataset. A visualisation of the prepared seroprevalence data can be obtained using the function plot_seroprev:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<p>A visualisation of the serological data can be obtained using the function <code>plot_serosurvey</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/plot_serosurvey.html">plot_serosurvey</a></span><span class="op">(</span><span class="va">chagas2012</span>, bin_serosurvey <span class="op">=</span> <span class="cn">TRUE</span>, size_text <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-data_test-1.png" width="50%" style="display: block; margin: auto;"></p>
+<div class="figure" style="text-align: center">
+<img src="reference/figures/README-data_test-1.png" alt="Seroprevalence plot for the chagas2012 dataset." width="50%"><p class="caption">
+Seroprevalence plot for the chagas2012 dataset.
+</p>
+</div>
+<p>Here, the error bars correspond to the binomial confidence interval and the point size represents the sample size for each age group.</p>
+<p>A constant force-of-infection model can easily be implemented by means of <code>fit_seromodel</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">seromodel</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_seromodel.html">fit_seromodel</a></span><span class="op">(</span>serosurvey <span class="op">=</span> <span class="va">chagas2012</span><span class="op">)</span></span></code></pre></div>
+<p>For further details on how to visualise the results and other available models, please refer to the <a href="https://epiverse-trace.github.io/serofoi/">online documentation</a>.</p>
 <div class="section level3">
 <h3 id="contributions">Contributions<a class="anchor" aria-label="anchor" href="#contributions"></a>
 </h3>
@@ -135,22 +147,22 @@
 <div class="section level2">
 <h2 id="package-vignettes">Package vignettes<a class="anchor" aria-label="anchor" href="#package-vignettes"></a>
 </h2>
-<p>More details on how to use <strong><em>serofoi</em></strong> can be found in the <a href="https://epiverse-trace.github.io/serofoi/">online documentation</a> as package vignettes, under <a href="https://epiverse-trace.github.io/serofoi/articles/serofoi.html"><strong>Get Started</strong></a>, <a href="https://epiverse-trace.github.io/serofoi/articles/foi_models.html"><strong>An Introduction to FoI Models</strong></a> and <a href="https://epiverse-trace.github.io/serofoi/articles/use_cases.html"><strong>Real-life Use Cases for serofoi</strong></a></p>
+<p>More details on how to use <em>serofoi</em> can be found in the <a href="https://epiverse-trace.github.io/serofoi/">online documentation as package vignettes</a>, under “Articles”.</p>
 </div>
 <div class="section level2">
 <h2 id="help">Help<a class="anchor" aria-label="anchor" href="#help"></a>
 </h2>
-<p>To report a bug please open an <a href="https://github.com/epiverse-trace/serofoi/issues" class="external-link">issue</a>.</p>
+<p>To report a bug please open an <a href="https://github.com/epiverse-trace/serofoi/issues/new/choose" class="external-link">issue</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="contribute">Contribute<a class="anchor" aria-label="anchor" href="#contribute"></a>
 </h2>
-<p>Contributions to <strong><em>serofoi</em></strong> are welcomed. Please follow the <a href="https://github.com/epiverse-trace/serofoi/blob/main/.github/CONTRIBUTING.md" class="external-link">package contributing guide</a>.</p>
+<p>Contributions to <em>serofoi</em> are welcomed. Please follow the <a href="https://github.com/epiverse-trace/serofoi/blob/main/.github/CONTRIBUTING.md" class="external-link">package contributing guide</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="code-of-conduct">Code of conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
 </h2>
-<p>Please note that the <strong><em>serofoi</em></strong> project is released with a <a href="https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<p>Please note that the <em>serofoi</em> project is released with a <a href="https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -161,6 +173,9 @@ Carrera, Jean-Paul, Zulma M. Cucunubá, Karen Neira, Ben Lambert, Yaneth Pittí,
 </div>
 <div id="ref-cucunubá2017" class="csl-entry">
 Cucunubá, Zulma M, Pierre Nouvellet, Lesong Conteh, Mauricio Javier Vera, Victor Manuel Angulo, Juan Carlos Dib, Gabriel Jaime Parra -Henao, and María Gloria Basáñez. 2017. “Modelling Historical Changes in the Force-of-Infection of Chagas Disease to Inform Control and Elimination Programmes: Application in Colombia.” <em>BMJ Global Health</em> 2 (3): e000345. <a href="https://doi.org/10.1136/bmjgh-2017-000345" class="external-link uri">https://doi.org/10.1136/bmjgh-2017-000345</a>.
+</div>
+<div id="ref-kamau2025" class="csl-entry">
+Kamau, Everlyn, Junjie Chen, Sumali Bajaj, Nicolas Torres, Richard Creswell, Jaime A Pavlich-Mariscal, Christl Donnelly, Zulma Cucunuba, and Ben Lambert. 2025. “The Mathematics of Serocatalytic Models with Applications to Public Health Data.” <em>medRxiv</em>, 2025–01.
 </div>
 </div>
 </div>

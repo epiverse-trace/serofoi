@@ -177,10 +177,9 @@ addresses this by enabling the possibility to implement different
 time-varying models for the <em>FoI</em> and offering tools to compare
 them to the constant case in order to decide what model fits a
 serological survey the best.</p>
-<p>The integrated dataset <code>serodata_test</code> provides a minimal
+<p>The integrated dataset <code>chagas2012</code> provides a minimal
 example of the input of the package. The following code can be used to
-prepare this dataset for model implementation and implements the basic
-constant model:</p>
+implement and visualise a basic constant model:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/epiverse-trace/serofoi" class="external-link">serofoi</a></span><span class="op">)</span></span>
 <span><span class="co"># Loading and preparing data for modelling</span></span>
@@ -198,8 +197,12 @@ constant model:</p>
 <span>  bin_serosurvey <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  size_text <span class="op">=</span> <span class="fl">6</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="serofoi_files/figure-html/model_constant-1.png" width="50%" style="display: block; margin: auto;">
-For details on the implementation of time-varying models and model
+<div class="figure" style="text-align: center">
+<img src="serofoi_files/figure-html/model_constant-1.png" alt="Basic constant model visualisation" width="50%"><p class="caption">
+Basic constant model visualisation
+</p>
+</div>
+<p>For details on the implementation of time-varying models and model
 comparison see <a href="https://trace-lac.github.io/serofoi/articles/foi_models.html" class="external-link">FoI
 Models</a>.</p>
 </div>

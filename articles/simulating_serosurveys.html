@@ -152,7 +152,7 @@ along the true seropositivities (line blue):</p>
 <span>    linewidth <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-5-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-5-1.png" alt="Simulated and true proportion" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="age-varying-foi">Age-varying FOI<a class="anchor" aria-label="anchor" href="#age-varying-foi"></a>
@@ -245,7 +245,7 @@ epidemic disease.</p>
 <span><span class="co"># plot</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">foi_spiky</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">foi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-9-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-9-1.png" alt="Spiky FoI" width="768" style="display: block; margin: auto;"></p>
 <p>The same serological survey design then produces a serological
 profile with distinct patterning.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
@@ -273,7 +273,7 @@ epidemics:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Seropositivity"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Age"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-11-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-11-1.png" alt="Plot showing jumps in seropositivity" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="age-and-time-dependent-foi">Age-and-time-dependent FOI<a class="anchor" aria-label="anchor" href="#age-and-time-dependent-foi"></a>
@@ -295,7 +295,7 @@ variation.</p>
 <span><span class="co"># plot</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">foi_df_time</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">foi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-12-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-12-1.png" alt="Time-specific multiplier of the FOI" width="768" style="display: block; margin: auto;"></p>
 <p>We create a pattern of age-structured FOI multipliers which peaks in
 those of early 20s.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -311,7 +311,7 @@ those of early 20s.</p>
 <span><span class="co"># plot</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">foi_df_age</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">foi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-13-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-13-1.png" alt="Plot of age-structured FOI multipliers" width="768" style="display: block; margin: auto;"></p>
 <p>To create the overall FOI (which is a function of both time and age),
 we create the product of the time- and age-dependent parts of it.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -325,7 +325,7 @@ we create the product of the time- and age-dependent parts of it.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>foi_time <span class="op">=</span> <span class="va">foi</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>foi <span class="op">=</span> <span class="va">foi_age</span> <span class="op">*</span> <span class="va">foi_time</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"foi_age"</span>, <span class="st">"foi_time"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-15-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-15-1.png" alt="Plot a few birth years of time- and age-dependent FOI" width="768" style="display: block; margin: auto;"></p>
 <p>We now simulate a serosurvey assuming these historical FOIs generated
 the population-wide seropositivities in 2025; we make the sample sizes
 larger to be able to clearly visualise the patterns in seropositivity.
@@ -345,8 +345,7 @@ by choosing 5-year bins.</p>
 <span>  survey_features <span class="op">=</span> <span class="va">survey_features</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># plot</span></span>
-<span><span class="fu"><a href="../reference/plot_serosurvey.html">plot_serosurvey</a></span><span class="op">(</span><span class="va">serosurvey</span><span class="op">)</span> <span class="op">+</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_serosurvey.html">plot_serosurvey</a></span><span class="op">(</span><span class="va">serosurvey</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="fu"><a href="../reference/probability_seropositive_by_age.html">probability_seropositive_by_age</a></span><span class="op">(</span></span>
 <span>      model <span class="op">=</span> <span class="st">"age-time"</span>,</span>
@@ -360,7 +359,7 @@ by choosing 5-year bins.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Seropositivity"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Age"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-17-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-17-1.png" alt="Plot serosurvey obtained simulating from time- and age-dependent FOI" width="768" style="display: block; margin: auto;"></p>
 <p>We compare this with a closely related pathogen which exhibits
 seroreversion – a process by which individuals lose their antibody
 detectability over time. Owing to its seroreversion, this pathogen
@@ -414,7 +413,7 @@ than previously.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Seropositivity"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Age"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">model_type</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-19-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-19-1.png" alt="Plot comparing serosurveys with and without seroreversion" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="simulating-from-a-general-serological-model">Simulating from a general serological model<a class="anchor" aria-label="anchor" href="#simulating-from-a-general-serological-model"></a>
@@ -540,7 +539,7 @@ in the above expression.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Seropositivity"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Age"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-20-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-20-1.png" alt="Plot HIV seroprevalence example using the general model" width="768" style="display: block; margin: auto;"></p>
 <p>We can also simulate a serosurvey assuming the above model.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">serosurvey</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_serosurvey_general_model.html">simulate_serosurvey_general_model</a></span><span class="op">(</span></span>
@@ -563,7 +562,7 @@ in the above expression.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Seropositivity"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Age"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-22-1.png" width="768" style="display: block; margin: auto;"></p>
+<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-22-1.png" alt="Plot HIV simulated serosurvey using the general model" width="768" style="display: block; margin: auto;"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

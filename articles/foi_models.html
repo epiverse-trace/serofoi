@@ -349,9 +349,12 @@ serosurvey:</p>
 <span>  foi_df <span class="op">=</span> <span class="va">foi_df</span>,</span>
 <span>  size_text <span class="op">=</span> <span class="fl">6</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="foi_models_files/figure-html/constant%20model-1.png" width="50%" style="display: block; margin: auto;">
+<div class="figure" style="text-align: center">
+<img src="foi_models_files/figure-html/constant%20model-1.png" alt="Figure 1. Constant serofoi model plot. Simulated (red) vs modelled (blue) FoI." width="50%"><p class="caption">
 Figure 1. Constant serofoi model plot. Simulated (red) vs modelled
-(blue) <em>FoI</em>.</p>
+(blue) FoI.
+</p>
+</div>
 <p>In this case, 800 iterations are enough to ensure convergence.
 <code><a href="../reference/plot_seromodel.html">plot_seromodel()</a></code> returns a visualisation of the results
 including a summary where the expected log pointwise predictive density
@@ -435,9 +438,12 @@ simulated serosurvey:</p>
 <span>  foi_df <span class="op">=</span> <span class="va">foi_df</span>,</span>
 <span>  size_text <span class="op">=</span> <span class="fl">6</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="foi_models_files/figure-html/tv_normal%20model-1.png" width="50%" style="display: block; margin: auto;">
+<div class="figure" style="text-align: center">
+<img src="foi_models_files/figure-html/tv_normal%20model-1.png" alt="Figure 2. Slow time-varying serofoi model plot.  Simulated (red) vs modelled (blue) FoI." width="50%"><p class="caption">
 Figure 2. Slow time-varying serofoi model plot. Simulated (red) vs
-modelled (blue) <em>FoI</em>.</p>
+modelled (blue) FoI.
+</p>
+</div>
 <p>The number of iterations required may depend on the number of years,
 reflected by the difference between the year of the serosurvey and the
 maximum age-class sampled.</p>
@@ -505,9 +511,12 @@ be obtained running the following lines of code:</p>
 <span>  size_text <span class="op">=</span> <span class="fl">6</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">plot_log_time_normal</span><span class="op">)</span></span></code></pre></div>
-<p><img src="foi_models_files/figure-html/tv_normal_log%20model-1.png" width="50%" style="display: block; margin: auto;">
+<div class="figure" style="text-align: center">
+<img src="foi_models_files/figure-html/tv_normal_log%20model-1.png" alt="Figure 3. *Time-varying fast epidemic serofoi model* plot. Simulated (red) vs modelled (blue) FoI." width="50%"><p class="caption">
 Figure 3. <em>Time-varying fast epidemic serofoi model</em> plot.
-Simulated (red) vs modelled (blue) <em>FoI</em>.</p>
+Simulated (red) vs modelled (blue) FoI.
+</p>
+</div>
 <p>In Fig 3 we can see that the <em>fast epidemic serofoi model</em> is
 able to identify the large epidemic simulated on the
 <code>simdata_large_epi</code> dataset.</p>
@@ -533,9 +542,12 @@ the results of the three models simultaneously:</p>
 <span>  <span class="va">plot_constant</span>, <span class="va">plot_time_normal</span>, <span class="va">plot_log_time_normal</span>,</span>
 <span>  nrow <span class="op">=</span> <span class="fl">1</span>, ncol <span class="op">=</span> <span class="fl">3</span>, labels <span class="op">=</span> <span class="st">"AUTO"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="foi_models_files/figure-html/model_comparison_plot-1.png" width="480" style="display: block; margin: auto;">
+<div class="figure" style="text-align: center">
+<img src="foi_models_files/figure-html/model_comparison_plot-1.png" alt="Figure 4. Model comparison between the three serofoi models for a large-epidemic simulated dataset." width="480"><p class="caption">
 Figure 4. Model comparison between the three serofoi models for a
-large-epidemic simulated dataset.</p>
+large-epidemic simulated dataset.
+</p>
+</div>
 <p>A common criterion to decide what model fits the data the best is to
 choose the one with the larger <code>elpd</code>. According to this
 criterion, in this case the best model is the fast epidemic model, which
