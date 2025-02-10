@@ -35,6 +35,12 @@ Initiative](https://data.org/initiatives/epiverse/).
 
 ## Installation
 
+You can install *serofoi* from CRAN using:
+
+``` r
+install.packages("serofoi")
+```
+
 You can install the **development version** of *serofoi* from
 [GitHub](https://github.com/epiverse-trace/serofoi) running:
 

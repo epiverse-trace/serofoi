@@ -36,20 +36,26 @@ _{{ packagename }}_ is part of the [Epiverse Initiative](https://data.org/initia
 
 ## Installation
 
+You can install _{{ packagename }}_ from CRAN using:
+
+```{r install_from_cran, eval = FALSE}
+install.packages("serofoi")
+```
+
 You can install the **development version** of _{{ packagename }}_ from [GitHub](https://github.com/epiverse-trace/serofoi) running:
 
-``` r
+```{r install_with_pak, eval = FALSE}
 if(!require("pak")) install.packages("pak")
 pak::pak("epiverse-trace/serofoi")
 ```
 or:
-``` r
+```{r install_with_remotes, eval = FALSE}
 if(!require("remotes")) install.packages("remotes")
 remotes::install_github("epiverse-trace/serofoi")
 ```
 ## Quick start
 
-```{r cleaning, include = FALSE, echo = TRUE}
+```{r load_package, include = FALSE, echo = TRUE}
 library(serofoi)
 ```
 
