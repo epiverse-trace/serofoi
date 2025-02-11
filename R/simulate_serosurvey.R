@@ -7,6 +7,7 @@
 #' @param seroreversion_rate Non-negative seroreversion rate. Default is 0.
 #' @return vector of probabilities of being seropositive for age-varying FoI
 #' including seroreversion (ordered from youngest to oldest individuals)
+#' @export
 probability_exact_age_varying <- function(
   ages,
   fois,
@@ -41,6 +42,7 @@ probability_exact_age_varying <- function(
 #' @param seroreversion_rate Non-negative seroreversion rate. Default is 0.
 #' @return vector of probabilities of being seropositive for age-varying FoI
 #' including seroreversion (ordered from youngest to oldest individuals)
+#' @export
 probability_exact_time_varying <- function(
   years,
   fois,
@@ -80,8 +82,8 @@ probability_exact_time_varying <- function(
 #' for different years. It should have two columns: 'year' and 'foi'.
 #' @param seroreversion_rate A non-negative numeric value representing the
 #' rate of seroreversion.
-#'
 #' @return A dataframe with columns 'age' and 'seropositivity'.
+#' @export
 probability_seropositive_time_model_by_age <- function( #nolint
   foi,
   seroreversion_rate
@@ -115,8 +117,8 @@ probability_seropositive_time_model_by_age <- function( #nolint
 #' different ages. It should have two columns: 'age' and 'foi'.
 #' @param seroreversion_rate A non-negative numeric value representing the rate
 #' of seroreversion.
-#'
 #' @return A dataframe with columns 'age' and 'seropositivity'.
+#' @export
 probability_seropositive_age_model_by_age <- function( #nolint
   foi,
   seroreversion_rate
@@ -149,8 +151,8 @@ probability_seropositive_age_model_by_age <- function( #nolint
 #' for different ages. It should have three columns: 'year', 'age' and 'foi'.
 #' @param seroreversion_rate A non-negative numeric value representing
 #' the rate of seroreversion.
-#'
 #' @return A dataframe with columns 'age' and 'seropositivity'.
+#' @export
 probability_seropositive_age_and_time_model_by_age <- function( #nolint
   foi,
   seroreversion_rate
@@ -359,6 +361,8 @@ probability_seropositive_general_model_by_age <- function( #nolint
 #'
 #' @return A dataframe with an additional 'group' column representing the group
 #' interval for each row based on the age_min and age_max columns.
+#' @keywords internal
+#' @noRd
 add_age_bins <- function(survey_features) {
   intervals <- vector(length = nrow(survey_features))
   for (i in seq_along(intervals)) {
@@ -380,6 +384,8 @@ add_age_bins <- function(survey_features) {
 #' @return A dataframe with overall sample sizes calculated by joining
 #' survey_features and age_df.
 #' This dataframe has columns including 'age' and 'overall_sample_size'.
+#' @keywords internal
+#' @noRd
 survey_by_individual_age <- function(survey_features, age_df) {
   overall_sample_size_df <- dplyr::left_join(
       age_df, survey_features,
@@ -400,6 +406,8 @@ survey_by_individual_age <- function(survey_features, age_df) {
 #' @param n_ages The number of age groups.
 #'
 #' @return A vector containing random sample sizes for each age group.
+#' @keywords internal
+#' @noRd
 multinomial_sampling_group <- function(n_sample, n_ages) {
   prob_value <- 1 / n_ages
   probs <- rep(prob_value, n_ages)
@@ -421,6 +429,8 @@ multinomial_sampling_group <- function(n_sample, n_ages) {
 #'
 #' @return A dataframe with random sample sizes generated for each age based on
 #' the overall sample size.
+#' @keywords internal
+#' @noRd
 generate_random_sample_sizes <- function(survey_df_long) {
 
   df_new <- NULL
@@ -461,6 +471,8 @@ generate_random_sample_sizes <- function(survey_df_long) {
 #'
 #' @return A dataframe with random sample sizes generated for each individual
 #' age based on the provided survey features.
+#' @keywords internal
+#' @noRd
 sample_size_by_individual_age_random <- function(survey_features) { #nolint
 
   ages <- seq(1, max(survey_features$age_max), 1)

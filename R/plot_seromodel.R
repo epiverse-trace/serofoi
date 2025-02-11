@@ -13,6 +13,7 @@
 #'  \item{seroprev_upper}{Upper limit of the binomial confidence interval
 #'                        of `seroprev`}
 #' }
+#' @export
 prepare_serosurvey_for_plotting <- function( #nolint
   serosurvey,
   alpha = 0.05
@@ -59,6 +60,8 @@ prepare_serosurvey_for_plotting <- function( #nolint
 #' @param  step step used to split the age interval
 #' @return Serosurvey with addition factor variable grouping `age_intervals`.
 #'  The interval is taken as closed to the right and to the left.
+#' @keywords internal
+#' @noRd
 get_age_intervals <- function(serosurvey, step) {
   age_min <- min(serosurvey$age_min)
   age_max <- max(serosurvey$age_max)
@@ -201,7 +204,7 @@ plot_serosurvey <- function(
 #' @param alpha 1 - alpha indicates the credibility level to be used
 #' @param par_name String specifying the parameter to be extracted
 #' from `seromodel`
-#' @returns A dataframe with the following columns
+#' @return A dataframe with the following columns
 #' \describe{
 #'  \item{`median`}{Median of the samples computed as the 0.5 quantile}
 #'  \item{`lower`}{Lower quantile `alpha`}
@@ -238,7 +241,7 @@ extract_central_estimates <- function(
 #'
 #' @inheritParams extract_central_estimates
 #' @inheritParams plot_serosurvey
-#' @returns ggplot object with seroprevalence estimates and serosurveys plots
+#' @return ggplot object with seroprevalence estimates and serosurveys plots
 #' @examples
 #' data(veev2012)
 #' seromodel <- fit_seromodel(veev2012, iter = 100)

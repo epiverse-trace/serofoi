@@ -1,5 +1,9 @@
 # TODO: Add documentation and return calls to validation functions
 
+#' Helper function to validate serosurvey structure
+#'
+#' @noRd
+#' @keywords internal
 validate_serosurvey <- function(serosurvey) {
   # Check that necessary columns are present
   col_types <- list(
@@ -40,6 +44,11 @@ validate_serosurvey <- function(serosurvey) {
   return(serosurvey)
 }
 
+#' Helper function to validate serosurvey features for simulation
+#'
+#' @return None
+#' @noRd
+#' @keywords internal
 validate_survey_features <- function(survey_features) {
 
   if (!is.data.frame(survey_features) ||
@@ -62,6 +71,11 @@ validate_survey_features <- function(survey_features) {
       )
 }
 
+#' Helper function to validate FOI structure for simulation
+#'
+#' @return None
+#' @noRd
+#' @keywords internal
 validate_foi_df <- function(foi_df, cnames_additional) {
   if (
     !is.data.frame(foi_df) ||
@@ -80,12 +94,23 @@ validate_foi_df <- function(foi_df, cnames_additional) {
   }
 }
 
+#' Helper function to validate seroreversion rate properties for simulation
+#'
+#' @return None
+#' @noRd
+#' @keywords internal
 validate_seroreversion_rate <- function(seroreversion_rate) {
   if (!is.numeric(seroreversion_rate) || seroreversion_rate < 0) {
     stop("seroreversion_rate must be a non-negative numeric value.")
   }
 }
 
+#' Helper function to validate consistency between the FOI and the survey
+#' features for simulation
+#'
+#' @return None
+#' @noRd
+#' @keywords internal
 validate_survey_and_foi_consistency <- function( #nolint
     survey_features,
     foi_df
@@ -98,6 +123,12 @@ validate_survey_and_foi_consistency <- function( #nolint
       )
 }
 
+#' Helper function to validate consistency between the FOI and the survey
+#' features for simulation of age- and time-varying model
+#'
+#' @return None
+#' @noRd
+#' @keywords internal
 validate_survey_and_foi_consistency_age_time <- function( #nolint
     survey_features,
     foi_df
@@ -110,6 +141,11 @@ validate_survey_and_foi_consistency_age_time <- function( #nolint
       )
 }
 
+#' Helper function to validate FOI index consistency
+#'
+#' @return foi_index
+#' @noRd
+#' @keywords internal
 validate_foi_index <- function(
   foi_index,
   serosurvey,
@@ -143,6 +179,12 @@ validate_foi_index <- function(
   return(foi_index)
 }
 
+#' Helper function to validate whether the current plot corresponds
+#' to a constant model
+#'
+#' @return TRUE
+#' @noRd
+#' @keywords internal
 validate_plot_constant <- function(
     plot_constant,
     x_axis,
