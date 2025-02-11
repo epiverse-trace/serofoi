@@ -41,7 +41,7 @@ sf_uniform <- function(min = 0, max = 10) {
 #'
 #' @param location Location of the Cauchy distribution
 #' @param scale Scale of the Cauchy distribution
-#' @return List with specified statistics and name of the model
+#' @return List with specified statistics and name of the distribution
 #' @examples
 #' my_prior <- sf_cauchy()
 #' @export
@@ -56,7 +56,10 @@ sf_cauchy <- function(location = 0, scale = 1) {
   return(list(location = location, scale = scale, name = "cauchy"))
 }
 
-#' Sets empty distribution
+#' Sets empty prior distribution
+#'
+#' @return List with the name of the empty distribution
+#' @export
 sf_none <- function() {
   return(list(name = "none"))
 }
@@ -140,6 +143,7 @@ get_foi_index <- function(
 #' @param stan_data List to be passed to [rstan][rstan::sampling]
 #' @inheritParams fit_seromodel
 #' @return List with default values of stan data for sampling
+#' @export
 set_stan_data_defaults <- function(
     stan_data,
     is_log_foi = FALSE,

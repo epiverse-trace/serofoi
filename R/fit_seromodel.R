@@ -1,6 +1,9 @@
 #' Adds age group marker to serosurvey
 #'
 #' @inheritParams fit_seromodel
+#' @return serosurvey with additional column specifying age group marker
+#' defined as the mean floor between `age_min` and `age_max`
+#' @export
 add_age_group_to_serosurvey <- function(serosurvey) {
   if (any(colnames(serosurvey) == "age_group")) {
     message("Using `age_group` already present in serosurvey")
@@ -26,6 +29,7 @@ add_age_group_to_serosurvey <- function(serosurvey) {
 #'   is_log_foi = FALSE,
 #'   foi_index = foi_index
 #' )
+#' @return Function specifying initialization vector for the FOI
 #' @export
 set_foi_init <- function(
   foi_init,
@@ -96,7 +100,7 @@ set_foi_init <- function(
 #'  \item{[sf_none]}{Function to set no prior distribution}
 #' }
 #' @param ... Additional parameters for [rstan][rstan::sampling]
-#' @returns stan_fit object with force-of-infection and seroreversion
+#' @return stan_fit object with force-of-infection and seroreversion
 #' (when applicable) samples
 #' @examples
 #' data(chagas2012)
