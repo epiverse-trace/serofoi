@@ -2,10 +2,13 @@
 % Please edit documentation in R/build_stan_data.R
 \name{sf_none}
 \alias{sf_none}
-\title{Sets empty distribution}
+\title{Sets empty prior distribution}
 \usage{
 sf_none()
 }
+\value{
+List with the name of the empty distribution
+}
 \description{
-Sets empty distribution
+Sets empty prior distribution
 }
