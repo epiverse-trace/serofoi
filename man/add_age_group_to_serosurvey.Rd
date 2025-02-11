@@ -16,6 +16,10 @@ add_age_group_to_serosurvey(serosurvey)
 \item{\code{n_seropositive}}{Number of positive samples for each age group}
 }}
 }
+\value{
+serosurvey with additional column specifying age group marker
+defined as the mean floor between \code{age_min} and \code{age_max}
+}
 \description{
 Adds age group marker to serosurvey
 }

@@ -16,6 +16,9 @@ chosen depending on the foi-scale of the model}
 force-of-infection values will be estimated. It can be specified by
 means of \link{get_foi_index}}
 }
+\value{
+Function specifying initialization vector for the FOI
+}
 \description{
 Sets initialization function for sampling
 }

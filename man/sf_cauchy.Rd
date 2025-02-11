@@ -12,7 +12,7 @@ sf_cauchy(location = 0, scale = 1)
 \item{scale}{Scale of the Cauchy distribution}
 }
 \value{
-List with specified statistics and name of the model
+List with specified statistics and name of the distribution
 }
 \description{
 Sets Cauchy distribution parameters for sampling
