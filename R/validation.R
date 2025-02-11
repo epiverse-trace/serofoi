@@ -1,8 +1,5 @@
-# TODO: Add documentation and return calls to validation functions
-
 #' Helper function to validate serosurvey structure
 #'
-#' @noRd
 #' @keywords internal
 validate_serosurvey <- function(serosurvey) {
   # Check that necessary columns are present
@@ -47,7 +44,6 @@ validate_serosurvey <- function(serosurvey) {
 #' Helper function to validate serosurvey features for simulation
 #'
 #' @return None
-#' @noRd
 #' @keywords internal
 validate_survey_features <- function(survey_features) {
 
@@ -74,7 +70,6 @@ validate_survey_features <- function(survey_features) {
 #' Helper function to validate FOI structure for simulation
 #'
 #' @return None
-#' @noRd
 #' @keywords internal
 validate_foi_df <- function(foi_df, cnames_additional) {
   if (
@@ -97,7 +92,6 @@ validate_foi_df <- function(foi_df, cnames_additional) {
 #' Helper function to validate seroreversion rate properties for simulation
 #'
 #' @return None
-#' @noRd
 #' @keywords internal
 validate_seroreversion_rate <- function(seroreversion_rate) {
   if (!is.numeric(seroreversion_rate) || seroreversion_rate < 0) {
@@ -109,7 +103,6 @@ validate_seroreversion_rate <- function(seroreversion_rate) {
 #' features for simulation
 #'
 #' @return None
-#' @noRd
 #' @keywords internal
 validate_survey_and_foi_consistency <- function( #nolint
     survey_features,
@@ -127,7 +120,6 @@ validate_survey_and_foi_consistency <- function( #nolint
 #' features for simulation of age- and time-varying model
 #'
 #' @return None
-#' @noRd
 #' @keywords internal
 validate_survey_and_foi_consistency_age_time <- function( #nolint
     survey_features,
@@ -144,7 +136,6 @@ validate_survey_and_foi_consistency_age_time <- function( #nolint
 #' Helper function to validate FOI index consistency
 #'
 #' @return foi_index
-#' @noRd
 #' @keywords internal
 validate_foi_index <- function(
   foi_index,
@@ -183,7 +174,6 @@ validate_foi_index <- function(
 #' to a constant model
 #'
 #' @return TRUE
-#' @noRd
 #' @keywords internal
 validate_plot_constant <- function(
     plot_constant,

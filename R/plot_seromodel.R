@@ -60,7 +60,6 @@ prepare_serosurvey_for_plotting <- function( #nolint
 #' @param  step step used to split the age interval
 #' @return Serosurvey with addition factor variable grouping `age_intervals`.
 #'  The interval is taken as closed to the right and to the left.
-#' @keywords internal
 #' @noRd
 get_age_intervals <- function(serosurvey, step) {
   age_min <- min(serosurvey$age_min)
