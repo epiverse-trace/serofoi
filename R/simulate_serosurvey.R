@@ -361,7 +361,6 @@ probability_seropositive_general_model_by_age <- function( #nolint
 #'
 #' @return A dataframe with an additional 'group' column representing the group
 #' interval for each row based on the age_min and age_max columns.
-#' @keywords internal
 #' @noRd
 add_age_bins <- function(survey_features) {
   intervals <- vector(length = nrow(survey_features))
@@ -384,7 +383,6 @@ add_age_bins <- function(survey_features) {
 #' @return A dataframe with overall sample sizes calculated by joining
 #' survey_features and age_df.
 #' This dataframe has columns including 'age' and 'overall_sample_size'.
-#' @keywords internal
 #' @noRd
 survey_by_individual_age <- function(survey_features, age_df) {
   overall_sample_size_df <- dplyr::left_join(
@@ -406,7 +404,6 @@ survey_by_individual_age <- function(survey_features, age_df) {
 #' @param n_ages The number of age groups.
 #'
 #' @return A vector containing random sample sizes for each age group.
-#' @keywords internal
 #' @noRd
 multinomial_sampling_group <- function(n_sample, n_ages) {
   prob_value <- 1 / n_ages
@@ -429,7 +426,6 @@ multinomial_sampling_group <- function(n_sample, n_ages) {
 #'
 #' @return A dataframe with random sample sizes generated for each age based on
 #' the overall sample size.
-#' @keywords internal
 #' @noRd
 generate_random_sample_sizes <- function(survey_df_long) {
 
@@ -471,7 +467,6 @@ generate_random_sample_sizes <- function(survey_df_long) {
 #'
 #' @return A dataframe with random sample sizes generated for each individual
 #' age based on the provided survey features.
-#' @keywords internal
 #' @noRd
 sample_size_by_individual_age_random <- function(survey_features) { #nolint
 
