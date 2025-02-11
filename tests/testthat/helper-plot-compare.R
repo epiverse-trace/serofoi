@@ -29,7 +29,7 @@ extract_layers <- function(layers) {
           NULL
         } else {
           purrr::map(layer$mapping, \(x) {
-            quo_name(rlang::get_expr(x))
+            rlang::quo_name(rlang::get_expr(x))
           })
         },
       geom_params =
