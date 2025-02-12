@@ -10,18 +10,14 @@
 <url><loc>https://epiverse-trace.github.io/serofoi/authors.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/index.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/news/index.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/serofoi/reference/add_age_bins.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/add_age_group_to_serosurvey.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/build_stan_data.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/chagas2012.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/chik2015.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/extract_central_estimates.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/fit_seromodel.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/serofoi/reference/generate_random_sample_sizes.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/serofoi/reference/get_age_intervals.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/get_foi_index.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/index.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/serofoi/reference/multinomial_sampling_group.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/plot_foi_estimates.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/plot_rhats.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/plot_seromodel.html</loc></url>
@@ -36,7 +32,6 @@
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/probability_seropositive_by_age.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/probability_seropositive_general_model_by_age.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/probability_seropositive_time_model_by_age.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/serofoi/reference/sample_size_by_individual_age_random.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/serofoi-package.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/set_foi_init.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/set_stan_data_defaults.html</loc></url>
@@ -52,7 +47,14 @@
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/summarise_central_estimate.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/summarise_loo_estimate.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/summarise_seromodel.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/serofoi/reference/survey_by_individual_age.html</loc></url>
+<url><loc>https://epiverse-trace.github.io/serofoi/reference/validate_foi_df.html</loc></url>
+<url><loc>https://epiverse-trace.github.io/serofoi/reference/validate_foi_index.html</loc></url>
+<url><loc>https://epiverse-trace.github.io/serofoi/reference/validate_plot_constant.html</loc></url>
+<url><loc>https://epiverse-trace.github.io/serofoi/reference/validate_seroreversion_rate.html</loc></url>
+<url><loc>https://epiverse-trace.github.io/serofoi/reference/validate_serosurvey.html</loc></url>
+<url><loc>https://epiverse-trace.github.io/serofoi/reference/validate_survey_and_foi_consistency.html</loc></url>
+<url><loc>https://epiverse-trace.github.io/serofoi/reference/validate_survey_and_foi_consistency_age_time.html</loc></url>
+<url><loc>https://epiverse-trace.github.io/serofoi/reference/validate_survey_features.html</loc></url>
 <url><loc>https://epiverse-trace.github.io/serofoi/reference/veev2012.html</loc></url>
 </urlset>
 
