@@ -412,7 +412,7 @@ initial_conditions <- rep(0, 12)
 initial_conditions[1] <- 1
 
 # solve
-seropositive_hiv <- prob_seroprev_general_by_age(
+seropositive_hiv <- prob_seroprev_gen_by_age(
     construct_A,
     calculate_seropositivity_fn,
     initial_conditions,
