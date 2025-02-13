@@ -43,7 +43,7 @@ prepare_serosurvey_for_plot <- function(
       )
     )) |>
     dplyr::ungroup() |>
-    tidyr::unnest_wider(.data$binconf) |>
+    tidyr::unnest_wider(!!dplyr::sym("binconf")) |>
     dplyr::arrange(.data$age_group) |>
     dplyr::relocate(!!dplyr::sym("age_group"))
 
