@@ -62,7 +62,7 @@ Now, we can plot the proportions of those seropositive, including the posterior 
 ```{r, fig.align="center", fig.alt="Simulated and true proportion"}
 plot_serosurvey(serosurvey_constant) +
   geom_line(
-    data = probability_seropositive_by_age(
+    data = prob_seroprev_by_age(
       model = "age",
       foi = foi_constant,
       seroreversion_rate = 0
@@ -107,7 +107,7 @@ serosurvey_combined <- rbind(
   serosurvey_constant |>
     mutate(model_type = "constant FOI") |>
   left_join(
-    probability_seropositive_by_age(
+    prob_seroprev_by_age(
       model = "age",
       foi = foi_constant,
       seroreversion_rate = 0
@@ -118,7 +118,7 @@ serosurvey_combined <- rbind(
   serosurvey_age_dep |>
     mutate(model_type = "age-dependent FOI") |>
       left_join(
-          probability_seropositive_by_age(
+          prob_seroprev_by_age(
           model = "age",
           foi = foi_age_varying,
           seroreversion_rate = 0
@@ -179,7 +179,7 @@ Again, we can plot the true seropositivities, which highlights the jumps in sero
 # plot shows jumps in seropositivity
 plot_serosurvey(serosurvey_spiky) +
   geom_line(
-    data = probability_seropositive_by_age(
+    data = prob_seroprev_by_age(
       model = "time",
       foi = foi_spiky,
       seroreversion_rate = 0
@@ -271,7 +271,7 @@ serosurvey <- simulate_serosurvey(
 ```{r, fig.align="center", fig.alt="Plot serosurvey obtained simulating from time- and age-dependent FOI"}
 plot_serosurvey(serosurvey) +
   geom_line(
-    data = probability_seropositive_by_age(
+    data = prob_seroprev_by_age(
       model = "age-time",
       foi = foi_age_time,
       seroreversion_rate = 0
@@ -302,7 +302,7 @@ serosurvey_combined <- rbind(
   serosurvey |>
     mutate(model_type = "non-seroreverting") |>
   left_join(
-    probability_seropositive_by_age(
+    prob_seroprev_by_age(
       model = "age-time",
       foi = foi_age_time,
       seroreversion_rate = 0
@@ -313,7 +313,7 @@ serosurvey_combined <- rbind(
   serosurvey_serorevert |>
     mutate(model_type = "seroreverting") |>
       left_join(
-          probability_seropositive_by_age(
+          prob_seroprev_by_age(
           model = "age-time",
           foi = foi_age_time,
           seroreversion_rate = 0.01
@@ -412,7 +412,7 @@ initial_conditions <- rep(0, 12)
 initial_conditions[1] <- 1
 
 # solve
-seropositive_hiv <- probability_seropositive_general_model_by_age(
+seropositive_hiv <- prob_seroprev_general_by_age(
     construct_A,
     calculate_seropositivity_fn,
     initial_conditions,
@@ -430,7 +430,7 @@ ggplot(seropositive_hiv, aes(x = age, y = seropositivity)) +
 
 We can also simulate a serosurvey assuming the above model.
 ```{r}
-serosurvey <- simulate_serosurvey_general_model(
+serosurvey <- simulate_serosurvey_general(
     construct_A,
     calculate_seropositivity_fn,
     initial_conditions,
