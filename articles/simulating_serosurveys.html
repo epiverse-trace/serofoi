@@ -142,7 +142,7 @@ along the true seropositivities (line blue):</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_serosurvey.html">plot_serosurvey</a></span><span class="op">(</span><span class="va">serosurvey_constant</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="../reference/probability_seropositive_by_age.html">probability_seropositive_by_age</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
 <span>      model <span class="op">=</span> <span class="st">"age"</span>,</span>
 <span>      foi <span class="op">=</span> <span class="va">foi_constant</span>,</span>
 <span>      seroreversion_rate <span class="op">=</span> <span class="fl">0</span></span>
@@ -187,7 +187,7 @@ adulthood as the FOI effectively becomes negligible.</p>
 <span>  <span class="va">serosurvey_constant</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"constant FOI"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/probability_seropositive_by_age.html">probability_seropositive_by_age</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
 <span>      model <span class="op">=</span> <span class="st">"age"</span>,</span>
 <span>      foi <span class="op">=</span> <span class="va">foi_constant</span>,</span>
 <span>      seroreversion_rate <span class="op">=</span> <span class="fl">0</span></span>
@@ -198,7 +198,7 @@ adulthood as the FOI effectively becomes negligible.</p>
 <span>  <span class="va">serosurvey_age_dep</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"age-dependent FOI"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>          <span class="fu"><a href="../reference/probability_seropositive_by_age.html">probability_seropositive_by_age</a></span><span class="op">(</span></span>
+<span>          <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
 <span>          model <span class="op">=</span> <span class="st">"age"</span>,</span>
 <span>          foi <span class="op">=</span> <span class="va">foi_age_varying</span>,</span>
 <span>          seroreversion_rate <span class="op">=</span> <span class="fl">0</span></span>
@@ -261,7 +261,7 @@ epidemics:</p>
 <code class="sourceCode R"><span><span class="co"># plot shows jumps in seropositivity</span></span>
 <span><span class="fu"><a href="../reference/plot_serosurvey.html">plot_serosurvey</a></span><span class="op">(</span><span class="va">serosurvey_spiky</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="../reference/probability_seropositive_by_age.html">probability_seropositive_by_age</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
 <span>      model <span class="op">=</span> <span class="st">"time"</span>,</span>
 <span>      foi <span class="op">=</span> <span class="va">foi_spiky</span>,</span>
 <span>      seroreversion_rate <span class="op">=</span> <span class="fl">0</span></span>
@@ -347,7 +347,7 @@ by choosing 5-year bins.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_serosurvey.html">plot_serosurvey</a></span><span class="op">(</span><span class="va">serosurvey</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="fu"><a href="../reference/probability_seropositive_by_age.html">probability_seropositive_by_age</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
 <span>      model <span class="op">=</span> <span class="st">"age-time"</span>,</span>
 <span>      foi <span class="op">=</span> <span class="va">foi_age_time</span>,</span>
 <span>      seroreversion_rate <span class="op">=</span> <span class="fl">0</span></span>
@@ -379,7 +379,7 @@ than previously.</p>
 <span>  <span class="va">serosurvey</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"non-seroreverting"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/probability_seropositive_by_age.html">probability_seropositive_by_age</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
 <span>      model <span class="op">=</span> <span class="st">"age-time"</span>,</span>
 <span>      foi <span class="op">=</span> <span class="va">foi_age_time</span>,</span>
 <span>      seroreversion_rate <span class="op">=</span> <span class="fl">0</span></span>
@@ -390,7 +390,7 @@ than previously.</p>
 <span>  <span class="va">serosurvey_serorevert</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"seroreverting"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>          <span class="fu"><a href="../reference/probability_seropositive_by_age.html">probability_seropositive_by_age</a></span><span class="op">(</span></span>
+<span>          <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
 <span>          model <span class="op">=</span> <span class="st">"age-time"</span>,</span>
 <span>          foi <span class="op">=</span> <span class="va">foi_age_time</span>,</span>
 <span>          seroreversion_rate <span class="op">=</span> <span class="fl">0.01</span></span>
@@ -525,7 +525,7 @@ in the above expression.</p>
 <span><span class="va">initial_conditions</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
 <span></span>
 <span><span class="co"># solve</span></span>
-<span><span class="va">seropositive_hiv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/probability_seropositive_general_model_by_age.html">probability_seropositive_general_model_by_age</a></span><span class="op">(</span></span>
+<span><span class="va">seropositive_hiv</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prob_seroprev_gen_by_age.html">prob_seroprev_gen_by_age</a></span><span class="op">(</span></span>
 <span>    <span class="va">construct_A</span>,</span>
 <span>    <span class="va">calculate_seropositivity_fn</span>,</span>
 <span>    <span class="va">initial_conditions</span>,</span>
@@ -542,7 +542,7 @@ in the above expression.</p>
 <p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-20-1.png" alt="Plot HIV seroprevalence example using the general model" width="768" style="display: block; margin: auto;"></p>
 <p>We can also simulate a serosurvey assuming the above model.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">serosurvey</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_serosurvey_general_model.html">simulate_serosurvey_general_model</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">serosurvey</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_serosurvey_general.html">simulate_serosurvey_general</a></span><span class="op">(</span></span>
 <span>    <span class="va">construct_A</span>,</span>
 <span>    <span class="va">calculate_seropositivity_fn</span>,</span>
 <span>    <span class="va">initial_conditions</span>,</span>
