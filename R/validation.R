@@ -45,9 +45,9 @@ validate_serosurvey <- function(serosurvey) {
 #'
 #' @return Boolean checking consistency
 #' @keywords internal
-check_age_constraints <- function(df) {
-  for (i in seq_len(nrow(df))) {
-    for (j in seq_len(nrow(df))) {
+check_age_constraints <- function(survey_features) {
+  for (i in seq_len(nrow(survey_features))) {
+    for (j in seq_len(nrow(survey_features))) {
       if (i != j && df$age_max[i] == df$age_min[j]) {
         return(FALSE)
       }

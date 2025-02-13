@@ -4,7 +4,7 @@
 \alias{check_age_constraints}
 \title{Check min and max age consistency for validation purposes}
 \usage{
-check_age_constraints(df)
+check_age_constraints(survey_features)
 }
 \value{
 Boolean checking consistency
