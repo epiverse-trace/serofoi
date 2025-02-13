@@ -250,20 +250,6 @@ prob_seroprev_by_age <- function(
   return(df)
 }
 
-sum_of_A <- function(t, tau, construct_A_fn, ...) {
-  k <- 1
-  for (t_primed in (tau + 1):t) {
-    if (k == 1) {
-      A <- construct_A_fn(t_primed, tau, ...)
-    } else {
-      tmp <- construct_A_fn(t_primed, tau, ...)
-      A <- A + tmp
-    }
-    k <- k + 1
-  }
-  return(A)
-}
-
 #' Generate probabilities of seropositivity by age based on a general FOI model.
 #'
 #' This function calculates the probabilities of seropositivity by age based on
@@ -333,6 +319,20 @@ prob_seroprev_gen_by_age <- function(
   max_age,
   ...
 ) {
+  # Auxiliar function to compute the sum of A
+  sum_of_A <- function(t, tau, construct_A_fun, ...) {
+    k <- 1
+    for (t_primed in (tau + 1):t) {
+      if (k == 1) {
+        A <- construct_A_fun(t_primed, tau, ...)
+      } else {
+        tmp <- construct_A_fun(t_primed, tau, ...)
+        A <- A + tmp
+      }
+      k <- k + 1
+    }
+    return(A)
+  }
 
   probabilities <- vector(length = max_age)
   for (i in seq_along(probabilities)) {
