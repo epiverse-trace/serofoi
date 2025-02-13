@@ -95,7 +95,7 @@ test_that("probability_exact_time_varying calculates probabilities correctly", {
 
 })
 
-test_that("probability_seropositive_time_model_by_age works", {
+test_that("prob_seroprev_time_by_age works", {
 
   foi <- data.frame(
     year = seq(1990, 2009, 1),
@@ -103,7 +103,7 @@ test_that("probability_seropositive_time_model_by_age works", {
   )
 
   seroreversion <- 0.0
-  prob_df <- serofoi:::probability_seropositive_time_model_by_age(
+  prob_df <- prob_seroprev_time_by_age(
     foi = foi,
     seroreversion_rate = seroreversion
   )
@@ -118,7 +118,7 @@ test_that("probability_seropositive_time_model_by_age works", {
   expect_true(all(derivative_foi > 0))
 
   seroreversion <- 0.1
-  prob_df_1 <- serofoi:::probability_seropositive_time_model_by_age(
+  prob_df_1 <- prob_seroprev_time_by_age(
     foi = foi,
     seroreversion_rate = seroreversion
   )
@@ -131,7 +131,7 @@ test_that("probability_seropositive_time_model_by_age works", {
   expect_true(all(prob_df_1$seropositivity < prob_df$seropositivity))
 })
 
-test_that("probability_seropositive_age_model_by_age works", {
+test_that("prob_seroprev_age_by_age works", {
 
   foi <- data.frame(
     age=seq(1990, 2009, 1),
@@ -139,7 +139,7 @@ test_that("probability_seropositive_age_model_by_age works", {
   )
 
   seroreversion <- 0.0
-  prob_df <- serofoi:::probability_seropositive_age_model_by_age(
+  prob_df <- prob_seroprev_age_by_age(
     foi = foi,
     seroreversion_rate = seroreversion
   )
@@ -154,7 +154,7 @@ test_that("probability_seropositive_age_model_by_age works", {
   expect_true(all(derivative_foi > 0))
 
   seroreversion <- 0.1
-  prob_df_1 <- serofoi:::probability_seropositive_age_model_by_age(
+  prob_df_1 <- prob_seroprev_age_by_age(
     foi = foi,
     seroreversion_rate = seroreversion
   )
@@ -167,7 +167,7 @@ test_that("probability_seropositive_age_model_by_age works", {
   expect_true(all(prob_df_1$seropositivity < prob_df$seropositivity))
 })
 
-test_that("probability_seropositive_age_and_time_model_by_age works as expected", {
+test_that("prob_seroprev_age_time_by_age works as expected", {
   us <- c(0.1, 0.2, 0.3)
   vs <- c(1, 0.5, 0.2)
   foi <- tidyr::expand_grid(
@@ -184,7 +184,7 @@ test_that("probability_seropositive_age_and_time_model_by_age works as expected"
     dplyr::mutate(foi = foi) |>
     dplyr::arrange(year)
 
-  prob_df <- serofoi:::probability_seropositive_age_and_time_model_by_age(
+  prob_df <- prob_seroprev_age_time_by_age(
     foi = foi_df,
     seroreversion_rate = 0
   )
@@ -214,7 +214,7 @@ test_that("probability_seropositive_age_and_time_model_by_age works as expected"
 
   # now add seroreversion
   mu <- 0.1
-  prob_df_sr <- serofoi:::probability_seropositive_age_and_time_model_by_age(
+  prob_df_sr <- prob_seroprev_age_time_by_age(
     foi = foi_df,
     seroreversion_rate = mu
   )
@@ -318,7 +318,7 @@ test_that("generate_random_sample_sizes function works as expected", {
   expect_equal(group_df$n_sample, group_df$overall_sample_size)
 })
 
-test_that("sample_size_by_individual_age_random returns correct dataframe structure", {
+test_that("sample_size_by_individual_age returns correct dataframe structure", {
 
   # Test with sample survey_features data: contiguous age bins
   survey_features <- data.frame(
@@ -326,7 +326,7 @@ test_that("sample_size_by_individual_age_random returns correct dataframe struct
     age_max = c(2, 14, 20),
     n_sample = c(1000, 2000, 1500)
   )
-  actual_df <- serofoi:::sample_size_by_individual_age_random(survey_features)
+  actual_df <- serofoi:::sample_size_by_individual_age(survey_features)
   expect_equal(nrow(actual_df), max(survey_features$age_max))
 
   group_df <- dplyr::group_by(
@@ -347,11 +347,11 @@ test_that("sample_size_by_individual_age_random returns correct dataframe struct
     age_max = c(2, 16, 20),
     n_sample = c(1000, 2000, 1500)
   )
-  actual_df <- serofoi:::sample_size_by_individual_age_random(survey_features)
+  actual_df <- serofoi:::sample_size_by_individual_age(survey_features)
   expect_equal(nrow(actual_df), 15)
 })
 
-test_that("simulate_serosurvey_time_model function works as expected", {
+test_that("simulate_serosurvey_time function works as expected", {
   # Test case 1: Check if the output dataframe has the correct structure
   n_samples <- c(1000, 2000, 1500)
   foi_df <- data.frame(
@@ -362,7 +362,7 @@ test_that("simulate_serosurvey_time_model function works as expected", {
     age_min = c(1, 3, 15),
     age_max = c(2, 14, 20),
     n_sample = n_samples)
-  actual_df <- simulate_serosurvey_time_model(foi_df, survey_features)
+  actual_df <- simulate_serosurvey_time(foi_df, survey_features)
   expect_true("age_min" %in% colnames(actual_df))
   expect_true("age_max" %in% colnames(actual_df))
   expect_true("n_sample" %in% colnames(actual_df))
@@ -378,11 +378,11 @@ test_that("simulate_serosurvey_time_model function works as expected", {
     year = seq(1990, 2009, 1),
     foi = rep(10, 20)
   )
-  actual_df_1 <- simulate_serosurvey_time_model(foi_df_1, survey_features)
+  actual_df_1 <- simulate_serosurvey_time(foi_df_1, survey_features)
   expect_true(all(actual_df_1$n_seropositive >= actual_df$n_seropositive))
 
   # Test case 4: allow a high rate of seroreversion which should reduce the proportion seropositive
-  actual_df_2 <- simulate_serosurvey_time_model(
+  actual_df_2 <- simulate_serosurvey_time(
     foi=foi_df,
     survey_features=survey_features,
     seroreversion_rate=10
@@ -390,7 +390,7 @@ test_that("simulate_serosurvey_time_model function works as expected", {
   expect_true(all(actual_df_2$n_seropositive <= actual_df$n_seropositive))
 })
 
-test_that("simulate_serosurvey_time_model input validation", {
+test_that("simulate_serosurvey_time input validation", {
 
   foi_df <- data.frame(
     year = seq(1990, 2009, 1),
@@ -404,38 +404,38 @@ test_that("simulate_serosurvey_time_model input validation", {
   )
 
   # Test with valid inputs
-  expect_silent(simulate_serosurvey_time_model(foi_df, survey_features))
+  expect_silent(simulate_serosurvey_time(foi_df, survey_features))
 
   # Test with non-dataframe foi dataframe
-  expect_error(simulate_serosurvey_time_model(list(), survey_features),
+  expect_error(simulate_serosurvey_time(list(), survey_features),
                "foi must be a dataframe with columns foi and year.")
 
   # Test with non-dataframe survey_features dataframe
-  expect_error(simulate_serosurvey_time_model(foi_df, list()),
+  expect_error(simulate_serosurvey_time(foi_df, list()),
                "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'n_sample'.")
 
   # Test with misspelt columns in foi dataframe
-  expect_error(simulate_serosurvey_time_model(data.frame(years = c(1990), foi = c(0.1)), survey_features),
+  expect_error(simulate_serosurvey_time(data.frame(years = c(1990), foi = c(0.1)), survey_features),
                "foi must be a dataframe with columns foi and year.")
 
   # Test with too many columns in foi dataframe
-  expect_error(simulate_serosurvey_time_model(data.frame(age = c(1), year = c(2), foi = c(0.1)), survey_features),
+  expect_error(simulate_serosurvey_time(data.frame(age = c(1), year = c(2), foi = c(0.1)), survey_features),
                "foi must be a dataframe with columns foi and year.")
 
   # Test with missing columns in survey_features dataframe
-  expect_error(simulate_serosurvey_time_model(foi_df, data.frame(age_min = c(1))),
+  expect_error(simulate_serosurvey_time(foi_df, data.frame(age_min = c(1))),
                "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'n_sample'.")
 
   # Test with non-numeric seroreversion_rate
-  expect_error(simulate_serosurvey_time_model(foi_df, survey_features, "seroreversion"),
+  expect_error(simulate_serosurvey_time(foi_df, survey_features, "seroreversion"),
                "seroreversion_rate must be a non-negative numeric value.")
 
   # Test with negative seroreversion_rate
-  expect_error(simulate_serosurvey_time_model(foi_df, survey_features, -1),
+  expect_error(simulate_serosurvey_time(foi_df, survey_features, -1),
                "seroreversion_rate must be a non-negative numeric value.")
 })
 
-test_that("simulate_serosurvey_age_model function works as expected", {
+test_that("simulate_serosurvey_age function works as expected", {
   # Test case 1: Check if the output dataframe has the correct structure
   n_samples <- c(1000, 2000, 1500)
   foi_df <- data.frame(
@@ -446,7 +446,7 @@ test_that("simulate_serosurvey_age_model function works as expected", {
     age_min = c(1, 3, 15),
     age_max = c(2, 14, 20),
     n_sample = n_samples)
-  actual_df <- simulate_serosurvey_age_model(foi_df, survey_features)
+  actual_df <- simulate_serosurvey_age(foi_df, survey_features)
   expect_true("age_min" %in% colnames(actual_df))
   expect_true("age_max" %in% colnames(actual_df))
   expect_true("n_sample" %in% colnames(actual_df))
@@ -462,11 +462,11 @@ test_that("simulate_serosurvey_age_model function works as expected", {
     age = seq(1, 20, 1),
     foi = rep(10, 20)
   )
-  actual_df_1 <- simulate_serosurvey_age_model(foi_df_1, survey_features)
+  actual_df_1 <- simulate_serosurvey_age(foi_df_1, survey_features)
   expect_true(all(actual_df_1$n_seropositive >= actual_df$n_seropositive))
 
   # Test case 4: allow a high rate of seroreversion which should reduce the proportion seropositive
-  actual_df_2 <- simulate_serosurvey_age_model(
+  actual_df_2 <- simulate_serosurvey_age(
     foi=foi_df,
     survey_features=survey_features,
     seroreversion_rate=10
@@ -474,7 +474,7 @@ test_that("simulate_serosurvey_age_model function works as expected", {
   expect_true(all(actual_df_2$n_seropositive <= actual_df$n_seropositive))
 })
 
-test_that("simulate_serosurvey_age_model input validation", {
+test_that("simulate_serosurvey_age input validation", {
 
   foi_df <- data.frame(
     age = seq(1, 20, 1),
@@ -488,38 +488,38 @@ test_that("simulate_serosurvey_age_model input validation", {
   )
 
   # Test with valid inputs
-  expect_silent(simulate_serosurvey_age_model(foi_df, survey_features))
+  expect_silent(simulate_serosurvey_age(foi_df, survey_features))
 
   # Test with non-dataframe foi dataframe
-  expect_error(simulate_serosurvey_age_model(foi = list(), survey_features),
+  expect_error(simulate_serosurvey_age(foi = list(), survey_features),
                "foi must be a dataframe with columns foi and age.")
 
   # Test with non-dataframe survey_features dataframe
-  expect_error(simulate_serosurvey_age_model(foi_df, list()),
+  expect_error(simulate_serosurvey_age(foi_df, list()),
                "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'n_sample'.")
 
   # Test with misspelt columns in foi dataframe
-  expect_error(simulate_serosurvey_age_model(data.frame(ages = c(1), foi = c(0.1)), survey_features),
+  expect_error(simulate_serosurvey_age(data.frame(ages = c(1), foi = c(0.1)), survey_features),
                "foi must be a dataframe with columns foi and age.")
 
   # Test with too many columns in foi dataframe
-  expect_error(simulate_serosurvey_age_model(data.frame(age = c(1), year = c(2), foi = c(0.1)), survey_features),
+  expect_error(simulate_serosurvey_age(data.frame(age = c(1), year = c(2), foi = c(0.1)), survey_features),
                "foi must be a dataframe with columns foi and age.")
 
   # Test with missing columns in survey_features dataframe
-  expect_error(simulate_serosurvey_age_model(foi_df, data.frame(age_min = c(1))),
+  expect_error(simulate_serosurvey_age(foi_df, data.frame(age_min = c(1))),
                "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'n_sample'.")
 
   # Test with non-numeric seroreversion_rate
-  expect_error(simulate_serosurvey_age_model(foi_df, survey_features, "seroreversion"),
+  expect_error(simulate_serosurvey_age(foi_df, survey_features, "seroreversion"),
                "seroreversion_rate must be a non-negative numeric value.")
 
   # Test with negative seroreversion_rate
-  expect_error(simulate_serosurvey_age_model(foi_df, survey_features, -1),
+  expect_error(simulate_serosurvey_age(foi_df, survey_features, -1),
                "seroreversion_rate must be a non-negative numeric value.")
 })
 
-test_that("simulate_serosurvey_age_and_time_model function works as expected", {
+test_that("simulate_serosurvey_age_time function works as expected", {
   # Test case 1: Check if the output dataframe has the correct structure
   n_samples <- c(1000, 2000, 1500)
   foi_df <- tidyr::expand_grid(
@@ -531,7 +531,7 @@ test_that("simulate_serosurvey_age_and_time_model function works as expected", {
     age_min = c(1, 3, 15),
     age_max = c(2, 14, 20),
     n_sample = n_samples)
-  actual_df <- simulate_serosurvey_age_and_time_model(foi_df, survey_features)
+  actual_df <- simulate_serosurvey_age_time(foi_df, survey_features)
   expect_true("age_min" %in% colnames(actual_df))
   expect_true("age_max" %in% colnames(actual_df))
   expect_true("n_sample" %in% colnames(actual_df))
@@ -548,11 +548,11 @@ test_that("simulate_serosurvey_age_and_time_model function works as expected", {
     age = seq(1, 20, 1)
   ) |>
     dplyr::mutate(foi = rnorm(20 * 20, 10.1, 0.001))
-  actual_df_1 <- simulate_serosurvey_age_and_time_model(foi_df_1, survey_features)
+  actual_df_1 <- simulate_serosurvey_age_time(foi_df_1, survey_features)
   expect_true(all(actual_df_1$n_seropositive >= actual_df$n_seropositive))
 
   # Test case 4: allow a high rate of seroreversion which should reduce the proportion seropositive
-  actual_df_2 <- simulate_serosurvey_age_and_time_model(
+  actual_df_2 <- simulate_serosurvey_age_time(
     foi=foi_df,
     survey_features=survey_features,
     seroreversion_rate=10
@@ -560,7 +560,7 @@ test_that("simulate_serosurvey_age_and_time_model function works as expected", {
   expect_true(all(actual_df_2$n_seropositive <= actual_df$n_seropositive))
 })
 
-test_that("simulate_serosurvey_age_and_time_model input validation", {
+test_that("simulate_serosurvey_age_time input validation", {
 
   foi_df <- tidyr::expand_grid(
     year = seq(1990, 2009, 1),
@@ -575,40 +575,40 @@ test_that("simulate_serosurvey_age_and_time_model input validation", {
   )
 
   # Test with valid inputs
-  expect_silent(simulate_serosurvey_age_and_time_model(foi_df, survey_features))
+  expect_silent(simulate_serosurvey_age_time(foi_df, survey_features))
 
   # Test with non-dataframe foi dataframe
-  expect_error(simulate_serosurvey_age_and_time_model(list(), survey_features),
+  expect_error(simulate_serosurvey_age_time(list(), survey_features),
                "foi must be a dataframe with columns foi, age and year.")
 
   # Test with non-dataframe survey_features dataframe
-  expect_error(simulate_serosurvey_age_and_time_model(foi_df, list()),
+  expect_error(simulate_serosurvey_age_time(foi_df, list()),
                "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'n_sample'.")
 
   # Test with misspelt columns in foi dataframe
-  expect_error(simulate_serosurvey_age_and_time_model(data.frame(ages = c(1), foi = c(0.1)), survey_features),
+  expect_error(simulate_serosurvey_age_time(data.frame(ages = c(1), foi = c(0.1)), survey_features),
                "foi must be a dataframe with columns foi, age and year.")
 
   # Test with missing columns in foi dataframe
-  expect_error(simulate_serosurvey_age_and_time_model(data.frame(age = c(1), foi = c(0.1)), survey_features),
+  expect_error(simulate_serosurvey_age_time(data.frame(age = c(1), foi = c(0.1)), survey_features),
                "foi must be a dataframe with columns foi, age and year.")
-  expect_error(simulate_serosurvey_age_and_time_model(data.frame(year = c(1), foi = c(0.1)), survey_features),
+  expect_error(simulate_serosurvey_age_time(data.frame(year = c(1), foi = c(0.1)), survey_features),
                "foi must be a dataframe with columns foi, age and year.")
 
   # Test with too many columns in foi dataframe
-  expect_error(simulate_serosurvey_time_model(data.frame(age = c(1), year = c(2), sex = c(3), foi = c(0.1)), survey_features),
+  expect_error(simulate_serosurvey_time(data.frame(age = c(1), year = c(2), sex = c(3), foi = c(0.1)), survey_features),
                "foi must be a dataframe with columns foi and year.")
 
   # Test with missing columns in survey_features dataframe
-  expect_error(simulate_serosurvey_age_and_time_model(foi_df, data.frame(age_min = c(1))),
+  expect_error(simulate_serosurvey_age_time(foi_df, data.frame(age_min = c(1))),
                "survey_features must be a dataframe with columns 'age_min', 'age_max', and 'n_sample'.")
 
   # Test with non-numeric seroreversion_rate
-  expect_error(simulate_serosurvey_age_and_time_model(foi_df, survey_features, "seroreversion"),
+  expect_error(simulate_serosurvey_age_time(foi_df, survey_features, "seroreversion"),
                "seroreversion_rate must be a non-negative numeric value.")
 
   # Test with negative seroreversion_rate
-  expect_error(simulate_serosurvey_age_and_time_model(foi_df, survey_features, -1),
+  expect_error(simulate_serosurvey_age_time(foi_df, survey_features, -1),
                "seroreversion_rate must be a non-negative numeric value.")
 })
 
@@ -660,7 +660,7 @@ test_that("simulate_serosurvey handles invalid model inputs", {
                "model must be one of 'age', 'time', or 'age-time'.")
 })
 
-test_that("probability_seropositive_general_model_by_age reduces to time-varying model under
+test_that("prob_seroprev_gen_by_age reduces to time-varying model under
           appropriate limits", {
 
     # simple time-varying FOI model
@@ -672,7 +672,7 @@ test_that("probability_seropositive_general_model_by_age reduces to time-varying
     }
 
     # determines the sum of seropositive compartments of those still alive
-    calculate_seropositivity_function <- function(Y) {
+    calculate_seroprev_fun <- function(Y) {
       Y[2]
     }
 
@@ -684,9 +684,9 @@ test_that("probability_seropositive_general_model_by_age reduces to time-varying
     lambda <- runif(70, 0, 0.01)
 
     # solve linear system of ODEs
-    seropositive_linear_system <- probability_seropositive_general_model_by_age(
+    seropositive_linear_system <- prob_seroprev_gen_by_age(
       construct_A,
-      calculate_seropositivity_function,
+      calculate_seroprev_fun,
       initial_conditions,
       max_age=length(lambda),
       lambda
@@ -697,7 +697,7 @@ test_that("probability_seropositive_general_model_by_age reduces to time-varying
       foi=lambda
     )
 
-    seropositive_true <- probability_seropositive_by_age(
+    seropositive_true <- prob_seroprev_by_age(
       model = "time",
       foi = foi_df,
       seroreversion_rate = 0
@@ -707,7 +707,7 @@ test_that("probability_seropositive_general_model_by_age reduces to time-varying
 
 })
 
-test_that("probability_seropositive_general_model_by_age reduces to age-varying model under
+test_that("prob_seroprev_gen_by_age reduces to age-varying model under
           appropriate limits", {
 
   # simple age-varying FOI model
@@ -719,7 +719,7 @@ test_that("probability_seropositive_general_model_by_age reduces to age-varying 
   }
 
   # determines the sum of seropositive compartments of those still alive
-  calculate_seropositivity_function <- function(Y) {
+  calculate_seroprev_fun <- function(Y) {
     Y[2]
   }
 
@@ -731,9 +731,9 @@ test_that("probability_seropositive_general_model_by_age reduces to age-varying 
   lambda <- runif(70, 0, 0.01)
 
   # solve linear system of ODEs
-  seropositive_linear_system <- probability_seropositive_general_model_by_age(
+  seropositive_linear_system <- prob_seroprev_gen_by_age(
     construct_A,
-    calculate_seropositivity_function,
+    calculate_seroprev_fun,
     initial_conditions,
     max_age=length(lambda),
     lambda
@@ -744,7 +744,7 @@ test_that("probability_seropositive_general_model_by_age reduces to age-varying 
     foi=lambda
   )
 
-  seropositive_true <- probability_seropositive_by_age(
+  seropositive_true <- prob_seroprev_by_age(
     model = "age",
     foi = foi_df,
     seroreversion_rate = 0
@@ -754,7 +754,7 @@ test_that("probability_seropositive_general_model_by_age reduces to age-varying 
 
 })
 
-test_that("probability_seropositive_general_model_by_age reduces to age- and time-varying model under
+test_that("prob_seroprev_gen_by_age reduces to age- and time-varying model under
           appropriate limits", {
 
   # age- and time-varying FOI model
@@ -769,7 +769,7 @@ test_that("probability_seropositive_general_model_by_age reduces to age- and tim
   }
 
   # determines the sum of seropositive compartments of those still alive
-  calculate_seropositivity_function <- function(Y) {
+  calculate_seroprev_fun <- function(Y) {
     Y[2]
   }
 
@@ -797,9 +797,9 @@ test_that("probability_seropositive_general_model_by_age reduces to age- and tim
   v <- foi_df_time$foi
 
   # solve linear system of ODEs
-  seropositive_linear_system <- probability_seropositive_general_model_by_age(
+  seropositive_linear_system <- prob_seroprev_gen_by_age(
     construct_A,
-    calculate_seropositivity_function,
+    calculate_seroprev_fun,
     initial_conditions,
     max_age = nrow(foi_df_time),
     u,
@@ -817,7 +817,7 @@ test_that("probability_seropositive_general_model_by_age reduces to age- and tim
     dplyr::mutate(foi = foi_age * foi_time) |>
     dplyr::select(-c("foi_age", "foi_time"))
 
-  seropositive_true <- probability_seropositive_by_age(
+  seropositive_true <- prob_seroprev_by_age(
     model = "age-time",
     foi = foi_df,
     seroreversion_rate = 0
@@ -831,9 +831,9 @@ test_that("probability_seropositive_general_model_by_age reduces to age- and tim
     age_max = seq(10, 70, 10),
     n_sample = 1e9)
 
-  serosurvey <- simulate_serosurvey_general_model(
+  serosurvey <- simulate_serosurvey_general(
     construct_A,
-    calculate_seropositivity_function,
+    calculate_seroprev_fun,
     initial_conditions,
     survey_features,
     u,
