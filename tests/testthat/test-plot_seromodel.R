@@ -38,7 +38,7 @@ suppressWarnings(
 )
 
 create_prepared_serosurvey <- function(actual_serosurvey) {
-  prepared_serosurvey <- serofoi:::prepare_serosurvey_for_plotting(
+  prepared_serosurvey <- prepare_serosurvey_for_plot(
     add_age_group_to_serosurvey(actual_serosurvey)
   )
   return(prepared_serosurvey)
@@ -439,11 +439,11 @@ test_that("plot_seromodel with time foi creates a ggplot with correct structure"
 
 
 
-# Test plot_seroprevalence_estimates ----
-test_that("plot_seroprevalence_estimates creates a ggplot with correct structure", {
+# Test plot_seroprev_estimates ----
+test_that("plot_seroprev_estimates creates a ggplot with correct structure", {
   seromodel <- seromodel_constant
 
-  plot <- plot_seroprevalence_estimates(
+  plot <- plot_seroprev_estimates(
     seromodel = seromodel,
     serosurvey = serosurvey
   )
@@ -556,7 +556,7 @@ test_that("plot_rhats creates a ggplot with correct structure", {
 
 test_that("Test that binomial confidence intervals coincide with Hmisc snapshot", {
   # Prepare serological data accordinng to the current method
-  serodata <- serofoi:::prepare_serosurvey_for_plotting(
+  serodata <- prepare_serosurvey_for_plot(
     serofoi:::add_age_group_to_serosurvey(chagas2012))
 
   # Compare with old Hmisc::binconf snapshot

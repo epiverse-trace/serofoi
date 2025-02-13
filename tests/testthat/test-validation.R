@@ -124,8 +124,8 @@ test_that("validate_seroreversion_rate stops if seroreversion_rate is negative",
   )
 })
 
-# Test for validate_survey_and_foi_consistency ----
-test_that("validate_survey_and_foi_consistency throws error if max age in foi_df exceeds max age in survey_features", {
+# Test for validate_simulation_age ----
+test_that("validate_simulation_age throws error if max age in foi_df exceeds max age in survey_features", {
   # Sample survey features for testing
   survey_features <- data.frame(
     age_min = c(1, 6, 11, 16, 21),
@@ -136,13 +136,13 @@ test_that("validate_survey_and_foi_consistency throws error if max age in foi_df
   # Case where foi_df has more rows than the max age in survey_features
   foi_df <- data.frame(foi = rep(0.1, 30))
   expect_error(
-    validate_survey_and_foi_consistency(survey_features, foi_df),
+    validate_simulation_age(survey_features, foi_df),
     "maximum age implicit in foi_df should not exceed max age in survey_features"
   )
 })
 
-# Test for validate_survey_and_foi_consistency_age_time ----
-test_that("validate_survey_and_foi_consistency_age_time throws error if max age in foi_df exceeds max age in survey_features", {
+# Test for validate_simulation_age_time ----
+test_that("validate_simulation_age_time throws error if max age in foi_df exceeds max age in survey_features", {
   # Sample survey features for testing
   survey_features <- data.frame(
     age_min = c(1, 6, 11, 16, 21),
@@ -159,7 +159,7 @@ test_that("validate_survey_and_foi_consistency_age_time throws error if max age 
 
   # Case where foi_df has more rows than the max age in survey_features
   expect_error(
-    validate_survey_and_foi_consistency_age_time(survey_features, foi_df),
+    validate_simulation_age_time(survey_features, foi_df),
     "maximum age implicit in foi_df should not exceed max age in survey_features"
   )
 })
