@@ -28,9 +28,9 @@ coverage](https://codecov.io/gh/epiverse-trace/serofoi/branch/dev/graph/badge.sv
 
 <!-- badges: end -->
 
-_{{ packagename }}_ is an R package to estimate the *Force-of-Infection (FoI)* of a given pathogen from age-disaggregated population-based cross-sectional serosurveys, using a Bayesian framework. The package provides a set of features for assessing model fitting, convergence and visualisation. 
+_{{ packagename }}_ is an R package to estimate the *Force-of-Infection (FOI)* of a given pathogen from age-disaggregated population-based cross-sectional serosurveys, using a Bayesian framework. The package provides a set of features for assessing model fitting, convergence and visualisation. 
 
-_{{ packagename }}_ relies on the [`rstan`](https://mc-stan.org/users/interfaces/rstan) package, which provides an R interface for the Stan programming language for statistical Bayesian modelling. Particularly, _{{ packagename }}_ relies on the use of a *Hamiltonian Monte Carlo (HMC)* algorithm implemented by *Stan for Markov chain Monte Carlo (MCMC)* sampling. The implemented methods are outlined in [@cucunubá2017] and [@carrera2020] (see [FoI Models](https://epiverse-trace.github.io/serofoi/articles/foi_models.html) for further details). A compelling mathematical treatment of the implemented serocatalytic models can be found in [@kamau2025].
+_{{ packagename }}_ relies on the [`rstan`](https://mc-stan.org/users/interfaces/rstan) package, which provides an R interface for the Stan programming language for statistical Bayesian modelling. Particularly, _{{ packagename }}_ relies on the use of a *Hamiltonian Monte Carlo (HMC)* algorithm implemented by *Stan for Markov chain Monte Carlo (MCMC)* sampling. The implemented methods are outlined in [@cucunubá2017] and [@carrera2020] (see [FOI Models](https://epiverse-trace.github.io/serofoi/articles/foi_models.html) for further details). A compelling mathematical treatment of the implemented serocatalytic models can be found in [@kamau2025].
 
 _{{ packagename }}_ is part of the [Epiverse Initiative](https://data.org/initiatives/epiverse/).
 

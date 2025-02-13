@@ -12,7 +12,7 @@ coverage](https://codecov.io/gh/epiverse-trace/serofoi/branch/dev/graph/badge.sv
 
 <!-- badges: end -->
 
-*serofoi* is an R package to estimate the *Force-of-Infection (FoI)* of
+*serofoi* is an R package to estimate the *Force-of-Infection (FOI)* of
 a given pathogen from age-disaggregated population-based cross-sectional
 serosurveys, using a Bayesian framework. The package provides a set of
 features for assessing model fitting, convergence and visualisation.
@@ -24,7 +24,7 @@ statistical Bayesian modelling. Particularly, *serofoi* relies on the
 use of a *Hamiltonian Monte Carlo (HMC)* algorithm implemented by *Stan
 for Markov chain Monte Carlo (MCMC)* sampling. The implemented methods
 are outlined in ([Cucunubá et al. 2017](#ref-cucunubá2017)) and
-([Carrera et al. 2020](#ref-carrera2020)) (see [FoI
+([Carrera et al. 2020](#ref-carrera2020)) (see [FOI
 Models](https://epiverse-trace.github.io/serofoi/articles/foi_models.html)
 for further details). A compelling mathematical treatment of the
 implemented serocatalytic models can be found in ([Kamau et al.

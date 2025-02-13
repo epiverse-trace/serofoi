@@ -15,7 +15,7 @@ force-of-infection to simulate from}
 \item{seroreversion_rate}{Non-negative seroreversion rate. Default is 0.}
 }
 \value{
-vector of probabilities of being seropositive for age-varying FoI
+vector of probabilities of being seropositive for age-varying FOI
 including seroreversion (ordered from youngest to oldest individuals)
 }
 \description{

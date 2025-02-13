@@ -5,7 +5,7 @@
 #' @param fois Numeric atomic vector corresponding to the age-varying
 #' force-of-infection to simulate from
 #' @param seroreversion_rate Non-negative seroreversion rate. Default is 0.
-#' @return vector of probabilities of being seropositive for age-varying FoI
+#' @return vector of probabilities of being seropositive for age-varying FOI
 #' including seroreversion (ordered from youngest to oldest individuals)
 #' @export
 probability_exact_age_varying <- function(
@@ -40,7 +40,7 @@ probability_exact_age_varying <- function(
 #' @param fois Numeric atomic vector corresponding to the age-varying
 #' force-of-infection to simulate from
 #' @param seroreversion_rate Non-negative seroreversion rate. Default is 0.
-#' @return vector of probabilities of being seropositive for age-varying FoI
+#' @return vector of probabilities of being seropositive for age-varying FOI
 #' including seroreversion (ordered from youngest to oldest individuals)
 #' @export
 probability_exact_time_varying <- function(

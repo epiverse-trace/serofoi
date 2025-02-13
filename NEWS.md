@@ -163,7 +163,7 @@ This release of _**serofoi**_, includes the following:
 
 1. Implementation of package modules: Incorporates data preparation, modelling, and visualization modules, they enable efficient handling of data, perform statistical modelling, and generate visual representations of the results.
 2. Documentation: It consists of vignettes, a website, and uses cases that provide detailed instructions on how to use the package effectively.
-3. Implementation of 3 models for calculating the Force-of-Infection (FoI): The first model is the constant or endemic model, which assumes a stable FoI over time. The second and third models are time-varying, with the normal FoI model representing a slow change in FoI and the normal-log FoI model representing a fast epidemic change in FoI.
+3. Implementation of 3 models for calculating the Force-of-Infection (FOI): The first model is the constant or endemic model, which assumes a stable FOI over time. The second and third models are time-varying, with the normal FOI model representing a slow change in FOI and the normal-log FOI model representing a fast epidemic change in FOI.
 4. Definition of coverage test to assurance the quality of the package.
 
-Overall, this release introduces essential package functionality, comprehensive documentation, various FoI models, and a coverage test, enabling users to analyse seroprevalence data and calculate the Force-of-infection.
+Overall, this release introduces essential package functionality, comprehensive documentation, various FOI models, and a coverage test, enabling users to analyse seroprevalence data and calculate the Force-of-infection.
