@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 ::: {.alert .alert-primary}
 ## Usage{-}
 
-When informing the public health response we want to know how many individuals have been infected up to a certain point in time, which relates to the level of immunity for a given pathogen in a population. Based on this information, it is possible to estimate the speed at which susceptible individuals have been infected over time in that population. We call this parameter the *Force-of-Infection (FoI)*. To estimate this parameter serofoi uses a suit of catalytic models.
+When informing the public health response we want to know how many individuals have been infected up to a certain point in time, which relates to the level of immunity for a given pathogen in a population. Based on this information, it is possible to estimate the speed at which susceptible individuals have been infected over time in that population. We call this parameter the *Force-of-Infection (FOI)*. To estimate this parameter serofoi uses a suit of catalytic models.
 :::
 
 ## For which diseases is this package?
@@ -49,11 +49,11 @@ Current version of ***serofoi*** includes the following assumptions on the under
 
 ## The bayesian statistical framework
 
-To assess how well the mathematical representation of the different *FoI* models describes the seroprevalence data, we implement a fitting process that relies on a Bayesian framework. The priors and upper priors for each model indicate the assumed trajectory of the *FoI* (either constant or time-varying). serofoi provides a set of Bayesian comparison methods for the user to choose between various possible FoI models (trajectories) that best fit the seroprevalence data. For details see [FoI Models](https://trace-lac.github.io/serofoi/articles/foi_models.html).
+To assess how well the mathematical representation of the different *FOI* models describes the seroprevalence data, we implement a fitting process that relies on a Bayesian framework. The priors and upper priors for each model indicate the assumed trajectory of the *FOI* (either constant or time-varying). serofoi provides a set of Bayesian comparison methods for the user to choose between various possible FOI models (trajectories) that best fit the seroprevalence data. For details see [FOI Models](https://trace-lac.github.io/serofoi/articles/foi_models.html).
 
-## Modelling the Force-of-infection (FoI)
+## Modelling the Force-of-infection (FOI)
 
-Is common to assume that the *FoI* is constant in time. However this is not always the case; ***serofoi*** addresses this by enabling the possibility to implement different time-varying models for the *FoI* and offering tools to compare them to the constant case in order to decide what model fits a serological survey the best.
+Is common to assume that the *FOI* is constant in time. However this is not always the case; ***serofoi*** addresses this by enabling the possibility to implement different time-varying models for the *FOI* and offering tools to compare them to the constant case in order to decide what model fits a serological survey the best.
 
 The integrated dataset `chagas2012` provides a minimal example of the input of the package. The following code can be used to implement and visualise a basic constant model:
 
@@ -75,4 +75,4 @@ plot_seromodel(
   size_text = 6
 )
 ```
-For details on the implementation of time-varying models and model comparison see [FoI Models](https://trace-lac.github.io/serofoi/articles/foi_models.html).
+For details on the implementation of time-varying models and model comparison see [FOI Models](https://trace-lac.github.io/serofoi/articles/foi_models.html).
