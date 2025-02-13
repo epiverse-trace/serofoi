@@ -49,8 +49,8 @@ sf_cauchy <- function(location = 0, scale = 1) {
   # Restricting normal inputs to be non-negative
   if (location < 0 || scale < 0) {
     stop(
-      "Normal distribution only accepts",
-      " `location>=0` and `scale=>0` for mean and standard deviation")
+      "Cauchy distribution only accepts",
+      " `location>=0` and `scale>=0` for median and median absolute deviation")
   }
 
   return(list(location = location, scale = scale, name = "cauchy"))

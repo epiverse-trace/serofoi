@@ -63,13 +63,13 @@ test_that("sf_cauchy handles valid and invalid inputs correctly", {
   # Test that function errors with negative location
   expect_error(
     sf_cauchy(location = -1, scale = 5),
-    "Normal distribution only accepts `location>=0` and `scale=>0` for mean and standard deviation"
+    "Cauchy distribution only accepts `location>=0` and `scale>=0` for median and median absolute deviation"
   )
 
   # Test that function errors with negative scale
   expect_error(
     sf_cauchy(location = 1, scale = -5),
-    "Normal distribution only accepts `location>=0` and `scale=>0` for mean and standard deviation"
+    "Cauchy distribution only accepts `location>=0` and `scale>=0` for median and median absolute deviation"
   )
 
 })
