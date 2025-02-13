@@ -84,7 +84,7 @@ probability_exact_time_varying <- function(
 #' rate of seroreversion.
 #' @return A dataframe with columns 'age' and 'seropositivity'.
 #' @export
-probability_seropositive_time_model_by_age <- function( #nolint
+prob_seroprev_time_by_age <- function(
   foi,
   seroreversion_rate
 ) {
@@ -119,7 +119,7 @@ probability_seropositive_time_model_by_age <- function( #nolint
 #' of seroreversion.
 #' @return A dataframe with columns 'age' and 'seropositivity'.
 #' @export
-probability_seropositive_age_model_by_age <- function( #nolint
+prob_seroprev_age_by_age <- function(
   foi,
   seroreversion_rate
 ) {
@@ -153,7 +153,7 @@ probability_seropositive_age_model_by_age <- function( #nolint
 #' the rate of seroreversion.
 #' @return A dataframe with columns 'age' and 'seropositivity'.
 #' @export
-probability_seropositive_age_and_time_model_by_age <- function( #nolint
+prob_seroprev_age_time_by_age <- function(
   foi,
   seroreversion_rate
 ) {
@@ -220,7 +220,7 @@ probability_seropositive_age_and_time_model_by_age <- function( #nolint
 #'
 #' @return A dataframe with columns 'age' and 'seropositivity'.
 #' @examples
-#' probability_seropositive_by_age(
+#' prob_seroprev_by_age(
 #'   model = "age",
 #'   foi = data.frame(
 #'     age = 1:80,
@@ -228,18 +228,18 @@ probability_seropositive_age_and_time_model_by_age <- function( #nolint
 #'   )
 #' )
 #' @export
-probability_seropositive_by_age <- function( #nolint
+prob_seroprev_by_age <- function(
   model,
   foi,
   seroreversion_rate = 0
 ) {
 
   if (model == "time") {
-    probability_function <- probability_seropositive_time_model_by_age
+    probability_function <- prob_seroprev_time_by_age
   } else if (model == "age") {
-    probability_function <- probability_seropositive_age_model_by_age
+    probability_function <- prob_seroprev_age_by_age
   } else if (model == "age-time" || model == "time-age") {
-    probability_function <- probability_seropositive_age_and_time_model_by_age
+    probability_function <- prob_seroprev_age_time_by_age
   }
 
   df <- probability_function(
@@ -317,7 +317,7 @@ sum_of_A <- function(t, tau, construct_A_fn, ...) {
 #' initial_conditions[1] <- 1
 #'
 #' # calculate probability
-#' seropositive_hiv <- probability_seropositive_general_model_by_age(
+#' seropositive_hiv <- prob_seroprev_gen_by_age(
 #'   construct_A,
 #'   calculate_seropositivity_fn,
 #'   initial_conditions,
@@ -326,9 +326,9 @@ sum_of_A <- function(t, tau, construct_A_fn, ...) {
 #'   v
 #' )
 #' @export
-probability_seropositive_general_model_by_age <- function( #nolint
-  construct_A_fn,
-  calculate_seropositivity_function, #nolint
+prob_seroprev_gen_by_age <- function(
+  construct_A_fun,
+  calculate_seroprev_fun,
   initial_conditions,
   max_age,
   ...
@@ -336,9 +336,9 @@ probability_seropositive_general_model_by_age <- function( #nolint
 
   probabilities <- vector(length = max_age)
   for (i in seq_along(probabilities)) {
-    A_sum <- sum_of_A(max_age, max_age - i, construct_A_fn, ...)
+    A_sum <- sum_of_A(max_age, max_age - i, construct_A_fun, ...)
     Y <- as.matrix(Matrix::expm(A_sum)) %*% initial_conditions
-    probabilities[i] <- calculate_seropositivity_function(Y)
+    probabilities[i] <- calculate_seroprev_fun(Y)
   }
 
   df <- data.frame(
@@ -468,7 +468,7 @@ generate_random_sample_sizes <- function(survey_df_long) {
 #' @return A dataframe with random sample sizes generated for each individual
 #' age based on the provided survey features.
 #' @noRd
-sample_size_by_individual_age_random <- function(survey_features) { #nolint
+sample_size_by_individual_age <- function(survey_features) {
 
   ages <- seq(1, max(survey_features$age_max), 1)
 
@@ -491,11 +491,11 @@ sample_size_by_individual_age_random <- function(survey_features) { #nolint
 
   survey_features <- add_age_bins(survey_features)
 
-  survey_features_by_individual_age <- survey_by_individual_age( #nolint
+  survey_features_all_ages <- survey_by_individual_age(
     survey_features,
     age_df)
 
-  df_new <- generate_random_sample_sizes(survey_features_by_individual_age)
+  df_new <- generate_random_sample_sizes(survey_features_all_ages)
 
   return(df_new)
 }
@@ -518,12 +518,12 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
 ) {
 
   combined_df <- dplyr::left_join(
-      probability_seropositive_by_age, sample_size_by_age_random,
+      prob_seroprev_by_age, sample_size_by_age_random,
       by = "age"
     ) |>
     dplyr::mutate(
       n_seropositive = stats::rbinom(
-        nrow(probability_seropositive_by_age),
+        nrow(prob_seroprev_by_age),
         .data$n_sample,
         .data$seropositivity)
     )
@@ -573,10 +573,10 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
 #'   n_sample = c(1000, 2000, 1500))
-#' serosurvey <- simulate_serosurvey_time_model(
+#' serosurvey <- simulate_serosurvey_time(
 #' foi_df, survey_features)
 #' @export
-simulate_serosurvey_time_model <- function(
+simulate_serosurvey_time <- function(
   foi,
   survey_features,
   seroreversion_rate = 0
@@ -586,21 +586,21 @@ simulate_serosurvey_time_model <- function(
   validate_foi_df(foi, "year")
   validate_survey_features(survey_features)
   validate_seroreversion_rate(seroreversion_rate)
-  validate_survey_and_foi_consistency(
+  validate_simulation_age(
     survey_features,
     foi
     )
 
-  probability_serop_by_age <- probability_seropositive_time_model_by_age(
+  probability_serop_by_age <- prob_seroprev_time_by_age(
     foi = foi,
     seroreversion_rate = seroreversion_rate
   )
 
-  sample_size_by_age_random <- sample_size_by_individual_age_random(
+  sample_size_by_age_random <- sample_size_by_individual_age(
     survey_features = survey_features
   )
 
-  grouped_df <- generate_seropositive_counts_by_age_bin(
+  grouped_df <- get_seroprev_counts_by_bin(
     probability_serop_by_age,
     sample_size_by_age_random,
     survey_features
@@ -638,10 +638,10 @@ simulate_serosurvey_time_model <- function(
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
 #'   n_sample = c(1000, 2000, 1500))
-#' serosurvey <- simulate_serosurvey_age_model(
+#' serosurvey <- simulate_serosurvey_age(
 #' foi_df, survey_features)
 #' @export
-simulate_serosurvey_age_model <- function(
+simulate_serosurvey_age <- function(
   foi,
   survey_features,
   seroreversion_rate = 0
@@ -651,17 +651,17 @@ simulate_serosurvey_age_model <- function(
   validate_foi_df(foi, "age")
   validate_survey_features(survey_features)
   validate_seroreversion_rate(seroreversion_rate)
-  validate_survey_and_foi_consistency(
+  validate_simulation_age(
     survey_features,
     foi
   )
 
-  probability_serop_by_age <- probability_seropositive_age_model_by_age(
+  probability_serop_by_age <- prob_seroprev_age_by_age(
     foi = foi,
     seroreversion_rate = seroreversion_rate
   )
 
-  sample_size_by_age_random <- sample_size_by_individual_age_random(
+  sample_size_by_age_random <- sample_size_by_individual_age(
     survey_features = survey_features
   )
 
@@ -704,10 +704,10 @@ simulate_serosurvey_age_model <- function(
 #'   age_min = c(1, 3, 15),
 #'   age_max = c(2, 14, 20),
 #'   n_sample = c(1000, 2000, 1500))
-#' serosurvey <- simulate_serosurvey_age_and_time_model(
+#' serosurvey <- simulate_serosurvey_age_time(
 #' foi_df, survey_features)
 #' @export
-simulate_serosurvey_age_and_time_model <- function( #nolint
+simulate_serosurvey_age_time <- function(
   foi,
   survey_features,
   seroreversion_rate = 0
@@ -717,18 +717,18 @@ simulate_serosurvey_age_and_time_model <- function( #nolint
   validate_foi_df(foi, c("age", "year"))
   validate_survey_features(survey_features)
   validate_seroreversion_rate(seroreversion_rate)
-  validate_survey_and_foi_consistency_age_time(
+  validate_simulation_age_time(
     survey_features,
     foi
   )
 
   probability_serop_by_age <-
-    probability_seropositive_age_and_time_model_by_age(
+    prob_seroprev_age_time_by_age(
       foi = foi,
       seroreversion_rate = seroreversion_rate
       )
 
-  sample_size_by_age_random <- sample_size_by_individual_age_random(
+  sample_size_by_age_random <- sample_size_by_individual_age(
     survey_features = survey_features
   )
 
@@ -822,19 +822,19 @@ simulate_serosurvey <- function(
     stop("model must be one of 'age', 'time', or 'age-time'.")
 
   if (model == "time") {
-    serosurvey <- simulate_serosurvey_time_model(
+    serosurvey <- simulate_serosurvey_time(
       foi,
       survey_features,
       seroreversion_rate
     )
   } else if (model == "age") {
-    serosurvey <- simulate_serosurvey_age_model(
+    serosurvey <- simulate_serosurvey_age(
       foi,
       survey_features,
       seroreversion_rate
     )
   } else if (model == "age-time" || model == "time-age") {
-    serosurvey <- simulate_serosurvey_age_and_time_model(
+    serosurvey <- simulate_serosurvey_age_time(
       foi,
       survey_features,
       seroreversion_rate
@@ -849,7 +849,7 @@ simulate_serosurvey <- function(
 #' This simulation method assumes only that the model system can be written as
 #' a piecewise-linear ordinary differential equation system.
 #'
-#' @inheritParams probability_seropositive_general_model_by_age
+#' @inheritParams prob_seroprev_gen_by_age
 #' @inheritParams simulate_serosurvey
 #'
 #' @return A dataframe with simulated serosurvey data, including age group
@@ -895,9 +895,9 @@ simulate_serosurvey <- function(
 #'   survey_features = survey_features
 #' )
 #' @export
-simulate_serosurvey_general_model <- function( #nolint
-  construct_A_fn,
-  calculate_seropositivity_function, #nolint
+simulate_serosurvey_general <- function( #nolint
+  construct_A_fun,
+  calculate_seroprev_fun, #nolint
   initial_conditions,
   survey_features,
   ...
@@ -906,15 +906,15 @@ simulate_serosurvey_general_model <- function( #nolint
   # Input validation
   validate_survey_features(survey_features)
 
-  probability_serop_by_age <- probability_seropositive_general_model_by_age(
-    construct_A_fn,
-    calculate_seropositivity_function,
+  probability_serop_by_age <- prob_seroprev_gen_by_age(
+    construct_A_fun,
+    calculate_seroprev_fun,
     initial_conditions,
     max(survey_features$age_max),
     ...
   )
 
-  sample_size_by_age_random <- sample_size_by_individual_age_random(
+  sample_size_by_age_random <- sample_size_by_individual_age(
     survey_features = survey_features
   )
 

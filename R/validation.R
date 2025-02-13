@@ -104,7 +104,7 @@ validate_seroreversion_rate <- function(seroreversion_rate) {
 #'
 #' @return None
 #' @keywords internal
-validate_survey_and_foi_consistency <- function( #nolint
+validate_simulation_age <- function(
     survey_features,
     foi_df
 ) {
@@ -121,7 +121,7 @@ validate_survey_and_foi_consistency <- function( #nolint
 #'
 #' @return None
 #' @keywords internal
-validate_survey_and_foi_consistency_age_time <- function( #nolint
+validate_simulation_age_time <- function(
     survey_features,
     foi_df
 ) {

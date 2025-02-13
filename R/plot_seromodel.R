@@ -14,7 +14,7 @@
 #'                        of `seroprev`}
 #' }
 #' @export
-prepare_serosurvey_for_plotting <- function( #nolint
+prepare_serosurvey_for_plot <- function(
   serosurvey,
   alpha = 0.05
   ) {
@@ -159,7 +159,7 @@ plot_serosurvey <- function(
       add_age_group_to_serosurvey()
   }
 
-  serosurvey <- prepare_serosurvey_for_plotting(serosurvey)
+  serosurvey <- prepare_serosurvey_for_plot(serosurvey)
 
   min_prev <- min(serosurvey$seroprev_lower)
   max_prev <- max(serosurvey$seroprev_upper)
@@ -244,9 +244,9 @@ extract_central_estimates <- function(
 #' @examples
 #' data(veev2012)
 #' seromodel <- fit_seromodel(veev2012, iter = 100)
-#' plot_seroprevalence_estimates(seromodel, veev2012)
+#' plot_seroprev_estimates(seromodel, veev2012)
 #' @export
-plot_seroprevalence_estimates <- function(
+plot_seroprev_estimates <- function(
   seromodel,
   serosurvey,
   alpha = 0.05,
@@ -256,7 +256,7 @@ plot_seroprevalence_estimates <- function(
 ) {
   checkmate::assert_class(seromodel, "stanfit", null.ok = TRUE)
 
-  seroprevalence_central_estimates <- data.frame( #nolint
+  seroprev_central_estimates <- data.frame(
     median = 0.0,
     lower = 0.0,
     upper = 0.0,
@@ -272,19 +272,19 @@ plot_seroprevalence_estimates <- function(
     dplyr::mutate(age = seq(1, max(serosurvey$age_max)))
   )
 
-  seroprevalence_plot <- plot_serosurvey(
+  seroprev_plot <- plot_serosurvey(
     serosurvey = serosurvey,
     size_text = size_text,
     bin_serosurvey = bin_serosurvey,
     bin_step = bin_step
     ) +
     ggplot2::geom_line(
-      data = seroprevalence_central_estimates,
+      data = seroprev_central_estimates,
       ggplot2::aes(x = .data$age, y = .data$median),
       colour = "#7a0177"
     ) +
     ggplot2::geom_ribbon(
-      data = seroprevalence_central_estimates,
+      data = seroprev_central_estimates,
       ggplot2::aes(x = .data$age, ymin = .data$lower, ymax = .data$upper),
       fill = "#c994c7", alpha = 0.5
     ) +
@@ -293,7 +293,7 @@ plot_seroprevalence_estimates <- function(
       default = TRUE
     )
 
-  return(seroprevalence_plot)
+  return(seroprev_plot)
 }
 
 #' Plots force-of-infection central estimates
@@ -657,7 +657,7 @@ plot_seromodel <- function(
     plot_constant = plot_constant
   )
 
-  seroprev_plot <- plot_seroprevalence_estimates(
+  seroprev_plot <- plot_seroprev_estimates(
     seromodel = seromodel,
     serosurvey = serosurvey,
     alpha = alpha,
