@@ -607,7 +607,7 @@ plot_summary <- function(
 #' Visualise results of the provided model
 #'
 #' @inheritParams plot_summary
-#' @inheritParams plot_seroprevalence_estimates
+#' @inheritParams plot_seroprev_estimates
 #' @inheritParams plot_foi_estimates
 #' @inheritParams plot_rhats
 #' @param seroreversion_digits Number of seroreversion rate digits

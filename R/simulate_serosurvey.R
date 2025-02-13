@@ -202,7 +202,7 @@ prob_seroprev_age_time_by_age <- function(
   return(df)
 }
 
-#' Generate probabilities of seropositivity by age based user's choice of model.
+#' Generate probabilities of seropositivity by age based on model choice.
 #'
 #' This function generates seropositivity probabilities based on either a
 #' time-varying FOI model, an age-varying FOI model, or an age-and-time-varying
@@ -255,9 +255,9 @@ prob_seroprev_by_age <- function(
 #' This function calculates the probabilities of seropositivity by age based on
 #' an abstract model of the serocatalytic system.
 #'
-#' @param construct_A_fn A function that constructs a matrix that defines the
+#' @param construct_A_fun A function that constructs a matrix that defines the
 #' multiplier term in the linear ODE system.
-#' @param calculate_seropositivity_function A function which takes the state
+#' @param calculate_seroprev_fun A function which takes the state
 #' vector and returns the seropositive fraction.
 #' @param initial_conditions The initial state vector proportions for each
 #' birth cohort.
@@ -500,19 +500,15 @@ sample_size_by_individual_age <- function(survey_features) {
   return(df_new)
 }
 
-check_age_constraints <- function(df) {
-  for (i in seq_len(nrow(df))) {
-    for (j in seq_len(nrow(df))) {
-      if (i != j && df$age_max[i] == df$age_min[j]) {
-        return(FALSE)
-      }
-    }
-  }
-  return(TRUE)
-}
-
-generate_seropositive_counts_by_age_bin <- function( #nolint
-    probability_seropositive_by_age, #nolint
+#' Generate seropositivity counts by bin given the probability and sample size
+#' per age group bin
+#'
+#' @param prob_seroprev_by_age Probability of seropositivity by age
+#' @param sample_size_by_age_random Random sample size by age
+#' @inheritParams simulate_serosurvey
+#' @keywords internal
+get_seroprev_counts_by_bin <- function(
+    prob_seroprev_by_age,
     sample_size_by_age_random,
     survey_features
 ) {
@@ -552,14 +548,7 @@ generate_seropositive_counts_by_age_bin <- function( #nolint
 #' of serosurveys with binned age groups, and it generates uncertainty in the
 #' distribution of a sample size within an age bin through multinomial sampling.
 #'
-#' @param foi A dataframe containing the force of infection (FOI) values for
-#' different years. It should have two columns: 'year' and 'foi'.
-#' @param survey_features A dataframe containing information about the binned
-#' age groups and sample sizes for each. It should contain columns:
-#' ['age_min', 'age_max', 'n_sample'].
-#' @param seroreversion_rate A non-negative value determining the rate of
-#' seroreversion (per year). Default is 0.
-#'
+#' @inheritParams simulate_serosurvey
 #' @return A dataframe with simulated serosurvey data, including age group
 #' information, overall sample sizes, the number of seropositive individuals,
 #' and other survey features.
@@ -617,14 +606,7 @@ simulate_serosurvey_time <- function(
 #' of serosurveys with binned age groups, and it generates uncertainty in the
 #' distribution of a sample size within an age bin through multinomial sampling.
 #'
-#' @param foi A dataframe containing the force of infection (FOI) values for
-#' different ages. It should have two columns: 'age' and 'foi'.
-#' @param survey_features A dataframe containing information about the binned
-#' age groups and sample sizes for each. It should contain columns:
-#' ['age_min', 'age_max', 'n_sample'].
-#' @param seroreversion_rate A non-negative value determining the rate of
-#' seroreversion (per year). Default is 0.
-#'
+#' @inheritParams simulate_serosurvey
 #' @return A dataframe with simulated serosurvey data, including age group
 #' information, overall sample sizes, the number of seropositive individuals,
 #' and other survey features.
@@ -665,7 +647,7 @@ simulate_serosurvey_age <- function(
     survey_features = survey_features
   )
 
-  grouped_df <- generate_seropositive_counts_by_age_bin(
+  grouped_df <- get_seroprev_counts_by_bin(
     probability_serop_by_age,
     sample_size_by_age_random,
     survey_features
@@ -682,14 +664,7 @@ simulate_serosurvey_age <- function(
 #' it generates uncertainty in the distribution of a sample size within an age
 #' bin through multinomial sampling.
 #'
-#' @param foi A dataframe containing the force of infection (FOI) values for
-#' different ages. It should have two columns: 'year', 'age' and 'foi'.
-#' @param survey_features A dataframe containing information about the binned
-#' age groups and sample sizes for each. It should contain columns:
-#' ['age_min', 'age_max', 'n_sample'].
-#' @param seroreversion_rate A non-negative value determining the rate of
-#' seroreversion (per year). Default is 0.
-#'
+#' @inheritParams simulate_serosurvey
 #' @return A dataframe with simulated serosurvey data, including age group
 #' information, overall sample sizes, the number of seropositive individuals,
 #' and other survey features.
@@ -732,7 +707,7 @@ simulate_serosurvey_age_time <- function(
     survey_features = survey_features
   )
 
-  grouped_df <- generate_seropositive_counts_by_age_bin(
+  grouped_df <- get_seroprev_counts_by_bin(
     probability_serop_by_age,
     sample_size_by_age_random,
     survey_features
@@ -918,7 +893,7 @@ simulate_serosurvey_general <- function( #nolint
     survey_features = survey_features
   )
 
-  grouped_df <- generate_seropositive_counts_by_age_bin(
+  grouped_df <- get_seroprev_counts_by_bin(
     probability_serop_by_age,
     sample_size_by_age_random,
     survey_features
