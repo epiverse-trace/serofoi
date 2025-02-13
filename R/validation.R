@@ -41,6 +41,21 @@ validate_serosurvey <- function(serosurvey) {
   return(serosurvey)
 }
 
+#' Check min and max age consistency for validation purposes
+#'
+#' @return Boolean checking consistency
+#' @keywords internal
+check_age_constraints <- function(df) {
+  for (i in seq_len(nrow(df))) {
+    for (j in seq_len(nrow(df))) {
+      if (i != j && df$age_max[i] == df$age_min[j]) {
+        return(FALSE)
+      }
+    }
+  }
+  return(TRUE)
+}
+
 #' Helper function to validate serosurvey features for simulation
 #'
 #' @return None
