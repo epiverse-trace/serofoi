@@ -158,14 +158,13 @@ prob_seroprev_age_time_by_age <- function(
   seroreversion_rate
 ) {
 
-  foi_matrix <- as.matrix(
-    tidyr::pivot_wider(
-      foi,
-      values_from = foi,
-      names_from = dplyr::all_of("year")
+  foi_matrix <- tidyr::pivot_wider(
+    foi,
+    values_from = foi,
+    names_from = dplyr::all_of("year")
     ) |>
-    tibble::column_to_rownames("age")
-  )
+    tibble::column_to_rownames("age") |>
+    as.matrix()
 
   years <- unique(foi$year)
   n_years <- length(years)

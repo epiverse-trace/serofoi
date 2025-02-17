@@ -264,13 +264,14 @@ plot_seroprev_estimates <- function(
     age = 0
   ) |>
   rbind(
-    extract_central_estimates(
-      seromodel = seromodel,
-      serosurvey = serosurvey,
-      alpha = alpha,
-      par_name = "prob_infected_expanded"
-  ) |>
-    dplyr::mutate(age = seq(1, max(serosurvey$age_max)))
+    dplyr::mutate(
+      extract_central_estimates(
+        seromodel = seromodel,
+        serosurvey = serosurvey,
+        alpha = alpha,
+        par_name = "prob_infected_expanded"
+      ),
+      age = seq(1, max(serosurvey$age_max)))
   )
 
   seroprev_plot <- plot_serosurvey(
