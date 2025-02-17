@@ -52,7 +52,8 @@ serosurvey_constant <- simulate_serosurvey(
   model = "age",
   foi = foi_constant,
   survey_features = survey_features
-)
+) |>
+  mutate(model_type = "constant FOI")
 
 glimpse(serosurvey_constant)
 ```
@@ -95,7 +96,8 @@ serosurvey_age_dep <- simulate_serosurvey(
   model = "age",
   foi = foi_age_varying,
   survey_features = survey_features
-)
+) |>
+    mutate(model_type = "age-dependent FOI")
 
 ```
 
@@ -103,27 +105,29 @@ Below, we see that the FOI for the age-dependent FOI pathogen increases rapidly 
 
 ```{r, fig.align="center"}
 # combine with constant FOI survey
-serosurvey_combined <- rbind(
-  serosurvey_constant |>
-    mutate(model_type = "constant FOI") |>
-  left_join(
-    prob_seroprev_by_age(
+prob_seroprev_constant <- prob_seroprev_by_age(
       model = "age",
       foi = foi_constant,
       seroreversion_rate = 0
       ) |>
-      rename(age_min = age),
+      rename(age_min = age)
+
+prob_seroprev_age <- prob_seroprev_by_age(
+      model = "age",
+      foi = foi_age_varying,
+      seroreversion_rate = 0
+      ) |>
+  rename(age_min = age)
+
+serosurvey_combined <- rbind(
+  left_join(
+    serosurvey_constant,
+    prob_seroprev_constant,
     by = "age_min"
     ),
-  serosurvey_age_dep |>
-    mutate(model_type = "age-dependent FOI") |>
-      left_join(
-          prob_seroprev_by_age(
-          model = "age",
-          foi = foi_age_varying,
-          seroreversion_rate = 0
-      ) |>
-        rename(age_min = age),
+  left_join(
+    serosurvey_age_dep,
+    prob_seroprev_age,
       by = "age_min"
       )
   )  |>
@@ -265,7 +269,8 @@ serosurvey <- simulate_serosurvey(
   model = "age-time",
   foi = foi_age_time,
   survey_features = survey_features
-)
+) |>
+    mutate(model_type = "non-seroreverting")
 ```
 
 ```{r, fig.align="center", fig.alt="Plot serosurvey obtained simulating from time- and age-dependent FOI"}
@@ -293,34 +298,37 @@ serosurvey_serorevert <- simulate_serosurvey(
   foi = foi_age_time,
   survey_features = survey_features,
   seroreversion_rate = 0.01
-)
+) |>
+    mutate(model_type = "seroreverting")
 ```
 
 ```{r, fig.align="center", fig.alt="Plot comparing serosurveys with and without seroreversion"}
 # combine with constant FOI survey
+prob_seroprev_no_serorev <- prob_seroprev_by_age(
+  model = "age-time",
+  foi = foi_age_time,
+  seroreversion_rate = 0
+  ) |>
+  rename(age_min = age)
+
+prob_seroprev_serorev <- prob_seroprev_by_age(
+  model = "age-time",
+  foi = foi_age_time,
+  seroreversion_rate = 0.01
+  ) |>
+  rename(age_min = age)
+
 serosurvey_combined <- rbind(
-  serosurvey |>
-    mutate(model_type = "non-seroreverting") |>
   left_join(
-    prob_seroprev_by_age(
-      model = "age-time",
-      foi = foi_age_time,
-      seroreversion_rate = 0
-      ) |>
-      rename(age_min = age),
+    serosurvey,
+    prob_seroprev_no_serorev,
     by = "age_min"
     ),
-  serosurvey_serorevert |>
-    mutate(model_type = "seroreverting") |>
-      left_join(
-          prob_seroprev_by_age(
-          model = "age-time",
-          foi = foi_age_time,
-          seroreversion_rate = 0.01
-      ) |>
-        rename(age_min = age),
-      by = "age_min"
-      )
+  left_join(
+    serosurvey_serorevert,
+    prob_seroprev_serorev,
+    by = "age_min"
+    )
   ) |>
   mutate(model_type = as.factor(model_type))
 

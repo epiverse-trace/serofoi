@@ -30,7 +30,8 @@ prepare_serosurvey_for_plot <- function(
       conf.level = 1 - alpha
     )$conf.int
     names(ci) <- c("seroprev_lower", "seroprev_upper")
-    return(ci)
+
+    ci
   }
 
   serosurvey <- serosurvey |>
@@ -43,7 +44,7 @@ prepare_serosurvey_for_plot <- function(
       )
     )) |>
     dplyr::ungroup() |>
-    tidyr::unnest_wider(.data$binconf) |>
+    tidyr::unnest_wider(!!dplyr::sym("binconf")) |>
     dplyr::arrange(.data$age_group) |>
     dplyr::relocate(!!dplyr::sym("age_group"))
 
@@ -82,7 +83,7 @@ get_age_intervals <- function(serosurvey, step) {
     warn_msg <- paste0(
       warn_msg, "[", limits_low[length(limits_low)], ",", age_max, "]"
     )
-    warning(warn_msg)
+    warning(warn_msg, call. = FALSE)
   }
 
   # prepare breaks
@@ -103,7 +104,7 @@ get_age_intervals <- function(serosurvey, step) {
       labels = survey_features$group
     )
 
-  return(serosurvey)
+  serosurvey
 }
 
 #' Plots seroprevalence from the given serosurvey
@@ -263,13 +264,14 @@ plot_seroprev_estimates <- function(
     age = 0
   ) |>
   rbind(
-    extract_central_estimates(
-      seromodel = seromodel,
-      serosurvey = serosurvey,
-      alpha = alpha,
-      par_name = "prob_infected_expanded"
-  ) |>
-    dplyr::mutate(age = seq(1, max(serosurvey$age_max)))
+    dplyr::mutate(
+      extract_central_estimates(
+        seromodel = seromodel,
+        serosurvey = serosurvey,
+        alpha = alpha,
+        par_name = "prob_infected_expanded"
+      ),
+      age = seq(1, max(serosurvey$age_max)))
   )
 
   seroprev_plot <- plot_serosurvey(
@@ -570,16 +572,15 @@ plot_summary <- function(
   )
 
   if (plot_constant) {
-    if (startsWith(seromodel@model_name, "constant")) {
-      drop <- c("foi", "foi_rhat")
-      summary_list <- summary_list[!(names(summary_list) %in% drop)]
-    } else {
+    if (!startsWith(seromodel@model_name, "constant")) {
       error_msg <- paste0(
         "plot_constant is only relevant when ",
         "`seromodel@model_name == 'constant'`"
       )
-      stop(error_msg)
+      stop(error_msg, call. = FALSE)
     }
+    drop_list <- c("foi", "foi_rhat")
+    summary_list <- summary_list[!(names(summary_list) %in% drop_list)]
   }
 
   summary_df <- data.frame(

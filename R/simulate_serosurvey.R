@@ -97,12 +97,12 @@ prob_seroprev_time_by_age <- function(
     seroreversion_rate = seroreversion_rate
   )
 
-  df <- data.frame(
+  seroprev_df <- data.frame(
     age = seq_along(years),
     seropositivity = probabilities
   )
 
-  return(df)
+  seroprev_df
 }
 
 
@@ -132,12 +132,12 @@ prob_seroprev_age_by_age <- function(
     seroreversion_rate = seroreversion_rate
   )
 
-  df <- data.frame(
+  seroprev_df <- data.frame(
     age = ages,
     seropositivity = probabilities
   )
 
-  return(df)
+  seroprev_df
 }
 
 #' Generate probabilities of seropositivity by age based on an age-and-time
@@ -158,14 +158,13 @@ prob_seroprev_age_time_by_age <- function(
   seroreversion_rate
 ) {
 
-  foi_matrix <- as.matrix(
-    tidyr::pivot_wider(
-      foi,
-      values_from = foi,
-      names_from = dplyr::all_of("year")
+  foi_matrix <- tidyr::pivot_wider(
+    foi,
+    values_from = foi,
+    names_from = dplyr::all_of("year")
     ) |>
-    tibble::column_to_rownames("age")
-  )
+    tibble::column_to_rownames("age") |>
+    as.matrix()
 
   years <- unique(foi$year)
   n_years <- length(years)
@@ -194,12 +193,12 @@ prob_seroprev_age_time_by_age <- function(
   }
   probabilities_oldest_age_last <- rev(probabilities)
 
-  df <- data.frame(
+  seroprev_df <- data.frame(
     age = ages,
     seropositivity = probabilities_oldest_age_last
   )
 
-  return(df)
+  seroprev_df
 }
 
 #' Generate probabilities of seropositivity by age based on model choice.
@@ -242,12 +241,12 @@ prob_seroprev_by_age <- function(
     probability_function <- prob_seroprev_age_time_by_age
   }
 
-  df <- probability_function(
+  seroprev_df <- probability_function(
     foi = foi,
     seroreversion_rate = seroreversion_rate
   )
 
-  return(df)
+  return(seroprev_df)
 }
 
 #' Generate probabilities of seropositivity by age based on a general FOI model.
@@ -331,7 +330,7 @@ prob_seroprev_gen_by_age <- function(
       }
       k <- k + 1
     }
-    return(A)
+    A
   }
 
   probabilities <- vector(length = max_age)
@@ -341,12 +340,12 @@ prob_seroprev_gen_by_age <- function(
     probabilities[i] <- calculate_seroprev_fun(Y)
   }
 
-  df <- data.frame(
+  seroprev_df <- data.frame(
     age = 1:max_age,
     seropositivity = probabilities
   )
 
-  return(df)
+  seroprev_df
 }
 
 
@@ -370,7 +369,8 @@ add_age_bins <- function(survey_features) {
     intervals[i] <- paste0("[", age_min, ",", age_max, "]")
   }
   survey_features <- dplyr::mutate(survey_features, group = intervals)
-  return(survey_features)
+
+  survey_features
 }
 
 #' Create a survey dataframe with per individual age information.
@@ -391,7 +391,7 @@ survey_by_individual_age <- function(survey_features, age_df) {
     ) |>
     dplyr::rename(overall_sample_size = "n_sample")
 
-  return(overall_sample_size_df)
+  overall_sample_size_df
 }
 
 #' Generate random sample sizes using multinomial sampling.
@@ -411,7 +411,8 @@ multinomial_sampling_group <- function(n_sample, n_ages) {
   sample_size_by_age <- as.vector(
     stats::rmultinom(1, n_sample, prob = probs)
   )
-  return(sample_size_by_age)
+
+  sample_size_by_age
 }
 
 #' Generate random sample sizes for each age group.
@@ -449,7 +450,8 @@ generate_random_sample_sizes <- function(survey_df_long) {
       df_new <- dplyr::bind_rows(df_new, df_tmp)
     }
   }
-  return(df_new)
+
+  df_new
 }
 
 #' Generate random sample sizes for each individual age based on survey
@@ -497,7 +499,7 @@ sample_size_by_individual_age <- function(survey_features) {
 
   df_new <- generate_random_sample_sizes(survey_features_all_ages)
 
-  return(df_new)
+  df_new
 }
 
 #' Generate seropositivity counts by bin given the probability and sample size
@@ -538,7 +540,7 @@ get_seroprev_counts_by_bin <- function(
     by = c("age_min", "age_max", "n_sample")
   )
 
-  return(grouped_df)
+  grouped_df
 }
 
 #' Simulate serosurvey data based on a time-varying FOI model.
@@ -794,7 +796,7 @@ simulate_serosurvey <- function(
 
   # don't advertise time-age in case people think this is something else
   if (!model %in% c("age", "time", "age-time", "time-age"))
-    stop("model must be one of 'age', 'time', or 'age-time'.")
+    stop("model must be one of 'age', 'time', or 'age-time'.", call. = FALSE)
 
   if (model == "time") {
     serosurvey <- simulate_serosurvey_time(
@@ -899,5 +901,5 @@ simulate_serosurvey_general <- function( #nolint
     survey_features
   )
 
-  return(grouped_df)
+  grouped_df
 }

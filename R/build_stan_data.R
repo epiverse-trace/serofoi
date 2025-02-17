@@ -11,7 +11,9 @@ sf_normal <- function(mean = 0, sd = 1) {
   if (mean < 0 || sd <= 0) {
     stop(
       "Normal distribution only accepts",
-      " `mean>=0` and `sd>0` for mean and standard deviation")
+      " `mean>=0` and `sd>0` for mean and standard deviation",
+      call. = FALSE
+    )
   }
 
   return(list(mean = mean, sd = sd, name = "normal"))
@@ -30,7 +32,8 @@ sf_uniform <- function(min = 0, max = 10) {
   if (min < 0 || (min >= max)) {
     stop(
       "Uniform distribution only accepts",
-      " 0<=min<max"
+      " 0<=min<max",
+      call. = FALSE
     )
   }
 
@@ -46,11 +49,11 @@ sf_uniform <- function(min = 0, max = 10) {
 #' my_prior <- sf_cauchy()
 #' @export
 sf_cauchy <- function(location = 0, scale = 1) {
-  # Restricting normal inputs to be non-negative
-  if (location < 0 || scale < 0) {
+  if (location < 0 || scale < 0) { # Restricting inputs to be non-negative
     stop(
       "Cauchy distribution only accepts",
-      " `location>=0` and `scale>=0` for median and median absolute deviation")
+      " `location>=0` and `scale>=0` for median and median absolute deviation",
+      call. = FALSE)
   }
 
   return(list(location = location, scale = scale, name = "cauchy"))
@@ -61,7 +64,7 @@ sf_cauchy <- function(location = 0, scale = 1) {
 #' @return List with the name of the empty distribution
 #' @export
 sf_none <- function() {
-  return(list(name = "none"))
+  list(name = "none")
 }
 
 #' Generates force-of-infection indexes for heterogeneous age groups
@@ -135,7 +138,7 @@ get_foi_index <- function(
     )
   }
 
-  return(foi_index)
+  foi_index
 }
 
 #' Set stan data defaults for sampling
@@ -282,16 +285,27 @@ build_stan_data <- function(
 
   if (is_seroreversion) {
     if (seroreversion_prior$name == "none") {
-      stop("seroreversion_prior not specified")
-    } else if (seroreversion_prior$name == "uniform") {
-      stan_data$seroreversion_prior_index <- prior_index[["uniform"]]
-      stan_data$seroreversion_min <- seroreversion_prior$min
-      stan_data$seroreversion_max <- seroreversion_prior$max
-    } else if (seroreversion_prior$name == "normal") {
-      stan_data$seroreversion_prior_index <- prior_index[["normal"]]
-      stan_data$seroreversion_mean <- seroreversion_prior$mean
-      stan_data$seroreversion_sd <- seroreversion_prior$sd
+      stop("seroreversion_prior not specified", call. = FALSE)
     }
+
+    stan_data$seroreversion_prior_index <- switch(
+      seroreversion_prior$name,
+      uniform = prior_index[["uniform"]],
+      normal = prior_index[["normal"]],
+      stop("Invalid seroreversion_prior name", call. = FALSE) # Default case
+    )
+
+    switch(
+      seroreversion_prior$name,
+      uniform = {
+        stan_data$seroreversion_min <- seroreversion_prior$min
+        stan_data$seroreversion_max <- seroreversion_prior$max
+      },
+      normal = {
+        stan_data$seroreversion_mean <- seroreversion_prior$mean
+        stan_data$seroreversion_sd <- seroreversion_prior$sd
+      }
+    )
   }
 
   return(stan_data)

@@ -34,11 +34,12 @@ validate_serosurvey <- function(serosurvey) {
   if (length(error_messages) > 0) {
     stop(
       "The following columns in `serosurvey` have wrong types:\n",
-      toString(error_messages)
+      toString(error_messages),
+      call. = FALSE
     )
   }
 
-  return(serosurvey)
+  serosurvey
 }
 
 #' Check min and max age consistency for validation purposes
@@ -53,7 +54,8 @@ check_age_constraints <- function(df) {
       }
     }
   }
-  return(TRUE)
+
+  TRUE
 }
 
 #' Helper function to validate serosurvey features for simulation
@@ -68,7 +70,8 @@ validate_survey_features <- function(survey_features) {
       ) {
     stop(
       "survey_features must be a dataframe with columns ",
-      "'age_min', 'age_max', and 'n_sample'."
+      "'age_min', 'age_max', and 'n_sample'.",
+      call. = FALSE
       )
   }
 
@@ -78,7 +81,8 @@ validate_survey_features <- function(survey_features) {
   if (!is_age_ok)
     stop(
       "Age bins in a survey are inclusive of both bounds, ",
-      "so the age_max of one bin cannot equal the age_min of another."
+      "so the age_max of one bin cannot equal the age_min of another.",
+      call. = FALSE
       )
 }
 
@@ -100,7 +104,7 @@ validate_foi_df <- function(foi_df, cnames_additional) {
         )
     }
     message_beginning <- "foi must be a dataframe with columns foi"
-    stop(glue::glue("{message_beginning}", "{message_end}"))
+    stop(glue::glue("{message_beginning}", "{message_end}"), call. = FALSE)
   }
 }
 
@@ -110,7 +114,9 @@ validate_foi_df <- function(foi_df, cnames_additional) {
 #' @keywords internal
 validate_seroreversion_rate <- function(seroreversion_rate) {
   if (!is.numeric(seroreversion_rate) || seroreversion_rate < 0) {
-    stop("seroreversion_rate must be a non-negative numeric value.")
+    stop(
+      "seroreversion_rate must be a non-negative numeric value.",
+      call. = FALSE)
   }
 }
 
@@ -127,7 +133,8 @@ validate_simulation_age <- function(
   if (max_age_foi_df > max(survey_features$age_max))
     stop(
       "maximum age implicit in foi_df should ",
-      "not exceed max age in survey_features."
+      "not exceed max age in survey_features.",
+      call. = FALSE
       )
 }
 
@@ -144,7 +151,8 @@ validate_simulation_age_time <- function(
   if (max_age_foi_df > max(survey_features$age_max))
     stop(
       "maximum age implicit in foi_df should ",
-      "not exceed max age in survey_features."
+      "not exceed max age in survey_features.",
+      call. = FALSE
       )
 }
 
@@ -179,10 +187,10 @@ validate_foi_index <- function(
     "foi_index$foi_index must contain consecutive indexes" =
     # 0 validates that indexes do not decrease for consecutive chunks
     # 1 validates that there are not missing indexes
-    all(diff(foi_index$foi_index) %in% c(0, 1))
+    diff(foi_index$foi_index) %in% c(0, 1)
   )
 
-  return(foi_index)
+  foi_index
 }
 
 #' Helper function to validate whether the current plot corresponds
@@ -202,12 +210,12 @@ validate_plot_constant <- function(
         "plot_constant is only relevant when ",
         "`seromodel@model_name == 'constant'`"
       )
-      stop(error_msg)
+      stop(error_msg, call. = FALSE)
     }
     if (!(x_axis %in% c("age", "time"))) {
-      stop(error_msg_x_axis)
+      stop(error_msg_x_axis, call. = FALSE)
     }
   }
 
-  return(TRUE)
+  TRUE
 }
