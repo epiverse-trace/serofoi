@@ -572,16 +572,15 @@ plot_summary <- function(
   )
 
   if (plot_constant) {
-    if (startsWith(seromodel@model_name, "constant")) {
-      drop <- c("foi", "foi_rhat")
-      summary_list <- summary_list[!(names(summary_list) %in% drop)]
-    } else {
+    if (!startsWith(seromodel@model_name, "constant")) {
       error_msg <- paste0(
         "plot_constant is only relevant when ",
         "`seromodel@model_name == 'constant'`"
       )
       stop(error_msg, call. = FALSE)
     }
+    drop_list <- c("foi", "foi_rhat")
+    summary_list <- summary_list[!(names(summary_list) %in% drop_list)]
   }
 
   summary_df <- data.frame(
