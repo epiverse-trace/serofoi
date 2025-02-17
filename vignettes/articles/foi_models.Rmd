@@ -1,5 +1,5 @@
 ---
-title: "An Introduction To Force Of Infection Models"
+title: "An Introduction To Force-of-Infection Models"
 ---
 
 ```{r, include = FALSE}
@@ -14,11 +14,11 @@ library(serofoi)
 library(dplyr)
 ```
 
-The current version of ***serofoi*** supports three different serocatalytic models for estimating the *Force-of-Infection (FoI)*: constant, age-varying, and time-varying FoI. To estimate relevant parameters we employ a suit of Bayesian models using age-disaggregated population-based cross-sectional serological surveys as input data.
+The current version of ***serofoi*** supports three different types of serocatalytic models for estimating the *Force-of-Infection* (FoI): constant, age-varying, and time-varying FoI. To estimate relevant parameters we employ a suit of Bayesian models using age-disaggregated population-based cross-sectional serological surveys as input data.
 
-## What is the Force-of-Infection
+## What is the FoI
 
-The force of infection, also known as the hazard rate or the infection pressure, is a key concept in mathematical modelling of infectious diseases. It represents the rate at which susceptible individuals become infected, given their exposure to a pathogen. In simple terms, the force of infection quantifies the risk of a susceptible individual becoming infected over a period of time. It is usually expressed as a rate per unit of time (e.g., per day or per year).
+The FoI, also known as the hazard rate or the infection pressure, is a key concept in mathematical modelling of infectious diseases. It represents the rate at which susceptible individuals become infected given their exposure to a pathogen. In simple terms, the FoI quantifies the risk of a susceptible individual becoming infected over a period of time. It is usually expressed as a rate per unit of time (e.g., per day or per year).
 
 To illustrate this, consider a simple SIR model:
 $$
@@ -43,9 +43,9 @@ where $0 \leq N^\tau(t)\leq 1$ is the proportion of individuals born in year $\t
 
 ## Constant vs Time-varying FoI
 
-The *FoI* is often incorrectly assumed to be constant over time. Identifying whether the *FoI* follows a constant, an age-varying or a time-varying trend can be important in the identification and characterization of the spread of disease. **serofoi** offers tools to implement and compare a wide variety of Bayesian models to estimate the FoI according to the aforementioned serocatalytic models.
+The FoI is often incorrectly assumed to be constant over time. Identifying whether the FoI follows a constant, an age-varying or a time-varying trend can be important in the identification and characterization of the spread of disease. **serofoi** offers tools to implement and compare a wide variety of Bayesian models to estimate the FoI according to the aforementioned serocatalytic models.
 
-In the idealised situation where FoI is constant $\lambda(t) = \lambda$:
+In the idealised situation where the FoI is constant $\lambda(t) = \lambda$:
 
 $$
 \frac{dP^{\tau}(t)}{dt} = \lambda (1 - P^{\tau}(t)).
@@ -82,11 +82,11 @@ $$
   P^{\tau}(t)  = \frac{\lambda_t}{\lambda_t + \mu} + \left(P_0 - \frac{\lambda_t}{\lambda_t + \mu}\right) \exp(-(\lambda_t + \mu)),
 $$
 
-where, again, $P_0$ corresponds to the proportion of seropositive individuals of cohort $\tau$ by the end of the previous year. Correct indexation and simplification of this equation allows the description of age-dependent FOIs.
+where, again, $P_0$ corresponds to the proportion of seropositive individuals of cohort $\tau$ by the end of the previous year. Correct indexation and simplification of this equation allows the description of age-dependent FoIs.
 
 ## Estimating the FoI - Bayesian modelling
 
-Now that we can describe the proportion of seropositive individuals $P(t)$ by means of the serocatalytic models for constant, time-varying, and age-varying FOIs, what we want is to obtain estimates of the FoI $\lambda$ and the seroreversion rate $\mu$ by sampling from a Bayesian model taking a cross-sectional serological survey as data. For this, we can use **serofoi**'s `fit_seromodel()`, which relies on the statistical programming language *Stan* to perform this task. The current available models are summarised in table 1:
+Now that we can describe the proportion of seropositive individuals $P(t)$ by means of the serocatalytic models for constant, time-varying, and age-varying FoIs, what we want is to obtain estimates of the FoI $\lambda$ and the seroreversion rate $\mu$ by sampling from a Bayesian model taking a cross-sectional serological survey as data. For this, we can use **serofoi**'s `fit_seromodel()`, which relies on the statistical programming language *Stan* to perform this task. The current available models are summarised in table 1:
 
 
 ::: l-body-outset
@@ -155,7 +155,7 @@ In this case, 800 iterations are enough to ensure convergence. `plot_seromodel()
 
 ## Time-varying FoI models
 
-For the time-varying *FoI* models, the probability for a case to be positive at age a at time $t$ also follows a binomial distribution, as described above. However, the seroprevalence is obtained from a cumulative of the yearly-varying values of the *FoI* over time:
+For the time-varying FoI models, the probability for a case to be positive at age a at time $t$ also follows a binomial distribution, as described above. However, the seroprevalence is obtained from a cumulative of the yearly-varying values of the FoI over time:
 
 $$
   P^{\tau}(t)  = \frac{\lambda_t}{\lambda_t + \mu} + \left(P_0 - \frac{\lambda_t}{\lambda_t + \mu}\right) \exp(-(\lambda_t + \mu)),
@@ -163,9 +163,9 @@ $$
 
 ## Model 2. Time-varying FoI - Slow Time-Varying FoI
 
-The *time-varying model* (`model_type = "time"`) uses a forward random walk algorithm where the prior of the first chronological FoI value in the time-span of the serological survey can be either a normal distribution (`foi_prior = sf_normal()`) or a uniform distribution (`foi_prior = sf_unif()`). Subsequent values of the FoI are sampled from the normal distribution as $\lambda_i \sim \mathcal{N}(\lambda_{i-1}, \sigma)$, where $\sigma \sim \textit{Cauchy}(0, 1)$. The prior distribution for the seroreversion rate can also be either normal or uniform, and is specified by means of the parameter `seroreversio_prior`.
+The *time-varying model* (`model_type = "time"`) uses a forward random walk algorithm where the prior of the first chronological FoI value in the time-span of the serological survey can be either a normal distribution (`foi_prior = sf_normal()`) or a uniform distribution (`foi_prior = sf_uniform()`). Subsequent values of the FoI are sampled from the normal distribution as $\lambda_i \sim \mathcal{N}(\lambda_{i-1}, \sigma)$, where $\sigma \sim \mathcal{C}(0, 1)$. The prior distribution for the seroreversion rate can also be either normal or uniform, and is specified by setting `is_seroreversion = TRUE` and by means of the parameter `seroreversion_prior`.
 
-To test the `tv_normal` model we simulate a serosurvey following a stepwise decreasing *FoI* (red line in Fig. 2) using the data simulation functions of ***serofoi***:
+To test the `"time"` using a normal prior in the FoI, we simulate a serosurvey following a stepwise decreasing FoI (red line in Fig. 2) using the data simulation functions of ***serofoi***:
 
 ```{r tv_normal simdata, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE}
 
@@ -221,7 +221,7 @@ rm(list = ls(pattern = "_sw_dec|_normal"))
 The number of iterations required may depend on the number of years, reflected by the difference between the year of the serosurvey and the maximum age-class sampled.
 
 ## Model 3. Time-varying FoI - Fast Epidemic Model
-The *time-varying fast epidemic model* is parametrized in such a way that the initial FoI value in the forward random walk is sampled in the logarithmic scale. In this case, the priors for subsequent FOIs are:
+The *time-varying fast epidemic model* is parametrized in such a way that the initial FoI value in the forward random walk is sampled in the logarithmic scale. In this case, the priors for subsequent FoIs are:
 
 $$
 \begin{aligned}
@@ -230,7 +230,7 @@ $$
 \end{aligned}
 $$
 
-This is done in order to capture fast changes in the *FoI* trend. 
+This is done in order to capture fast changes in the FoI trend. 
 
 To test the `log_time` model we simulate a serosurvey conducted in 2050 emulating a hypothetical situation where a three-year epidemic occurred between 2030 and 2035:
 
@@ -287,7 +287,7 @@ In Fig 3 we can see that the *fast epidemic serofoi model* is able to identify t
 
 ## Models Comparison
 
-Above we showed that the fast epidemic model (specified by `model_type = "time"` and `is_log = TRUE` in `fit_seromodel()`) is able to identify the large epidemic outbreak described by the dataset simulated according to a step-wise decreasing *FoI* (red line in Fig 3). 
+Above we showed that the fast epidemic model (specified by `model_type = "time"` and `is_log = TRUE` in `fit_seromodel()`) is able to identify the large epidemic outbreak described by the dataset simulated according to a step-wise decreasing FoI (red line in Fig 3). 
 
 Now, we would like to know whether this model actually fits this dataset better than the other available models in ***serofoi***. For this, we also implement both the endemic model (`model_type = "constant"`)   and the slow time-varying normal model (`model_type="time"`, `is_log = FALSE`):
 

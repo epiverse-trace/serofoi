@@ -22,8 +22,8 @@ theme_set(theme_bw())
 
 In this vignette, we show how it is possible to simulate serosurveys using the `simulate_serosurvey` function. This function separates two aspects: the serocatalytic model used to simulate population-wide seropositivity throughout individuals' lives; and the features of the particular serological survey that are being used to uncover these dynamics.
 
-## Constant FOI
-We start by assuming that a disease has a constant force-of-infection (FOI) over time.
+## Constant FoI
+We start by assuming that a disease has a constant *Force-of-Infection* (FoI) over time.
 
 ```{r, fig.align="center"}
 max_age <- 80
@@ -46,14 +46,14 @@ survey_features <- data.frame(
   n_sample = rep(n_sample, max_age))
 ```
 
-We then put these pieces together and simulate a serosurvey. Either a time-varying FOI model or an age-varying FOI model would produce the same results here since they are equivalent when the FOI is constant.
+We then put these pieces together and simulate a serosurvey. Either a time-varying FoI model or an age-varying FoI model would produce the same results here since they are equivalent when the FoI is constant.
 ```{r}
 serosurvey_constant <- simulate_serosurvey(
   model = "age",
   foi = foi_constant,
   survey_features = survey_features
 ) |>
-  mutate(model_type = "constant FOI")
+  mutate(model_type = "constant FoI")
 
 glimpse(serosurvey_constant)
 ```
@@ -75,8 +75,8 @@ plot_serosurvey(serosurvey_constant) +
   scale_y_continuous(labels = scales::percent)
 ```
 
-## Age-varying FOI
-We now consider a pathogen which has an FOI that varies throughout the age of individuals. We assume the FOI declines strongly throughout childhood.
+## Age-varying FoI
+We now consider a pathogen which has an FoI that varies throughout the age of individuals. We assume the FoI declines strongly throughout childhood.
 
 ```{r, fig.align="center"}
 ages <- seq(1, max_age, 1)
@@ -97,14 +97,14 @@ serosurvey_age_dep <- simulate_serosurvey(
   foi = foi_age_varying,
   survey_features = survey_features
 ) |>
-    mutate(model_type = "age-dependent FOI")
+    mutate(model_type = "age-dependent FoI")
 
 ```
 
-Below, we see that the FOI for the age-dependent FOI pathogen increases rapidly during the earliest years then plateaus in later adulthood as the FOI effectively becomes negligible.
+Below, we see that the FoI for the age-dependent FoI pathogen increases rapidly during the earliest years then plateaus in later adulthood as the FoI effectively becomes negligible.
 
 ```{r, fig.align="center"}
-# combine with constant FOI survey
+# combine with constant FoI survey
 prob_seroprev_constant <- prob_seroprev_by_age(
       model = "age",
       foi = foi_constant,
@@ -146,8 +146,8 @@ plot_serosurvey(serosurvey = serosurvey_combined) +
   facet_wrap(~model_type)
 ```
 
-## Time-dependent FOI
-We now consider a pathogen where the FOI varies only over calendar time. We imagine a pathogen that has a 'spiky' FOI, characteristic of an epidemic disease.
+## Time-dependent FoI
+We now consider a pathogen where the FoI varies only over calendar time. We imagine a pathogen that has a 'spiky' FoI, characteristic of an epidemic disease.
 
 ```{r, fig.align="center", fig.alt="Spiky FoI"}
 foi_spiky <- data.frame(
@@ -197,11 +197,11 @@ plot_serosurvey(serosurvey_spiky) +
   xlab("Age")
 ```
 
-## Age-and-time-dependent FOI
+## Age-and-time-dependent FoI
 Many pathogens may have a transmission strength that varies according to both age and time. An example of this could be for a sexually transmitted disease where transmission follows a characteristic age-specific pattern, peaking in the early 20s. Here, we imagine such a disease which has relatively recently invaded a population.
   
-We imagine the time-specific multiplier of FOI follows the below variation.
-```{r, fig.align="center", fig.alt="Time-specific multiplier of the FOI"}
+We imagine the time-specific multiplier of FoI follows the below variation.
+```{r, fig.align="center", fig.alt="Time-specific multiplier of the FoI"}
 foi_time <- c(rep(0, 40), rep(1, 40))
 foi_df_time <- data.frame(
   year = seq(1946, 2025, 1),
@@ -213,8 +213,8 @@ ggplot(foi_df_time, aes(x = year, y = foi)) +
   geom_line()
 ```
 
-We create a pattern of age-structured FOI multipliers which peaks in those of early 20s.
-```{r, fig.align="center", fig.alt="Plot of age-structured FOI multipliers"}
+We create a pattern of age-structured FoI multipliers which peaks in those of early 20s.
+```{r, fig.align="center", fig.alt="Plot of age-structured FoI multipliers"}
 ages <- seq(1, 80, 1)
 foi_age <- 2 * dlnorm(
   ages, meanlog = 3.5, sdlog = 0.5)
@@ -229,7 +229,7 @@ ggplot(foi_df_age, aes(x = age, y = foi)) +
   geom_line()
 ```
 
-To create the overall FOI (which is a function of both time and age), we create the product of the time- and age-dependent parts of it.
+To create the overall FoI (which is a function of both time and age), we create the product of the time- and age-dependent parts of it.
 ```{r}
 foi_age_time <- expand.grid(
   year = foi_df_time$year,
@@ -243,7 +243,7 @@ foi_age_time <- expand.grid(
   select(-c("foi_age", "foi_time"))
 ```
 
-```{r, fig.align="center", echo=FALSE, fig.alt="Plot a few birth years of time- and age-dependent FOI"}
+```{r, fig.align="center", echo=FALSE, fig.alt="Plot a few birth years of time- and age-dependent FoI"}
 # plot a few birth years
 select_birth_years <- c(1955, 1965, 1975, 1985, 1995, 2005, 2015)
 foi_age_time |>
@@ -256,7 +256,7 @@ foi_age_time |>
   geom_line()
 ```
 
-We now simulate a serosurvey assuming these historical FOIs generated the population-wide seropositivities in 2025; we make the sample sizes larger to be able to clearly visualise the patterns in seropositivity. We also illustrate how serosurveys with wider age-bins can be generated by choosing 5-year bins.
+We now simulate a serosurvey assuming these historical FoIs generated the population-wide seropositivities in 2025; we make the sample sizes larger to be able to clearly visualise the patterns in seropositivity. We also illustrate how serosurveys with wider age-bins can be generated by choosing 5-year bins.
 ```{r}
 max_age <- 80
 n_sample <- 50
@@ -273,7 +273,7 @@ serosurvey <- simulate_serosurvey(
     mutate(model_type = "non-seroreverting")
 ```
 
-```{r, fig.align="center", fig.alt="Plot serosurvey obtained simulating from time- and age-dependent FOI"}
+```{r, fig.align="center", fig.alt="Plot serosurvey obtained simulating from time- and age-dependent FoI"}
 plot_serosurvey(serosurvey) +
   geom_line(
     data = prob_seroprev_by_age(
@@ -303,7 +303,7 @@ serosurvey_serorevert <- simulate_serosurvey(
 ```
 
 ```{r, fig.align="center", fig.alt="Plot comparing serosurveys with and without seroreversion"}
-# combine with constant FOI survey
+# combine with constant FoI survey
 prob_seroprev_no_serorev <- prob_seroprev_by_age(
   model = "age-time",
   foi = foi_age_time,
@@ -347,7 +347,7 @@ plot_serosurvey(serosurvey = serosurvey_combined) +
 ```
 
 # Simulating from a general serological model
-We now illustrate an example age- and time-dependent FOI model for representing the prevalence of HIV (in the absence of treatment). In the absence of treatment, HIV invariably ends in death, and death usually occurs after the onset of AIDS which occurs typically many years after infection. This means that the time from infection to death has a characteristic waiting time, which year we model as being around 10 years long.
+We now illustrate an example age- and time-dependent FoI model for representing the prevalence of HIV (in the absence of treatment). In the absence of treatment, HIV invariably ends in death, and death usually occurs after the onset of AIDS which occurs typically many years after infection. This means that the time from infection to death has a characteristic waiting time, which year we model as being around 10 years long.
 
 Our model considers a single susceptible group, $S^{\tau}(t)$ indexed by their birth year, $\tau$, and calendar time, $t$. There are then a series of consecutive seropositive states, $X_i^{\tau}(t)$, for $i\in[1,10]$; then finally a dead state, $D^{\tau}(t)$. By distributing the seropositive population across a range of states, this model effectively institutes a delay from infection until death. Our model takes the following form:
 
