@@ -187,7 +187,7 @@ validate_foi_index <- function(
     "foi_index$foi_index must contain consecutive indexes" =
     # 0 validates that indexes do not decrease for consecutive chunks
     # 1 validates that there are not missing indexes
-    all(diff(foi_index$foi_index) %in% c(0, 1))
+    diff(foi_index$foi_index) %in% c(0, 1)
   )
 
   foi_index
