@@ -13,7 +13,7 @@ add_age_group_to_serosurvey <- function(serosurvey) {
       age_group = floor((.data$age_min + .data$age_max) / 2)
     )
   }
-  return(serosurvey)
+  serosurvey
 }
 
 #' Sets initialization function for sampling
@@ -56,7 +56,7 @@ set_foi_init <- function(
   checkmate::assert_class(foi_init, "function")
   checkmate::assert_double(unlist(foi_init()[[1]]), len = max(foi_index))
 
-  return(foi_init)
+  foi_init
 }
 
 #' Runs specified stan model for the force-of-infection

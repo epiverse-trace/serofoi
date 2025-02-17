@@ -54,7 +54,8 @@ check_age_constraints <- function(df) {
       }
     }
   }
-  return(TRUE)
+
+  TRUE
 }
 
 #' Helper function to validate serosurvey features for simulation
@@ -189,7 +190,7 @@ validate_foi_index <- function(
     all(diff(foi_index$foi_index) %in% c(0, 1))
   )
 
-  return(foi_index)
+  foi_index
 }
 
 #' Helper function to validate whether the current plot corresponds
@@ -209,12 +210,12 @@ validate_plot_constant <- function(
         "plot_constant is only relevant when ",
         "`seromodel@model_name == 'constant'`"
       )
-      stop(error_msg)
+      stop(error_msg, call. = FALSE)
     }
     if (!(x_axis %in% c("age", "time"))) {
-      stop(error_msg_x_axis)
+      stop(error_msg_x_axis, call. = FALSE)
     }
   }
 
-  return(TRUE)
+  TRUE
 }

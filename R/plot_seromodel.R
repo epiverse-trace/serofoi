@@ -30,7 +30,8 @@ prepare_serosurvey_for_plot <- function(
       conf.level = 1 - alpha
     )$conf.int
     names(ci) <- c("seroprev_lower", "seroprev_upper")
-    return(ci)
+
+    ci
   }
 
   serosurvey <- serosurvey |>
@@ -103,7 +104,7 @@ get_age_intervals <- function(serosurvey, step) {
       labels = survey_features$group
     )
 
-  return(serosurvey)
+  serosurvey
 }
 
 #' Plots seroprevalence from the given serosurvey
