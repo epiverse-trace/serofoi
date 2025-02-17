@@ -29,9 +29,10 @@ $$
 \end{aligned}
 $$
 
-The FoI in this case is defined as $\lambda(t) = \beta I(t)$ (Note that the FoI is time-dependent by definition). To solve this system of equations, we need to know the transmission rate, $\beta>0$, and the rate of recovery from infection $\gamma>0$, as well as some initial conditions.
+In this case, the FoI is defined as $\lambda(t) = \beta I(t)$ (Note that the FoI is time dependent by definition). To solve this system of equations we need to know the transmission rate $\beta>0$, and the rate of recovery from infection $\gamma>0$, as well as some initial conditions.
 
-**Serocatalytic models** offer a simpler perspective: to estimate how the risk of historical exposure to a pathogen varies depending on the time of birth of the individuals in the sample. For this, we put together the $I$ and $R$ compartments into a single **seropositives** compartment $P(t)$ and consider the the dynamics of each birth cohort separately:
+**Serocatalytic models** offer a simpler perspective. Here we are interested in estimating how the risk of historical exposure to a pathogen varies depending on the time of birth of the individuals in the sample. For this, we put together the $I$ and $R$ compartments into a single **seropositives** compartment $P(t)$ and consider that the dynamics of each birth cohort separately
+
 $$
 \begin{aligned}
     &\frac{dN^{\tau}(t)}{dt} = -\lambda(t) N^{\tau}(t),\\
@@ -56,7 +57,7 @@ $$
 P^{\tau}(t) = 1 - \exp(-\bar \lambda t),
 $$
 
-meaning that, in the long rung, the seropositivity converges to 1$P^{\tau}(t)\rightarrow 1$.
+meaning that, in the long run, the seropositivity converges to 1.
 
 In more realistic applications, the FoI is assumed to be piecewise-constant on discrete intervals of 1-year length. The solution for each year is then:
 $$
@@ -75,7 +76,7 @@ $$
 \end{aligned}
 $$
 
-Similarly, this yields to a iterative solution for the seropositivity $X^\tau (t)$ when piece-wise constant FoI is considered:
+Similarly, this yields to a iterative solution for the seropositivity $P^\tau (t)$ when piece-wise constant FoI is considered:
 
 
 $$
@@ -86,28 +87,54 @@ where, again, $P_0$ corresponds to the proportion of seropositive individuals of
 
 ## Estimating the FoI - Bayesian modelling
 
-Now that we can describe the proportion of seropositive individuals $P(t)$ by means of the serocatalytic models for constant, time-varying, and age-varying FoIs, what we want is to obtain estimates of the FoI $\lambda$ and the seroreversion rate $\mu$ by sampling from a Bayesian model taking a cross-sectional serological survey as data. For this, we can use **serofoi**'s `fit_seromodel()`, which relies on the statistical programming language *Stan* to perform this task. The current available models are summarised in table 1:
+Now that we can describe the proportion of seropositive individuals $P(t)$ by means of the serocatalytic models for constant, time-varying, and age-varying FoIs, what we want is to obtain estimates of the FoI ($\lambda$) and the seroreversion rate ($\mu$) by sampling bye means of Bayesian methods taking a cross-sectional serological survey as data. For this, we can use **serofoi**'s `fit_seromodel()`, which relies on the statistical programming language *Stan* to perform this task. The current available options for modelling are summarised in table 1:
 
 
 ::: l-body-outset
-| Serocatalytic model | scale   | n_seropositive                        | FoI_1 prior                           | FoI_i, i>1               | sigma                   | mu                                    |
-| ------------------- | ------- | ------------------------------------- | ------------------------------------- | ------------------------ | ----------------------- | ------------------------------------- |
-| constant            | regular |  binomial(n_sample, prob_infected) | normal(mean, sd)<br>uniform(min, max) | \-                       | cauchy(mean, sd)            | normal(mean, sd)<br>uniform(min, max) |
-| age                 | regular |  binomial(n_sample, prob_infected) | normal(mean, sd)<br>uniform(min, max) | normal(FoI_{i-1}, sigma) | cauchy(mean, sd)            | normal(mean, sd)<br>uniform(min, max) |
-| time                | regular |  binomial(n_sample, prob_infected) | normal(mean, sd)<br>uniform(min, max) | normal(FoI_{i-1}, sigma) | cauchy(mean, sd)            | normal(mean, sd)<br>uniform(min, max) |
-| time                | log     |  binomial(n_sample, prob_infected) | normal(mean, sd)<br>uniform(min, max) | normal(FoI_{i-1}, sigma) | normal(location, scale) | normal(mean, sd)<br>uniform(min, max) |
+| `model_type` | scale (`is_log_foi`)  |  $\lambda_1$   | $\lambda_i$, $i>1$  | $\mu$     | $\sigma$ |
+| ------------ | --------------------- | -------------- | ------------------- | --------- | -------- |
+| `"constant"` | `FALSE`               | $\sim\mathcal{N}(\bar{\lambda},\sigma)$ or <br>$\sim\mathcal{U(\lambda_{min},\lambda_{max})}$ | \-| $\sim\mathcal{N}(\bar{\mu},\sigma_\mu)$ or <br>$\sim\mathcal{U(\mu_{min},\mu_{max})}$ | $\mathcal{C}(\sigma_0, \gamma)$ |
+| `"age"`      | `FALSE`               | $\sim\mathcal{N}(\bar{\lambda}_1,\sigma)$ or <br> $\sim\mathcal{U(\lambda_{1,min},\lambda_{1,max})}$ | $\sim\mathcal{N}(\lambda_{i-1},\sigma)$| $\sim\mathcal{N}(\bar{\mu},\sigma_\mu)$ or <br> $\sim\mathcal{U(\mu_{min},\mu_{max})}$ | $\mathcal{C}(\sigma_0, \gamma)$ |
+| `"time"`     | `FALSE`               | $\sim\mathcal{N}(\bar{\lambda}_1,\sigma)$ or <br> $\sim\mathcal{U(\lambda_{1,min},\lambda_{1,max})}$ | $\sim\mathcal{N}(\lambda_{i-1},\sigma)$ |$\sim\mathcal{N}(\bar{\mu},\sigma_\mu)$ or <br> $\sim\mathcal{U(\mu_{min},\mu_{max})}$ | $\mathcal{C}(\sigma_0, \gamma)$ |
+| `"time"`                | `TRUE`     | $\sim\mathcal{N}(\bar{\lambda}_1,\sigma)$ or <br> $\sim\mathcal{U(\lambda_{1,min},\lambda_{1,max})}$ | $\sim\mathcal{N}(\lambda_{i-1},\sigma)$ | $\sim\mathcal{N}(\bar{\mu},\sigma_\mu)$ or <br> $\sim\mathcal{U(\mu_{min},\mu_{max})}$ | $\mathcal{C}(\sigma_0, \gamma)$ |
 :::
-Table 1. Available options.
+Table 1. Available options. Here, $\mathcal{N}$ corresponds to the normal distribution, $\mathcal{U}$ to the uniform distribution, and $\mathcal{C}$ to the Cauchy distribution.
+
+The number of seropositives at the time of the survey $X(a)$, corresponding to `n_seropositive` in the data, follows a binomial distribution:
+
+$$
+  X(a) \sim Binom\left(n(a), P^{T - a} (T)\right)
+$$
+
+where $n(a)$ corresponds to the sample size for age group $a$ (`n_sample`) and $T$ is the time when the serosurvey was conducted. Note that $T-a$ correspond to the birth year of the cohort with age $a$ at the time of the survey.
+
+The prior distributions for each parameter can be selected in `fit_seromodel()`. This is done by means of the helper functions `sf_normal()`, ``sf_uniform()` and `sf_cauchy()`. For example:
+
+```{r prior_example, eval=FALSE}
+fit_seromodel(
+  serosurvey,
+  model_type = "time",
+  foi_prior = sf_uniform(0.5, 1),
+  foi_sigma_rw = sf_cauchy(0.01, 0.005),
+  is_seroreversion = TRUE,
+  seroreversion_prior = sf_normal(0.02, 0.01)
+)
+```
+
+Corresponds to the model:
+$$
+\begin{align}
+  \lambda_1 &\sim \mathcal{U}(0.5, 1) \\
+  \sigma &\sim \mathcal{C}(0.01, 0.005) \\
+  \mu &\sim \mathcal{N}(0.02, 0.01)
+\end{align}
+$$
+The available options for each parameter are shown in table 1. Note that, in the case of the age- and time-varying models, the FoI prior that can be specified is that of the first FoI value to be estimated (i.e. the birth year of the oldest age-group in the time-varying case and the youngest age-group in the age-varying case), such that the means for subsequent ages/years are selected iteratively as the FoI value estimated for the previous index.
 
 ## Model 1. Constant Force-of-Infection (endemic model)
 The *endemic constant model* is a simple mathematical model used in epidemiology to describe the seroprevalence of an infectious disease within a population, as a product of a long-term transmission. In this case, the rate of infection acquisition $\lambda$ is constant over time, and the seroprevalence $P(A)$ behaves as a cumulative process increasing monotonically with age.
 
-We always model the number of positive cases according to a binomial distribution, where $n(A)$ and $X(A)$ are the sample size and number of seropositive of age group $A$ respectively:
-$$
-X(A) \sim \textit{Binom}(n(A), P(A))
-$$
-
-To test the `constant` model we simulate a serosurvey following a stepwise decreasing *FoI* (red line in Fig. 1) using the data simulation functions of ***serofoi***:
+To test the `constant` model we simulate a serosurvey following a stepwise decreasing FoI (red line in Fig. 1) using the data simulation functions of ***serofoi***:
 
 ```{r constant simdata, include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE}
 # how the disease circulates
@@ -193,7 +220,7 @@ mutate(survey_year = 2050)
 
 ```
 
-The simulated  dataset `foi_sim_sw_dec` contains information about 250 samples of individuals between 1 and 50 years old (5 samples per age) with age groups of 5 years length. The following code shows how to implement the slow time-varying normal model to this simulated serosurvey:
+The simulated  dataset `serosurvey_sw_dec` contains information 250 samples of individuals between 1 and 50 years old (5 samples per age) with age groups of 5 years length. The following code shows how to implement the slow time-varying normal model to this simulated serological survey:
 
 ```{r tv_normal model, fig.cap = "Figure 2. Slow time-varying serofoi model plot.  Simulated (red) vs modelled (blue) FoI.", include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
 foi_index <- data.frame(
@@ -225,7 +252,7 @@ The *time-varying fast epidemic model* is parametrized in such a way that the in
 
 $$
 \begin{aligned}
-  \log\left(\lambda(t)\right) &\sim \mathcal{N}(\log(\lambda(t-1)), \sigma) \\
+  \log\left(\lambda_t\right) &\sim \mathcal{N}(\log(\lambda_{t-1}), \sigma) \\
   \sigma &\sim \mathcal{N} (0, 1)
 \end{aligned}
 $$
@@ -239,8 +266,8 @@ foi_df <- data.frame(
     year = seq(2000, 2049, 1),
     foi = c(
       rep(0, 30),
-      rep(0.6, 5),
-      rep(0, 15)
+      rep(0.7, 3),
+      rep(0, 17)
     )
 )
 
@@ -259,12 +286,12 @@ mutate(survey_year = 2050)
 
 ```
 
-The simulated serosurvey tests 250 individuals between 1 and 50 years old by the year 2050. The implementation of the fast epidemic model can be obtained running the following lines of code:
+The simulated serosurvey tests 250 individuals between 1 and 50 years old by the year 2050. The implementation of the fast epidemic model can be obtained running the following:
 
 ```{r tv_normal_log model, fig.cap = "Figure 3. *Time-varying fast epidemic serofoi model* plot. Simulated (red) vs modelled (blue) FoI.", include = TRUE, echo = TRUE, results="hide", errors = FALSE, warning = FALSE, message = FALSE, fig.width=4, fig.asp=1.5, fig.align="center", out.width ="50%", fig.keep="all"}
 foi_index <- data.frame(
   year = seq(2000, 2049),
-  foi_index = rep(c(1, 2, 3), c(30, 5, 15))
+  foi_index = rep(c(1, 2, 3), c(30, 3, 17))
 )
 seromodel_log_time_normal <- fit_seromodel(
   serosurvey = serosurvey_large_epi,
@@ -278,7 +305,8 @@ plot_log_time_normal <- plot_seromodel(
   seromodel_log_time_normal,
   serosurvey = serosurvey_large_epi,
   foi_df = foi_df,
-  size_text = 6
+  size_text = 5,
+  foi_max = 0.7
 )
 plot(plot_log_time_normal)
 ``` 
@@ -301,12 +329,15 @@ plot_constant <- plot_seromodel(
   seromodel_constant,
   serosurvey = serosurvey_large_epi,
   foi_df = foi_df,
-  size_text = 6
+  size_text = 5,
+  plot_constant = TRUE,
+  x_axis = "time",
+  foi_max = 0.7
 )
 
 foi_index <- data.frame(
   year = seq(2000, 2049),
-  foi_index = rep(c(1, 2, 3), c(30, 5, 15))
+  foi_index = rep(c(1, 2, 3), c(30, 3, 17))
 )
 seromodel_time_normal <- fit_seromodel(
   serosurvey = serosurvey_large_epi,
@@ -318,7 +349,8 @@ plot_time_normal <- plot_seromodel(
   seromodel_time_normal,
   serosurvey = serosurvey_large_epi,
   foi_df = foi_df,
-  size_text = 6
+  size_text = 5,
+  foi_max = 0.7
 )
 ```
 Using the function `cowplot::plot_grid` we can visualise the results of the three models simultaneously:
@@ -330,7 +362,7 @@ cowplot::plot_grid(
 )
 ```
 
-A common criterion to decide what model fits the data the best is to choose the one with the larger `elpd`. According to this criterion, in this case the best model is the fast epidemic model, which is the only one that manages to identify the large epidemic (see the second row of panel C in Figure 4).
+A common criterion to decide what model fits the data the best is to choose the one with the larger `elpd`. According to this criterion, in this case the epidemic and fast-epidemic models perform similarly (see the second row of panels B and C in Figure 4).
 
 NOTE: Running the ***serofoi*** models for the first time on your local computer may take a few minutes for the rstan code to compile locally. However, once the initial compilation is complete, there is no further need for local compilation.
 
