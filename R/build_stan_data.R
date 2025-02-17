@@ -11,7 +11,9 @@ sf_normal <- function(mean = 0, sd = 1) {
   if (mean < 0 || sd <= 0) {
     stop(
       "Normal distribution only accepts",
-      " `mean>=0` and `sd>0` for mean and standard deviation")
+      " `mean>=0` and `sd>0` for mean and standard deviation",
+      call. = FALSE
+    )
   }
 
   return(list(mean = mean, sd = sd, name = "normal"))
@@ -30,7 +32,8 @@ sf_uniform <- function(min = 0, max = 10) {
   if (min < 0 || (min >= max)) {
     stop(
       "Uniform distribution only accepts",
-      " 0<=min<max"
+      " 0<=min<max",
+      call. = FALSE
     )
   }
 
@@ -46,11 +49,11 @@ sf_uniform <- function(min = 0, max = 10) {
 #' my_prior <- sf_cauchy()
 #' @export
 sf_cauchy <- function(location = 0, scale = 1) {
-  # Restricting normal inputs to be non-negative
-  if (location < 0 || scale < 0) {
+  if (location < 0 || scale < 0) { # Restricting inputs to be non-negative
     stop(
       "Cauchy distribution only accepts",
-      " `location>=0` and `scale>=0` for median and median absolute deviation")
+      " `location>=0` and `scale>=0` for median and median absolute deviation",
+      call. = FALSE)
   }
 
   return(list(location = location, scale = scale, name = "cauchy"))
