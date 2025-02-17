@@ -285,16 +285,27 @@ build_stan_data <- function(
 
   if (is_seroreversion) {
     if (seroreversion_prior$name == "none") {
-      stop("seroreversion_prior not specified")
-    } else if (seroreversion_prior$name == "uniform") {
-      stan_data$seroreversion_prior_index <- prior_index[["uniform"]]
-      stan_data$seroreversion_min <- seroreversion_prior$min
-      stan_data$seroreversion_max <- seroreversion_prior$max
-    } else if (seroreversion_prior$name == "normal") {
-      stan_data$seroreversion_prior_index <- prior_index[["normal"]]
-      stan_data$seroreversion_mean <- seroreversion_prior$mean
-      stan_data$seroreversion_sd <- seroreversion_prior$sd
+      stop("seroreversion_prior not specified", call. = FALSE)
     }
+
+    stan_data$seroreversion_prior_index <- switch(
+      seroreversion_prior$name,
+      uniform = prior_index[["uniform"]],
+      normal = prior_index[["normal"]],
+      stop("Invalid seroreversion_prior name", call. = FALSE) # Default case
+    )
+
+    switch(
+      seroreversion_prior$name,
+      uniform = {
+        stan_data$seroreversion_min <- seroreversion_prior$min
+        stan_data$seroreversion_max <- seroreversion_prior$max
+      },
+      normal = {
+        stan_data$seroreversion_mean <- seroreversion_prior$mean
+        stan_data$seroreversion_sd <- seroreversion_prior$sd
+      }
+    )
   }
 
   return(stan_data)
