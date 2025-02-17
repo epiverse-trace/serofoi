@@ -64,7 +64,7 @@ sf_cauchy <- function(location = 0, scale = 1) {
 #' @return List with the name of the empty distribution
 #' @export
 sf_none <- function() {
-  return(list(name = "none"))
+  list(name = "none")
 }
 
 #' Generates force-of-infection indexes for heterogeneous age groups
@@ -138,7 +138,7 @@ get_foi_index <- function(
     )
   }
 
-  return(foi_index)
+  foi_index
 }
 
 #' Set stan data defaults for sampling
