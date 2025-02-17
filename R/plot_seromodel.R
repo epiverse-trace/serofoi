@@ -82,7 +82,7 @@ get_age_intervals <- function(serosurvey, step) {
     warn_msg <- paste0(
       warn_msg, "[", limits_low[length(limits_low)], ",", age_max, "]"
     )
-    warning(warn_msg)
+    warning(warn_msg, call. = FALSE)
   }
 
   # prepare breaks
@@ -578,7 +578,7 @@ plot_summary <- function(
         "plot_constant is only relevant when ",
         "`seromodel@model_name == 'constant'`"
       )
-      stop(error_msg)
+      stop(error_msg, call. = FALSE)
     }
   }
 

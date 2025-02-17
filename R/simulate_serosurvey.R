@@ -794,7 +794,7 @@ simulate_serosurvey <- function(
 
   # don't advertise time-age in case people think this is something else
   if (!model %in% c("age", "time", "age-time", "time-age"))
-    stop("model must be one of 'age', 'time', or 'age-time'.")
+    stop("model must be one of 'age', 'time', or 'age-time'.", call. = FALSE)
 
   if (model == "time") {
     serosurvey <- simulate_serosurvey_time(
