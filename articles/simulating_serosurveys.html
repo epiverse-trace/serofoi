@@ -127,15 +127,17 @@ constant.</p>
 <span>  model <span class="op">=</span> <span class="st">"age"</span>,</span>
 <span>  foi <span class="op">=</span> <span class="va">foi_constant</span>,</span>
 <span>  survey_features <span class="op">=</span> <span class="va">survey_features</span></span>
-<span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"constant FOI"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">serosurvey_constant</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 80</span></span>
-<span><span class="co">#&gt; Columns: 4</span></span>
+<span><span class="co">#&gt; Columns: 5</span></span>
 <span><span class="co">#&gt; $ age_min        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, …</span></span>
 <span><span class="co">#&gt; $ age_max        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, …</span></span>
 <span><span class="co">#&gt; $ n_sample       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,…</span></span>
-<span><span class="co">#&gt; $ n_seropositive <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 0, 3, 2, 1, 0, 4, 4, 4, 7, 7, 9, 5, 4, 8, 8, 10, 9, 12,…</span></span></code></pre></div>
+<span><span class="co">#&gt; $ n_seropositive <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 0, 3, 2, 1, 0, 4, 4, 4, 7, 7, 9, 5, 4, 8, 8, 10, 9, 12,…</span></span>
+<span><span class="co">#&gt; $ model_type     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "constant FOI", "constant FOI", "constant FOI", "consta…</span></span></code></pre></div>
 <p>Now, we can plot the proportions of those seropositive, including the
 posterior 95% percentiles (when assuming a flat prior), and plot it
 along the true seropositivities (line blue):</p>
@@ -177,33 +179,36 @@ survey.</p>
 <span>  model <span class="op">=</span> <span class="st">"age"</span>,</span>
 <span>  foi <span class="op">=</span> <span class="va">foi_age_varying</span>,</span>
 <span>  survey_features <span class="op">=</span> <span class="va">survey_features</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"age-dependent FOI"</span><span class="op">)</span></span></code></pre></div>
 <p>Below, we see that the FOI for the age-dependent FOI pathogen
 increases rapidly during the earliest years then plateaus in later
 adulthood as the FOI effectively becomes negligible.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># combine with constant FOI survey</span></span>
-<span><span class="va">serosurvey_combined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
-<span>  <span class="va">serosurvey_constant</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"constant FOI"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
+<span><span class="va">prob_seroprev_constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
 <span>      model <span class="op">=</span> <span class="st">"age"</span>,</span>
 <span>      foi <span class="op">=</span> <span class="va">foi_constant</span>,</span>
 <span>      seroreversion_rate <span class="op">=</span> <span class="fl">0</span></span>
 <span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>age_min <span class="op">=</span> <span class="va">age</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>age_min <span class="op">=</span> <span class="va">age</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">prob_seroprev_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
+<span>      model <span class="op">=</span> <span class="st">"age"</span>,</span>
+<span>      foi <span class="op">=</span> <span class="va">foi_age_varying</span>,</span>
+<span>      seroreversion_rate <span class="op">=</span> <span class="fl">0</span></span>
+<span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>age_min <span class="op">=</span> <span class="va">age</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">serosurvey_combined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
+<span>    <span class="va">serosurvey_constant</span>,</span>
+<span>    <span class="va">prob_seroprev_constant</span>,</span>
 <span>    by <span class="op">=</span> <span class="st">"age_min"</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>  <span class="va">serosurvey_age_dep</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"age-dependent FOI"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>          <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
-<span>          model <span class="op">=</span> <span class="st">"age"</span>,</span>
-<span>          foi <span class="op">=</span> <span class="va">foi_age_varying</span>,</span>
-<span>          seroreversion_rate <span class="op">=</span> <span class="fl">0</span></span>
-<span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>age_min <span class="op">=</span> <span class="va">age</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
+<span>    <span class="va">serosurvey_age_dep</span>,</span>
+<span>    <span class="va">prob_seroprev_age</span>,</span>
 <span>      by <span class="op">=</span> <span class="st">"age_min"</span></span>
 <span>      <span class="op">)</span></span>
 <span>  <span class="op">)</span>  <span class="op">|&gt;</span></span>
@@ -343,7 +348,8 @@ by choosing 5-year bins.</p>
 <span>  model <span class="op">=</span> <span class="st">"age-time"</span>,</span>
 <span>  foi <span class="op">=</span> <span class="va">foi_age_time</span>,</span>
 <span>  survey_features <span class="op">=</span> <span class="va">survey_features</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"non-seroreverting"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_serosurvey.html">plot_serosurvey</a></span><span class="op">(</span><span class="va">serosurvey</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span></span>
@@ -372,32 +378,35 @@ than previously.</p>
 <span>  foi <span class="op">=</span> <span class="va">foi_age_time</span>,</span>
 <span>  survey_features <span class="op">=</span> <span class="va">survey_features</span>,</span>
 <span>  seroreversion_rate <span class="op">=</span> <span class="fl">0.01</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"seroreverting"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># combine with constant FOI survey</span></span>
+<span><span class="va">prob_seroprev_no_serorev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="st">"age-time"</span>,</span>
+<span>  foi <span class="op">=</span> <span class="va">foi_age_time</span>,</span>
+<span>  seroreversion_rate <span class="op">=</span> <span class="fl">0</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>age_min <span class="op">=</span> <span class="va">age</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">prob_seroprev_serorev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="st">"age-time"</span>,</span>
+<span>  foi <span class="op">=</span> <span class="va">foi_age_time</span>,</span>
+<span>  seroreversion_rate <span class="op">=</span> <span class="fl">0.01</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>age_min <span class="op">=</span> <span class="va">age</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">serosurvey_combined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
-<span>  <span class="va">serosurvey</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"non-seroreverting"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
-<span>      model <span class="op">=</span> <span class="st">"age-time"</span>,</span>
-<span>      foi <span class="op">=</span> <span class="va">foi_age_time</span>,</span>
-<span>      seroreversion_rate <span class="op">=</span> <span class="fl">0</span></span>
-<span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>age_min <span class="op">=</span> <span class="va">age</span><span class="op">)</span>,</span>
+<span>    <span class="va">serosurvey</span>,</span>
+<span>    <span class="va">prob_seroprev_no_serorev</span>,</span>
 <span>    by <span class="op">=</span> <span class="st">"age_min"</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>  <span class="va">serosurvey_serorevert</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"seroreverting"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
-<span>          <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
-<span>          model <span class="op">=</span> <span class="st">"age-time"</span>,</span>
-<span>          foi <span class="op">=</span> <span class="va">foi_age_time</span>,</span>
-<span>          seroreversion_rate <span class="op">=</span> <span class="fl">0.01</span></span>
-<span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>age_min <span class="op">=</span> <span class="va">age</span><span class="op">)</span>,</span>
-<span>      by <span class="op">=</span> <span class="st">"age_min"</span></span>
-<span>      <span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span></span>
+<span>    <span class="va">serosurvey_serorevert</span>,</span>
+<span>    <span class="va">prob_seroprev_serorev</span>,</span>
+<span>    by <span class="op">=</span> <span class="st">"age_min"</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">model_type</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
