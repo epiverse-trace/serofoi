@@ -1,7 +1,8 @@
 #' Venezuelan Equine Encephalitis Virus (VEEV) seroprevalence data in serofoi
 #'
 #' Datasets that measure the seroprevalence of IgG antibodies against VEEV in
-#' a rural village in Panamá in 2012. [carrera2020]
+#' a rural village in Panamá in 2012
+#' [[Carrera2020](https://europepmc.org/article/med/33124532)].
 #'
 #' @docType data
 #'

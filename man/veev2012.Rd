@@ -22,7 +22,8 @@ data(veev2012)
 }
 \description{
 Datasets that measure the seroprevalence of IgG antibodies against VEEV in
-a rural village in Panamá in 2012. \link{carrera2020}
+a rural village in Panamá in 2012
+[\href{https://europepmc.org/article/med/33124532}{Carrera2020}].
 }
 \examples{
 data(veev2012)
