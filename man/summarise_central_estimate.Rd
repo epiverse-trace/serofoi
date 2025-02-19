@@ -14,7 +14,7 @@ summarise_central_estimate(
 }
 \arguments{
 \item{seromodel}{stan_fit object obtained from sampling a model
-with \link{fit_seromode}}
+with \link{fit_seromodel}}
 
 \item{serosurvey}{\describe{
 \item{\code{survey_year}}{Year in which the survey took place

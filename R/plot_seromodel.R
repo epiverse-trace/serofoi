@@ -199,7 +199,7 @@ plot_serosurvey <- function(
 #' Extracts central estimates from stan_fit object for specified parameter
 #'
 #' @param seromodel stan_fit object obtained from sampling a model
-#' with [fit_seromode]
+#' with [fit_seromodel]
 #' @inheritParams fit_seromodel
 #' @param alpha 1 - alpha indicates the credibility level to be used
 #' @param par_name String specifying the parameter to be extracted
