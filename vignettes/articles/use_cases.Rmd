@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 library(serofoi)
 ```
 
-The serofoi package is a tool for estimating the *Force-of-Infection* (FoI) from population-based serosurvey data. In this article, we present three real-life epidemiological scenarios from Latin America to demonstrate the utility of ***serofoi*** and time-varying models in describing the trajectory of the FoI. For inclusion criteria about serosurvey data and model assumptions, please check [**Get Started**](https://trace-lac.github.io/serofoi/articles/serofoi.html). 
+The serofoi package is a tool for estimating the *Force-of-Infection* (FoI) from population-based serosurvey data. In this article, we present three real-life epidemiological scenarios from Latin America to demonstrate the utility of ***serofoi*** and time-varying models in describing the trajectory of the FoI. For inclusion criteria about serosurvey data and model assumptions, please check [**An Introduction to FoI models**](https://epiverse-trace.github.io/serofoi/articles/foi_models.html). 
 
 The scenarios were chosen to showcase the versatility of the serofoi package in different epidemiological contexts: 
 

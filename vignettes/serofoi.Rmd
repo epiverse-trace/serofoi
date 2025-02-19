@@ -49,7 +49,7 @@ Current version of ***serofoi*** includes the following assumptions on the under
 
 ## The bayesian statistical framework
 
-To assess how well the mathematical representation of the different FoI models describes the seroprevalence data, we implement a fitting process that relies on a Bayesian framework. The priors and upper priors for each model indicate the assumed trajectory of the FoI (either constant or time-varying). serofoi provides a set of Bayesian comparison methods for the user to choose between various possible FoI models (trajectories) that best fit the seroprevalence data. For details see [An Introduction To Force-of-Infection Models](https://trace-lac.github.io/serofoi/articles/foi_models.html).
+To assess how well the mathematical representation of the different FoI models describes the seroprevalence data, we implement a fitting process that relies on a Bayesian framework. The priors and upper priors for each model indicate the assumed trajectory of the FoI (either constant or time-varying). serofoi provides a set of Bayesian comparison methods for the user to choose between various possible FoI models (trajectories) that best fit the seroprevalence data. For details see [An Introduction To Force-of-Infection Models](https://epiverse-trace.github.io/serofoi/articles/foi_models.html).
 
 ## Modelling the FoI
 
@@ -75,4 +75,4 @@ plot_seromodel(
   size_text = 6
 )
 ```
-For details on the implementation of time-varying models and model comparison see [FoI Models](https://trace-lac.github.io/serofoi/articles/foi_models.html).
+For details on the implementation of time-varying models and model comparison see [FoI Models](https://epiverse-trace.github.io/serofoi/articles/foi_models.html).
