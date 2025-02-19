@@ -96,7 +96,8 @@ Seroprevalence plot for the chagas2012 dataset.
 Here, the error bars correspond to the binomial confidence interval and
 the point size represents the sample size for each age group.
 
-A constant FoI model can easily be implemented by means of `fit_seromodel`:
+A constant FoI model can easily be implemented by means of
+`fit_seromodel`:
 
 ``` r
 seromodel <- fit_seromodel(serosurvey = chagas2012)
