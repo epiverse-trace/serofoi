@@ -91,11 +91,24 @@ birth cohort.</p></dd>
 <dt id="arg-survey-features">survey_features<a class="anchor" aria-label="anchor" href="#arg-survey-features"></a></dt>
 <dd><p>A dataframe containing information about the binned
 age groups and sample sizes for each.
-It should contain columns: 'age_min', 'age_max', 'n_sample'.</p></dd>
+It should contain columns:</p><dl><dt>age_min</dt>
+<dd><p>Left limits of the age groups to be considered in the
+serosurvey</p></dd>
+
+<dt>age_max</dt>
+<dd><p>Right limits of the age groups to be considered in the
+serosurvey</p></dd>
+
+<dt>n_sample</dt>
+<dd><p>Number of samples by age group</p></dd>
+
+
+</dl><p>The resulting age intervals are closed to the left <code>[</code> and
+open to the right <code>)</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional parameters for sum_of_A</p></dd>
+<dd><p>Additional parameters for <code>construct_A_fun</code></p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -117,7 +130,7 @@ and other survey features.</p>
 <span class="r-in"><span>  foi <span class="op">=</span> <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">dlnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">80</span>, meanlog <span class="op">=</span> <span class="fl">3.5</span>, sdlog <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># generate age and time dependent FOI from multipliers</span></span></span>
+<span class="r-in"><span><span class="co"># generate age and time dependent FoI from multipliers</span></span></span>
 <span class="r-in"><span><span class="va">foi_age_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  year <span class="op">=</span> <span class="va">foi_df_time</span><span class="op">$</span><span class="va">year</span>,</span></span>
 <span class="r-in"><span>  age <span class="op">=</span> <span class="va">foi_df_age</span><span class="op">$</span><span class="va">age</span></span></span>
@@ -138,7 +151,7 @@ and other survey features.</p>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>n_sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">n_sample</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">age_min</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># simulate survey from age and time FOI</span></span></span>
+<span class="r-in"><span><span class="co"># simulate survey from age and time FoI</span></span></span>
 <span class="r-in"><span><span class="va">serosurvey</span> <span class="op">&lt;-</span> <span class="fu"><a href="simulate_serosurvey.html">simulate_serosurvey</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="st">"age-time"</span>,</span></span>
 <span class="r-in"><span>  foi <span class="op">=</span> <span class="va">foi_age_time</span>,</span></span>

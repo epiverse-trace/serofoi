@@ -82,7 +82,20 @@ per age group bin</p>
 <dt id="arg-survey-features">survey_features<a class="anchor" aria-label="anchor" href="#arg-survey-features"></a></dt>
 <dd><p>A dataframe containing information about the binned
 age groups and sample sizes for each.
-It should contain columns: 'age_min', 'age_max', 'n_sample'.</p></dd>
+It should contain columns:</p><dl><dt>age_min</dt>
+<dd><p>Left limits of the age groups to be considered in the
+serosurvey</p></dd>
+
+<dt>age_max</dt>
+<dd><p>Right limits of the age groups to be considered in the
+serosurvey</p></dd>
+
+<dt>n_sample</dt>
+<dd><p>Number of samples by age group</p></dd>
+
+
+</dl><p>The resulting age intervals are closed to the left <code>[</code> and
+open to the right <code>)</code>.</p></dd>
 
 </dl></div>
 
