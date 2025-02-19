@@ -35,13 +35,13 @@ the helper functions. Currently available options are:
 }}
 
 \item{foi_index}{Integer vector specifying the age-groups for which
-force-of-infection values will be estimated. It can be specified by
+Force-of-Infection values will be estimated. It can be specified by
 means of \link{get_foi_index}}
 
-\item{is_log_foi}{Boolean to set logarithmic scale in the FOI}
+\item{is_log_foi}{Boolean to set logarithmic scale in the FoI}
 
 \item{foi_sigma_rw}{Prior distribution for the standard deviation of the
-force-of-infection. Currently available options are:
+Force-of-Infection. Currently available options are:
 \describe{
 \item{\link{sf_normal}}{Function to set normal distribution prior.
 Available for time models in the log-scale}

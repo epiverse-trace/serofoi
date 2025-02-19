@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_seromodel.R
 \name{plot_foi_estimates}
 \alias{plot_foi_estimates}
-\title{Plots force-of-infection central estimates}
+\title{Plots Force-of-Infection central estimates}
 \usage{
 plot_foi_estimates(
   seromodel,
@@ -36,24 +36,25 @@ with \link{fit_seromodel}}
 \item{\code{foi}}{Force-of-infection values by year/age}
 }}
 
-\item{foi_max}{Max force-of-infection value for plotting}
+\item{foi_max}{Max FoI value for plotting}
 
 \item{size_text}{Size of text for plotting (\code{base_size} in
 \link[ggplot2:ggtheme]{ggplot2})}
 
-\item{plot_constant}{boolean specifying whether to plot single FOI estimate
-and its corresponding rhat value instead of showing this information in the
-summary. Only relevant when \code{seromodel@model_name == "constant"})}
+\item{plot_constant}{boolean specifying whether to plot single
+Force-of-Infection estimate and its corresponding rhat value instead
+of showing this information in the summary.
+Only relevant when \code{seromodel@model_name == "constant"})}
 
 \item{x_axis}{either \code{"time"} or \code{"age"}. Specifies time axis values
 label for constant model additional plots. Only relevant when
 and \code{seromodel@model_name == "constant"}}
 }
 \value{
-ggplot object with estimated force-of-infection
+ggplot object with estimated FoI
 }
 \description{
-Plots force-of-infection central estimates
+Plots Force-of-Infection central estimates
 }
 \examples{
 data(chagas2012)

@@ -67,13 +67,13 @@ sf_none <- function() {
   list(name = "none")
 }
 
-#' Generates force-of-infection indexes for heterogeneous age groups
+#' Generates Force-of-Infection indexes for heterogeneous age groups
 #'
 #' Generates a list of integers indexing together the time/age intervals
-#' for which FOI values will be estimated in [fit_seromodel].
-#' The max value in `foi_index`  corresponds to the number of FOI values to
+#' for which FoI values will be estimated in [fit_seromodel].
+#' The max value in `foi_index`  corresponds to the number of FoI values to
 #' be estimated when sampling.
-#' The serofoi approach to fitting serological data currently supposes that FOI
+#' The serofoi approach to fitting serological data currently supposes that FoI
 #' is piecewise-constant across either groups of years or ages, and this
 #' function creates a Data Frame that communicates this grouping to the
 #' Stan model
@@ -81,8 +81,8 @@ sf_none <- function() {
 #' @param group_size Age groups size
 #' @param model_type Type of the model. Either "age" or "time"
 #' @return A Data Frame which describes the grouping of years or ages
-#' (dependent on model) into pieces within which the FOI is assumed constant
-#' when performing model fitting. A single FOI value will be estimated for
+#' (dependent on model) into pieces within which the FoI is assumed constant
+#' when performing model fitting. A single FoI value will be estimated for
 #' ages/years assigned with the same index
 #' @examples
 #' data(chagas2012)

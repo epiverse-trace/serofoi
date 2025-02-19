@@ -57,7 +57,7 @@ foi_df_age <- data.frame(
   foi = 2 * dlnorm(1:80, meanlog = 3.5, sdlog = 0.5)
 )
 
-# generate age and time dependent FOI from multipliers
+# generate age and time dependent FoI from multipliers
 foi_age_time <- expand.grid(
   year = foi_df_time$year,
   age = foi_df_age$age
@@ -78,7 +78,7 @@ survey_features <- data.frame(
   dplyr::mutate(n_sample = rep(n_sample, length(age_min))
   )
 
-# simulate survey from age and time FOI
+# simulate survey from age and time FoI
 serosurvey <- simulate_serosurvey(
   model = "age-time",
   foi = foi_age_time,

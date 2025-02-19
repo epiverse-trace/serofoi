@@ -2,7 +2,7 @@
 % Please edit documentation in R/build_stan_data.R
 \name{get_foi_index}
 \alias{get_foi_index}
-\title{Generates force-of-infection indexes for heterogeneous age groups}
+\title{Generates Force-of-Infection indexes for heterogeneous age groups}
 \usage{
 get_foi_index(serosurvey, group_size, model_type)
 }
@@ -22,16 +22,16 @@ get_foi_index(serosurvey, group_size, model_type)
 }
 \value{
 A Data Frame which describes the grouping of years or ages
-(dependent on model) into pieces within which the FOI is assumed constant
-when performing model fitting. A single FOI value will be estimated for
+(dependent on model) into pieces within which the FoI is assumed constant
+when performing model fitting. A single FoI value will be estimated for
 ages/years assigned with the same index
 }
 \description{
 Generates a list of integers indexing together the time/age intervals
-for which FOI values will be estimated in \link{fit_seromodel}.
-The max value in \code{foi_index}  corresponds to the number of FOI values to
+for which FoI values will be estimated in \link{fit_seromodel}.
+The max value in \code{foi_index}  corresponds to the number of FoI values to
 be estimated when sampling.
-The serofoi approach to fitting serological data currently supposes that FOI
+The serofoi approach to fitting serological data currently supposes that FoI
 is piecewise-constant across either groups of years or ages, and this
 function creates a Data Frame that communicates this grouping to the
 Stan model

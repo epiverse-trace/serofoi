@@ -86,7 +86,7 @@ validate_survey_features <- function(survey_features) {
       )
 }
 
-#' Helper function to validate FOI structure for simulation
+#' Helper function to validate FoI structure for simulation
 #'
 #' @return None
 #' @keywords internal
@@ -120,7 +120,7 @@ validate_seroreversion_rate <- function(seroreversion_rate) {
   }
 }
 
-#' Helper function to validate consistency between the FOI and the survey
+#' Helper function to validate consistency between the FoI and the survey
 #' features for simulation
 #'
 #' @return None
@@ -138,7 +138,7 @@ validate_simulation_age <- function(
       )
 }
 
-#' Helper function to validate consistency between the FOI and the survey
+#' Helper function to validate consistency between the FoI and the survey
 #' features for simulation of age- and time-varying model
 #'
 #' @return None
@@ -156,7 +156,7 @@ validate_simulation_age_time <- function(
       )
 }
 
-#' Helper function to validate FOI index consistency
+#' Helper function to validate FoI index consistency
 #'
 #' @return foi_index
 #' @keywords internal

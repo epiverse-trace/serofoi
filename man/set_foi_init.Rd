@@ -10,14 +10,14 @@ set_foi_init(foi_init, is_log_foi, foi_index)
 \item{foi_init}{Initialization function for sampling. If null, default is
 chosen depending on the foi-scale of the model}
 
-\item{is_log_foi}{Boolean to set logarithmic scale in the FOI}
+\item{is_log_foi}{Boolean to set logarithmic scale in the FoI}
 
 \item{foi_index}{Integer vector specifying the age-groups for which
-force-of-infection values will be estimated. It can be specified by
+Force-of-Infection values will be estimated. It can be specified by
 means of \link{get_foi_index}}
 }
 \value{
-Function specifying initialization vector for the FOI
+Function specifying initialization vector for the Force-of-Infection
 }
 \description{
 Sets initialization function for sampling

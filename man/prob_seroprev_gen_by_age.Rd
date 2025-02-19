@@ -2,7 +2,8 @@
 % Please edit documentation in R/simulate_serosurvey.R
 \name{prob_seroprev_gen_by_age}
 \alias{prob_seroprev_gen_by_age}
-\title{Generate probabilities of seropositivity by age based on a general FOI model.}
+\title{Generate probabilities of seropositivity by age based on a general
+Force-of-Infection (FoI) model.}
 \usage{
 prob_seroprev_gen_by_age(
   construct_A_fun,

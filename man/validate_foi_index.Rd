@@ -2,7 +2,7 @@
 % Please edit documentation in R/validation.R
 \name{validate_foi_index}
 \alias{validate_foi_index}
-\title{Helper function to validate FOI index consistency}
+\title{Helper function to validate FoI index consistency}
 \usage{
 validate_foi_index(foi_index, serosurvey, model_type)
 }
@@ -10,6 +10,6 @@ validate_foi_index(foi_index, serosurvey, model_type)
 foi_index
 }
 \description{
-Helper function to validate FOI index consistency
+Helper function to validate FoI index consistency
 }
 \keyword{internal}

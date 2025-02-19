@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulate_serosurvey.R
 \name{simulate_serosurvey}
 \alias{simulate_serosurvey}
-\title{Simulate serosurvey data based on various FOI models.}
+\title{Simulate serosurvey data based on various Force-of-Infection (FoI) models.}
 \usage{
 simulate_serosurvey(model, foi, survey_features, seroreversion_rate = 0)
 }
@@ -10,18 +10,18 @@ simulate_serosurvey(model, foi, survey_features, seroreversion_rate = 0)
 \item{model}{A string specifying the model type which can be either
 '"age"', '"time"', '"age-time"'.}
 
-\item{foi}{A dataframe containing the force of infection (FOI) values.
+\item{foi}{A dataframe containing the FoI values.
 For time-varying models the columns should be:
 \describe{
 \item{year}{Calendar years starting at the birth year of the oldest person
 and up to the time of the serosurvey}
-\item{foi}{Corresponding values of the FOI by year}
+\item{foi}{Corresponding values of the FoI by year}
 }
 For age-varying models the columns should be:.
 \describe{
 \item{age}{Ages starting at 1 and up to the age of the oldest person in the
 serosurvey}
-\item{foi}{Corresponding values of the FOI by age}
+\item{foi}{Corresponding values of the FoI by age}
 }
 For age-and-time-varying models the columns should be:
 \describe{
@@ -29,7 +29,7 @@ For age-and-time-varying models the columns should be:
 serosurvey}
 \item{time}{Calendar years starting at the birth year of the oldest person
 and up to the time of the serosurvey}
-\item{foi}{Corresponding values of FOI by age and year}
+\item{foi}{Corresponding values of FoI by age and year}
 }}
 
 \item{survey_features}{A dataframe containing information about the binned
@@ -55,7 +55,7 @@ and other survey features.
 }
 \description{
 This function generates binned serosurvey data based on either a time-varying
-FOI model, an age-varying FOI model, or an age-and-time-varying FOI model.
+FoI model, an age-varying FoI model, or an age-and-time-varying FoI model.
 In all cases, it is possible to optionally include seroreversion. This
 function allows construction of serosurveys with binned age groups, and it
 generates uncertainty in the distribution of a sample size within an age bin

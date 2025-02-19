@@ -2,7 +2,8 @@
 % Please edit documentation in R/simulate_serosurvey.R
 \name{probability_exact_time_varying}
 \alias{probability_exact_time_varying}
-\title{Computes the probability of being seropositive when FOIs vary by time}
+\title{Computes the probability of being seropositive when
+Forces-of-Infection (FoIs) vary by time}
 \usage{
 probability_exact_time_varying(years, fois, seroreversion_rate = 0)
 }
@@ -11,7 +12,7 @@ probability_exact_time_varying(years, fois, seroreversion_rate = 0)
 sample}
 
 \item{fois}{Numeric atomic vector corresponding to the age-varying
-force-of-infection to simulate from}
+FoI to simulate from}
 
 \item{seroreversion_rate}{Non-negative seroreversion rate. Default is 0.}
 }
@@ -20,5 +21,6 @@ vector of probabilities of being seropositive for age-varying FoI
 including seroreversion (ordered from youngest to oldest individuals)
 }
 \description{
-Computes the probability of being seropositive when FOIs vary by time
+Computes the probability of being seropositive when
+Forces-of-Infection (FoIs) vary by time
 }
