@@ -7,14 +7,30 @@
 prob_seroprev_by_age(model, foi, seroreversion_rate = 0)
 }
 \arguments{
-\item{model}{A string specifying the model type which can be one of
-\link{'age', 'time', 'age-time'}.}
+\item{model}{A string specifying the model type which can be either
+'"age"', '"time"', '"age-time"'.}
 
 \item{foi}{A dataframe containing the force of infection (FOI) values.
-For time-varying models the columns should be \link{'year', 'foi'}.
-For age-varying models the columns should be \link{'age', 'foi'}.
-For age-and-time-varying models the columns should be
-\link{'age', 'time', 'foi'}.}
+For time-varying models the columns should be:
+\describe{
+\item{year}{Calendar years starting at the birth year of the oldest person
+and up to the time of the serosurvey}
+\item{foi}{Corresponding values of the FOI by year}
+}
+For age-varying models the columns should be:.
+\describe{
+\item{age}{Ages starting at 1 and up to the age of the oldest person in the
+serosurvey}
+\item{foi}{Corresponding values of the FOI by age}
+}
+For age-and-time-varying models the columns should be:
+\describe{
+\item{age}{Ages starting at 1 and up to the age of the oldest person in the
+serosurvey}
+\item{time}{Calendar years starting at the birth year of the oldest person
+and up to the time of the serosurvey}
+\item{foi}{Corresponding values of FOI by age and year}
+}}
 
 \item{seroreversion_rate}{A non-negative value determining the rate of
 seroreversion (per year). Default is 0.}
