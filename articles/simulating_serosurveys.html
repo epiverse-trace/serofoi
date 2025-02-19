@@ -41,7 +41,7 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/foi_models.html">An Introduction To Force Of Infection Models</a></li>
+<li><a class="dropdown-item" href="../articles/foi_models.html">An Introduction To Force-of-Infection Models</a></li>
     <li><a class="dropdown-item" href="../articles/simulating_serosurveys.html">Simulating Serosurveys</a></li>
     <li><a class="dropdown-item" href="../articles/use_cases.html">Real-Life Use Cases For Serofoi</a></li>
   </ul>
@@ -93,10 +93,10 @@ population-wide seropositivity throughout individuals’ lives; and the
 features of the particular serological survey that are being used to
 uncover these dynamics.</p>
 <div class="section level3">
-<h3 id="constant-foi">Constant FOI<a class="anchor" aria-label="anchor" href="#constant-foi"></a>
+<h3 id="constant-foi">Constant FoI<a class="anchor" aria-label="anchor" href="#constant-foi"></a>
 </h3>
-<p>We start by assuming that a disease has a constant force-of-infection
-(FOI) over time.</p>
+<p>We start by assuming that a disease has a constant
+<em>Force-of-Infection</em> (FoI) over time.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">max_age</span> <span class="op">&lt;-</span> <span class="fl">80</span></span>
 <span><span class="va">foi_constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -119,8 +119,8 @@ age is the same:
 <span>  age_max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">max_age</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  n_sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">n_sample</span>, <span class="va">max_age</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>We then put these pieces together and simulate a serosurvey. Either a
-time-varying FOI model or an age-varying FOI model would produce the
-same results here since they are equivalent when the FOI is
+time-varying FoI model or an age-varying FoI model would produce the
+same results here since they are equivalent when the FoI is
 constant.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">serosurvey_constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_serosurvey.html">simulate_serosurvey</a></span><span class="op">(</span></span>
@@ -128,7 +128,7 @@ constant.</p>
 <span>  foi <span class="op">=</span> <span class="va">foi_constant</span>,</span>
 <span>  survey_features <span class="op">=</span> <span class="va">survey_features</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"constant FOI"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"constant FoI"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">serosurvey_constant</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Rows: 80</span></span>
@@ -137,7 +137,7 @@ constant.</p>
 <span><span class="co">#&gt; $ age_max        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, …</span></span>
 <span><span class="co">#&gt; $ n_sample       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,…</span></span>
 <span><span class="co">#&gt; $ n_seropositive <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 0, 3, 2, 1, 0, 4, 4, 4, 7, 7, 9, 5, 4, 8, 8, 10, 9, 12,…</span></span>
-<span><span class="co">#&gt; $ model_type     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "constant FOI", "constant FOI", "constant FOI", "consta…</span></span></code></pre></div>
+<span><span class="co">#&gt; $ model_type     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "constant FoI", "constant FoI", "constant FoI", "consta…</span></span></code></pre></div>
 <p>Now, we can plot the proportions of those seropositive, including the
 posterior 95% percentiles (when assuming a flat prior), and plot it
 along the true seropositivities (line blue):</p>
@@ -157,10 +157,10 @@ along the true seropositivities (line blue):</p>
 <p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-5-1.png" alt="Simulated and true proportion" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="age-varying-foi">Age-varying FOI<a class="anchor" aria-label="anchor" href="#age-varying-foi"></a>
+<h3 id="age-varying-foi">Age-varying FoI<a class="anchor" aria-label="anchor" href="#age-varying-foi"></a>
 </h3>
-<p>We now consider a pathogen which has an FOI that varies throughout
-the age of individuals. We assume the FOI declines strongly throughout
+<p>We now consider a pathogen which has an FoI that varies throughout
+the age of individuals. We assume the FoI declines strongly throughout
 childhood.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">max_age</span>, <span class="fl">1</span><span class="op">)</span></span>
@@ -180,12 +180,12 @@ survey.</p>
 <span>  foi <span class="op">=</span> <span class="va">foi_age_varying</span>,</span>
 <span>  survey_features <span class="op">=</span> <span class="va">survey_features</span></span>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"age-dependent FOI"</span><span class="op">)</span></span></code></pre></div>
-<p>Below, we see that the FOI for the age-dependent FOI pathogen
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"age-dependent FoI"</span><span class="op">)</span></span></code></pre></div>
+<p>Below, we see that the FoI for the age-dependent FoI pathogen
 increases rapidly during the earliest years then plateaus in later
-adulthood as the FOI effectively becomes negligible.</p>
+adulthood as the FoI effectively becomes negligible.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># combine with constant FOI survey</span></span>
+<code class="sourceCode R"><span><span class="co"># combine with constant FoI survey</span></span>
 <span><span class="va">prob_seroprev_constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
 <span>      model <span class="op">=</span> <span class="st">"age"</span>,</span>
 <span>      foi <span class="op">=</span> <span class="va">foi_constant</span>,</span>
@@ -228,10 +228,10 @@ adulthood as the FOI effectively becomes negligible.</p>
 <p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-8-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="time-dependent-foi">Time-dependent FOI<a class="anchor" aria-label="anchor" href="#time-dependent-foi"></a>
+<h3 id="time-dependent-foi">Time-dependent FoI<a class="anchor" aria-label="anchor" href="#time-dependent-foi"></a>
 </h3>
-<p>We now consider a pathogen where the FOI varies only over calendar
-time. We imagine a pathogen that has a ‘spiky’ FOI, characteristic of an
+<p>We now consider a pathogen where the FoI varies only over calendar
+time. We imagine a pathogen that has a ‘spiky’ FoI, characteristic of an
 epidemic disease.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foi_spiky</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -281,14 +281,14 @@ epidemics:</p>
 <p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-11-1.png" alt="Plot showing jumps in seropositivity" width="768" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
-<h3 id="age-and-time-dependent-foi">Age-and-time-dependent FOI<a class="anchor" aria-label="anchor" href="#age-and-time-dependent-foi"></a>
+<h3 id="age-and-time-dependent-foi">Age-and-time-dependent FoI<a class="anchor" aria-label="anchor" href="#age-and-time-dependent-foi"></a>
 </h3>
 <p>Many pathogens may have a transmission strength that varies according
 to both age and time. An example of this could be for a sexually
 transmitted disease where transmission follows a characteristic
 age-specific pattern, peaking in the early 20s. Here, we imagine such a
 disease which has relatively recently invaded a population.</p>
-<p>We imagine the time-specific multiplier of FOI follows the below
+<p>We imagine the time-specific multiplier of FoI follows the below
 variation.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foi_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">40</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span></span>
@@ -300,8 +300,8 @@ variation.</p>
 <span><span class="co"># plot</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">foi_df_time</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">foi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-12-1.png" alt="Time-specific multiplier of the FOI" width="768" style="display: block; margin: auto;"></p>
-<p>We create a pattern of age-structured FOI multipliers which peaks in
+<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-12-1.png" alt="Time-specific multiplier of the FoI" width="768" style="display: block; margin: auto;"></p>
+<p>We create a pattern of age-structured FoI multipliers which peaks in
 those of early 20s.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">80</span>, <span class="fl">1</span><span class="op">)</span></span>
@@ -316,8 +316,8 @@ those of early 20s.</p>
 <span><span class="co"># plot</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">foi_df_age</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">foi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-13-1.png" alt="Plot of age-structured FOI multipliers" width="768" style="display: block; margin: auto;"></p>
-<p>To create the overall FOI (which is a function of both time and age),
+<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-13-1.png" alt="Plot of age-structured FoI multipliers" width="768" style="display: block; margin: auto;"></p>
+<p>To create the overall FoI (which is a function of both time and age),
 we create the product of the time- and age-dependent parts of it.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foi_age_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
@@ -330,8 +330,8 @@ we create the product of the time- and age-dependent parts of it.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>foi_time <span class="op">=</span> <span class="va">foi</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>foi <span class="op">=</span> <span class="va">foi_age</span> <span class="op">*</span> <span class="va">foi_time</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"foi_age"</span>, <span class="st">"foi_time"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-15-1.png" alt="Plot a few birth years of time- and age-dependent FOI" width="768" style="display: block; margin: auto;"></p>
-<p>We now simulate a serosurvey assuming these historical FOIs generated
+<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-15-1.png" alt="Plot a few birth years of time- and age-dependent FoI" width="768" style="display: block; margin: auto;"></p>
+<p>We now simulate a serosurvey assuming these historical FoIs generated
 the population-wide seropositivities in 2025; we make the sample sizes
 larger to be able to clearly visualise the patterns in seropositivity.
 We also illustrate how serosurveys with wider age-bins can be generated
@@ -365,7 +365,7 @@ by choosing 5-year bins.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Seropositivity"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Age"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-17-1.png" alt="Plot serosurvey obtained simulating from time- and age-dependent FOI" width="768" style="display: block; margin: auto;"></p>
+<p><img src="simulating_serosurveys_files/figure-html/unnamed-chunk-17-1.png" alt="Plot serosurvey obtained simulating from time- and age-dependent FoI" width="768" style="display: block; margin: auto;"></p>
 <p>We compare this with a closely related pathogen which exhibits
 seroreversion – a process by which individuals lose their antibody
 detectability over time. Owing to its seroreversion, this pathogen
@@ -381,7 +381,7 @@ than previously.</p>
 <span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>model_type <span class="op">=</span> <span class="st">"seroreverting"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># combine with constant FOI survey</span></span>
+<code class="sourceCode R"><span><span class="co"># combine with constant FoI survey</span></span>
 <span><span class="va">prob_seroprev_no_serorev</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prob_seroprev_by_age.html">prob_seroprev_by_age</a></span><span class="op">(</span></span>
 <span>  model <span class="op">=</span> <span class="st">"age-time"</span>,</span>
 <span>  foi <span class="op">=</span> <span class="va">foi_age_time</span>,</span>
@@ -427,7 +427,7 @@ than previously.</p>
 <div class="section level2">
 <h2 id="simulating-from-a-general-serological-model">Simulating from a general serological model<a class="anchor" aria-label="anchor" href="#simulating-from-a-general-serological-model"></a>
 </h2>
-<p>We now illustrate an example age- and time-dependent FOI model for
+<p>We now illustrate an example age- and time-dependent FoI model for
 representing the prevalence of HIV (in the absence of treatment). In the
 absence of treatment, HIV invariably ends in death, and death usually
 occurs after the onset of AIDS which occurs typically many years after

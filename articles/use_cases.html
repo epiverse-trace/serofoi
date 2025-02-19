@@ -41,7 +41,7 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/foi_models.html">An Introduction To Force Of Infection Models</a></li>
+<li><a class="dropdown-item" href="../articles/foi_models.html">An Introduction To Force-of-Infection Models</a></li>
     <li><a class="dropdown-item" href="../articles/simulating_serosurveys.html">Simulating Serosurveys</a></li>
     <li><a class="dropdown-item" href="../articles/use_cases.html">Real-Life Use Cases For Serofoi</a></li>
   </ul>
@@ -83,12 +83,12 @@
     
     
 <p>The serofoi package is a tool for estimating the
-<em>Force-of-Infection (FoI)</em> from population-based serosurvey data.
+<em>Force-of-Infection</em> (FoI) from population-based serosurvey data.
 In this article, we present three real-life epidemiological scenarios
 from Latin America to demonstrate the utility of
 <strong><em>serofoi</em></strong> and time-varying models in describing
-the trajectory of the <em>FoI</em>. For inclusion criteria about
-serosurvey data and model assumptions, please check <a href="https://trace-lac.github.io/serofoi/articles/serofoi.html" class="external-link"><strong>Get
+the trajectory of the FoI. For inclusion criteria about serosurvey data
+and model assumptions, please check <a href="https://trace-lac.github.io/serofoi/articles/serofoi.html" class="external-link"><strong>Get
 Started</strong></a>.</p>
 <p>The scenarios were chosen to showcase the versatility of the serofoi
 package in different epidemiological contexts:</p>
@@ -252,15 +252,14 @@ can cause disease in horses and humans. This dataset,
 <p><strong><em>serofoi</em></strong> was used to compare three potential
 scenarios of <em>VEEV</em> transmission: <em>constant endemic</em>,
 <em>epidemic slow</em>, and <em>epidemic fast</em>. The results showed a
-significant increase in the estimated <em>Force-of-Infection (FoI)</em>
-in the region, indicating a rise in <em>VEEV</em> transmission. The
-study found that there was much higher statistical support for a
-time-varying rather than a constant scenario based on higher elpd and
-lower se values of the two time-varying models compared to the constant
-one (Figure 2). The results also suggest slightly (yet relevant) better
-support for model 3 (<code>log-time</code>), compared to model 2
-(<code>time</code>), suggesting a recent increase in transmission in the
-study area.</p>
+significant increase in the estimated FoI in the region, indicating a
+rise in <em>VEEV</em> transmission. The study found that there was much
+higher statistical support for a time-varying rather than a constant
+scenario based on higher elpd and lower se values of the two
+time-varying models compared to the constant one (Figure 2). The results
+also suggest slightly (yet relevant) better support for model 3
+(<code>log-time</code>), compared to model 2 (<code>time</code>),
+suggesting a recent increase in transmission in the study area.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load and prepare data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"veev2012"</span><span class="op">)</span></span>
@@ -364,11 +363,10 @@ models shows a relevant slow decreasing trend, which was consistent with
 model 2 - <code>tv-normal</code>. This model was statistically better
 supported based on the highest <code>elpd</code> and lowest
 <code>se</code> values compared to the constant model. These results
-suggest a slow, still relevant decrease in the <em>FoI</em> values over
-the last decades which may have been a consequence of some of the
-interventions or local environmental changes that have occurred in the
-study area over the years, up to the point (2012) when the serosurvey
-was conducted.</p>
+suggest a slow, still relevant decrease in the FoI values over the last
+decades which may have been a consequence of some of the interventions
+or local environmental changes that have occurred in the study area over
+the years, up to the point (2012) when the serosurvey was conducted.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load and prepare data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"chagas2012"</span><span class="op">)</span></span>

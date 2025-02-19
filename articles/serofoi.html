@@ -41,7 +41,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/foi_models.html">An Introduction To Force Of Infection Models</a></li>
+<li><a class="dropdown-item" href="../articles/foi_models.html">An Introduction To Force-of-Infection Models</a></li>
     <li><a class="dropdown-item" href="../articles/simulating_serosurveys.html">Simulating Serosurveys</a></li>
     <li><a class="dropdown-item" href="../articles/use_cases.html">Real-Life Use Cases For Serofoi</a></li>
   </ul>
@@ -90,7 +90,7 @@ individuals have been infected up to a certain point in time, which
 relates to the level of immunity for a given pathogen in a population.
 Based on this information, it is possible to estimate the speed at which
 susceptible individuals have been infected over time in that population.
-We call this parameter the <em>Force-of-Infection (FoI)</em>. To
+We call this parameter the <em>Force-of-Infection</em> (FoI). To
 estimate this parameter serofoi uses a suit of catalytic models.</p>
 </div>
 <div class="section level2">
@@ -159,24 +159,22 @@ high infection fatality rate, such as Ebola.</li>
 <h2 id="the-bayesian-statistical-framework">The bayesian statistical framework<a class="anchor" aria-label="anchor" href="#the-bayesian-statistical-framework"></a>
 </h2>
 <p>To assess how well the mathematical representation of the different
-<em>FoI</em> models describes the seroprevalence data, we implement a
-fitting process that relies on a Bayesian framework. The priors and
-upper priors for each model indicate the assumed trajectory of the
-<em>FoI</em> (either constant or time-varying). serofoi provides a set
-of Bayesian comparison methods for the user to choose between various
-possible FoI models (trajectories) that best fit the seroprevalence
-data. For details see <a href="https://trace-lac.github.io/serofoi/articles/foi_models.html" class="external-link">FoI
-Models</a>.</p>
+FoI models describes the seroprevalence data, we implement a fitting
+process that relies on a Bayesian framework. The priors and upper priors
+for each model indicate the assumed trajectory of the FoI (either
+constant or time-varying). serofoi provides a set of Bayesian comparison
+methods for the user to choose between various possible FoI models
+(trajectories) that best fit the seroprevalence data. For details see <a href="https://trace-lac.github.io/serofoi/articles/foi_models.html" class="external-link">An
+Introduction To Force-of-Infection Models</a>.</p>
 </div>
 <div class="section level2">
-<h2 id="modelling-the-force-of-infection-foi">Modelling the Force-of-infection (FoI)<a class="anchor" aria-label="anchor" href="#modelling-the-force-of-infection-foi"></a>
+<h2 id="modelling-the-foi">Modelling the FoI<a class="anchor" aria-label="anchor" href="#modelling-the-foi"></a>
 </h2>
-<p>Is common to assume that the <em>FoI</em> is constant in time.
-However this is not always the case; <strong><em>serofoi</em></strong>
-addresses this by enabling the possibility to implement different
-time-varying models for the <em>FoI</em> and offering tools to compare
-them to the constant case in order to decide what model fits a
-serological survey the best.</p>
+<p>Is common to assume that the FoI is constant in time. However this is
+not always the case; <strong><em>serofoi</em></strong> addresses this by
+enabling the possibility to implement different time-varying models for
+the FoI and offering tools to compare them to the constant case in order
+to decide what model fits a serological survey the best.</p>
 <p>The integrated dataset <code>chagas2012</code> provides a minimal
 example of the input of the package. The following code can be used to
 implement and visualise a basic constant model:</p>
