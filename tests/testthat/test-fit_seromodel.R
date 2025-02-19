@@ -73,7 +73,7 @@ test_that("add_age_group_to_serosurvey creates age_group column if missing", {
 test_that("fit_seromodel correctly estimates constant foi using default settings", {
   skip_on_cran()
 
-  # constant FOI
+  # constant FoI
   foi <- data.frame(
     year = seq(1990, 2009, 1),
     foi = rep(0.01, 20)
@@ -179,7 +179,7 @@ test_that("fit_seromodel correctly estimates time-varying foi using default prio
 test_that("fit_seromodel correctly estimates age-varying foi", {
   skip_on_cran()
 
-  # age-varying FOI
+  # age-varying FoI
   foi <- data.frame(
     age = seq(1, 20, 1),
     foi = c(rep(0.0, 10), rep(0.01, 10))
@@ -237,7 +237,7 @@ test_that("fit_seromodel correctly estimates age-varying foi", {
 test_that("fit_seromodel correctly identifies outbreak using time-log-foi model", {
   skip_on_cran()
 
-  # time-varying FOI
+  # time-varying FoI
   outbreak_years <- 2
   foi <- data.frame(
     year = seq(1990, 2009, 1),

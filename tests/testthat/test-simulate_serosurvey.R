@@ -50,7 +50,7 @@ test_that("probability_exact_age_varying calculates probabilities correctly", {
 })
 
 test_that("probability_exact_time_varying calculates probabilities correctly", {
-  # Test with constant FOI
+  # Test with constant FoI
   years <- c(1, 2, 3)
   foi <- 0.1
   fois <- rep(foi, length(years))
@@ -373,7 +373,7 @@ test_that("simulate_serosurvey_time function works as expected", {
   actual_rows <- nrow(actual_df)
   expect_equal(actual_rows, expected_rows)
 
-  # Test case 3: try a much higher FOI which should result in a higher proportion seropositive
+  # Test case 3: try a much higher FoI which should result in a higher proportion seropositive
   foi_df_1 <- data.frame(
     year = seq(1990, 2009, 1),
     foi = rep(10, 20)
@@ -457,7 +457,7 @@ test_that("simulate_serosurvey_age function works as expected", {
   actual_rows <- nrow(actual_df)
   expect_equal(actual_rows, expected_rows)
 
-  # Test case 3: try a much higher FOI which should result in a higher proportion seropositive
+  # Test case 3: try a much higher FoI which should result in a higher proportion seropositive
   foi_df_1 <- data.frame(
     age = seq(1, 20, 1),
     foi = rep(10, 20)
@@ -542,7 +542,7 @@ test_that("simulate_serosurvey_age_time function works as expected", {
   actual_rows <- nrow(actual_df)
   expect_equal(actual_rows, expected_rows)
 
-  # Test case 3: try a much higher FOI which should result in a higher proportion seropositive
+  # Test case 3: try a much higher FoI which should result in a higher proportion seropositive
   foi_df_1 <- tidyr::expand_grid(
     year = seq(1990, 2009, 1),
     age = seq(1, 20, 1)
@@ -663,7 +663,7 @@ test_that("simulate_serosurvey handles invalid model inputs", {
 test_that("prob_seroprev_gen_by_age reduces to time-varying model under
           appropriate limits", {
 
-    # simple time-varying FOI model
+    # simple time-varying FoI model
     construct_A <- function(t, tau, lambda) {
       A <- matrix(0, ncol = 2, nrow = 2)
       A[1, 1] <- -lambda[t]
@@ -710,7 +710,7 @@ test_that("prob_seroprev_gen_by_age reduces to time-varying model under
 test_that("prob_seroprev_gen_by_age reduces to age-varying model under
           appropriate limits", {
 
-  # simple age-varying FOI model
+  # simple age-varying FoI model
   construct_A <- function(t, tau, lambda) {
     A <- matrix(0, ncol = 2, nrow = 2)
     A[1, 1] <- -lambda[t - tau]
@@ -757,7 +757,7 @@ test_that("prob_seroprev_gen_by_age reduces to age-varying model under
 test_that("prob_seroprev_gen_by_age reduces to age- and time-varying model under
           appropriate limits", {
 
-  # age- and time-varying FOI model
+  # age- and time-varying FoI model
   construct_A <- function(t, tau, u, v) {
     A <- matrix(0, ncol = 2, nrow = 2)
     u_bar <- u[t - tau]
@@ -825,7 +825,7 @@ test_that("prob_seroprev_gen_by_age reduces to age- and time-varying model under
 
   expect_equal(seropositive_true, seropositive_linear_system)
 
-  # simulate survey from age and time FOI
+  # simulate survey from age and time FoI
   survey_features <- data.frame(
     age_min = seq(1, 70, 10),
     age_max = seq(10, 70, 10),

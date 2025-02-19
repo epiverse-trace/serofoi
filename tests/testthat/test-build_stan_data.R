@@ -85,7 +85,7 @@ test_that("build_stan_data works with basic inputs", {
   expect_equal(stan_data$n_sample, serosurvey$n_sample)
 })
 
-test_that("build_stan_data sets right FOI index with constant model_type", {
+test_that("build_stan_data sets right FoI index with constant model_type", {
   stan_data <- build_stan_data(serosurvey, model_type = "constant")
   expect_equal(stan_data$foi_index, rep(1, max(serosurvey$age_max)))
 })
