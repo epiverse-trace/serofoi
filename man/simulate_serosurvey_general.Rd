@@ -35,7 +35,7 @@ serosurvey}
 The resulting age intervals are closed to the left \code{[} and
 open to the right \verb{)}.}
 
-\item{...}{Additional parameters for \link{sum_of_A}}
+\item{...}{Additional parameters for \code{construct_A_fun}}
 }
 \value{
 A dataframe with simulated serosurvey data, including age group
