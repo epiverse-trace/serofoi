@@ -24,7 +24,16 @@ birth cohort.}
 
 \item{survey_features}{A dataframe containing information about the binned
 age groups and sample sizes for each.
-It should contain columns: \link{'age_min', 'age_max', 'n_sample'}.}
+It should contain columns:
+\describe{
+\item{age_min}{Left limits of the age groups to be considered in the
+serosurvey}
+\item{age_max}{Right limits of the age groups to be considered in the
+serosurvey}
+\item{n_sample}{Number of samples by age group}
+}
+The resulting age intervals are closed to the left \code{[} and
+open to the right \verb{)}.}
 
 \item{...}{Additional parameters for \link{sum_of_A}}
 }

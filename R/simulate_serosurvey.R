@@ -207,13 +207,7 @@ prob_seroprev_age_time_by_age <- function(
 #' time-varying FOI model, an age-varying FOI model, or an age-and-time-varying
 #' FOI model. In all cases, it is possible to optionally include seroreversion.
 #'
-#' @param model A string specifying the model type which can be one of
-#'              ['age', 'time', 'age-time'].
-#' @param foi A dataframe containing the force of infection (FOI) values.
-#'            For time-varying models the columns should be ['year', 'foi'].
-#'            For age-varying models the columns should be ['age', 'foi'].
-#'            For age-and-time-varying models the columns should be
-#'            ['age', 'time', 'foi'].
+#' @inheritParams simulate_serosurvey
 #' @param seroreversion_rate A non-negative value determining the rate of
 #'                           seroreversion (per year). Default is 0.
 #'
@@ -728,15 +722,41 @@ simulate_serosurvey_age_time <- function(
 #' generates uncertainty in the distribution of a sample size within an age bin
 #' through multinomial sampling.
 #'
-#' @param model A string specifying the model type which can be one of
-#' ['age', 'time', 'age-time'].
+#' @param model A string specifying the model type which can be either
+#' '"age"', '"time"', '"age-time"'.
 #' @param foi A dataframe containing the force of infection (FOI) values.
-#' For time-varying models the columns should be ['year', 'foi'].
-#' For age-varying models the columns should be ['age', 'foi'].
-#' For age-and-time-varying models the columns should be ['age', 'time', 'foi'].
+#' For time-varying models the columns should be:
+#' \describe{
+#'  \item{year}{Calendar years starting at the birth year of the oldest person
+#'              and up to the time of the serosurvey}
+#'  \item{foi}{Corresponding values of the FOI by year}
+#' }
+#' For age-varying models the columns should be:.
+#' \describe{
+#'  \item{age}{Ages starting at 1 and up to the age of the oldest person in the
+#'             serosurvey}
+#'  \item{foi}{Corresponding values of the FOI by age}
+#' }
+#' For age-and-time-varying models the columns should be:
+#' \describe{
+#'  \item{age}{Ages starting at 1 and up to the age of the oldest person in the
+#'             serosurvey}
+#'  \item{time}{Calendar years starting at the birth year of the oldest person
+#'              and up to the time of the serosurvey}
+#'  \item{foi}{Corresponding values of FOI by age and year}
+#' }
 #' @param survey_features A dataframe containing information about the binned
 #' age groups and sample sizes for each.
-#' It should contain columns: ['age_min', 'age_max', 'n_sample'].
+#' It should contain columns:
+#' \describe{
+#'  \item{age_min}{Left limits of the age groups to be considered in the
+#'                 serosurvey}
+#'  \item{age_max}{Right limits of the age groups to be considered in the
+#'                 serosurvey}
+#'  \item{n_sample}{Number of samples by age group}
+#' }
+#' The resulting age intervals are closed to the left `[` and
+#' open to the right `)`.
 #' @param seroreversion_rate A non-negative value determining the rate of
 #' seroreversion (per year). Default is 0.
 #'
