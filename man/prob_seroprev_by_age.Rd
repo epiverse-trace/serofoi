@@ -10,18 +10,18 @@ prob_seroprev_by_age(model, foi, seroreversion_rate = 0)
 \item{model}{A string specifying the model type which can be either
 '"age"', '"time"', '"age-time"'.}
 
-\item{foi}{A dataframe containing the force of infection (FOI) values.
+\item{foi}{A dataframe containing the FoI values.
 For time-varying models the columns should be:
 \describe{
 \item{year}{Calendar years starting at the birth year of the oldest person
 and up to the time of the serosurvey}
-\item{foi}{Corresponding values of the FOI by year}
+\item{foi}{Corresponding values of the FoI by year}
 }
 For age-varying models the columns should be:.
 \describe{
 \item{age}{Ages starting at 1 and up to the age of the oldest person in the
 serosurvey}
-\item{foi}{Corresponding values of the FOI by age}
+\item{foi}{Corresponding values of the FoI by age}
 }
 For age-and-time-varying models the columns should be:
 \describe{
@@ -29,7 +29,7 @@ For age-and-time-varying models the columns should be:
 serosurvey}
 \item{time}{Calendar years starting at the birth year of the oldest person
 and up to the time of the serosurvey}
-\item{foi}{Corresponding values of FOI by age and year}
+\item{foi}{Corresponding values of FoI by age and year}
 }}
 
 \item{seroreversion_rate}{A non-negative value determining the rate of
@@ -40,8 +40,9 @@ A dataframe with columns 'age' and 'seropositivity'.
 }
 \description{
 This function generates seropositivity probabilities based on either a
-time-varying FOI model, an age-varying FOI model, or an age-and-time-varying
-FOI model. In all cases, it is possible to optionally include seroreversion.
+time-varying Force-of-Infection (FoI) model, an age-varying FoI model,
+or an age-and-time-varying FoI model.
+In all cases, it is possible to optionally include seroreversion.
 }
 \examples{
 prob_seroprev_by_age(

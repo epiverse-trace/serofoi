@@ -298,7 +298,7 @@ plot_seroprev_estimates <- function(
   return(seroprev_plot)
 }
 
-#' Plots force-of-infection central estimates
+#' Plots Force-of-Infection central estimates
 #'
 #' @inheritParams extract_central_estimates
 #' @inheritParams fit_seromodel
@@ -309,8 +309,8 @@ plot_seroprev_estimates <- function(
 #'  \item{`foi`}{Force-of-infection values by year/age}
 #' }
 #' @inheritParams plot_serosurvey
-#' @param foi_max Max force-of-infection value for plotting
-#' @return ggplot object with estimated force-of-infection
+#' @param foi_max Max FoI value for plotting
+#' @return ggplot object with estimated FoI
 #' @examples
 #' data(chagas2012)
 #' seromodel <- fit_seromodel(
@@ -347,7 +347,7 @@ plot_foi_estimates <- function(
 
   error_msg_x_axis <- paste0(
     "x_axis specification as either 'age' or 'time' when plotting ",
-    "constant FOI estimates is required to avoid ambiguity"
+    "constant FoI estimates is required to avoid ambiguity"
   )
   validate_plot_constant(
     plot_constant = plot_constant,
@@ -543,9 +543,10 @@ plot_rhats <- function(
 #'
 #' @inheritParams summarise_seromodel
 #' @inheritParams plot_serosurvey
-#' @param plot_constant boolean specifying whether to plot single FOI estimate
-#' and its corresponding rhat value instead of showing this information in the
-#' summary. Only relevant when `seromodel@model_name == "constant"`)
+#' @param plot_constant boolean specifying whether to plot single
+#' Force-of-Infection estimate and its corresponding rhat value instead
+#' of showing this information in the summary.
+#' Only relevant when `seromodel@model_name == "constant"`)
 #' @return ggplot object with a summary of the specified model
 #' @examples
 #' data(veev2012)
@@ -639,7 +640,7 @@ plot_seromodel <- function(
   model_name <- seromodel@model_name
   error_msg_x_axis <- paste0(
     "x_axis specification as either 'age' or 'time' when plotting ",
-    "FOI and rhat estimates of constant models is required to avoid ambiguity"
+    "FoI and rhat estimates of constant models is required to avoid ambiguity"
   )
   validate_plot_constant(
     plot_constant = plot_constant,
@@ -673,7 +674,7 @@ plot_seromodel <- function(
   )
 
   # This condition (!p | q) is equivalent to !(p & !q)
-  # This is to preserve the default behavior for single FOI estimation for
+  # This is to preserve the default behavior for single FoI estimation for
   # constant models
   if (!startsWith(model_name, "constant") || plot_constant) {
     foi_plot <- plot_foi_estimates(

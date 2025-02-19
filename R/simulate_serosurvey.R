@@ -1,9 +1,10 @@
 
-#' Computes the probability of being seropositive when FOIs vary by age
+#' Computes the probability of being seropositive when
+#' Forces-of-Infection (FoIs) vary by age
 #'
 #' @param ages Integer indicating the ages of the exposed cohorts
 #' @param fois Numeric atomic vector corresponding to the age-varying
-#' force-of-infection to simulate from
+#' Force-of-Infection to simulate from
 #' @param seroreversion_rate Non-negative seroreversion rate. Default is 0.
 #' @return vector of probabilities of being seropositive for age-varying FoI
 #' including seroreversion (ordered from youngest to oldest individuals)
@@ -33,12 +34,13 @@ probability_exact_age_varying <- function(
   return(probabilities)
 }
 
-#' Computes the probability of being seropositive when FOIs vary by time
+#' Computes the probability of being seropositive when
+#' Forces-of-Infection (FoIs) vary by time
 #'
 #' @param years Integer indicating the years covering the birth ages of the
 #' sample
 #' @param fois Numeric atomic vector corresponding to the age-varying
-#' force-of-infection to simulate from
+#' FoI to simulate from
 #' @param seroreversion_rate Non-negative seroreversion rate. Default is 0.
 #' @return vector of probabilities of being seropositive for age-varying FoI
 #' including seroreversion (ordered from youngest to oldest individuals)
@@ -71,14 +73,14 @@ probability_exact_time_varying <- function(
   return(probabilities_oldest_age_last)
 }
 
-#' Generate probabilities of seropositivity by age based on a time-varying FOI
-#' model.
+#' Generate probabilities of seropositivity by age based on a time-varying
+#' Force-of-Infection (FoI) model.
 #'
 #' This function calculates the probabilities of seropositivity by age based on
-#' a time-varying FOI model.
-#' It takes into account the FOI and the rate of seroreversion.
+#' a time-varying FoI model.
+#' It takes into account the FoI and the rate of seroreversion.
 #'
-#' @param foi A dataframe containing the force of infection (FOI) values
+#' @param foi A dataframe containing the FoI values
 #' for different years. It should have two columns: 'year' and 'foi'.
 #' @param seroreversion_rate A non-negative numeric value representing the
 #' rate of seroreversion.
@@ -107,13 +109,13 @@ prob_seroprev_time_by_age <- function(
 
 
 #' Generate probabilities of seropositivity by age based on an age-varying
-#' FOI model.
+#' Force-of-Infection (FoI) model.
 #'
 #' This function calculates the probabilities of seropositivity by age based on
-#' an age-varying FOI model.
-#' It takes into account the FOI and the rate of seroreversion.
+#' an age-varying FoI model.
+#' It takes into account the FoI and the rate of seroreversion.
 #'
-#' @param foi A dataframe containing the force of infection (FOI) values for
+#' @param foi A dataframe containing the FoI values for
 #' different ages. It should have two columns: 'age' and 'foi'.
 #' @param seroreversion_rate A non-negative numeric value representing the rate
 #' of seroreversion.
@@ -141,13 +143,13 @@ prob_seroprev_age_by_age <- function(
 }
 
 #' Generate probabilities of seropositivity by age based on an age-and-time
-#' varying FOI model.
+#' varying Force-of-Infection (FoI) model.
 #'
 #' This function calculates the probabilities of seropositivity by age based on
-#' an age-and-time-varying FOI model.
-#' It takes into account the FOI and the rate of seroreversion.
+#' an age-and-time-varying FoI model.
+#' It takes into account the FoI and the rate of seroreversion.
 #'
-#' @param foi A dataframe containing the force of infection (FOI) values
+#' @param foi A dataframe containing the FoI values
 #' for different ages. It should have three columns: 'year', 'age' and 'foi'.
 #' @param seroreversion_rate A non-negative numeric value representing
 #' the rate of seroreversion.
@@ -204,8 +206,9 @@ prob_seroprev_age_time_by_age <- function(
 #' Generate probabilities of seropositivity by age based on model choice.
 #'
 #' This function generates seropositivity probabilities based on either a
-#' time-varying FOI model, an age-varying FOI model, or an age-and-time-varying
-#' FOI model. In all cases, it is possible to optionally include seroreversion.
+#' time-varying Force-of-Infection (FoI) model, an age-varying FoI model,
+#' or an age-and-time-varying FoI model.
+#' In all cases, it is possible to optionally include seroreversion.
 #'
 #' @inheritParams simulate_serosurvey
 #' @param seroreversion_rate A non-negative value determining the rate of
@@ -243,7 +246,8 @@ prob_seroprev_by_age <- function(
   return(seroprev_df)
 }
 
-#' Generate probabilities of seropositivity by age based on a general FOI model.
+#' Generate probabilities of seropositivity by age based on a general
+#' Force-of-Infection (FoI) model.
 #'
 #' This function calculates the probabilities of seropositivity by age based on
 #' an abstract model of the serocatalytic system.
@@ -537,9 +541,10 @@ get_seroprev_counts_by_bin <- function(
   grouped_df
 }
 
-#' Simulate serosurvey data based on a time-varying FOI model.
+#' Simulate serosurvey data based on a time-varying
+#' Force-of-Infection (FoI) model.
 #'
-#' This function generates binned serosurvey data based on a time-varying FOI
+#' This function generates binned serosurvey data based on a time-varying FoI
 #' model, optionally including seroreversion. This function allows construction
 #' of serosurveys with binned age groups, and it generates uncertainty in the
 #' distribution of a sample size within an age bin through multinomial sampling.
@@ -595,9 +600,10 @@ simulate_serosurvey_time <- function(
 }
 
 
-#' Simulate serosurvey data based on an age-varying FOI model.
+#' Simulate serosurvey data based on an age-varying
+#' Force-of-Infection (FoI) model.
 #'
-#' This function generates binned serosurvey data based on an age-varying FOI
+#' This function generates binned serosurvey data based on an age-varying FoI
 #' model, optionally including seroreversion. This function allows construction
 #' of serosurveys with binned age groups, and it generates uncertainty in the
 #' distribution of a sample size within an age bin through multinomial sampling.
@@ -652,10 +658,11 @@ simulate_serosurvey_age <- function(
   return(grouped_df)
 }
 
-#' Simulate serosurvey data based on an age-and-time-varying FOI model.
+#' Simulate serosurvey data based on an age-and-time-varying
+#' Force-of-Infection (FoI) model.
 #'
 #' This function generates binned serosurvey data based on an
-#' age-and-time-varying FOI model, optionally including seroreversion.
+#' age-and-time-varying FoI model, optionally including seroreversion.
 #' This function allows construction of serosurveys with binned age groups, and
 #' it generates uncertainty in the distribution of a sample size within an age
 #' bin through multinomial sampling.
@@ -713,10 +720,10 @@ simulate_serosurvey_age_time <- function(
 }
 
 
-#' Simulate serosurvey data based on various FOI models.
+#' Simulate serosurvey data based on various Force-of-Infection (FoI) models.
 #'
 #' This function generates binned serosurvey data based on either a time-varying
-#' FOI model, an age-varying FOI model, or an age-and-time-varying FOI model.
+#' FoI model, an age-varying FoI model, or an age-and-time-varying FoI model.
 #' In all cases, it is possible to optionally include seroreversion. This
 #' function allows construction of serosurveys with binned age groups, and it
 #' generates uncertainty in the distribution of a sample size within an age bin
@@ -724,18 +731,18 @@ simulate_serosurvey_age_time <- function(
 #'
 #' @param model A string specifying the model type which can be either
 #' '"age"', '"time"', '"age-time"'.
-#' @param foi A dataframe containing the force of infection (FOI) values.
+#' @param foi A dataframe containing the FoI values.
 #' For time-varying models the columns should be:
 #' \describe{
 #'  \item{year}{Calendar years starting at the birth year of the oldest person
 #'              and up to the time of the serosurvey}
-#'  \item{foi}{Corresponding values of the FOI by year}
+#'  \item{foi}{Corresponding values of the FoI by year}
 #' }
 #' For age-varying models the columns should be:.
 #' \describe{
 #'  \item{age}{Ages starting at 1 and up to the age of the oldest person in the
 #'             serosurvey}
-#'  \item{foi}{Corresponding values of the FOI by age}
+#'  \item{foi}{Corresponding values of the FoI by age}
 #' }
 #' For age-and-time-varying models the columns should be:
 #' \describe{
@@ -743,7 +750,7 @@ simulate_serosurvey_age_time <- function(
 #'             serosurvey}
 #'  \item{time}{Calendar years starting at the birth year of the oldest person
 #'              and up to the time of the serosurvey}
-#'  \item{foi}{Corresponding values of FOI by age and year}
+#'  \item{foi}{Corresponding values of FoI by age and year}
 #' }
 #' @param survey_features A dataframe containing information about the binned
 #' age groups and sample sizes for each.
@@ -864,7 +871,7 @@ simulate_serosurvey <- function(
 #'   foi = 2 * dlnorm(1:80, meanlog = 3.5, sdlog = 0.5)
 #' )
 #'
-#' # generate age and time dependent FOI from multipliers
+#' # generate age and time dependent FoI from multipliers
 #' foi_age_time <- expand.grid(
 #'   year = foi_df_time$year,
 #'   age = foi_df_age$age
@@ -885,7 +892,7 @@ simulate_serosurvey <- function(
 #'   dplyr::mutate(n_sample = rep(n_sample, length(age_min))
 #'   )
 #'
-#' # simulate survey from age and time FOI
+#' # simulate survey from age and time FoI
 #' serosurvey <- simulate_serosurvey(
 #'   model = "age-time",
 #'   foi = foi_age_time,

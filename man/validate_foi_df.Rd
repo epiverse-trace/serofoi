@@ -2,7 +2,7 @@
 % Please edit documentation in R/validation.R
 \name{validate_foi_df}
 \alias{validate_foi_df}
-\title{Helper function to validate FOI structure for simulation}
+\title{Helper function to validate FoI structure for simulation}
 \usage{
 validate_foi_df(foi_df, cnames_additional)
 }
@@ -10,6 +10,6 @@ validate_foi_df(foi_df, cnames_additional)
 None
 }
 \description{
-Helper function to validate FOI structure for simulation
+Helper function to validate FoI structure for simulation
 }
 \keyword{internal}

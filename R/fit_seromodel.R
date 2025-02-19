@@ -29,7 +29,7 @@ add_age_group_to_serosurvey <- function(serosurvey) {
 #'   is_log_foi = FALSE,
 #'   foi_index = foi_index
 #' )
-#' @return Function specifying initialization vector for the FOI
+#' @return Function specifying initialization vector for the Force-of-Infection
 #' @export
 set_foi_init <- function(
   foi_init,
@@ -59,7 +59,7 @@ set_foi_init <- function(
   foi_init
 }
 
-#' Runs specified stan model for the force-of-infection
+#' Runs specified stan model for the Force-of-Infection (FoI)
 #'
 #' @param serosurvey
 #' \describe{
@@ -71,7 +71,7 @@ set_foi_init <- function(
 #'   \item{`n_seropositive`}{Number of positive samples for each age group}
 #' }
 #' @param model_type Type of the model. Either "constant", "age" or "time"
-#' @param is_log_foi Boolean to set logarithmic scale in the FOI
+#' @param is_log_foi Boolean to set logarithmic scale in the FoI
 #' @param foi_prior Force-of-infection distribution specified by means of
 #'  the helper functions. Currently available options are:
 #' \describe{
@@ -79,7 +79,7 @@ set_foi_init <- function(
 #'  \item{[sf_uniform]}{Function to set uniform distribution priors}
 #' }
 #' @param foi_sigma_rw Prior distribution for the standard deviation of the
-#' force-of-infection. Currently available options are:
+#' Force-of-Infection. Currently available options are:
 #' \describe{
 #'  \item{[sf_normal]}{Function to set normal distribution prior.
 #'                     Available for time models in the log-scale}
@@ -87,7 +87,7 @@ set_foi_init <- function(
 #'                     Available for time models in regular scale.}
 #' }
 #' @param foi_index Integer vector specifying the age-groups for which
-#' force-of-infection values will be estimated. It can be specified by
+#' Force-of-Infection values will be estimated. It can be specified by
 #' means of [get_foi_index]
 #' @inheritParams set_foi_init
 #' @param is_seroreversion Boolean specifying whether to include
@@ -100,7 +100,7 @@ set_foi_init <- function(
 #'  \item{[sf_none]}{Function to set no prior distribution}
 #' }
 #' @param ... Additional parameters for [rstan][rstan::sampling]
-#' @return stan_fit object with force-of-infection and seroreversion
+#' @return stan_fit object with Force-of-Infection and seroreversion
 #' (when applicable) samples
 #' @examples
 #' data(chagas2012)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/validation.R
 \name{validate_simulation_age_time}
 \alias{validate_simulation_age_time}
-\title{Helper function to validate consistency between the FOI and the survey
+\title{Helper function to validate consistency between the FoI and the survey
 features for simulation of age- and time-varying model}
 \usage{
 validate_simulation_age_time(survey_features, foi_df)
@@ -11,7 +11,7 @@ validate_simulation_age_time(survey_features, foi_df)
 None
 }
 \description{
-Helper function to validate consistency between the FOI and the survey
+Helper function to validate consistency between the FoI and the survey
 features for simulation of age- and time-varying model
 }
 \keyword{internal}

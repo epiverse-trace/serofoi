@@ -2,23 +2,24 @@
 % Please edit documentation in R/simulate_serosurvey.R
 \name{simulate_serosurvey_age}
 \alias{simulate_serosurvey_age}
-\title{Simulate serosurvey data based on an age-varying FOI model.}
+\title{Simulate serosurvey data based on an age-varying
+Force-of-Infection (FoI) model.}
 \usage{
 simulate_serosurvey_age(foi, survey_features, seroreversion_rate = 0)
 }
 \arguments{
-\item{foi}{A dataframe containing the force of infection (FOI) values.
+\item{foi}{A dataframe containing the FoI values.
 For time-varying models the columns should be:
 \describe{
 \item{year}{Calendar years starting at the birth year of the oldest person
 and up to the time of the serosurvey}
-\item{foi}{Corresponding values of the FOI by year}
+\item{foi}{Corresponding values of the FoI by year}
 }
 For age-varying models the columns should be:.
 \describe{
 \item{age}{Ages starting at 1 and up to the age of the oldest person in the
 serosurvey}
-\item{foi}{Corresponding values of the FOI by age}
+\item{foi}{Corresponding values of the FoI by age}
 }
 For age-and-time-varying models the columns should be:
 \describe{
@@ -26,7 +27,7 @@ For age-and-time-varying models the columns should be:
 serosurvey}
 \item{time}{Calendar years starting at the birth year of the oldest person
 and up to the time of the serosurvey}
-\item{foi}{Corresponding values of FOI by age and year}
+\item{foi}{Corresponding values of FoI by age and year}
 }}
 
 \item{survey_features}{A dataframe containing information about the binned
@@ -51,7 +52,7 @@ information, overall sample sizes, the number of seropositive individuals,
 and other survey features.
 }
 \description{
-This function generates binned serosurvey data based on an age-varying FOI
+This function generates binned serosurvey data based on an age-varying FoI
 model, optionally including seroreversion. This function allows construction
 of serosurveys with binned age groups, and it generates uncertainty in the
 distribution of a sample size within an age bin through multinomial sampling.
