@@ -74,7 +74,7 @@ plot_serosurvey(chagas2012, bin_serosurvey = TRUE, size_text = 15)
 ```
 Here, the error bars correspond to the binomial confidence interval and the point size represents the sample size for each age group.
 
-A constant force-of-infection model can easily be implemented by means of `fit_seromodel`:
+A constant FoI model can easily be implemented by means of `fit_seromodel`:
 
 ```{r constant_model, include = TRUE, eval = FALSE}
 seromodel <- fit_seromodel(serosurvey = chagas2012)
