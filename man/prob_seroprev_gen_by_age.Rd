@@ -24,7 +24,7 @@ birth cohort.}
 
 \item{max_age}{The maximum age to simulate seropositivity for.}
 
-\item{...}{Additional parameters for \link{sum_of_A}}
+\item{...}{Additional parameters for \code{construct_A_fun}}
 }
 \value{
 A dataframe with columns 'age' and 'seropositivity'.

@@ -255,7 +255,7 @@ prob_seroprev_by_age <- function(
 #' @param initial_conditions The initial state vector proportions for each
 #' birth cohort.
 #' @param max_age The maximum age to simulate seropositivity for.
-#' @param ... Additional parameters for [sum_of_A]
+#' @param ... Additional parameters for `construct_A_fun`
 #' @return A dataframe with columns 'age' and 'seropositivity'.
 #' @examples
 #' # define age- and time-specific multipliers
