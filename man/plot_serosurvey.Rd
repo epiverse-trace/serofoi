@@ -45,8 +45,4 @@ plot_serosurvey(chik2015)
 # VEEV example serosurvey
 data(veev2012)
 plot_serosurvey(veev2012)
-
-# Chagas disease example serosurvey
-data(chagas2012)
-plot_serosurvey(chagas2012, bin_serosurvey = TRUE)
 }
