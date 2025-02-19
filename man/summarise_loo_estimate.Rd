@@ -12,7 +12,7 @@ summarise_loo_estimate(
 }
 \arguments{
 \item{seromodel}{stan_fit object obtained from sampling a model
-with \link{fit_seromode}}
+with \link{fit_seromodel}}
 
 \item{par_loo_estimate}{Name of the loo estimate to be extracted.
 Available options are:
