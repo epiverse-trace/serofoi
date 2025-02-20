@@ -1,6 +1,32 @@
-# serofoi (development version)
+# serofoi 1.0.3
 
-* Updated the stan code to use new syntax.
+## New features
+
+* **Add options to plot single FOI estimates and r-hats:**
+
+We introduced parameters `plot_constant` and `x_axis` to the visualisation functions of the package. These enable the option to plot constant FoI estimates and their corresponding r-hat values, avoiding ambiguity in the specification of the x-axis by means of `x_axis = "time"` or `x_axis = "age"`.
+
+## Minor changes
+* **Documentation corrections**
+  * Fix incorrect cross referencing in documentation
+  * Update table 1 in article `foi_models` to show the prior specification options available in the package.
+  * Add example of a particular model specification using the package in article `foi_models`
+  * Complete missing documentation and tags.
+* **Shorten long function and internal parameter names (mainly in the simulation module)**
+  * Change `seroprevalence_` and `seropositive_` for `seroprev_`
+  * Change `probability_` for `prob_`
+  * Remove `_model`
+* **Other**
+  * Make consistent use of Force-of-Infection (FoI) acronym across the package
+  * Fix broken link to contributing guidelines in `README`
+
+## Internal changes
+
+* Implement `lintr v3.2.0` new suggestions
+* Update the stan code to use new syntax.
+* Update workflows based on Epiverse template.
+* Remove `Hmisc` dependency.
+* Add `donttest` to examples taking too long to run
 
 # serofoi 1.0.2
 
