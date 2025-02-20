@@ -152,7 +152,7 @@ To report a bug please open an
 
 Contributions to *serofoi* are welcomed. Please follow the [package
 contributing
-guide](https://github.com/epiverse-trace/serofoi/blob/main/.github/CONTRIBUTING.md).
+guide](https://github.com/epiverse-trace/.github/blob/main/CONTRIBUTING.md).
 
 ## Code of conduct
 
