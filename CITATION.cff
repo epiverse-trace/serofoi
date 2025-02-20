@@ -229,7 +229,7 @@ references:
   title: Matrix
   abstract: 'Matrix: Sparse and Dense Matrix Classes and Methods'
   notes: Imports
-  url: https://R-forge.R-project.org/tracker/?atid=294&group_id=61
+  url: https://Matrix.R-forge.R-project.org
   repository: https://CRAN.R-project.org/package=Matrix
   authors:
   - family-names: Bates
@@ -263,11 +263,11 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
   - family-names: Henry
     given-names: Lionel
-    email: lionel@rstudio.com
+    email: lionel@posit.co
   year: '2025'
   doi: 10.32614/CRAN.package.purrr
 - type: software
