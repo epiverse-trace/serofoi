@@ -10,7 +10,7 @@ license: MIT
 title: 'serofoi: Bayesian Estimation of the Force of Infection from Serological Data'
 version: 1.0.2
 abstract: Estimating the force of infection from time varying, age varying, or constant
-  serocatalytic models from population based seroprevalence studies using a bayesian
+  serocatalytic models from population based seroprevalence studies using a Bayesian
   framework, including data simulation functions enabling the generation of serological
   surveys based on this models. This tool also provides a flexible prior specification
   syntax for the force of infection and the seroreversion rate, as well as methods
@@ -229,7 +229,7 @@ references:
   title: Matrix
   abstract: 'Matrix: Sparse and Dense Matrix Classes and Methods'
   notes: Imports
-  url: https://Matrix.R-forge.R-project.org
+  url: https://R-forge.R-project.org/tracker/?atid=294&group_id=61
   repository: https://CRAN.R-project.org/package=Matrix
   authors:
   - family-names: Bates

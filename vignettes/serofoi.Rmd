@@ -47,7 +47,7 @@ Current version of ***serofoi*** includes the following assumptions on the under
 * There is no impact from migration processes in the sampled population, which means the model is not suited for a situation with high levels of migration. 
 * There are no differences in the mortality rate of infected versus susceptible individuals. This may be a limitation for situations with a high infection fatality rate, such as Ebola.
 
-## The bayesian statistical framework
+## The Bayesian statistical framework
 
 To assess how well the mathematical representation of the different FoI models describes the seroprevalence data, we implement a fitting process that relies on a Bayesian framework. The priors and upper priors for each model indicate the assumed trajectory of the FoI (either constant or time-varying). serofoi provides a set of Bayesian comparison methods for the user to choose between various possible FoI models (trajectories) that best fit the seroprevalence data. For details see [An Introduction To Force-of-Infection Models](https://epiverse-trace.github.io/serofoi/articles/foi_models.html).
 
