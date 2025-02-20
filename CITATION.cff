@@ -8,7 +8,7 @@ message: 'To cite package "serofoi" in publications use:'
 type: software
 license: MIT
 title: 'serofoi: Bayesian Estimation of the Force of Infection from Serological Data'
-version: 1.0.2
+version: 1.0.3
 abstract: Estimating the force of infection from time varying, age varying, or constant
   serocatalytic models from population based seroprevalence studies using a bayesian
   framework, including data simulation functions enabling the generation of serological

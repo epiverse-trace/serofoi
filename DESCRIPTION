@@ -1,7 +1,7 @@
 Package: serofoi
 Title: Bayesian Estimation of the Force of Infection from Serological Data
 Type: Package
-Version: 1.0.2
+Version: 1.0.3
 Authors@R: c(
     person("Zulma M.", "Cucunubá", , "zulma.cucunuba@javeriana.edu.co", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-8165-3198")),
