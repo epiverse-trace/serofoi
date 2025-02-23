@@ -226,24 +226,24 @@ references:
   year: '2025'
   doi: 10.32614/CRAN.package.loo
 - type: software
-  title: Matrix
-  abstract: 'Matrix: Sparse and Dense Matrix Classes and Methods'
+  title: expm
+  abstract: 'expm: Matrix Exponential, Log, ''etc'''
   notes: Imports
-  url: https://R-forge.R-project.org/tracker/?atid=294&group_id=61
-  repository: https://CRAN.R-project.org/package=Matrix
+  url: https://R-forge.R-project.org/tracker/?atid=472&group_id=107
+  repository: https://CRAN.R-project.org/package=expm
   authors:
-  - family-names: Bates
-    given-names: Douglas
-    orcid: https://orcid.org/0000-0001-8316-9503
   - family-names: Maechler
     given-names: Martin
-    email: mmaechler+Matrix@gmail.com
+    email: maechler@stat.math.ethz.ch
     orcid: https://orcid.org/0000-0002-8685-9910
-  - family-names: Jagan
-    given-names: Mikael
-    orcid: https://orcid.org/0000-0002-3542-2938
+  - family-names: Dutang
+    given-names: Christophe
+    orcid: https://orcid.org/0000-0001-6732-1501
+  - family-names: Goulet
+    given-names: Vincent
+    orcid: https://orcid.org/0000-0002-9315-5719
   year: '2025'
-  doi: 10.32614/CRAN.package.Matrix
+  doi: 10.32614/CRAN.package.expm
 - type: software
   title: methods
   abstract: 'R: A Language and Environment for Statistical Computing'
