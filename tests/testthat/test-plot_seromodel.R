@@ -13,7 +13,7 @@ serosurvey <- veev2012
 suppressWarnings(
   seromodel_constant <- fit_seromodel(
     serosurvey = serosurvey,
-    iter = 500
+    iter = 100
   )
 )
 
@@ -24,7 +24,7 @@ suppressWarnings(
     foi_index = get_foi_index(serosurvey, group_size = 20, model_type = "age"),
     is_seroreversion = TRUE,
     seroreversion_prior = sf_normal(0, 1e-4),
-    iter = 200
+    iter = 100
   )
 )
 
@@ -33,7 +33,7 @@ suppressWarnings(
     serosurvey = serosurvey,
     model_type = "time",
     foi_index = get_foi_index(serosurvey, group_size = 10, model_type = "time"),
-    iter = 200
+    iter = 100
   )
 )
 
