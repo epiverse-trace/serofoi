@@ -26,6 +26,7 @@ We introduced parameters `plot_constant` and `x_axis` to the visualisation funct
 * Update the stan code to use new syntax.
 * Update workflows based on Epiverse template.
 * Remove `Hmisc` dependency.
+* Replace `Matrix` package for `expm`
 * Add `donttest` to examples taking too long to run
 
 # serofoi 1.0.2
