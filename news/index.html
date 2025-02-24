@@ -13,7 +13,7 @@
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="https://epiverse-trace.github.io/blueprints/logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">serofoi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,9 +51,49 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="serofoi-development-version">serofoi (development version)<a class="anchor" aria-label="anchor" href="#serofoi-development-version"></a></h2>
-<ul><li>Updated the stan code to use new syntax.</li>
+<h2 class="pkg-version" data-toc-text="1.0.3" id="serofoi-103">serofoi 1.0.3<a class="anchor" aria-label="anchor" href="#serofoi-103"></a></h2>
+<div class="section level3">
+<h3 id="new-features-1-0-3">New features<a class="anchor" aria-label="anchor" href="#new-features-1-0-3"></a></h3>
+<ul><li><strong>Add options to plot single FOI estimates and r-hats:</strong></li>
+</ul><p>We introduced parameters <code>plot_constant</code> and <code>x_axis</code> to the visualisation functions of the package. These enable the option to plot constant FoI estimates and their corresponding r-hat values, avoiding ambiguity in the specification of the x-axis by means of <code>x_axis = "time"</code> or <code>x_axis = "age"</code>.</p>
+</div>
+<div class="section level3">
+<h3 id="minor-changes-1-0-3">Minor changes<a class="anchor" aria-label="anchor" href="#minor-changes-1-0-3"></a></h3>
+<ul><li>
+<strong>Documentation corrections</strong>
+<ul><li>Fix incorrect cross referencing in documentation</li>
+<li>Update table 1 in article <code>foi_models</code> to show the prior specification options available in the package.</li>
+<li>Add example of a particular model specification using the package in article <code>foi_models</code>
+</li>
+<li>Complete missing documentation and tags.</li>
+</ul></li>
+<li>
+<strong>Shorten long function and internal parameter names (mainly in the simulation module)</strong>
+<ul><li>Change <code>seroprevalence_</code> and <code>seropositive_</code> for <code>seroprev_</code>
+</li>
+<li>Change <code>probability_</code> for <code>prob_</code>
+</li>
+<li>Remove <code>_model</code>
+</li>
+</ul></li>
+<li>
+<strong>Other</strong>
+<ul><li>Make consistent use of Force-of-Infection (FoI) acronym across the package</li>
+<li>Fix broken link to contributing guidelines in <code>README</code>
+</li>
+</ul></li>
 </ul></div>
+<div class="section level3">
+<h3 id="internal-changes-1-0-3">Internal changes<a class="anchor" aria-label="anchor" href="#internal-changes-1-0-3"></a></h3>
+<ul><li>Implement <code>lintr v3.2.0</code> new suggestions</li>
+<li>Update the stan code to use new syntax.</li>
+<li>Update workflows based on Epiverse template.</li>
+<li>Remove <code>Hmisc</code> dependency.</li>
+<li>Replace <code>Matrix</code> package for <code>expm</code>
+</li>
+<li>Add <code>donttest</code> to examples taking too long to run</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.2" id="serofoi-102">serofoi 1.0.2<a class="anchor" aria-label="anchor" href="#serofoi-102"></a></h2>
 <div class="section level3">
