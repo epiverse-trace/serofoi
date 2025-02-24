@@ -7,6 +7,7 @@ BMJ
 Bahia
 Bajaj
 Basáñez
+Bayesian
 Binom
 CMD
 Christl
@@ -43,6 +44,7 @@ Quevedo
 RStan
 Refactorization
 Serocatalytic
+Serological
 Seroreversion
 Serosurvey
 Serosurveys
@@ -98,9 +100,11 @@ rstan
 sd
 se
 serocatalytic
+serological
 seromodel
 seropositives
 seropositivities
+seroprevalence
 seroreversion
 serosurvey
 serosurveys

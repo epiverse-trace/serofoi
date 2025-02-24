@@ -78,7 +78,9 @@ seromodel summary plot
 Visualise results of the provided model
 }
 \examples{
+\donttest{
 data(veev2012)
 seromodel <- fit_seromodel(veev2012, iter = 100)
 plot_seromodel(seromodel, veev2012)
+}
 }

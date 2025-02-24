@@ -45,6 +45,7 @@ convergence criteria (horizontal dashed line)
 Plot r-hats convergence criteria for the specified model
 }
 \examples{
+\donttest{
 data(chagas2012)
 seromodel <- fit_seromodel(
   serosurvey = chagas2012,
@@ -57,4 +58,5 @@ seromodel <- fit_seromodel(
   chains = 2
 )
 plot_rhats(seromodel, chagas2012)
+}
 }

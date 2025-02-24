@@ -334,7 +334,7 @@ prob_seroprev_gen_by_age <- function(
   probabilities <- vector(length = max_age)
   for (i in seq_along(probabilities)) {
     A_sum <- sum_of_A(max_age, max_age - i, construct_A_fun, ...)
-    Y <- as.matrix(Matrix::expm(A_sum)) %*% initial_conditions
+    Y <- expm::expm(A_sum) %*% initial_conditions
     probabilities[i] <- calculate_seroprev_fun(Y)
   }
 

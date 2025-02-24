@@ -75,6 +75,7 @@ stan_fit object with Force-of-Infection and seroreversion
 Runs specified stan model for the Force-of-Infection (FoI)
 }
 \examples{
+\donttest{
 data(chagas2012)
 seromodel <- fit_seromodel(
   serosurvey = chagas2012,
@@ -85,4 +86,5 @@ seromodel <- fit_seromodel(
   ),
   iter = 100
 )
+}
 }

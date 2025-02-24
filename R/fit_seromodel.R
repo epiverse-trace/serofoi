@@ -103,6 +103,7 @@ set_foi_init <- function(
 #' @return stan_fit object with Force-of-Infection and seroreversion
 #' (when applicable) samples
 #' @examples
+#' \donttest{
 #' data(chagas2012)
 #' seromodel <- fit_seromodel(
 #'   serosurvey = chagas2012,
@@ -113,6 +114,7 @@ set_foi_init <- function(
 #'   ),
 #'   iter = 100
 #' )
+#' }
 #' @export
 fit_seromodel <- function(
   serosurvey,

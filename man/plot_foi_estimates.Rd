@@ -57,6 +57,7 @@ ggplot object with estimated FoI
 Plots Force-of-Infection central estimates
 }
 \examples{
+\donttest{
 data(chagas2012)
 seromodel <- fit_seromodel(
   serosurvey = chagas2012,
@@ -69,4 +70,5 @@ seromodel <- fit_seromodel(
   chains = 2
 )
 plot_foi_estimates(seromodel, chagas2012)
+}
 }

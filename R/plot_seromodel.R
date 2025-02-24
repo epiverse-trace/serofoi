@@ -308,6 +308,7 @@ plot_seroprev_estimates <- function(
 #' @param foi_max Max FoI value for plotting
 #' @return ggplot object with estimated FoI
 #' @examples
+#' \donttest{
 #' data(chagas2012)
 #' seromodel <- fit_seromodel(
 #'   serosurvey = chagas2012,
@@ -320,6 +321,7 @@ plot_seroprev_estimates <- function(
 #'   chains = 2
 #' )
 #' plot_foi_estimates(seromodel, chagas2012)
+#' }
 #' @export
 plot_foi_estimates <- function(
   seromodel,
@@ -443,6 +445,7 @@ plot_foi_estimates <- function(
 #' @return ggplot object showing the r-hats of the model to be compared with the
 #' convergence criteria (horizontal dashed line)
 #' @examples
+#' \donttest{
 #' data(chagas2012)
 #' seromodel <- fit_seromodel(
 #'   serosurvey = chagas2012,
@@ -455,6 +458,7 @@ plot_foi_estimates <- function(
 #'   chains = 2
 #' )
 #' plot_rhats(seromodel, chagas2012)
+#' }
 #' @export
 plot_rhats <- function(
   seromodel,
@@ -545,9 +549,11 @@ plot_rhats <- function(
 #' Only relevant when `seromodel@model_name == "constant"`)
 #' @return ggplot object with a summary of the specified model
 #' @examples
+#' \donttest{
 #' data(veev2012)
 #' seromodel <- fit_seromodel(veev2012, iter = 100)
 #' plot_summary(seromodel, veev2012)
+#' }
 #' @export
 plot_summary <- function(
   seromodel,
@@ -611,9 +617,11 @@ plot_summary <- function(
 #' @param seroreversion_digits Number of seroreversion rate digits
 #' @return seromodel summary plot
 #' @examples
+#' \donttest{
 #' data(veev2012)
 #' seromodel <- fit_seromodel(veev2012, iter = 100)
 #' plot_seromodel(seromodel, veev2012)
+#' }
 #' @export
 plot_seromodel <- function(
   seromodel,
