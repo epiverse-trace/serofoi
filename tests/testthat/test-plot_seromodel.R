@@ -7,13 +7,16 @@ library(purrr)
 skip_on_cran()
 
 # Common data ----
+set.seed(123)
+stan_seed <- "123"
 data(veev2012)
 serosurvey <- veev2012
 
 suppressWarnings(
   seromodel_constant <- fit_seromodel(
     serosurvey = serosurvey,
-    iter = 100
+    iter = 100,
+    seed = stan_seed
   )
 )
 
@@ -24,7 +27,8 @@ suppressWarnings(
     foi_index = get_foi_index(serosurvey, group_size = 20, model_type = "age"),
     is_seroreversion = TRUE,
     seroreversion_prior = sf_normal(0, 1e-4),
-    iter = 100
+    iter = 100,
+    seed = stan_seed
   )
 )
 
@@ -33,9 +37,11 @@ suppressWarnings(
     serosurvey = serosurvey,
     model_type = "time",
     foi_index = get_foi_index(serosurvey, group_size = 10, model_type = "time"),
-    iter = 100
+    iter = 100,
+    seed = stan_seed
   )
 )
+set.seed(Sys.time())
 
 create_prepared_serosurvey <- function(actual_serosurvey) {
   prepared_serosurvey <- prepare_serosurvey_for_plot(
@@ -43,6 +49,7 @@ create_prepared_serosurvey <- function(actual_serosurvey) {
   )
   return(prepared_serosurvey)
 }
+
 
 # Test plot_serosurvey ----
 test_that("plot_serosurvey creates a ggplot with correct structure", {
@@ -80,6 +87,7 @@ test_that("plot_serosurvey creates a ggplot with correct structure", {
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
 })
+
 
 test_that("plot_serosurvey creates a binned ggplot with correct structure", {
   bin_step <- 10
@@ -325,8 +333,6 @@ test_that("plot_seromodel creates a ggplot with correct structure", {
 })
 
 
-
-
 test_that("plot_seromodel with age foi creates a ggplot with correct structure", {
   seromodel <- seromodel_age
 
@@ -380,9 +386,6 @@ test_that("plot_seromodel with age foi creates a ggplot with correct structure",
 })
 
 
-
-
-
 test_that("plot_seromodel with time foi creates a ggplot with correct structure", {
   seromodel <- seromodel_time
 
@@ -434,9 +437,6 @@ test_that("plot_seromodel with time foi creates a ggplot with correct structure"
 
   expect_lists_equal_with_tolerance(expected_plot, actual_plot)
 })
-
-
-
 
 
 # Test plot_seroprev_estimates ----
