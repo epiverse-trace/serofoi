@@ -229,7 +229,7 @@ references:
   title: expm
   abstract: 'expm: Matrix Exponential, Log, ''etc'''
   notes: Imports
-  url: https://R-forge.R-project.org/tracker/?atid=472&group_id=107
+  url: https://R-Forge.R-project.org/projects/expm/
   repository: https://CRAN.R-project.org/package=expm
   authors:
   - family-names: Maechler
@@ -263,11 +263,11 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
   - family-names: Henry
     given-names: Lionel
-    email: lionel@rstudio.com
+    email: lionel@posit.co
   year: '2025'
   doi: 10.32614/CRAN.package.purrr
 - type: software
