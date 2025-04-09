@@ -1,7 +1,5 @@
 #' The 'serofoi' package.
 #'
-#' @description A DESCRIPTION OF THE PACKAGE
-#'
 #' @name serofoi-package
 #' @aliases serofoi
 #' @useDynLib serofoi, .registration = TRUE
