@@ -6,7 +6,9 @@
 \alias{serofoi}
 \title{The 'serofoi' package.}
 \description{
-A DESCRIPTION OF THE PACKAGE
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
+Estimating the force of infection from time varying, age varying, or constant serocatalytic models from population based seroprevalence studies using a Bayesian framework, including data simulation functions enabling the generation of serological surveys based on this models. This tool also provides a flexible prior specification syntax for the force of infection and the seroreversion rate, as well as methods to assess model convergence and comparison criteria along with useful visualisation functions.
 }
 \references{
 Stan Development Team (NA). RStan: the R interface to Stan. R
