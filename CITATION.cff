@@ -12,7 +12,7 @@ version: 1.0.3
 abstract: Estimating the force of infection from time varying, age varying, or constant
   serocatalytic models from population based seroprevalence studies using a Bayesian
   framework, including data simulation functions enabling the generation of serological
-  surveys based on this models. This tool also provides a flexible prior specification
+  surveys based on these models. This tool also provides a flexible prior specification
   syntax for the force of infection and the seroreversion rate, as well as methods
   to assess model convergence and comparison criteria along with useful visualisation
   functions.
