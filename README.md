@@ -56,6 +56,8 @@ if(!require("remotes")) install.packages("remotes")
 remotes::install_github("epiverse-trace/serofoi")
 ```
 
+To build `{serofoi}` from source, it is necessary to install and configure C++ Toolchain (instructions for [Windows](https://cran.r-project.org/bin/windows/Rtools/)/ [Mac](https://github.com/stan-dev/rstan/wiki/Configuring-C---Toolchain-for-Mac)/ [Linux](https://github.com/stan-dev/rstan/wiki/Configuring-C-Toolchain-for-Linux)).
+
 ## Quick start
 
 *serofoi* provides some minimal serosurvey datasets that can be used to
